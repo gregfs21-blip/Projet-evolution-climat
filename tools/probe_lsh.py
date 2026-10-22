@@ -14,6 +14,6 @@ def get(url):
 for var in ("TN", "TX"):
     z = zipfile.ZipFile(io.BytesIO(get(f"{BASE}SH_{var}_metropole.zip")))
     for n in z.namelist():
-        if n[8:10] == "33":   # SH_MTNx33...: département 33
+        if n[7:9] == "33":   # SH_MTN + indice + 33... : département 33
             (OUT / n).write_bytes(z.read(n))
 print(sorted(p.name for p in OUT.iterdir()))
