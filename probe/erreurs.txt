@@ -1,0 +1,6 @@
+https://creuse.chambre-agriculture.fr/fileadmin/user_upload/National/FAL_commun/publications/Nouvelle-Aquitaine/2020_ORACLE_Nouvelle_Aquitaine.pdf : <HTTPError 404: 'Not Found'>
+https://nouvelle-aquitaine.chambre-agriculture.fr/fileadmin/user_upload/National/FAL_commun/publications/Nouvelle-Aquitaine/2020_ORACLE_Nouvelle_Aquitaine.pdf : <HTTPError 404: 'Not Found'>
+https://charente.chambre-agriculture.fr/fileadmin/user_upload/National/FAL_commun/publications/Nouvelle-Aquitaine/2020_ORACLE_Nouvelle_Aquitaine.pdf : <HTTPError 404: 'Not Found'>
+https://correze.chambre-agriculture.fr/fileadmin/user_upload/National/FAL_commun/publications/Nouvelle-Aquitaine/2020_ORACLE_Nouvelle_Aquitaine.pdf : <HTTPError 404: 'Not Found'>
+https://gironde.chambre-agriculture.fr/fileadmin/user_upload/National/FAL_commun/publications/Nouvelle-Aquitaine/2020_ORACLE_Nouvelle_Aquitaine.pdf : URLError(gaierror(-2, 'Name or service not known'))
+https://cmds.chambre-agriculture.fr/fileadmin/user_upload/National/FAL_commun/publications/Nouvelle-Aquitaine/2020_ORACLE_Nouvelle_Aquitaine.pdf : <HTTPError 404: 'Not Found'>
