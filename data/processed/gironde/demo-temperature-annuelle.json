@@ -173,9 +173,9 @@
   "source_name": "Générateur synthétique de l'ETL",
   "source_url": "https://github.com/gregfs21-blip/Projet-evolution-climat",
   "license": "CC0 (données synthétiques)",
-  "extracted_at": "2026-10-22T15:15:20Z",
+  "extracted_at": "2026-10-22T17:44:05Z",
   "script": "etl/sources/demo.py",
-  "etl_version": "0.1.0+local",
+  "etl_version": "0.1.0+48f068b",
   "homogenized": false
  },
  "is_demo": true
