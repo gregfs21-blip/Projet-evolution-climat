@@ -49,5 +49,6 @@ y compris ceux de l'ETL mensuel, redéploie le site.
 
 ## État
 
-Phase 0 (socle) : chaîne complète en place avec un indicateur **synthétique de démonstration**.
-Voir `docs/phases.md`.
+- **P0** (socle) : close le 22/10/2026.
+- **P1** (températures homogénéisées de Gironde) : 20 indicateurs publiés, validation en attente de
+  décision sur deux écarts. Voir `docs/phases.md` et `docs/validation-p1.md`.

@@ -6,7 +6,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | Phase | Contenu | Validation | État |
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
-| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous | **en cours** |
+| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous | **en attente de décision** (C3 TX, C4) |
 | P2 | Extrêmes et eau Gironde : jours > 30/35 °C, nuits tropicales, gelées, précipitations, insolation, SPEI | | à faire |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
@@ -73,3 +73,12 @@ sans Lacanau ni Sauternes). Homogénéisé de 1953 (1955 Lacanau TN, 1962 Paulin
   La méthode de régression d'ORACLE n'est pas documentée avec certitude (régression linéaire supposée).
 - Les séries s'arrêtent en 2022 pour l'homogénéisé : les années 2023-2025 seront traitées en P2 avec
   les données quotidiennes, avec la mention « non homogénéisé ».
+
+### Journal P1
+
+- 22/10/2026 : premiers résultats. C1, C2, C3 TN, C5 à C9 conformes ; **écarts C3 TX et C4**, analysés
+  dans `docs/validation-p1.md`. Critères non modifiés. Clôture suspendue à la décision de Grég.
+- Le test de Pettitt est complété d'un test sur résidus détendancés : sans cela, toute série en tendance
+  présente une « rupture » artificielle (constaté sur les 20 séries).
+- pymannkendall 1.4.3 (PyPI) produit p = NaN dans certains cas : fonctions reprises du correctif amont
+  dans `etl/stats/mannkendall.py`, recoupées en test.
