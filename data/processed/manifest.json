@@ -1,16 +1,207 @@
 {
- "schema_version": "1.0",
- "generated_at": "2026-10-22T20:22:29Z",
- "etl_version": "0.1.0+a5a9f82",
+ "schema_version": "1.1",
+ "generated_at": "2026-10-22T20:58:01Z",
+ "etl_version": "0.1.0+local",
  "indicators": [
   {
-   "id": "demo-temperature-annuelle",
+   "id": "tm-annuelle-bordeaux-merignac",
    "scale": "gironde",
-   "title": "DÉMO – Anomalie de température annuelle (données synthétiques)",
+   "title": "Température moyenne annuelle à Bordeaux-Mérignac",
    "unit": "°C",
-   "path": "gironde/demo-temperature-annuelle.json",
-   "confidence": "non_etabli",
-   "is_demo": true
+   "path": "gironde/tm-annuelle-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures moyennes"
+  },
+  {
+   "id": "tm-annuelle-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Bordeaux-Paulin",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures moyennes"
+  },
+  {
+   "id": "tm-annuelle-cap-ferret",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Cap-Ferret",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures moyennes"
+  },
+  {
+   "id": "tm-annuelle-cazaux",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Cazaux",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures moyennes"
+  },
+  {
+   "id": "tm-annuelle-gironde",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle en Gironde",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde"
+  },
+  {
+   "id": "tm-annuelle-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Villenave-d'Ornon",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-villenave-d-ornon.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures moyennes"
+  },
+  {
+   "id": "tn-annuelle-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Bordeaux-Mérignac",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures minimales"
+  },
+  {
+   "id": "tn-annuelle-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Bordeaux-Paulin",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures minimales"
+  },
+  {
+   "id": "tn-annuelle-cap-ferret",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Cap-Ferret",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures minimales"
+  },
+  {
+   "id": "tn-annuelle-cazaux",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Cazaux",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures minimales"
+  },
+  {
+   "id": "tn-annuelle-gironde",
+   "scale": "gironde",
+   "title": "Température minimale annuelle en Gironde",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde"
+  },
+  {
+   "id": "tn-annuelle-lacanau",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Lacanau",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-lacanau.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures minimales"
+  },
+  {
+   "id": "tn-annuelle-sauternes",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Sauternes",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-sauternes.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures minimales"
+  },
+  {
+   "id": "tn-annuelle-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Villenave-d'Ornon",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-villenave-d-ornon.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures minimales"
+  },
+  {
+   "id": "tx-annuelle-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Température maximale annuelle à Bordeaux-Mérignac",
+   "unit": "°C",
+   "path": "gironde/tx-annuelle-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures maximales"
+  },
+  {
+   "id": "tx-annuelle-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Température maximale annuelle à Bordeaux-Paulin",
+   "unit": "°C",
+   "path": "gironde/tx-annuelle-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures maximales"
+  },
+  {
+   "id": "tx-annuelle-cap-ferret",
+   "scale": "gironde",
+   "title": "Température maximale annuelle à Cap-Ferret",
+   "unit": "°C",
+   "path": "gironde/tx-annuelle-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures maximales"
+  },
+  {
+   "id": "tx-annuelle-cazaux",
+   "scale": "gironde",
+   "title": "Température maximale annuelle à Cazaux",
+   "unit": "°C",
+   "path": "gironde/tx-annuelle-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures maximales"
+  },
+  {
+   "id": "tx-annuelle-gironde",
+   "scale": "gironde",
+   "title": "Température maximale annuelle en Gironde",
+   "unit": "°C",
+   "path": "gironde/tx-annuelle-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde"
+  },
+  {
+   "id": "tx-annuelle-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Température maximale annuelle à Villenave-d'Ornon",
+   "unit": "°C",
+   "path": "gironde/tx-annuelle-villenave-d-ornon.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — températures maximales"
   }
  ]
 }

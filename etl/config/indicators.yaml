@@ -1,10 +1,89 @@
 # Registre des indicateurs produits par l'ETL.
-# Chaque entrée pointe vers une fonction `build(ctx) -> Indicator`.
-# Ajouter un indicateur = ajouter une entrée ici + son module ; le site
-# génère la page automatiquement à partir du manifeste.
+# Chaque entrée pointe vers une fonction `build(ctx, **params) -> Indicator`.
+# Ajouter un indicateur = ajouter une entrée ici ; le site génère la page à partir du manifeste.
 
 indicators:
-  - id: demo-temperature-annuelle
+  # --- P1 : synthèse Gironde (composites à réseau constant)
+  - id: tn-annuelle-gironde
     scale: gironde
-    builder: etl.sources.demo:build
-    enabled: true
+    builder: etl.indicators.temperature:build_composite
+    params: {variable: TN}
+  - id: tx-annuelle-gironde
+    scale: gironde
+    builder: etl.indicators.temperature:build_composite
+    params: {variable: TX}
+  - id: tm-annuelle-gironde
+    scale: gironde
+    builder: etl.indicators.temperature:build_composite
+    params: {variable: TM}
+  # --- P1 : TN par station
+  - id: tn-annuelle-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TN, station: bordeaux-paulin}
+  - id: tn-annuelle-lacanau
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TN, station: lacanau}
+  - id: tn-annuelle-cap-ferret
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TN, station: cap-ferret}
+  - id: tn-annuelle-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TN, station: bordeaux-merignac}
+  - id: tn-annuelle-sauternes
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TN, station: sauternes}
+  - id: tn-annuelle-cazaux
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TN, station: cazaux}
+  - id: tn-annuelle-villenave-d-ornon
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TN, station: villenave-d-ornon}
+  # --- P1 : TX par station
+  - id: tx-annuelle-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TX, station: bordeaux-paulin}
+  - id: tx-annuelle-cap-ferret
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TX, station: cap-ferret}
+  - id: tx-annuelle-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TX, station: bordeaux-merignac}
+  - id: tx-annuelle-cazaux
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TX, station: cazaux}
+  - id: tx-annuelle-villenave-d-ornon
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TX, station: villenave-d-ornon}
+  # --- P1 : TM par station
+  - id: tm-annuelle-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TM, station: bordeaux-paulin}
+  - id: tm-annuelle-cap-ferret
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TM, station: cap-ferret}
+  - id: tm-annuelle-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TM, station: bordeaux-merignac}
+  - id: tm-annuelle-cazaux
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TM, station: cazaux}
+  - id: tm-annuelle-villenave-d-ornon
+    scale: gironde
+    builder: etl.indicators.temperature:build_station
+    params: {variable: TM, station: villenave-d-ornon}

@@ -4,6 +4,7 @@
 // - anomalies : barres bleues/rouges autour de zéro ;
 // - valeurs absolues : ligne ;
 // - droite de Sen en pointillés si une tendance est fournie ;
+// - points non homogénéisés en gris : affichés pour information, jamais utilisés pour la tendance ;
 // - zoom à la molette et réglette en bas (séries longues).
 import { useEffect, useRef } from "react";
 
@@ -14,13 +15,14 @@ type Props = {
   isAnomaly: boolean;
   trend: { start: number; end: number; fittedStart: number; fittedEnd: number } | null;
   breakpoints: string[];
+  quality?: ("homogenized" | "raw")[] | null;
 };
 
 function cssVar(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-export default function TrendChart({ time, value, unit, isAnomaly, trend, breakpoints }: Props) {
+export default function TrendChart({ time, value, unit, isAnomaly, trend, breakpoints, quality }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -60,10 +62,24 @@ export default function TrendChart({ time, value, unit, isAnomaly, trend, breakp
               backgroundColor: cssVar("--paper"),
               borderColor: rule,
               textStyle: { color: ink },
-              valueFormatter: (v: unknown) =>
-                typeof v === "number"
-                  ? `${v.toLocaleString("fr-FR", { maximumFractionDigits: 2, signDisplay: isAnomaly ? "always" : "auto" })} ${unit}`
-                  : "lacune",
+              formatter: (items: unknown) => {
+                const list = (Array.isArray(items) ? items : [items]) as { dataIndex: number; seriesName: string; value: unknown }[];
+                const first = list[0];
+                if (!first) return "";
+                const i = first.dataIndex;
+                const fmt = (v: unknown) =>
+                  typeof v === "number"
+                    ? `${v.toLocaleString("fr-FR", { maximumFractionDigits: 2, signDisplay: isAnomaly ? "always" : "auto" })} ${unit}`
+                    : "lacune";
+                const raw = quality?.[i] === "raw" ? " <em>(non homogénéisé)</em>" : "";
+                const rows = list
+                  .filter((it) => it.value !== null && it.value !== undefined)
+                  .map((it) => {
+                    const v = typeof it.value === "object" && it.value !== null ? (it.value as { value: unknown }).value : it.value;
+                    return `${it.seriesName} : <b>${fmt(v)}</b>`;
+                  });
+                return `<b>${time[i]}</b>${raw}<br/>${rows.join("<br/>")}`;
+              },
             },
             xAxis: {
               type: "category" as const,
@@ -89,7 +105,17 @@ export default function TrendChart({ time, value, unit, isAnomaly, trend, breakp
                     name: "Anomalie",
                     type: "bar" as const,
                     barCategoryGap: "15%",
-                    data: value.map((v) => (v === null ? null : { value: v, itemStyle: { color: v >= 0 ? warm : cold } })),
+                    data: value.map((v, i) =>
+                      v === null
+                        ? null
+                        : {
+                            value: v,
+                            itemStyle:
+                              quality?.[i] === "raw"
+                                ? { color: muted, opacity: 0.45 }
+                                : { color: v >= 0 ? warm : cold },
+                          },
+                    ),
                     markLine: {
                       silent: true,
                       symbol: "none" as const,
@@ -142,7 +168,7 @@ export default function TrendChart({ time, value, unit, isAnomaly, trend, breakp
       disposed = true;
       cleanup();
     };
-  }, [time, value, unit, isAnomaly, trend, breakpoints]);
+  }, [time, value, unit, isAnomaly, trend, breakpoints, quality]);
 
   return <div ref={ref} className="h-[360px] w-full sm:h-[420px]" role="img" aria-label="Graphique de la série" />;
 }

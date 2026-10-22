@@ -19,7 +19,7 @@ import logging
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 import yaml
 
@@ -39,7 +39,7 @@ def load_registry(path: Path = CONFIG) -> list[dict]:
     return entries
 
 
-def resolve(builder: str) -> Callable[[BuildContext], Indicator]:
+def resolve(builder: str) -> Callable[..., Indicator]:
     module_name, func_name = builder.split(":")
     return getattr(importlib.import_module(module_name), func_name)
 
@@ -79,6 +79,7 @@ def build_manifest(out_dir: Path) -> Manifest:
                 path=path.relative_to(out_dir).as_posix(),
                 confidence=ind.confidence,
                 is_demo=ind.is_demo,
+                group=ind.group,
             )
         )
     return Manifest(
@@ -88,16 +89,17 @@ def build_manifest(out_dir: Path) -> Manifest:
     )
 
 
-def run(only: set[str] | None = None, out_dir: Path = PROCESSED_DIR, registry_path: Path = CONFIG) -> int:
+def run(only: set[str] | None = None, out_dir: Path = PROCESSED_DIR, registry_path: Path = CONFIG,
+        raw_dir: Path | None = None) -> int:
     registry = load_registry(registry_path)
-    ctx = make_context()
+    ctx = make_context(raw_dir) if raw_dir else make_context()
     failures: list[str] = []
 
     for entry in registry:
         if not entry.get("enabled", True) or (only and entry["id"] not in only):
             continue
         try:
-            ind = resolve(entry["builder"])(ctx)
+            ind = resolve(entry["builder"])(ctx, **entry.get("params", {}))
             if (ind.scale, ind.id) != (entry["scale"], entry["id"]):
                 raise ValueError(
                     f"le constructeur a produit {ind.scale}/{ind.id}, "

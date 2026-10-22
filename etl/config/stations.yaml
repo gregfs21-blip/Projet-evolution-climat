@@ -1,7 +1,33 @@
-# Stations retenues par échelle. Rempli en phase 1 (séries LSH Météo-France).
-# Identifiant = numéro de poste Météo-France (8 chiffres).
+# Stations LSH de Gironde (inventaire Météo-France, sonde du 22/10/2026).
+# Identifiant = numéro de poste Météo-France (8 chiffres). `slug` sert aux identifiants d'indicateurs.
+# `note` : particularité de site à garder en tête pour interpréter les tendances (critère C5).
 
 gironde:
+  - id: "33063001"
+    slug: bordeaux-paulin
+    name: Bordeaux-Paulin
+    note: Station en centre urbain de Bordeaux, exposée à l'îlot de chaleur urbain.
+  - id: "33214002"
+    slug: lacanau
+    name: Lacanau
+    note: Littoral atlantique, en bordure de lac et de forêt.
+  - id: "33236002"
+    slug: cap-ferret
+    name: Cap-Ferret
+    note: Pointe littorale entre océan et bassin d'Arcachon, forte influence maritime.
   - id: "33281001"
+    slug: bordeaux-merignac
     name: Bordeaux-Mérignac
-    role: station de référence
+    note: Aéroport, périphérie de l'agglomération bordelaise. Station de référence du département.
+  - id: "33504001"
+    slug: sauternes
+    name: Sauternes
+    note: Vignoble, vallée du Ciron, propice aux inversions et brouillards nocturnes.
+  - id: "33529001"
+    slug: cazaux
+    name: Cazaux
+    note: Base aérienne, rive sud du lac de Cazaux-Sanguinet, forêt landaise.
+  - id: "33550001"
+    slug: villenave-d-ornon
+    name: Villenave-d'Ornon
+    note: Site INRAE, périphérie sud de Bordeaux.

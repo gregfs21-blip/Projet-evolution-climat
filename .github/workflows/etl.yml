@@ -52,12 +52,14 @@ jobs:
           fi
       - run: python -m pytest etl/tests -q
       - run: python -m etl.validate
+      - name: Validation de phase (critères docs/phases.md)
+        run: python -m etl.validation.p1
 
       - name: Publication des résultats
         run: |
           git config user.name "etl-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/processed
+          git add data/processed docs/validation-p1-resultats.md
           if git diff --cached --quiet; then
             echo "Aucun changement."
           else

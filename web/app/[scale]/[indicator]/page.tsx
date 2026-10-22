@@ -5,11 +5,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import Breakpoints, { establishedBreaks } from "@/components/Breakpoints";
 import ConfidenceBadge from "@/components/ConfidenceBadge";
 import DemoBanner from "@/components/DemoBanner";
 import KeyFigure from "@/components/KeyFigure";
 import LimitsBox from "@/components/LimitsBox";
+import Normals from "@/components/Normals";
 import TrendChart from "@/components/TrendChart";
+import TrendTable from "@/components/TrendTable";
 import { getIndicator, getManifest } from "@/lib/data";
 import { SCALE_LABELS } from "@/lib/format";
 import { scaleSchema } from "@/lib/schema";
@@ -85,25 +88,23 @@ export default async function IndicatorPage({ params }: { params: Params }) {
                 }
               : null
           }
-          breakpoints={ind.breakpoints.map((b) => b.time)}
+          breakpoints={establishedBreaks(ind)}
+          quality={ind.series.quality}
         />
         {ind.is_anomaly && ind.reference_period && (
           <p className="mt-1 text-xs text-[var(--muted)]">
             Écart à la moyenne {ind.reference_period.start}–{ind.reference_period.end}. Pointillés : droite de Sen.
+            {ind.series.quality?.includes("raw") && " Barres grises : années non homogénéisées, exclues de la tendance."}
           </p>
         )}
       </section>
 
       {/* 3. Les chiffres de tendance */}
-      <section aria-label="Tendance" className="border-y border-[var(--rule)] py-5">
+      <section aria-label="Tendance" className="space-y-5 border-y border-[var(--rule)] py-5">
         <KeyFigure trend={ind.trend} unit={ind.unit} />
-        <p className="mt-4 text-xs text-[var(--muted)]">
-          Ruptures détectées :{" "}
-          {ind.breakpoints.length > 0
-            ? ind.breakpoints.map((b) => `${b.time} (${b.method})`).join(", ")
-            : "aucune analyse de rupture pour l'instant"}
-          .
-        </p>
+        <Normals normals={ind.normals} unit={ind.unit} />
+        <TrendTable trends={[...(ind.trend ? [ind.trend] : []), ...ind.alt_trends]} unit={ind.unit} />
+        <Breakpoints ind={ind} />
       </section>
 
       {/* 4. L'encart limites */}

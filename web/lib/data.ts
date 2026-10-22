@@ -39,3 +39,33 @@ export function getIndicator(scale: Scale, id: string): Indicator | undefined {
   }
   return ind;
 }
+
+/** Indicateurs d'une échelle regroupés par `group`, synthèses d'abord, dans l'ordre du manifeste. */
+export function groupedIndicators(scale: Scale) {
+  const groups = new Map<string, ReturnType<typeof listIndicators>>();
+  for (const e of listIndicators(scale)) {
+    const g = e.group ?? "Indicateurs";
+    groups.set(g, [...(groups.get(g) ?? []), e]);
+  }
+  return [...groups.entries()].sort(([a], [b]) => Number(b.startsWith("Synthèse")) - Number(a.startsWith("Synthèse")));
+}
+
+/** Points de carte : une station par indicateur mono-station dont l'identifiant commence par `prefix`. */
+export function stationPoints(scale: Scale, prefix: string, trendLabelStart: string) {
+  return listIndicators(scale)
+    .filter((e) => e.id.startsWith(prefix))
+    .map((e) => getIndicator(scale, e.id)!)
+    .filter((ind) => ind.stations.length === 1)
+    .map((ind) => {
+      const st = ind.stations[0]!;
+      const t = ind.alt_trends.find((a) => a.label.startsWith(trendLabelStart));
+      return {
+        id: st.id,
+        name: st.name,
+        lat: st.latitude,
+        lon: st.longitude,
+        value: t ? t.slope_per_decade : null,
+        href: `/${scale}/${ind.id}`,
+      };
+    });
+}

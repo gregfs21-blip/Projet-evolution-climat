@@ -1,39 +1,51 @@
-"""Tendance monotone : test de Mann-Kendall et pente de Sen.
+"""Tendance monotone : pente de Sen et test de Mann-Kendall corrigé de Hamed et Rao.
 
-État P0 : implémentation provisoire avec scipy (Mann-Kendall classique, SANS
-correction d'autocorrélation). Elle suffit à faire traverser la chaîne à
-l'indicateur de démonstration.
-
-À la phase 1, cette fonction passe sur pymannkendall (variante Hamed-Rao,
-corrigée de l'autocorrélation) et ses résultats sont comparés à cette version
-de référence. Le champ `method` du JSON indique toujours ce qui a été appliqué.
+- Pente : estimateur de Sen (scipy.stats.theilslopes) sur les années réelles, avec
+  son intervalle de confiance. Robuste aux valeurs extrêmes, gère les lacunes.
+- Significativité : test de Mann-Kendall modifié de Hamed et Rao (1998), via
+  pymannkendall. Il corrige la variance de la statistique S de l'autocorrélation
+  de la série ; sans cette correction, une série autocorrélée paraît
+  significative à tort.
+- Le p de Mann-Kendall classique est publié à côté, pour mesurer l'effet de la
+  correction (critère C7).
 """
 
 from __future__ import annotations
 
 import numpy as np
+import pymannkendall as mk
 from scipy import stats
 
 from etl.schema import Period, Trend
 
-METHOD = "mann-kendall classique (sans correction d'autocorrélation) + pente de Sen"
+METHOD = "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)"
+MIN_POINTS = 10
 
 
-def annual_trend(years: list[int], values: list[float | None], alpha: float = 0.05) -> Trend:
-    """Tendance d'une série annuelle. Les valeurs manquantes sont ignorées."""
+def _clean(years, values):
     x = np.asarray(years, dtype=float)
     y = np.asarray([np.nan if v is None else v for v in values], dtype=float)
     mask = ~np.isnan(y)
-    x, y = x[mask], y[mask]
-    if len(y) < 10:
-        raise ValueError(f"série trop courte pour une tendance ({len(y)} valeurs, minimum 10)")
+    return x[mask], y[mask]
 
-    tau = stats.kendalltau(x, y)
+
+def annual_trend(years: list[int], values: list[float | None], label: str = "", alpha: float = 0.05) -> Trend:
+    """Tendance d'une série annuelle. Les valeurs manquantes sont ignorées."""
+    x, y = _clean(years, values)
+    if len(y) < MIN_POINTS:
+        raise ValueError(f"série trop courte pour une tendance ({len(y)} valeurs, minimum {MIN_POINTS})")
+    if np.any(np.diff(x) != 1):
+        # Hamed-Rao estime l'autocorrélation par décalage d'indice : une lacune le fausserait.
+        raise ValueError("série annuelle lacunaire : le test de Hamed-Rao exige des années consécutives")
+
     slope, intercept, low, high = stats.theilslopes(y, x, alpha=1 - alpha)
+    hr = mk.hamed_rao_modification_test(y, alpha=alpha)
+    classical = mk.original_test(y, alpha=alpha)
     # Arrondi avant la décision, pour que `significant` reste cohérent avec la valeur publiée.
-    p = round(float(tau.pvalue), 6)
+    p = round(float(hr.p), 6)
 
     return Trend(
+        label=label,
         method=METHOD,
         period=Period(start=int(x.min()), end=int(x.max())),
         slope_per_decade=round(float(slope) * 10, 4),
@@ -44,4 +56,11 @@ def annual_trend(years: list[int], values: list[float | None], alpha: float = 0.
         p_value=p,
         significant=p < alpha,
         alpha=alpha,
+        p_value_classical=round(float(classical.p), 6),
     )
+
+
+def ols_slope_per_decade(years: list[int], values: list[float | None]) -> float:
+    """Pente par moindres carrés, pour comparaison avec des références qui l'utilisent (critère C4)."""
+    x, y = _clean(years, values)
+    return float(np.polyfit(x, y, 1)[0] * 10)

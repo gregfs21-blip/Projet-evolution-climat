@@ -5,9 +5,9 @@ import { CONFIDENCE_LABELS } from "@/lib/format";
 export const metadata: Metadata = { title: "Méthode" };
 
 const CONFIDENCE_RULES: Record<keyof typeof CONFIDENCE_LABELS, string> = {
-  elevee: "Tendance significative, série homogénéisée, résultat cohérent avec une référence publiée.",
-  moyenne: "Tendance significative, mais série non homogénéisée ou validation externe partielle.",
-  faible: "Signal suggéré, non significatif ou sensible à la période retenue.",
+  elevee: "Tendance significative après correction de l'autocorrélation, série homogénéisée, et validation de la phase satisfaite contre les références publiées.",
+  moyenne: "Tendance significative après correction de l'autocorrélation, mais validation externe incomplète ou série non homogénéisée.",
+  faible: "Significative seulement sans correction de l'autocorrélation, ou sensible à la période retenue.",
   non_etabli: "Données insuffisantes, exploratoires ou de démonstration. Aucune conclusion.",
 };
 
@@ -36,10 +36,25 @@ export default function MethodePage() {
           La tendance est estimée par la pente de Sen (médiane des pentes entre toutes les paires de points), robuste
           aux valeurs extrêmes. Sa significativité est testée par le test de Mann-Kendall au seuil de 5 %.
         </p>
-        <p className="rounded-md border border-[var(--rule)] p-3 text-sm">
-          <strong>État actuel (phase 0) :</strong> test de Mann-Kendall classique, sans correction de
-          l&apos;autocorrélation. Il surestime la significativité des séries autocorrélées. Il sera remplacé en phase 1
-          par la variante de Hamed et Rao, et les deux versions seront comparées.
+        <p>
+          L&apos;autocorrélation des séries annuelles (une année chaude suit souvent une année chaude) gonfle
+          artificiellement la significativité du test classique. On applique donc la correction de Hamed et Rao
+          (1998), et le p classique est publié à côté pour mesurer l&apos;effet de la correction.
+        </p>
+        <p>
+          Les tendances, normales et ruptures ne portent que sur les années homogénéisées. Les années de
+          prolongation non homogénéisées sont affichées en gris, pour information.
+        </p>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold">Ruptures</h2>
+        <p>
+          Le test de Pettitt recherche la date d&apos;un changement de moyenne. Il réagit aussi à une simple tendance
+          régulière : une série qui se réchauffe continûment présente toujours une « rupture » vers son milieu. Le
+          test est donc refait sur les résidus, après retrait de la tendance. Une rupture n&apos;est dite établie que
+          si elle y résiste et ne coïncide pas (à ±1 an) avec une rupture d&apos;homogénéité corrigée par
+          Météo-France.
         </p>
       </section>
 

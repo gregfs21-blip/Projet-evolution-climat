@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import IndicatorList from "@/components/IndicatorList";
-import { getManifest, listIndicators } from "@/lib/data";
+import { getManifest, groupedIndicators, listIndicators } from "@/lib/data";
 import { SCALE_LABELS } from "@/lib/format";
 import { SCALES } from "@/lib/schema";
 
@@ -26,7 +26,10 @@ export default function Home() {
       </section>
 
       {SCALES.map((scale) => {
-        const items = listIndicators(scale);
+        const all = listIndicators(scale);
+        // L'accueil ne montre que les synthèses ; le détail par station est sur la page de l'échelle.
+        const synth = groupedIndicators(scale).find(([g]) => g.startsWith("Synthèse"));
+        const items = synth ? synth[1] : all;
         const label = SCALE_LABELS[scale];
         return (
           <section key={scale} className="space-y-3">
@@ -36,9 +39,9 @@ export default function Home() {
                   {label.name}
                 </Link>
               </h2>
-              <span className="text-xs text-[var(--muted)]">
-                {items.length} indicateur{items.length > 1 ? "s" : ""}
-              </span>
+              <Link href={`/${scale}`} className="text-xs text-[var(--muted)] hover:underline">
+                {all.length} indicateur{all.length > 1 ? "s" : ""}
+              </Link>
             </div>
             <p className="text-sm text-[var(--muted)]">{label.blurb}</p>
             {items.length > 0 ? (

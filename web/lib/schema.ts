@@ -25,6 +25,7 @@ const provenanceSchema = z.strictObject({
 });
 
 const trendSchema = z.strictObject({
+  label: z.string(),
   method: z.string().min(1),
   period: periodSchema,
   slope_per_decade: z.number(),
@@ -35,24 +36,50 @@ const trendSchema = z.strictObject({
   p_value: z.number().min(0).max(1),
   significant: z.boolean(),
   alpha: z.number().gt(0).lt(1),
+  p_value_classical: z.number().min(0).max(1).nullable(),
 });
 
 const breakpointSchema = z.strictObject({
   time: z.string(),
   method: z.string(),
   p_value: z.number().min(0).max(1).nullable(),
+  possible_artifact: z.boolean(),
+  detrended_p_value: z.number().min(0).max(1).nullable(),
+  note: z.string().nullable(),
 });
 
+const normalSchema = z.strictObject({ period: periodSchema, value: z.number() });
+
+const stationSchema = z.strictObject({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+  altitude: z.number(),
+  series_id: z.string().nullable(),
+  homogenized_period: periodSchema.nullable(),
+  min_detectable_amplitude: z.number().nullable(),
+  homogenization_breaks: z.array(z.string()),
+  file_produced: z.string().nullable(),
+});
+export type Station = z.infer<typeof stationSchema>;
+
 const seriesSchema = z
-  .strictObject({ time: z.array(z.string()).min(1), value: z.array(z.number().nullable()) })
+  .strictObject({
+    time: z.array(z.string()).min(1),
+    value: z.array(z.number().nullable()),
+    quality: z.array(z.enum(["homogenized", "raw"])).nullable(),
+  })
   .refine((s) => s.time.length === s.value.length, "series.time et series.value de longueurs différentes")
+  .refine((s) => s.quality === null || s.quality.length === s.time.length, "series.quality de longueur différente")
   .refine((s) => s.time.every((t, i) => i === 0 || s.time[i - 1]! < t), "series.time non trié ou dupliqué");
 
 export const indicatorSchema = z
   .strictObject({
-    schema_version: z.literal("1.0"),
+    schema_version: z.literal("1.1"),
     id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
     scale: scaleSchema,
+    group: z.string().nullable(),
     title: z.string().min(1),
     unit: z.string(),
     description: z.string().min(1),
@@ -60,8 +87,12 @@ export const indicatorSchema = z
     is_anomaly: z.boolean(),
     reference_period: periodSchema.nullable(),
     series: seriesSchema,
+    normals: z.array(normalSchema),
     trend: trendSchema.nullable(),
+    alt_trends: z.array(trendSchema),
     breakpoints: z.array(breakpointSchema),
+    stations: z.array(stationSchema),
+    method_note: z.string().nullable(),
     finding: z.string().min(1),
     confidence: confidenceSchema,
     limitations: z.array(z.string().trim().min(1)).min(1),
@@ -70,9 +101,17 @@ export const indicatorSchema = z
   })
   .refine((d) => !d.is_anomaly || d.reference_period !== null, "anomalie sans reference_period")
   .refine(
-    (d) => !d.trend || d.trend.significant === d.trend.p_value < d.trend.alpha,
-    "trend.significant incohérent avec p_value",
+    (d) => [d.trend, ...d.alt_trends].every((t) => !t || t.significant === t.p_value < t.alpha),
+    "tendance : significant incohérent avec p_value",
   )
+  .refine((d) => {
+    // Règle C2 : aucune tendance ni normale ne s'appuie sur un point non homogénéisé.
+    if (!d.series.quality) return true;
+    const raw = d.series.time.filter((_, i) => d.series.quality![i] === "raw").map((t) => Number(t.slice(0, 4)));
+    const spans = [d.trend, ...d.alt_trends].filter((t) => t !== null).map((t) => t!.period);
+    spans.push(...d.normals.map((n) => n.period));
+    return spans.every((p) => raw.every((y) => y < p.start || y > p.end));
+  }, "tendance ou normale incluant des années non homogénéisées")
   .refine((d) => !d.is_demo || d.title.toLowerCase().includes("démo"), "démo non signalée dans le titre");
 export type Indicator = z.infer<typeof indicatorSchema>;
 export type Trend = NonNullable<Indicator["trend"]>;
@@ -85,11 +124,12 @@ const manifestEntrySchema = z.strictObject({
   path: z.string(),
   confidence: confidenceSchema,
   is_demo: z.boolean(),
+  group: z.string().nullable(),
 });
 export type ManifestEntry = z.infer<typeof manifestEntrySchema>;
 
 export const manifestSchema = z.strictObject({
-  schema_version: z.literal("1.0"),
+  schema_version: z.literal("1.1"),
   generated_at: isoDate,
   etl_version: z.string(),
   indicators: z.array(manifestEntrySchema),
