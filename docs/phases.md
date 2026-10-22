@@ -6,7 +6,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | Phase | Contenu | Validation | État |
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
-| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | ClimatHD Nouvelle-Aquitaine | à faire |
+| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous | **en cours** |
 | P2 | Extrêmes et eau Gironde : jours > 30/35 °C, nuits tropicales, gelées, précipitations, insolation, SPEI | | à faire |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
@@ -28,3 +28,48 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 - Vercel : protection limitée aux préviews, la production est publique.
 - Clôture P0 (22/10/2026) : chaîne vérifiée de bout en bout. Workflow ETL déclenché → commit
   `data: ETL du 2026-10-22` par etl-bot → déploiement Vercel de production automatique (READY).
+
+## P1 — Critères de clôture (fixés le 22/10/2026, avant tout calcul)
+
+Ces critères sont commités **avant** les premiers résultats, pour qu'ils ne puissent pas être ajustés
+après coup. Ils ne seront modifiés que par un commit explicite, motivé, et signalé dans ce journal.
+
+### Données (constat de la sonde du 22/10/2026)
+
+Jeu LSH Météo-France (Licence Ouverte 2.0), méthode HOMER. En Gironde : 7 séries TN (Bordeaux-Paulin,
+Lacanau, Cap-Ferret, Bordeaux-Mérignac, Sauternes, Cazaux, Villenave-d'Ornon) et 5 séries TX (les mêmes
+sans Lacanau ni Sauternes). Homogénéisé de 1953 (1955 Lacanau TN, 1962 Paulin TX) à **2022**.
+2023-2024 : prolongation **non homogénéisée** (`Q_HOM=0`).
+
+### Références externes
+
+- **R1** — ClimatHD Nouvelle-Aquitaine (Météo-France), repris par ORACLE Nouvelle-Aquitaine 2020 (p. 4),
+  période 1959-2009 : TN annuelle **+0,2 à +0,3 °C/décennie**, TX annuelle **+0,3 °C/décennie**.
+- **R2** — ORACLE Nouvelle-Aquitaine 2020 (p. 26), Villenave-d'Ornon, séries homogénéisées, 1959-2019,
+  température moyenne saisonnière : hiver **+0,13**, printemps **+0,25**, été **+0,23**, automne **+0,12**
+  °C/décennie.
+
+### Critères
+
+| # | Critère | Seuil |
+|---|---|---|
+| C1 | Exhaustivité | Les 12 séries de Gironde sont traitées ; aucune écartée sans justification écrite |
+| C2 | Homogénéisé ≠ brut | 2023-2024 affichées distinctement, exclues de toute tendance et de toute normale (test automatique) |
+| C3 | Validation régionale (R1) | Pente de Sen 1959-2009 du composite Gironde : TN dans [0,15 ; 0,35], TX dans [0,25 ; 0,35] °C/déc. (fourchettes publiées, arrondies au dixième) |
+| C4 | Validation stationnelle (R2) | Villenave TM saisonnière 1959-2019, régression linéaire : écart ≤ 0,05 °C/déc. sur chacune des 4 saisons (Sen publié en complément) |
+| C5 | Cohérence inter-stations | Période commune 1962-2022 : toute station à plus de 0,10 °C/déc. de la médiane des stations (même variable) est expliquée |
+| C6 | Ruptures | Test de Pettitt (p < 0,05) sur séries annuelles homogénéisées. Toute rupture à ±1 an d'une rupture d'homogénéité corrigée par Météo-France est marquée « artefact possible » et n'est pas interprétée comme climatique |
+| C7 | Autocorrélation | Significativité Hamed-Rao publiée ; écart avec le test classique documenté pour chaque série. Confiance « élevée » seulement si Hamed-Rao significatif **et** C3/C4 satisfaits |
+| C8 | Traçabilité | Chaque JSON porte : n° de série MF, amplitude minimale détectable, ruptures MF, période homogénéisée, date de production du fichier MF |
+| C9 | Technique | Tests et CI verts, pages déployées, indicateur démo retiré, `package-lock.json` commité |
+
+**Règle de clôture :** P1 est close quand C1-C9 sont satisfaits, ou quand chaque échec est expliqué dans
+`docs/validation-p1.md` **et** accepté par Grég. Un écart inexpliqué bloque la clôture.
+
+### Limites connues dès le départ
+
+- R1 est régional (Nouvelle-Aquitaine), le composite est départemental : un écart peut être réel.
+- R2 date de 2020 ; les séries LSH ont été réhomogénéisées depuis (fichiers produits le 13/03/2025).
+  La méthode de régression d'ORACLE n'est pas documentée avec certitude (régression linéaire supposée).
+- Les séries s'arrêtent en 2022 pour l'homogénéisé : les années 2023-2025 seront traitées en P2 avec
+  les données quotidiennes, avec la mention « non homogénéisé ».
