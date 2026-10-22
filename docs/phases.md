@@ -5,7 +5,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 
 | Phase | Contenu | Validation | État |
 |---|---|---|---|
-| P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | en cours |
+| P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | ClimatHD Nouvelle-Aquitaine | à faire |
 | P2 | Extrêmes et eau Gironde : jours > 30/35 °C, nuits tropicales, gelées, précipitations, insolation, SPEI | | à faire |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
@@ -26,3 +26,5 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 - CI et ETL : actions passées en versions Node 24 (checkout v7, setup-python v7, setup-node v7, cache v6),
   runner épinglé sur ubuntu-24.04 pour qu'un changement d'OS ne modifie pas les résultats sans trace.
 - Vercel : protection limitée aux préviews, la production est publique.
+- Clôture P0 (22/10/2026) : chaîne vérifiée de bout en bout. Workflow ETL déclenché → commit
+  `data: ETL du 2026-10-22` par etl-bot → déploiement Vercel de production automatique (READY).
