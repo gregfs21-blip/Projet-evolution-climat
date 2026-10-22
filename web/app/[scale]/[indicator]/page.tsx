@@ -16,17 +16,19 @@ import { scaleSchema } from "@/lib/schema";
 
 export const dynamicParams = false;
 
-// `params` contient l'échelle générée par le segment parent. `await` couvre les deux
-// conventions de Next (objet ou promesse) sans dépendre de la version.
-export async function generateStaticParams({
-  params,
-}: {
-  params: { scale: string } | Promise<{ scale: string }>;
+// Génère les couples complets (échelle, indicateur) depuis le manifeste.
+// Si Next transmet l'échelle du segment parent, on filtre dessus ; sinon on
+// renvoie tout. Les deux modes de génération (descendant et ascendant) sont couverts.
+export async function generateStaticParams(props?: {
+  params?: { scale?: string } | Promise<{ scale?: string }>;
 }) {
-  const { scale } = await params;
-  return getManifest()
-    .indicators.filter((e) => e.scale === scale)
-    .map((e) => ({ indicator: e.id }));
+  const parent = props?.params ? await props.params : undefined;
+  const scale = parent?.scale;
+  const params = getManifest()
+    .indicators.filter((e) => !scale || e.scale === scale)
+    .map((e) => ({ scale: e.scale, indicator: e.id }));
+  console.log(`[generateStaticParams] parent=${JSON.stringify(parent ?? null)} → ${params.length} page(s)`);
+  return params;
 }
 
 type Params = Promise<{ scale: string; indicator: string }>;
