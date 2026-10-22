@@ -1,0 +1,22 @@
+# TEMPORAIRE (P1) : sonde de structure du jeu LSH. À supprimer après usage.
+name: Sonde LSH
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: python tools/probe_lsh.py
+      - name: Publication sur la branche probe-lsh
+        run: |
+          git config user.name "etl-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b probe-lsh
+          git add -f probe
+          git commit -m "probe: inventaire LSH"
+          git push -f origin probe-lsh
