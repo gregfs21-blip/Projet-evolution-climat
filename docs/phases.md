@@ -23,3 +23,6 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 - Indicateur `demo-temperature-annuelle` : série synthétique, graine fixe, une lacune volontaire (1973).
   À retirer à la clôture de P1.
 - Reporté : carte MapLibre (P1, quand il y aura plusieurs stations), détection de ruptures (P1).
+- CI et ETL : actions passées en versions Node 24 (checkout v7, setup-python v7, setup-node v7, cache v6),
+  runner épinglé sur ubuntu-24.04 pour qu'un changement d'OS ne modifie pas les résultats sans trace.
+- Vercel : protection limitée aux préviews, la production est publique.

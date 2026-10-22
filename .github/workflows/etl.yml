@@ -21,11 +21,11 @@ concurrency:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # épinglé : un changement d'OS ne doit pas modifier les résultats en silence
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -34,7 +34,7 @@ jobs:
 
       # Cache des téléchargements bruts : évite de retélécharger tout l'historique
       # à chaque exécution (quota Actions, charge sur les serveurs sources).
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: data/raw
           key: raw-${{ github.run_id }}
