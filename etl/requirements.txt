@@ -2,8 +2,7 @@ pydantic>=2.7,<3
 pyyaml>=6
 numpy>=1.26
 scipy>=1.11
-# Épinglé sur le commit ec2e3ab (mars 2025) : la 1.4.3 de PyPI peut produire une variance négative
-# (p = NaN) dans la correction de Hamed-Rao. Le correctif amont borne le facteur de correction à >= 1.
-pymannkendall @ git+https://github.com/mmhs013/pyMannKendall@ec2e3ab16b4299517bd69b9f1ca949580797cd6d
+# Tests de recoupement uniquement (le calcul utilise etl/stats/mannkendall.py) :
+pymannkendall==1.4.3
 pytest>=8
 # Phase 2 : xclim (indices d'extrêmes, SPEI)

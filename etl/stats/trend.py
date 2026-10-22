@@ -2,28 +2,25 @@
 
 - Pente : estimateur de Sen (scipy.stats.theilslopes) sur les années réelles, avec
   son intervalle de confiance. Robuste aux valeurs extrêmes, gère les lacunes.
-- Significativité : test de Mann-Kendall modifié de Hamed et Rao (1998), via
+- Significativité : test de Mann-Kendall modifié de Hamed et Rao (1998), repris de
   pymannkendall. Il corrige la variance de la statistique S de l'autocorrélation
   de la série ; sans cette correction, une série autocorrélée paraît
   significative à tort.
 - Le p de Mann-Kendall classique est publié à côté, pour mesurer l'effet de la
   correction (critère C7).
 
-Version de pymannkendall : commit ec2e3ab (correctif de l'issue 29). La 1.4.3
-publiée sur PyPI peut rendre la variance corrigée négative (p = NaN). Le
-correctif borne le facteur de correction à >= 1 : en cas d'autocorrélation
-négative, le test reste au niveau du test classique au lieu de devenir plus
-permissif. C'est un écart conservateur à la méthode originale, documenté dans
-la page Méthode.
+Implémentation des tests : etl/stats/mannkendall.py, repris de pymannkendall
+(commit ec2e3ab, correctif de l'issue 29). Voir ce module pour les raisons et
+l'écart conservateur au calcul original.
 """
 
 from __future__ import annotations
 
 import numpy as np
-import pymannkendall as mk
 from scipy import stats
 
 from etl.schema import Period, Trend
+from etl.stats.mannkendall import hamed_rao_test, original_test
 
 METHOD = "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)"
 MIN_POINTS = 10
@@ -46,10 +43,10 @@ def annual_trend(years: list[int], values: list[float | None], label: str = "", 
         raise ValueError("série annuelle lacunaire : le test de Hamed-Rao exige des années consécutives")
 
     slope, intercept, low, high = stats.theilslopes(y, x, alpha=1 - alpha)
-    hr = mk.hamed_rao_modification_test(y, alpha=alpha)
-    classical = mk.original_test(y, alpha=alpha)
+    hr = hamed_rao_test(y, alpha=alpha)
+    classical = original_test(y)
     if not np.isfinite(hr.p) or not np.isfinite(classical.p):
-        raise ValueError("test de Mann-Kendall non calculable (p non fini) : vérifier la version de pymannkendall")
+        raise ValueError("test de Mann-Kendall non calculable (p non fini) : vérifier etl/stats/mannkendall.py")
     # Arrondi avant la décision, pour que `significant` reste cohérent avec la valeur publiée.
     p = round(float(hr.p), 6)
 
