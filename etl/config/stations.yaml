@@ -1,0 +1,7 @@
+# Stations retenues par échelle. Rempli en phase 1 (séries LSH Météo-France).
+# Identifiant = numéro de poste Météo-France (8 chiffres).
+
+gironde:
+  - id: "33281001"
+    name: Bordeaux-Mérignac
+    role: station de référence

@@ -1,0 +1,16 @@
+{
+ "schema_version": "1.0",
+ "generated_at": "2026-10-22T15:15:21Z",
+ "etl_version": "0.1.0+local",
+ "indicators": [
+  {
+   "id": "demo-temperature-annuelle",
+   "scale": "gironde",
+   "title": "DÉMO – Anomalie de température annuelle (données synthétiques)",
+   "unit": "°C",
+   "path": "gironde/demo-temperature-annuelle.json",
+   "confidence": "non_etabli",
+   "is_demo": true
+  }
+ ]
+}

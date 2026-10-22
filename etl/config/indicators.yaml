@@ -1,0 +1,10 @@
+# Registre des indicateurs produits par l'ETL.
+# Chaque entrée pointe vers une fonction `build(ctx) -> Indicator`.
+# Ajouter un indicateur = ajouter une entrée ici + son module ; le site
+# génère la page automatiquement à partir du manifeste.
+
+indicators:
+  - id: demo-temperature-annuelle
+    scale: gironde
+    builder: etl.sources.demo:build
+    enabled: true

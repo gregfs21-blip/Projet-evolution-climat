@@ -1,0 +1,7 @@
+pydantic>=2.7,<3
+pyyaml>=6
+numpy>=1.26
+scipy>=1.11
+pytest>=8
+# Phase 1 :
+# pandas, xclim, pymannkendall, ruptures

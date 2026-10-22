@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #fbfaf7;
+  --ink: #1b1e22;
+  --muted: #66707a;
+  --rule: #e2dfd8;
+  --hover: #f2efe8;
+  --warm: #b4352a;
+  --warm-soft: #fbece9;
+  --cold: #2c66a3;
+  --accent: #0e6f68;
+  --good: #2e7a34;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #121417;
+    --ink: #e7e5e0;
+    --muted: #9aa3ab;
+    --rule: #2b2f35;
+    --hover: #1b1e22;
+    --warm: #e2675b;
+    --warm-soft: #2a1715;
+    --cold: #6fa3dc;
+    --accent: #3fb8ad;
+    --good: #6cc070;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Bandes de réchauffement en filigrane de l'en-tête : décor neutre, pas une donnée. */
+.stripes {
+  background: linear-gradient(
+    90deg,
+    var(--cold) 0%,
+    color-mix(in srgb, var(--cold) 45%, var(--paper)) 30%,
+    color-mix(in srgb, var(--warm) 35%, var(--paper)) 62%,
+    var(--warm) 100%
+  );
+}

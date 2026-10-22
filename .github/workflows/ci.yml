@@ -1,0 +1,42 @@
+# Contrôles à chaque push et pull request.
+# Un JSON non conforme, un test rouge ou un site qui ne compile pas bloquent la fusion.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  etl:
+    name: ETL — tests et validation des données
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: etl/requirements.txt
+      - run: pip install -r etl/requirements.txt
+      - name: Tests unitaires
+        run: python -m pytest etl/tests -q
+      - name: Validation des JSON publiés (pydantic)
+        run: python -m etl.validate
+
+  web:
+    name: Site — typage et build (validation zod)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # Pas encore de package-lock.json : `npm install` le temps de le générer.
+      # Dès qu'il est commité, passer à `npm ci` et activer `cache: npm`.
+      - run: npm install --no-audit --no-fund
+      - run: npm run sync-data
+      - run: npm run typecheck
+      - run: npm run build

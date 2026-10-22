@@ -1,0 +1,66 @@
+# Exécution mensuelle de l'ETL.
+# Le commit des JSON mis à jour déclenche le redéploiement Vercel.
+name: ETL mensuel
+
+on:
+  schedule:
+    - cron: "17 4 5 * *"   # le 5 de chaque mois, 04:17 UTC (données du mois précédent disponibles)
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Identifiants à recalculer, séparés par des espaces (vide = tous)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: etl
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: etl/requirements.txt
+      - run: pip install -r etl/requirements.txt
+
+      # Cache des téléchargements bruts : évite de retélécharger tout l'historique
+      # à chaque exécution (quota Actions, charge sur les serveurs sources).
+      - uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: raw-${{ github.run_id }}
+          restore-keys: raw-
+
+      - name: ETL
+        env:
+          ONLY: ${{ inputs.only }}   # passé par variable, jamais interpolé dans le script
+        run: |
+          if [ -n "$ONLY" ]; then
+            # shellcheck disable=SC2086 — découpage voulu : plusieurs identifiants
+            python -m etl.pipeline --only $ONLY
+          else
+            python -m etl.pipeline
+          fi
+      - run: python -m pytest etl/tests -q
+      - run: python -m etl.validate
+
+      - name: Publication des résultats
+        run: |
+          git config user.name "etl-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/processed
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "data: ETL du $(date -u +%Y-%m-%d)"
+            git push
+          fi
