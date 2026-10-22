@@ -1,7 +1,7 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-22T17:44:06Z",
- "etl_version": "0.1.0+48f068b",
+ "generated_at": "2026-10-22T20:22:29Z",
+ "etl_version": "0.1.0+a5a9f82",
  "indicators": [
   {
    "id": "demo-temperature-annuelle",
