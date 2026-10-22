@@ -8,6 +8,13 @@
   significative à tort.
 - Le p de Mann-Kendall classique est publié à côté, pour mesurer l'effet de la
   correction (critère C7).
+
+Version de pymannkendall : commit ec2e3ab (correctif de l'issue 29). La 1.4.3
+publiée sur PyPI peut rendre la variance corrigée négative (p = NaN). Le
+correctif borne le facteur de correction à >= 1 : en cas d'autocorrélation
+négative, le test reste au niveau du test classique au lieu de devenir plus
+permissif. C'est un écart conservateur à la méthode originale, documenté dans
+la page Méthode.
 """
 
 from __future__ import annotations
@@ -41,6 +48,8 @@ def annual_trend(years: list[int], values: list[float | None], label: str = "", 
     slope, intercept, low, high = stats.theilslopes(y, x, alpha=1 - alpha)
     hr = mk.hamed_rao_modification_test(y, alpha=alpha)
     classical = mk.original_test(y, alpha=alpha)
+    if not np.isfinite(hr.p) or not np.isfinite(classical.p):
+        raise ValueError("test de Mann-Kendall non calculable (p non fini) : vérifier la version de pymannkendall")
     # Arrondi avant la décision, pour que `significant` reste cohérent avec la valeur publiée.
     p = round(float(hr.p), 6)
 

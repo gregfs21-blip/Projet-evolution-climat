@@ -39,7 +39,10 @@ export default function MethodePage() {
         <p>
           L&apos;autocorrélation des séries annuelles (une année chaude suit souvent une année chaude) gonfle
           artificiellement la significativité du test classique. On applique donc la correction de Hamed et Rao
-          (1998), et le p classique est publié à côté pour mesurer l&apos;effet de la correction.
+          (1998), et le p classique est publié à côté pour mesurer l&apos;effet de la correction. Implémentation :
+          pymannkendall, version corrigée qui borne le facteur de correction à 1 au minimum. En cas
+          d&apos;autocorrélation négative, le test reste donc aussi exigeant que le test classique au lieu de
+          devenir plus permissif : un écart à la méthode originale, mais dans le sens prudent.
         </p>
         <p>
           Les tendances, normales et ruptures ne portent que sur les années homogénéisées. Les années de

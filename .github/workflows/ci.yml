@@ -34,9 +34,9 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
-      # Pas encore de package-lock.json : `npm install` le temps de le générer.
-      # Dès qu'il est commité, passer à `npm ci` et activer `cache: npm`.
-      - run: npm install --no-audit --no-fund
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit --no-fund
       - run: npm run sync-data
       - run: npm run typecheck
       - run: npm run build
