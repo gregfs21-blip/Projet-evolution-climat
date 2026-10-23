@@ -1,7 +1,7 @@
 {
  "schema_version": "1.1",
- "generated_at": "2026-10-23T06:34:00Z",
- "etl_version": "0.1.0+eb1bdd4",
+ "generated_at": "2026-10-23T06:40:04Z",
+ "etl_version": "0.1.0+d3577ca",
  "indicators": [
   {
    "id": "tm-annuelle-bordeaux-merignac",

@@ -342,16 +342,16 @@
   "Séries homogénéisées par Météo-France (méthode HOMER) : des ruptures résiduelles d'amplitude inférieure à l'amplitude minimale détectable peuvent subsister.",
   "Années 2023-2024 : prolongation par des données brutes non homogénéisées, affichées pour information et exclues des tendances et des normales.",
   "Moyennes annuelles calculées seulement pour les années aux 12 mois complets ; aucune valeur n'est complétée.",
-  "Recoupement avec la réanalyse ERA5 à Villenave-d'Ornon (1979-2022) : pour cette variable, la station se réchauffe plus vite que la réanalyse, de 0,10 °C par décennie (p = 0,002) ; écart inférieur au seuil de 0,10 °C par décennie, mais statistiquement significatif. La hausse est confirmée par les deux sources, sa valeur exacte est moins assurée que pour la température moyenne.",
+  "Recoupement avec la réanalyse ERA5 à Villenave-d'Ornon (1979-2022) : pour cette variable, la station se réchauffe plus vite que la réanalyse, de 0,099 °C par décennie (p = 0,002) ; écart inférieur au seuil de 0,10 °C par décennie, mais statistiquement significatif. La hausse est confirmée par les deux sources, sa valeur exacte est moins assurée que pour la température moyenne.",
   "Particularité du site : Pointe littorale entre océan et bassin d'Arcachon, forte influence maritime."
  ],
  "provenance": {
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-23T06:33:54Z",
+  "extracted_at": "2026-10-23T06:39:57Z",
   "script": "etl/indicators/temperature.py",
-  "etl_version": "0.1.0+eb1bdd4",
+  "etl_version": "0.1.0+d3577ca",
   "homogenized": true
  },
  "is_demo": false
