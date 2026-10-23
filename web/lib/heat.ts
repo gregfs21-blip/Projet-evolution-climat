@@ -11,6 +11,8 @@
 // table n'est pas colorée : on ne devine pas d'échelle, elle doit être choisie et inscrite ici.
 const HEAT_MAX: Record<string, number> = {
   "°C": 0.5,
+  // P2a, nombres de jours : ±5 jours par décennie (choix d'affichage, ordre de grandeur des journées estivales).
+  jours: 5,
 };
 
 export function heatMax(unit: string): number | null {

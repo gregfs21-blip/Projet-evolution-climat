@@ -5,7 +5,7 @@ import StationsMap from "./StationsMap";
 import StationsOverlay from "./StationsOverlay";
 import TrendMatrix from "./TrendMatrix";
 import { composites, familyMatrix, mapPoints, overlays, type Theme } from "@/lib/family";
-import { fmt, fmtSigned } from "@/lib/format";
+import { fmt, fmt1, fmtSigned } from "@/lib/format";
 import type { Scale } from "@/lib/schema";
 
 export default function ThemeSection({ scale, scaleName, theme, heading }: { scale: Scale; scaleName: string; theme: Theme; heading: boolean }) {
@@ -20,7 +20,8 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
   const spreads = Object.values(matrix.spread);
   const maxSpread = spreads.length ? Math.max(...spreads.map((s) => s.max - s.min)) : null;
   const nStations = matrix.rows.filter((r) => !r.isComposite).length;
-  const allSignificant = comps.length > 0 && comps.every((c) => c.ind.trend?.significant);
+  const trended = comps.filter((c) => c.ind.headline !== "normals");
+  const allSignificant = trended.length > 0 && trended.every((c) => c.ind.trend?.significant);
   const p0 = comps[0]?.ind.trend?.period;
   const ref0 = comps[0]?.ind.reference_period;
   const u = theme.unit;
@@ -33,13 +34,26 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
           // Constat entièrement calculé à partir des JSON publiés : aucune conclusion rédigée à la main ici.
           <p className="text-lg leading-relaxed">
             Composite {scaleName} {p0.start}-{p0.end} :{" "}
-            {comps.map((c, i) => (
+            {trended.map((c, i) => (
               <span key={c.variable.id}>
-                {i > 0 && (i === comps.length - 1 ? " et " : ", ")}
+                {i > 0 && (i === trended.length - 1 ? " et " : ", ")}
                 {c.variable.code} <b className="font-mono">{c.ind.trend ? fmtSigned(c.ind.trend.slope_per_decade) : "—"}</b>
               </span>
             ))}{" "}
-            {u} par décennie{allSignificant ? ", tendances toutes significatives après correction de l'autocorrélation" : ""}.
+            {u} par décennie{allSignificant ? (trended.length > 1 ? ", tendances toutes significatives" : ", tendance significative") + " après correction de l'autocorrélation" : ""}.
+            {comps
+              .filter((c) => c.ind.headline === "normals" && c.ind.normals_comparison)
+              .map((c) => {
+                const n = c.ind.normals_comparison!;
+                return (
+                  <span key={c.variable.id}>
+                    {" "}
+                    {c.variable.code} (indice rare) : <b className="font-mono">{fmt1(n.first_value)} → {fmt1(n.second_value)}</b>{" "}
+                    {u} par an entre {n.first.start}-{n.first.end} et {n.second.start}-{n.second.end}
+                    {n.significant ? "" : ", écart non significatif"}.
+                  </span>
+                );
+              })}
             {maxSpread !== null && nStations > 1 && (
               <>
                 {" "}
@@ -58,8 +72,9 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
         <div className="space-y-2">
           <CompositeCards scale={scale} theme={theme.id} />
           <p className="text-xs text-[var(--muted)]">
-            Barres : écart annuel{ref0 ? ` à la moyenne ${ref0.start}-${ref0.end}` : ""} ; pointillés : droite de Sen ; gris :
-            années non homogénéisées, hors tendance. Une carte ouvre la page détaillée.
+            {ref0 ? `Barres : écart annuel à la moyenne ${ref0.start}-${ref0.end}` : `Barres : valeur annuelle, en ${u}`} ; pointillés :
+            droite de Sen (absente pour un indice rare) ; gris : années non homogénéisées, hors tendance. Une carte ouvre la
+            page détaillée.
           </p>
         </div>
       )}

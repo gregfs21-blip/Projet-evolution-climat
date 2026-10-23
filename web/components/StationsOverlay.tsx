@@ -164,7 +164,10 @@ export default function StationsOverlay({
       </div>
       <div ref={ref} className="h-[260px] w-full sm:h-[300px]" role="img" aria-label={`Séries ${variables.find((v) => v.id === variable)?.label ?? variable} de toutes les stations`} />
       <figcaption className="text-xs text-[var(--muted)]">
-        Écart annuel de chaque station à sa propre moyenne de référence ({current.references.join(" ou ")}), en {unit}. Gris :
+        {current.references.length
+          ? `Écart annuel de chaque station à sa propre moyenne de référence (${current.references.join(" ou ")}), en ${unit}.`
+          : `Valeur annuelle de chaque station, en ${unit}.`}{" "}
+        Gris :
         les {current.stations.length} stations ; rouge :
         composite ; pointillés : sa tendance ; zone grisée : années non homogénéisées.
       </figcaption>

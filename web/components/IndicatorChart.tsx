@@ -41,8 +41,9 @@ export default function IndicatorChart(p: Props) {
 
   return (
     <section aria-label="Série" className="space-y-2">
-      {p.isAnomaly && (
+      {(p.isAnomaly || p.composite) && (
         <div className="flex flex-wrap items-center justify-between gap-3">
+          {p.isAnomaly ? (
           <Segmented
             label="Affichage"
             value={mode}
@@ -57,6 +58,9 @@ export default function IndicatorChart(p: Props) {
               },
             ]}
           />
+          ) : (
+            <span />
+          )}
           {p.composite && (
             <label className={`flex items-center gap-2 text-sm ${absolute ? "opacity-40" : ""}`}>
               <input

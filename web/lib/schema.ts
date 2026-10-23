@@ -50,6 +50,23 @@ const breakpointSchema = z.strictObject({
 
 const normalSchema = z.strictObject({ period: periodSchema, value: z.number() });
 
+// Écart entre deux normales, avec un test : chiffre mis en avant pour un indice rare (critère E9).
+const normalsComparisonSchema = z
+  .strictObject({
+    first: periodSchema,
+    second: periodSchema,
+    first_value: z.number(),
+    second_value: z.number(),
+    difference: z.number(),
+    p_value: z.number().min(0).max(1),
+    significant: z.boolean(),
+    alpha: z.number().gt(0).lt(1),
+    method: z.string().min(1),
+  })
+  .refine((c) => c.significant === c.p_value < c.alpha, "comparaison des normales : significant incohérent")
+  .refine((c) => Math.abs(c.difference - (c.second_value - c.first_value)) < 1e-6, "comparaison des normales : difference incohérente");
+export type NormalsComparison = z.infer<typeof normalsComparisonSchema>;
+
 const stationSchema = z.strictObject({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -97,7 +114,7 @@ const seriesSchema = z
 
 export const indicatorSchema = z
   .strictObject({
-    schema_version: z.literal("1.2"),
+    schema_version: z.literal("1.3"),
     id: z.string().regex(SLUG),
     scale: scaleSchema,
     group: z.string().nullable(),
@@ -113,6 +130,8 @@ export const indicatorSchema = z
     normals: z.array(normalSchema),
     trend: trendSchema.nullable(),
     alt_trends: z.array(trendSchema),
+    headline: z.enum(["trend", "normals"]),
+    normals_comparison: normalsComparisonSchema.nullable(),
     breakpoints: z.array(breakpointSchema),
     stations: z.array(stationSchema),
     method_note: z.string().nullable(),
@@ -123,6 +142,7 @@ export const indicatorSchema = z
     is_demo: z.boolean(),
   })
   .refine((d) => !d.is_anomaly || d.reference_period !== null, "anomalie sans reference_period")
+  .refine((d) => d.headline !== "normals" || d.normals_comparison !== null, "headline 'normals' sans normals_comparison")
   .refine((d) => (d.variable === null) === (d.place === null), "variable et place vont ensemble")
   .refine((d) => d.place?.kind !== "composite" || d.place.id === d.scale, "composite : place.id doit valoir l'échelle")
   .refine(
@@ -162,7 +182,7 @@ export type ManifestEntry = z.infer<typeof manifestEntrySchema>;
 
 export const manifestSchema = z
   .strictObject({
-    schema_version: z.literal("1.2"),
+    schema_version: z.literal("1.3"),
     generated_at: isoDate,
     etl_version: z.string(),
     indicators: z.array(manifestEntrySchema),
@@ -195,7 +215,7 @@ export type ValidationCheck = z.infer<typeof validationCheckSchema>;
 export const validationReportSchema = z
   .strictObject({
     schema_version: z.literal("1.0"),
-    phase: z.string().regex(/^p[0-9]+$/),
+    phase: z.string().regex(/^p[0-9]+[a-z]?$/),
     generated_at: isoDate,
     closure_ok: z.boolean(),
     verdict: z.string().min(1),

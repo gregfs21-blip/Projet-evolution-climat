@@ -172,7 +172,7 @@ def mf_regime_years(stations: tuple[Station, ...]) -> list[int]:
     return out
 
 
-def detect_break(series: AnnualSeries, anomalies: dict[int, float], composite: bool) -> list[Breakpoint]:
+def detect_break(series: AnnualSeries, anomalies: dict[int, float], composite: bool, unit: str = "°C") -> list[Breakpoint]:
     hom = series.hom_years()
     res = pettitt([anomalies[y] for y in hom])
     if res.p_value >= 0.05:
@@ -195,7 +195,7 @@ def detect_break(series: AnnualSeries, anomalies: dict[int, float], composite: b
     slope, intercept, *_ = stats.theilslopes(y, x)
     detr = pettitt(y - (intercept + slope * x))
     shift = res.mean_after - res.mean_before
-    note = f"écart des moyennes {fr(shift)} °C avant/après {new_regime}"
+    note = f"écart des moyennes {fr(shift)} {unit} avant/après {new_regime}"
     if detr.p_value >= 0.05:
         note += (f" ; après retrait de la tendance, plus aucune rupture significative (p = {fr(detr.p_value, 2, False)}) : "
                  "la rupture traduit la tendance elle-même, pas un saut brusque")

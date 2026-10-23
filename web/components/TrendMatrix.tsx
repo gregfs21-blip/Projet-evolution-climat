@@ -64,7 +64,7 @@ export default function TrendMatrix({ matrix }: { matrix: Matrix }) {
         </table>
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-xs text-[var(--muted)]">Échelle fixe, {unit}/déc.</span>
+        <span className="text-xs text-[var(--muted)]">Échelle fixe, {unit}/déc. Rouge : hausse ; bleu : baisse.</span>
         <HeatLegend unit={unit} className="flex-1" />
       </div>
     </div>

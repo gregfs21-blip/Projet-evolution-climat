@@ -9,7 +9,7 @@ export const SCALE_LABELS: Record<Scale, { name: string; blurb: string; phase: s
     blurb: "Stations longues de Météo-France, réanalyse ERA5, littoral et impacts locaux.",
     phase: "phases 1 à 4",
     phaseCode: "P1-P4",
-    validations: ["p1"],
+    validations: ["p1", "p2a"],
   },
   france: {
     name: "France",

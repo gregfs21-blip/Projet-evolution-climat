@@ -12,7 +12,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-SCHEMA_VERSION = "1.2"
+SCHEMA_VERSION = "1.3"
 Quality = Literal["homogenized", "raw"]
 
 Scale = Literal["gironde", "france", "monde"]
@@ -84,6 +84,29 @@ class Normal(_Strict):
     value: float
 
 
+class NormalsComparison(_Strict):
+    """Écart entre deux normales, avec un test : chiffre mis en avant pour un indice rare (critère E9),
+    pour lequel la pente de Sen est souvent nulle ou instable (beaucoup d'années à 0)."""
+
+    first: Period
+    second: Period
+    first_value: float
+    second_value: float
+    difference: float = Field(description="second_value − first_value")
+    p_value: float = Field(ge=0, le=1)
+    significant: bool
+    alpha: float = Field(default=0.05, gt=0, lt=1)
+    method: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _coherent(self) -> "NormalsComparison":
+        if self.significant != (self.p_value < self.alpha):
+            raise ValueError("comparaison des normales : significant incohérent avec p_value")
+        if abs(self.difference - (self.second_value - self.first_value)) > 1e-6:
+            raise ValueError("comparaison des normales : difference incohérente")
+        return self
+
+
 class Station(_Strict):
     id: str = Field(min_length=1)
     name: str = Field(min_length=1)
@@ -143,7 +166,7 @@ class Series(_Strict):
 
 
 class Indicator(_Strict):
-    schema_version: Literal["1.2"] = SCHEMA_VERSION
+    schema_version: Literal["1.3"] = SCHEMA_VERSION
     id: str = Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")
     scale: Scale
     group: str | None = Field(default=None, description="Regroupement d'affichage (ex. 'Synthèse', 'Stations')")
@@ -159,6 +182,10 @@ class Indicator(_Strict):
     normals: list[Normal] = Field(default_factory=list)
     trend: Trend | None
     alt_trends: list[Trend] = Field(default_factory=list, description="Fenêtres de comparaison (validation)")
+    headline: Literal["trend", "normals"] = Field(
+        default="trend", description="Chiffre mis en avant : la tendance, ou l'écart entre normales (indice rare, E9)"
+    )
+    normals_comparison: NormalsComparison | None = None
     breakpoints: list[Breakpoint] = Field(default_factory=list)
     stations: list[Station] = Field(default_factory=list)
     method_note: str | None = Field(default=None, description="Construction de l'indicateur (ex. composite)")
@@ -179,6 +206,8 @@ class Indicator(_Strict):
     def _coherence(self) -> "Indicator":
         if self.is_anomaly and self.reference_period is None:
             raise ValueError("une anomalie exige une reference_period")
+        if self.headline == "normals" and self.normals_comparison is None:
+            raise ValueError("headline 'normals' sans normals_comparison")
         if (self.variable is None) != (self.place is None):
             raise ValueError("variable et place vont ensemble : toutes deux renseignées ou toutes deux absentes")
         if self.place is not None:
@@ -217,7 +246,7 @@ class ManifestEntry(_Strict):
 
 
 class Manifest(_Strict):
-    schema_version: Literal["1.2"] = SCHEMA_VERSION
+    schema_version: Literal["1.3"] = SCHEMA_VERSION
     generated_at: datetime
     etl_version: str
     indicators: list[ManifestEntry]
@@ -256,7 +285,7 @@ class ValidationCheck(_Strict):
 
 class ValidationReport(_Strict):
     schema_version: Literal["1.0"] = VALIDATION_SCHEMA_VERSION
-    phase: str = Field(pattern=r"^p[0-9]+$")
+    phase: str = Field(pattern=r"^p[0-9]+[a-z]?$", description="Ex. 'p1', 'p2a'")
     generated_at: datetime
     closure_ok: bool = Field(description="Tous les critères comptant pour la clôture sont satisfaits")
     verdict: str = Field(min_length=1)
