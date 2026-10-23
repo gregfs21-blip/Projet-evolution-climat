@@ -101,7 +101,8 @@ export default async function IndicatorPage({ params }: { params: Params }) {
         reference={ref ? `${ref.start}-${ref.end}` : null}
         offset={refNormal?.value ?? null}
         trend={
-          ind.trend
+          // Indice rare (E9) : pas de droite de Sen sur la courbe, l'écart entre normales est le chiffre retenu.
+          ind.trend && ind.headline !== "normals"
             ? {
                 start: ind.trend.period.start,
                 end: ind.trend.period.end,
