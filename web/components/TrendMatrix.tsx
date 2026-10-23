@@ -43,6 +43,19 @@ export default function TrendMatrix({ matrix }: { matrix: Matrix }) {
                       </td>
                     );
                   }
+                  if (c.slope === null) {
+                    return (
+                      <td key={v.id} className="p-0">
+                        <Link
+                          href={c.href}
+                          title={`${r.name}, ${v.code} : série incomplète sur la période commune, voir la série`}
+                          className="hatch block rounded-md py-2 text-center text-[11px] text-[var(--muted)] underline-offset-2 hover:underline"
+                        >
+                          incomplète
+                        </Link>
+                      </td>
+                    );
+                  }
                   const { bg, fg } = heatColor(c.slope, unit);
                   const ci = c.low !== null && c.high !== null ? ` (IC 95 % ${fmtSigned(c.low)} à ${fmtSigned(c.high)})` : "";
                   return (

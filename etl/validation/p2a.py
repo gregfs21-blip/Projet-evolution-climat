@@ -4,8 +4,8 @@ Les critères et les seuils sont ceux de docs/phases.md, fixés le 23/10/2026 av
 Ce module mesure et publie ; il n'interprète pas. L'analyse des écarts sera rédigée à la main dans
 docs/validation-p2a.md.
 
-E4 (validation externe ClimatHD) : ses fourchettes ne sont pas encore fixées. Tant que REFERENCES est vide,
-E4 est publié « en attente », compte comme non satisfait, et aucune confiance « élevée » n'est possible.
+E4 (validation externe) : références fixées le 23/10/2026 par Grég, avant tout calcul sur données réelles
+(voir REFERENCES). Si REFERENCES est vide, E4 est publié « en attente » et compte comme non satisfait.
 
 Usage : python -m etl.validation.p2a   → écrit docs/validation-p2a-resultats.md et data/processed/validation-p2a.json
 """
@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,12 +23,34 @@ from etl.context import PROCESSED_DIR, RAW_DIR, ROOT
 from etl.indicators import extremes as X
 from etl.schema import Indicator, ValidationCheck, ValidationReport
 
-# E4 : références ClimatHD, à renseigner par un commit explicite avant tout calcul P2a sur données réelles.
-# Format : identifiant d'indice → (borne basse, borne haute) en jours par décennie, période CLIMATHD_WINDOW,
-# avec la définition exacte de l'indice ClimatHD (opérateur et seuil), qui peut différer de celle de E1.
-REFERENCES: dict[str, dict] = {}
+# E4 : références fixées le 23/10/2026 (décision de Grég), AVANT tout calcul P2a sur données réelles.
+# Deux sources concordantes citant les données Météo-France (ClimatHD), de seconde main :
+#   - CNPF Nouvelle-Aquitaine, « Le changement climatique et la forêt en Nouvelle-Aquitaine », 2023, p. 5-6 :
+#     journées chaudes (TX > 25 °C) +4 à +5 j/déc. sur la côte, +6 à +8 j/déc. à l'intérieur ; gelées −1 à −2 j/déc. ;
+#     période 1960-2010 ;
+#   - PNR Périgord-Limousin, diagnostic de vulnérabilité, oct. 2025, p. 28 (ClimatHD, 1961-2018) : mêmes ordres de grandeur.
+# Fourchettes publiées, prises telles quelles (pas d'élargissement), comme pour C3 en P1.
+# `stations` : postes moyennés ; None = membres du composite à réseau constant de la variable.
+REFERENCES: dict[str, dict] = {
+    "R3 littoral": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "journées chaudes (TX > 25 °C), littoral",
+                    "stations": ["33236002", "33529001"], "range": (4.0, 5.0)},          # Cap-Ferret, Cazaux
+    # Mérignac seul : Villenave (prévue à l'origine) a une année incomplète (2002) dans 1961-2010. Décision de Grég du
+    # 23/10/2026, prise APRÈS la publication des premiers résultats (les pentes de Mérignac étaient visibles) :
+    # tracée comme telle dans docs/phases.md et docs/validation-p2a.md.
+    "R3 intérieur": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "journées chaudes (TX > 25 °C), intérieur",
+                     "stations": ["33281001"], "range": (6.0, 8.0)},                     # Bordeaux-Mérignac
+    "R4": {"variable": "TN", "op": "<=", "threshold": 0.0, "definition": "jours de gel (TN ≤ 0 °C), composite",
+           "stations": None, "range": (-2.0, -1.0)},
+}
 
 E5_TOLERANCE = 0.05     # °C
+
+# Écarts acceptés par Grég, explications dans docs/validation-p2a.md. Un écart accepté compte comme satisfait
+# pour la clôture ; il ne relève pas la confiance des indicateurs concernés (elle reste plafonnée par leur règle).
+ACCEPTED = {
+    "E7 concordance des méthodes": "écart accepté le 23/10/2026",
+    "E8 robustesse au code qualité 9": "écart accepté le 23/10/2026",
+}
 P2A_VARIABLES = tuple(X.INDICES)
 OUT = ROOT / "docs" / "validation-p2a-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p2a.json"
@@ -47,18 +70,27 @@ class Check:
             return "ℹ information"
         if self.pending:
             return "⏳ en attente"
-        return "✅ conforme" if self.passed else "❌ écart"
+        if self.passed:
+            return "✅ conforme"
+        if self.name in ACCEPTED:
+            return f"☑ {ACCEPTED[self.name]}"
+        return "❌ écart"
 
     @property
     def satisfied(self) -> bool:
-        return self.passed and not self.pending
+        return not self.pending and (self.passed or self.name in ACCEPTED)
 
 
 def external_validation_passed(raw_dir: Path = RAW_DIR) -> bool:
     """E4. Faux tant que les références ne sont pas fixées."""
     if not REFERENCES:
         return False
-    return all(c.satisfied for c in e4(raw_dir))
+    return all(c.satisfied for c in _e4_cached(str(raw_dir)))
+
+
+@lru_cache(maxsize=4)
+def _e4_cached(raw_dir: str) -> tuple[Check, ...]:
+    return tuple(e4(Path(raw_dir)))
 
 
 def e4(raw_dir: Path) -> list[Check]:
@@ -67,16 +99,27 @@ def e4(raw_dir: Path) -> list[Check]:
                       "références R3/R4 en attente de confirmation sur ClimatHD (décision D-C du 23/10/2026)", pending=True)]
     out = []
     w = X.CLIMATHD_WINDOW
-    for index, ref in REFERENCES.items():
-        idx = X.IndexDef(index, ref["variable"], ref["op"], ref["threshold"], index, ref["definition"])
-        members, _ = X.composite_members(idx.variable, raw_dir)
+    names = X.T.station_config()
+    years = list(range(w.start, w.end + 1))
+    for key, ref in REFERENCES.items():
+        idx = X.IndexDef(key, ref["variable"], ref["op"], ref["threshold"], key, ref["definition"])
+        if ref["stations"] is None:
+            members, _ = X.composite_members(idx.variable, raw_dir)
+        else:
+            members = [X.station_daily(idx.variable, sid, raw_dir) for sid in ref["stations"]]
+        name = f"E4 {key} : {ref['definition']} {w.start}-{w.end}"
+        incomplete = [names.get(sd.station.id, {}).get("name", sd.station.id) for sd in members
+                      if any(sd.year_status.get(y) != "homogenized" for y in years)]
+        if incomplete or not members:
+            out.append(Check(name, False, f"non évaluable : années manquantes ou non corrigées pour {incomplete}"))
+            continue
         per = [X.counts(sd, idx) for sd in members]
-        years = list(range(w.start, w.end + 1))
         t = X.annual_trend(years, [sum(c[y] for c in per) / len(per) for y in years], label="E4")
         lo, hi = ref["range"]
-        out.append(Check(f"E4 {ref['definition']} composite {w.start}-{w.end}", lo <= t.slope_per_decade <= hi,
+        who = ", ".join(names.get(sd.station.id, {}).get("name", sd.station.id) for sd in members)
+        out.append(Check(name, lo <= t.slope_per_decade <= hi,
                          f"pente de Sen {t.slope_per_decade:+.2f} j/déc. (IC 95 % {t.slope_ci_low:+.2f} à "
-                         f"{t.slope_ci_high:+.2f}), attendu [{lo} ; {hi}], {len(members)} stations"))
+                         f"{t.slope_ci_high:+.2f}), attendu [{lo:g} ; {hi:g}] ; {who}"))
     return out
 
 
@@ -198,6 +241,29 @@ def checks(inds: list[Indicator], raw_dir: Path) -> tuple[list[Check], list[str]
                      f"{t.slope_per_decade:+.2f} | {'oui' if t.significant else 'non'} | {'**oui**' if flip else 'non'} |")
     out.append(Check("E8 robustesse au code qualité 9", not changed,
                      f"{len(changed)} conclusion(s) modifiée(s) sur {len([i for i in stations if i.trend])}"))
+
+    # Information (hors critères) : effet de la correction B sur toute la période corrigée.
+    # Le contrôle A ne porte que sur la période après la dernière rupture, où B ≈ brut par construction :
+    # ce tableau montre ce que la correction change là où elle agit vraiment.
+    lines += ["", "### Information — effet de la correction B sur toute la période (brut contre corrigé, mêmes années)", "",
+              "| Indicateur | Période | Pente brute | Pente corrigée | Écart | Même conclusion |", "|---|---|---|---|---|---|"]
+    effects = []
+    for i in stations:
+        if not i.trend:
+            continue
+        idx = X.INDICES[i.variable.id]
+        sd = X.station_daily(idx.variable, i.stations[0].id, raw_dir)
+        run = [y for y in range(i.trend.period.start, i.trend.period.end + 1)]
+        raw = X.counts(sd, idx, use_raw=True)
+        t = X.annual_trend(run, [raw[y] for y in run])
+        same = (t.significant == i.trend.significant) and (not t.significant or (t.slope_per_decade > 0) == (i.trend.slope_per_decade > 0))
+        effects.append(abs(t.slope_per_decade - i.trend.slope_per_decade))
+        lines.append(f"| {i.id} | {run[0]}-{run[-1]} | {t.slope_per_decade:+.2f} | {i.trend.slope_per_decade:+.2f} | "
+                     f"{i.trend.slope_per_decade - t.slope_per_decade:+.2f} | {'oui' if same else '**non**'} |")
+    if effects:
+        out.append(Check("Info effet de la correction B", True, f"écart absolu médian brut − corrigé : "
+                         f"{sorted(effects)[len(effects) // 2]:.2f} j/déc., maximal {max(effects):.2f} j/déc. (détail ci-dessous)",
+                         kind="info"))
 
     # E9 — indices rares : signalés, chiffre mis en avant = écart entre normales.
     rare = [i.id for i in inds if i.headline == "normals"]

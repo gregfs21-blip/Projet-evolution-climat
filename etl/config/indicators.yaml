@@ -88,177 +88,142 @@ indicators:
     builder: etl.indicators.temperature:build_station
     params: {variable: TM, station: villenave-d-ornon}
 
-  # --- P2a : extrêmes de température (critères docs/phases.md, fixés le 23/10/2026).
-  # DÉSACTIVÉS tant que les références ClimatHD du critère E4 ne sont pas commitées dans
-  # etl/validation/p2a.py : aucun calcul sur données réelles avant que la référence soit fixée.
-  # Lacanau et Sauternes n'ont pas de série LSH TX : indices TX exclus (critère E1).
+  # --- P2a : extrêmes de température (critères docs/phases.md, fixés le 23/10/2026 ; références E4
+  # commitées le 23/10/2026 avant activation). Lacanau et Sauternes n'ont pas de série LSH TX :
+  # indices TX exclus (critère E1).
   - id: jours-tx25-gironde
     scale: gironde
     builder: etl.indicators.extremes:build_composite
     params: {index: jours-tx25}
-    enabled: false
   - id: jours-tx30-gironde
     scale: gironde
     builder: etl.indicators.extremes:build_composite
     params: {index: jours-tx30}
-    enabled: false
   - id: jours-tx35-gironde
     scale: gironde
     builder: etl.indicators.extremes:build_composite
     params: {index: jours-tx35}
-    enabled: false
   - id: nuits-tn20-gironde
     scale: gironde
     builder: etl.indicators.extremes:build_composite
     params: {index: nuits-tn20}
-    enabled: false
   - id: jours-gel-gironde
     scale: gironde
     builder: etl.indicators.extremes:build_composite
     params: {index: jours-gel}
-    enabled: false
   - id: jours-tx25-bordeaux-paulin
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx25, station: bordeaux-paulin}
-    enabled: false
   - id: jours-tx25-cap-ferret
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx25, station: cap-ferret}
-    enabled: false
   - id: jours-tx25-bordeaux-merignac
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx25, station: bordeaux-merignac}
-    enabled: false
   - id: jours-tx25-cazaux
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx25, station: cazaux}
-    enabled: false
   - id: jours-tx25-villenave-d-ornon
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx25, station: villenave-d-ornon}
-    enabled: false
   - id: jours-tx30-bordeaux-paulin
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx30, station: bordeaux-paulin}
-    enabled: false
   - id: jours-tx30-cap-ferret
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx30, station: cap-ferret}
-    enabled: false
   - id: jours-tx30-bordeaux-merignac
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx30, station: bordeaux-merignac}
-    enabled: false
   - id: jours-tx30-cazaux
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx30, station: cazaux}
-    enabled: false
   - id: jours-tx30-villenave-d-ornon
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx30, station: villenave-d-ornon}
-    enabled: false
   - id: jours-tx35-bordeaux-paulin
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx35, station: bordeaux-paulin}
-    enabled: false
   - id: jours-tx35-cap-ferret
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx35, station: cap-ferret}
-    enabled: false
   - id: jours-tx35-bordeaux-merignac
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx35, station: bordeaux-merignac}
-    enabled: false
   - id: jours-tx35-cazaux
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx35, station: cazaux}
-    enabled: false
   - id: jours-tx35-villenave-d-ornon
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-tx35, station: villenave-d-ornon}
-    enabled: false
   - id: nuits-tn20-bordeaux-paulin
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: nuits-tn20, station: bordeaux-paulin}
-    enabled: false
   - id: nuits-tn20-lacanau
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: nuits-tn20, station: lacanau}
-    enabled: false
   - id: nuits-tn20-cap-ferret
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: nuits-tn20, station: cap-ferret}
-    enabled: false
   - id: nuits-tn20-bordeaux-merignac
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: nuits-tn20, station: bordeaux-merignac}
-    enabled: false
   - id: nuits-tn20-sauternes
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: nuits-tn20, station: sauternes}
-    enabled: false
   - id: nuits-tn20-cazaux
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: nuits-tn20, station: cazaux}
-    enabled: false
   - id: nuits-tn20-villenave-d-ornon
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: nuits-tn20, station: villenave-d-ornon}
-    enabled: false
   - id: jours-gel-bordeaux-paulin
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: bordeaux-paulin}
-    enabled: false
   - id: jours-gel-lacanau
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: lacanau}
-    enabled: false
   - id: jours-gel-cap-ferret
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: cap-ferret}
-    enabled: false
   - id: jours-gel-bordeaux-merignac
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: bordeaux-merignac}
-    enabled: false
   - id: jours-gel-sauternes
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: sauternes}
-    enabled: false
   - id: jours-gel-cazaux
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: cazaux}
-    enabled: false
   - id: jours-gel-villenave-d-ornon
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: villenave-d-ornon}
-    enabled: false

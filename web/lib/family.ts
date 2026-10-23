@@ -58,7 +58,8 @@ export function composites(scale: Scale, theme: string): { variable: Variable; i
     .map((m) => ({ variable: m.variable, ind: load(m), href: href(m) }));
 }
 
-export type Cell = { slope: number; low: number | null; high: number | null; href: string };
+/** `slope` null : la série existe mais ne couvre pas toute la période commune (années manquantes). */
+export type Cell = { slope: number | null; low: number | null; high: number | null; href: string };
 export type MatrixRow = { place: string; name: string; isComposite: boolean; cells: Record<string, Cell> };
 export type Matrix = {
   variables: Variable[];
@@ -79,18 +80,23 @@ export function familyMatrix(scale: Scale, theme: Theme): Matrix {
     if (t) {
       row.cells[m.variable.id] = { slope: t.slope_per_decade, low: t.slope_ci_low, high: t.slope_ci_high, href: href(m) };
       period ??= t.period;
+    } else {
+      row.cells[m.variable.id] = { slope: null, low: null, high: null, href: href(m) };
     }
     byPlace.set(m.place.id, row);
   }
   const rows = [...byPlace.values()].sort(
     (a, b) =>
       Number(a.isComposite) - Number(b.isComposite) ||
-      Object.keys(b.cells).length - Object.keys(a.cells).length ||
+      Object.values(b.cells).filter((c) => c.slope !== null).length - Object.values(a.cells).filter((c) => c.slope !== null).length ||
       a.name.localeCompare(b.name, "fr"),
   );
   const spread: Matrix["spread"] = {};
   for (const v of theme.variables) {
-    const vals = rows.filter((r) => !r.isComposite).flatMap((r) => (r.cells[v.id] ? [r.cells[v.id]!.slope] : []));
+    const vals = rows.filter((r) => !r.isComposite).flatMap((r) => {
+      const s = r.cells[v.id]?.slope;
+      return s === null || s === undefined ? [] : [s];
+    });
     if (vals.length > 1) spread[v.id] = { min: Math.min(...vals), max: Math.max(...vals), n: vals.length };
   }
   return { variables: theme.variables, unit: theme.unit, rows, period, spread };

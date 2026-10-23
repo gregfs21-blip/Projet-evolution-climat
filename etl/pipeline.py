@@ -66,9 +66,12 @@ def prune(out_dir: Path, registry: list[dict]) -> list[Path]:
     return removed
 
 
-def build_manifest(out_dir: Path) -> Manifest:
+def build_manifest(out_dir: Path, registry: list[dict] | None = None) -> Manifest:
+    """Manifeste de tous les JSON publiés, dans l'ordre du registre (ordre d'affichage du site), puis alphabétique."""
+    rank = {(e["scale"], e["id"]): i for i, e in enumerate(registry or [])}
+    paths = sorted(out_dir.glob("*/*.json"), key=lambda p: (rank.get((p.parent.name, p.stem), len(rank)), p.as_posix()))
     entries = []
-    for path in sorted(out_dir.glob("*/*.json")):
+    for path in paths:
         ind = Indicator.model_validate_json(path.read_text(encoding="utf-8"))
         entries.append(
             ManifestEntry(
@@ -116,7 +119,7 @@ def run(only: set[str] | None = None, out_dir: Path = PROCESSED_DIR, registry_pa
     for path in prune(out_dir, registry):
         log.info("RETIRÉ %s", path.relative_to(out_dir))
 
-    manifest = build_manifest(out_dir)
+    manifest = build_manifest(out_dir, registry)
     (out_dir / "manifest.json").write_text(manifest.model_dump_json(indent=1) + "\n", encoding="utf-8")
     log.info("Manifeste : %d indicateur(s)", len(manifest.indicators))
 

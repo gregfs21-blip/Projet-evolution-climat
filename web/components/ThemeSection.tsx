@@ -19,7 +19,8 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
   const period = matrix.period ? `${matrix.period.start}-${matrix.period.end}` : "";
   const spreads = Object.values(matrix.spread);
   const maxSpread = spreads.length ? Math.max(...spreads.map((s) => s.max - s.min)) : null;
-  const nStations = matrix.rows.filter((r) => !r.isComposite).length;
+  // Stations ayant au moins une pente sur la période commune (une série incomplète n'entre pas dans la comparaison).
+  const nStations = matrix.rows.filter((r) => !r.isComposite && Object.values(r.cells).some((c) => c.slope !== null)).length;
   const trended = comps.filter((c) => c.ind.headline !== "normals");
   const allSignificant = trended.length > 0 && trended.every((c) => c.ind.trend?.significant);
   const p0 = comps[0]?.ind.trend?.period;

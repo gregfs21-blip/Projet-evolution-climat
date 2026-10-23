@@ -40,7 +40,7 @@ from etl.stats.trend import annual_trend
 DEPARTMENT = "33"
 NORMALS = [Period(start=1961, end=1990), Period(start=1991, end=2020)]
 COMMON_WINDOW = Period(start=1962, end=2022)       # matrice inter-stations, comme C5
-CLIMATHD_WINDOW = Period(start=1961, end=2018)     # E4 (R3, R4)
+CLIMATHD_WINDOW = Period(start=1961, end=2010)     # E4 (R3, R4), fixé le 23/10/2026
 COMPOSITE_SPAN = Period(start=1961, end=2022)      # réseau constant du composite
 MAX_MISSING_DAYS = 3                               # E2, règle ETCCDI
 RARE_MEDIAN = 5                                    # E9 : médiane annuelle 1961-1990, en jours
@@ -57,7 +57,15 @@ class IndexDef:
     what: str              # « journées estivales (TX ≥ 25 °C) »
 
     def hit(self, v: float) -> bool:
-        return v >= self.threshold if self.op == ">=" else v <= self.threshold
+        if self.op == ">=":
+            return v >= self.threshold
+        if self.op == ">":
+            return v > self.threshold
+        if self.op == "<=":
+            return v <= self.threshold
+        if self.op == "<":
+            return v < self.threshold
+        raise ValueError(f"opérateur inconnu {self.op}")
 
 
 INDICES = {
@@ -234,8 +242,9 @@ def confidence(main: Trend | None, rare: bool, comparison: NormalsComparison | N
     from etl.validation import p2a  # import tardif : évite le cycle
 
     if rare:
+        # E9 : « au plus moyenne ». Le contrôle A ne peut que limiter à « moyenne », ce qui est déjà le plafond.
         if comparison is not None and comparison.significant:
-            return "moyenne" if control_ok else "faible"
+            return "moyenne"
         return "non_etabli"
     if main is None:
         return "non_etabli"

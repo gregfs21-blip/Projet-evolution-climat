@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "phase": "p2a",
+  "generated_at": "2026-10-23T17:06:50Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "indicators": [
+    "jours-tx25-gironde",
+    "jours-tx30-gironde",
+    "jours-tx35-gironde",
+    "nuits-tn20-gironde",
+    "jours-gel-gironde",
+    "jours-tx25-bordeaux-paulin",
+    "jours-tx25-cap-ferret",
+    "jours-tx25-bordeaux-merignac",
+    "jours-tx25-cazaux",
+    "jours-tx25-villenave-d-ornon",
+    "jours-tx30-bordeaux-paulin",
+    "jours-tx30-cap-ferret",
+    "jours-tx30-bordeaux-merignac",
+    "jours-tx30-cazaux",
+    "jours-tx30-villenave-d-ornon",
+    "jours-tx35-bordeaux-paulin",
+    "jours-tx35-cap-ferret",
+    "jours-tx35-bordeaux-merignac",
+    "jours-tx35-cazaux",
+    "jours-tx35-villenave-d-ornon",
+    "nuits-tn20-bordeaux-paulin",
+    "nuits-tn20-lacanau",
+    "nuits-tn20-cap-ferret",
+    "nuits-tn20-bordeaux-merignac",
+    "nuits-tn20-sauternes",
+    "nuits-tn20-cazaux",
+    "nuits-tn20-villenave-d-ornon",
+    "jours-gel-bordeaux-paulin",
+    "jours-gel-lacanau",
+    "jours-gel-cap-ferret",
+    "jours-gel-bordeaux-merignac",
+    "jours-gel-sauternes",
+    "jours-gel-cazaux",
+    "jours-gel-villenave-d-ornon"
+  ],
+  "checks": [
+    {
+      "name": "E1 exhaustivité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "29/29 couples indice × poste traités ; exclus faute de série LSH (ni correction B ni dates de ruptures) : TX Lacanau, TX Sauternes"
+    },
+    {
+      "name": "E2 complétude ETCCDI",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "règle appliquée à la construction (mois manquant au-delà de 3 jours absents, année manquante si un mois l'est) ; détail par poste ci-dessous"
+    },
+    {
+      "name": "E3 brut exclu des tendances",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "aucune tendance de série corrigée ne contient d'année brute"
+    },
+    {
+      "name": "E4 R3 littoral : journées chaudes (TX > 25 °C), littoral 1961-2010",
+      "kind": "critère",
+      "status": "❌ écart",
+      "satisfied": false,
+      "detail": "pente de Sen +5.83 j/déc. (IC 95 % +3.46 à +8.70), attendu [4 ; 5] ; Cap-Ferret, Cazaux"
+    },
+    {
+      "name": "E4 R3 intérieur : journées chaudes (TX > 25 °C), intérieur 1961-2010",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "pente de Sen +7.10 j/déc. (IC 95 % +4.00 à +10.37), attendu [6 ; 8] ; Bordeaux-Mérignac"
+    },
+    {
+      "name": "E4 R4 : jours de gel (TN ≤ 0 °C), composite 1961-2010",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "pente de Sen -1.43 j/déc. (IC 95 % -3.56 à +0.75), attendu [-2 ; -1] ; Bordeaux-Paulin, Cap-Ferret, Bordeaux-Mérignac, Sauternes, Cazaux"
+    },
+    {
+      "name": "E5 cohérence du correctif",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "écart annuel maximal corrigé − LSH : 0.0000 °C (TN Cap-Ferret 2015), tolérance 0.05 °C"
+    },
+    {
+      "name": "E6 même signe jours-tx25",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "5 hausse(s), 0 baisse(s), 0 nulle(s)"
+    },
+    {
+      "name": "E6 même signe jours-gel",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "0 hausse(s), 7 baisse(s), 0 nulle(s)"
+    },
+    {
+      "name": "E7 concordance des méthodes",
+      "kind": "critère",
+      "status": "☑ écart accepté le 23/10/2026",
+      "satisfied": true,
+      "detail": "23/34 concordants ; 0 discordant(s) ; 11 non évaluable(s)"
+    },
+    {
+      "name": "E8 robustesse au code qualité 9",
+      "kind": "critère",
+      "status": "☑ écart accepté le 23/10/2026",
+      "satisfied": true,
+      "detail": "3 conclusion(s) modifiée(s) sur 29"
+    },
+    {
+      "name": "Info effet de la correction B",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": true,
+      "detail": "écart absolu médian brut − corrigé : 0.19 j/déc., maximal 2.34 j/déc. (détail ci-dessous)"
+    },
+    {
+      "name": "E9 indices rares",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "10 indicateur(s) rare(s), aucun en confiance « élevée »"
+    }
+  ]
+}
