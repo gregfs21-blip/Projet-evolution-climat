@@ -448,7 +448,7 @@
  ],
  "method_note": "Moyenne, station par station, du nombre annuel de jours de 5 stations (Bordeaux-Paulin, Cap-Ferret, Bordeaux-Mérignac, Sauternes, Cazaux). Réseau constant : seules les stations complètes et corrigées sur toute la période 1961-2022 sont retenues (exclues : Lacanau, Villenave-d'Ornon). Nombre de jours de l'année remplissant la condition, sur les valeurs quotidiennes corrigées : chaque jour reçoit la correction de son mois (valeur LSH homogénéisée − moyenne mensuelle des valeurs brutes). Contrôle : même calcul sur les valeurs brutes, après la dernière rupture d'homogénéité connue.",
  "finding": "En Gironde, le nombre de nuits tropicales (TN ≥ 20 °C) est passé de 2,3 jours par an en moyenne sur 1961-1990 à 6,6 jours sur 1991-2020 (écart significatif, test de Mann-Whitney). Indice rare : la pente annuelle n'est pas mise en avant.",
- "confidence": "faible",
+ "confidence": "moyenne",
  "limitations": [
   "Données quotidiennes non homogénéisées, corrigées mois par mois par l'écart entre la série homogénéisée LSH et la moyenne mensuelle brute (méthode B) : la moyenne de chaque mois est rétablie, pas la forme de la distribution. Les comptages de jours extrêmes peuvent garder un biais résiduel.",
   "Une année n'est comptée que si aucun de ses mois ne manque plus de 3 jours (règle ETCCDI) ; aucune valeur n'est complétée. Années non corrigeables (hors période homogénéisée LSH, dont 2023 et après) : affichées pour information, exclues des tendances et des normales.",
@@ -462,9 +462,9 @@
   "source_name": "Météo-France — données climatologiques de base quotidiennes, corrigées par les Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b51ae64326786e4e8e1a",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-23T16:29:01Z",
+  "extracted_at": "2026-10-23T16:32:53Z",
   "script": "etl.indicators.extremes",
-  "etl_version": "0.1.0+ef072f1",
+  "etl_version": "0.1.0+116958c",
   "homogenized": true
  },
  "is_demo": false
