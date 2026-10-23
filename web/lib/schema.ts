@@ -125,7 +125,11 @@ export const indicatorSchema = z
   .refine((d) => !d.is_anomaly || d.reference_period !== null, "anomalie sans reference_period")
   .refine((d) => (d.variable === null) === (d.place === null), "variable et place vont ensemble")
   .refine((d) => d.place?.kind !== "composite" || d.place.id === d.scale, "composite : place.id doit valoir l'échelle")
-  .refine((d) => d.place?.kind !== "station" || d.stations.length === 1, "station : exactement une station attendue")
+  .refine(
+    // Un seul poste ; plusieurs séries possibles (TM de station = séries TN et TX du même poste).
+    (d) => d.place?.kind !== "station" || (d.stations.length > 0 && new Set(d.stations.map((s) => s.id)).size === 1),
+    "station : un seul poste attendu",
+  )
   .refine(
     (d) => [d.trend, ...d.alt_trends].every((t) => !t || t.significant === t.p_value < t.alpha),
     "tendance : significant incohérent avec p_value",

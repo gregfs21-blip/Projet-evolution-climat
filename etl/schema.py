@@ -184,8 +184,9 @@ class Indicator(_Strict):
         if self.place is not None:
             if self.place.kind == "composite" and self.place.id != self.scale:
                 raise ValueError("un composite a pour lieu l'échelle elle-même (place.id == scale)")
-            if self.place.kind == "station" and len(self.stations) != 1:
-                raise ValueError("un indicateur de station porte exactement une station")
+            # Un seul poste ; plusieurs séries possibles (TM de station = séries TN et TX du même poste).
+            if self.place.kind == "station" and (not self.stations or len({s.id for s in self.stations}) != 1):
+                raise ValueError("un indicateur de station porte un seul poste")
         for t in [self.trend, *self.alt_trends]:
             if t and t.significant != (t.p_value < t.alpha):
                 raise ValueError(f"tendance '{t.label}' : significant incohérent avec p_value et alpha")
