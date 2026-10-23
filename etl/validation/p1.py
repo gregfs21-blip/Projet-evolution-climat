@@ -55,6 +55,8 @@ class Check:
     passed: bool
     detail: str
     kind: str = "critère"     # "critère" (compte pour la clôture), "info" ou "retiré" (publiés, sans effet)
+    slope: float | None = None
+    p_value: float | None = None
 
     @property
     def status(self) -> str:
@@ -154,6 +156,8 @@ def difference_check(name: str, lsh: dict[int, float], rea: dict[int, float], pe
         f"{t.slope_ci_high:+.3f}), Hamed-Rao p = {t.p_value:.3f} ; seuil |pente| ≤ {C4BIS_MAX_SLOPE} et p ≥ 0,05 ; "
         f"décalage moyen {offset:+.2f} °C",
         kind,
+        slope=t.slope_per_decade,
+        p_value=t.p_value,
     )
 
 
@@ -180,7 +184,7 @@ def c4bis(raw_dir: str = str(RAW_DIR)) -> list[Check]:
             f"(demandé {C4BIS_POINT[0]:.3f} ; {C4BIS_POINT[1]:.3f})")
 
     first = difference_check(primary, _annual_hom(*lsh["TM"]), rea_annual["TM"], C4BIS_PERIOD, "critère")
-    out = [Check(first.name, first.passed, f"{first.detail} ; {cell}", first.kind)]
+    out = [Check(first.name, first.passed, f"{first.detail} ; {cell}", first.kind, first.slope, first.p_value)]
     for var in ("TN", "TX"):
         out.append(difference_check(f"C4bis (info) Villenave {var} annuelle {C4BIS_PERIOD[0]}-{C4BIS_PERIOD[1]}",
                                     _annual_hom(*lsh[var]), rea_annual[var], C4BIS_PERIOD, "info"))
@@ -193,6 +197,30 @@ def c4bis(raw_dir: str = str(RAW_DIR)) -> list[Check]:
         out.append(difference_check(f"C4bis (info) Villenave TM {season} {C4BIS_PERIOD[0]}-{C4BIS_PERIOD[1]}",
                                     s_lsh[season], s_rea[season], C4BIS_PERIOD, "info"))
     return out
+
+
+def variable_caveat(variable: str, raw_dir: Path = RAW_DIR) -> str | None:
+    """Mise en garde quand le recoupement informatif ERA5 d'une variable dépasse le seuil de C4bis.
+
+    N'influe pas sur la confiance (règle C7 inchangée) : c'est une information, affichée telle quelle.
+    """
+    check = next((c for c in c4bis(str(raw_dir)) if c.name.startswith(f"C4bis (info) Villenave {variable} annuelle 1979")), None)
+    if check is None or check.passed or check.slope is None:
+        return None
+    fr = lambda x, f: format(x, f).replace(".", ",")  # noqa: E731
+    sense = "plus vite" if check.slope > 0 else "moins vite"
+    over = abs(check.slope) > C4BIS_MAX_SLOPE
+    significant = check.p_value < 0.05
+    reason = (
+        "écart supérieur au seuil de 0,10 °C par décennie" + (" et significatif" if significant else "")
+        if over else "écart inférieur au seuil de 0,10 °C par décennie, mais statistiquement significatif"
+    )
+    return (
+        f"Recoupement avec la réanalyse ERA5 à Villenave-d'Ornon (1979-2022) : pour cette variable, la station se "
+        f"réchauffe {sense} que la réanalyse, de {fr(abs(check.slope), '.2f')} °C par décennie "
+        f"(p = {fr(check.p_value, '.3f')}) ; {reason}. La hausse est confirmée par les deux sources, sa valeur "
+        "exacte est moins assurée que pour la température moyenne."
+    )
 
 
 def external_validation_passed(raw_dir: Path = RAW_DIR) -> bool:

@@ -6,7 +6,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | Phase | Contenu | Validation | État |
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
-| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **en cours** (C4bis à évaluer) |
+| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
 | P2 | Extrêmes et eau Gironde : jours > 30/35 °C, nuits tropicales, gelées, précipitations, insolation, SPEI | | à faire |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
@@ -122,3 +122,7 @@ Limites assumées d'avance :
   dans `etl/stats/mannkendall.py`, recoupées en test.
 - 23/10/2026 : décisions de Grég. C3 TX accepté ; C4 retiré (référence invalide) et remplacé par C4bis
   (recoupement ERA5), protocole et seuil commités avant tout téléchargement ERA5.
+- 23/10/2026 : C4bis **conforme** (dérive LSH − ERA5 de +0,035 °C/déc., p = 0,19). Tous les critères de
+  clôture sont satisfaits : **P1 close**. Réserve : écart significatif sur les minimales seules (+0,099,
+  p = 0,002), compensé sur la moyenne. Mise en garde automatique ajoutée aux indicateurs TN. La règle de
+  confiance n'est pas modifiée.

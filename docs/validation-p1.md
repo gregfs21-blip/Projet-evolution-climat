@@ -1,26 +1,53 @@
 # Validation P1 — analyse des écarts
 
-Rédigée le 22/10/2026 à partir de l'exécution officielle de l'ETL (version `0.1.0+0587963`).
-Mesures brutes : `docs/validation-p1-resultats.md` (régénéré à chaque ETL). Critères et seuils :
-`docs/phases.md`, commités **avant** les premiers calculs et non modifiés depuis.
+Première analyse le 22/10/2026 (ETL `0.1.0+0587963`), complétée le 23/10/2026 après les décisions de
+Grég et l'évaluation de C4bis (ETL `0.1.0+b0c758e`). Mesures brutes : `docs/validation-p1-resultats.md`,
+régénéré à chaque ETL. Critères, seuils et décisions : `docs/phases.md`, chacun commité avant le calcul
+qu'il encadre.
 
-## Bilan
+## Bilan — P1 close le 23/10/2026
 
-| Critère | Statut | Décision requise |
-|---|---|---|
-| C1 Exhaustivité | conforme (12/12 séries) | — |
-| C2 Homogénéisé ≠ brut | conforme, garanti par le schéma (pydantic et zod) et testé | — |
-| C3 TN | conforme : +0,294 dans [0,15 ; 0,35] | — |
-| **C3 TX** | **écart** : +0,354 pour une borne haute de 0,35 | **oui** |
-| **C4** (4 saisons) | **écart** : +0,09 à +0,15 °C/déc. au-dessus de la référence | **oui** |
-| C5 Cohérence | conforme, mais à lire avec la réserve ci-dessous | — |
-| C6 Ruptures | conforme : 20 ruptures, aucune établie | — |
-| C7 Autocorrélation | conforme : aucune conclusion modifiée | — |
-| C8 Traçabilité | conforme | — |
-| C9 Technique | conforme : tests et CI verts, pages déployées, démo retirée, lockfile commité | — |
+| Critère | Statut |
+|---|---|
+| C1 Exhaustivité | conforme (12/12 séries) |
+| C2 Homogénéisé ≠ brut | conforme, garanti par le schéma (pydantic et zod) et testé |
+| C3 TN | conforme : +0,294 dans [0,15 ; 0,35] |
+| C3 TX | **écart accepté** par Grég le 23/10/2026 (+0,354 pour une borne de 0,35) |
+| C4 | **retiré** le 23/10/2026 : référence invalide. Toujours calculé, pour information |
+| C4bis Recoupement ERA5 | **conforme** : dérive LSH − ERA5 de +0,035 °C/déc., p = 0,19 |
+| C5 Cohérence | conforme, avec la réserve exposée plus bas |
+| C6 Ruptures | conforme : 20 ruptures détectées, aucune établie |
+| C7 Autocorrélation | conforme. Avec C3 et C4bis satisfaits, les 20 indicateurs passent en confiance « élevée » |
+| C8 Traçabilité | conforme |
+| C9 Technique | conforme |
 
-**P1 n'est pas close** : C3 TX et C4 sont des écarts au sens de la règle de clôture. L'analyse ci-dessous
-les explique ; leur acceptation revient à Grég.
+## C4bis — recoupement avec ERA5 : conforme, avec deux réserves
+
+Villenave-d'Ornon, TM annuelle 1979-2022. La différence station − réanalyse dérive de **+0,035 °C par
+décennie** (IC 95 % −0,002 à +0,070), non significative (Hamed-Rao, p = 0,19). Le critère fixé d'avance
+est satisfait : la station et ERA5 décrivent le même réchauffement à environ 10 % près. Le décalage moyen
+de +0,14 °C est un écart constant, attendu entre un point de mesure et une maille de 25 km : il ne pèse pas
+sur les tendances. Maille ERA5 retenue par l'API : 44,750 N ; 0,500 O, à 7 km de la station.
+
+Les résultats informatifs, publiés sans effet sur la clôture, appellent deux réserves.
+
+**1. L'accord sur la moyenne recouvre en partie une compensation.** Sur les minimales, la station se
+réchauffe plus vite qu'ERA5, de +0,099 °C/déc., écart **significatif** (p = 0,002). Sur les maximales,
+elle se réchauffe moins vite, de −0,045 °C/déc. (p = 0,08). Les deux écarts se compensent en partie dans
+TM = (TN + TX) / 2. Les deux sources s'accordent sur le sens (les maximales montent plus vite que les
+minimales), pas sur l'ampleur de la différence. Impossible de départager : ERA5 représente mal les nuits
+stables sous inversion, et la série homogénéisée peut garder un résidu sur les minimales, plus sensibles à
+l'environnement du capteur. **Conséquence pratique** : la tendance de la température moyenne est la grandeur
+la mieux établie. Celle des minimales est confirmée en ordre de grandeur, pas à 0,1 °C/déc. près. Une mise
+en garde automatique est désormais affichée sur les indicateurs TN.
+
+**2. Petit écart systématique de même signe.** Sur les quatre saisons, la station se réchauffe un peu plus
+vite qu'ERA5 (+0,02 à +0,05 °C/déc.). L'écart n'est significatif qu'au printemps (p = 0,01), et reste partout
+bien sous le seuil. Sur 1959-2019, la dérive est du même ordre (+0,029, p = 0,06). Un léger biais de l'une
+des deux sources est possible ; il ne change aucune conclusion.
+
+Rappel des limites fixées d'avance : ERA5 assimile les mesures synoptiques (vraisemblablement
+Bordeaux-Mérignac, à 9 km). L'accord est un recoupement, pas une preuve indépendante.
 
 ## C3 TX — écart marginal, attribuable à l'arrondi de la référence
 
@@ -34,10 +61,9 @@ S'y ajoutent deux différences de périmètre connues dès le départ :
   littorale). Un écart réel de quelques centièmes entre Gironde et région n'aurait rien d'anormal.
 - R1 a été calculé sur une version antérieure de l'homogénéisation (les fichiers actuels datent de 2025).
 
-**Lecture proposée** : écart non significatif, dans l'incertitude de la référence. Le résultat TN, lui,
-tombe au milieu de sa fourchette.
+**Décision (23/10/2026)** : écart accepté. Le résultat TN, lui, tombe au milieu de sa fourchette.
 
-## C4 — la référence est incohérente, pas le calcul
+## C4 — la référence est incohérente, pas le calcul (critère retiré le 23/10/2026)
 
 Notre TM saisonnière à Villenave-d'Ornon (1959-2019, régression linéaire) dépasse les valeurs ORACLE
 de +0,09 (hiver) à +0,15 (été) °C/déc. L'écart est systématique, toujours de même signe, sur les quatre
@@ -59,11 +85,8 @@ retenues, mais le tableau est **incohérent avec le reste du document** :
 La cause exacte de l'erreur dans ORACLE n'est pas identifiable de l'extérieur. Le rapport entre leurs
 valeurs et les nôtres (0,46 à 0,69) n'est pas constant, ce qui exclut une simple erreur d'unité.
 
-**Lecture proposée** : R2 n'est pas une référence utilisable. Deux options, à trancher :
-- **(a)** acter l'échec de C4 comme imputable à la référence, sans référence stationnelle de remplacement ;
-- **(b)** remplacer R2 par un recoupement indépendant, par exemple la tendance de la maille E-OBS ou ERA5
-  la plus proche de Villenave (produits construits autrement que les LSH), à faire en P3 avec ERA5. Ce
-  serait un **nouveau critère**, à commiter comme tel, pas un ajustement de C4.
+**Décision (23/10/2026)** : option (b). R2 est écartée et remplacée par C4bis, recoupement avec ERA5
+(voir plus haut), protocole commité avant tout calcul.
 
 ## C5 — conforme, mais ce n'est pas une confirmation indépendante
 
@@ -97,9 +120,8 @@ Avec 70 ans de données et des pentes de +0,3 °C/déc., les tendances sont si n
 1e-10) que la correction de Hamed-Rao ne change aucune conclusion. Elle deviendra déterminante en P2 et
 P3, sur des indicateurs plus bruités : précipitations, vent, extrêmes.
 
-Conséquence de la règle C7 : tant que C3 et C4 ne sont pas tranchés, **tous les indicateurs restent en
-confiance « moyenne »**, même ceux dont la tendance est massivement significative. C'est voulu : la règle
-ne laisse pas la force statistique compenser une validation externe incomplète.
+Avec C3 et C4bis satisfaits, la règle C7 place les 20 indicateurs en confiance « élevée ». Pour les
+minimales, cette confiance porte sur le **sens et l'ordre de grandeur** de la tendance (voir C4bis, réserve 1).
 
 ## Incident technique traité pendant la phase
 

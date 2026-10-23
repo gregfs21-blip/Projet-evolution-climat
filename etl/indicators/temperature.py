@@ -245,6 +245,13 @@ def _finding(where: str, variable: str, trend: Trend) -> str:
     )
 
 
+def _validation_caveats(variable: str, raw_dir: Path) -> list[str]:
+    from etl.validation import p1  # import tardif : évite le cycle
+
+    caveat = p1.variable_caveat(variable, raw_dir)
+    return [caveat] if caveat else []
+
+
 def _limitations(series: AnnualSeries, extra: list[str]) -> list[str]:
     raw = sorted(y for y, h in series.homogenized.items() if not h)
     out = [
@@ -344,7 +351,7 @@ def build_station(ctx: BuildContext, variable: str, station: str) -> Indicator:
         where=f"À {cfg['name']}",
         composite=False,
         method_note=note,
-        extra_limits=extra + [f"Particularité du site : {cfg['note']}"],
+        extra_limits=extra + _validation_caveats(variable, ctx.raw_dir) + [f"Particularité du site : {cfg['note']}"],
         reference=reference,
     )
 
@@ -378,7 +385,7 @@ def build_composite(ctx: BuildContext, variable: str) -> Indicator:
         where="En Gironde",
         composite=True,
         method_note=note,
-        extra_limits=[
+        extra_limits=_validation_caveats(variable, ctx.raw_dir) + [
             "Composite de stations, non pondéré par la surface : il ne représente pas une moyenne spatiale "
             "rigoureuse du département. Les stations littorales y pèsent autant que les stations intérieures."
         ],

@@ -50,5 +50,5 @@ y compris ceux de l'ETL mensuel, redéploie le site.
 ## État
 
 - **P0** (socle) : close le 22/10/2026.
-- **P1** (températures homogénéisées de Gironde) : 20 indicateurs publiés, validation en attente de
-  décision sur deux écarts. Voir `docs/phases.md` et `docs/validation-p1.md`.
+- **P1** (températures homogénéisées de Gironde) : close le 23/10/2026. 20 indicateurs, validés contre
+  ClimatHD et recoupés avec ERA5. Voir `docs/validation-p1.md`.

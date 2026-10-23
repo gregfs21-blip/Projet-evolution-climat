@@ -96,3 +96,25 @@ class C4bisTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CaveatTest(unittest.TestCase):
+    def _with(self, slope, p, passed=False):
+        check = p1.Check("C4bis (info) Villenave TN annuelle 1979-2022", passed, "x", "info", slope, p)
+        with mock.patch.object(p1, "c4bis", return_value=[check]):
+            return p1.variable_caveat("TN", Path("."))
+
+    def test_significatif_sous_le_seuil(self):
+        txt = self._with(0.099, 0.002)
+        self.assertIn("plus vite", txt)
+        self.assertIn("inférieur au seuil", txt)
+        self.assertIn("0,10 °C", txt)
+
+    def test_au_dessus_du_seuil(self):
+        txt = self._with(-0.15, 0.2)
+        self.assertIn("moins vite", txt)
+        self.assertIn("supérieur au seuil", txt)
+        self.assertNotIn("et significatif", txt)
+
+    def test_conforme_sans_mise_en_garde(self):
+        self.assertIsNone(self._with(0.02, 0.5, passed=True))
