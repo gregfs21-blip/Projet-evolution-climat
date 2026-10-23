@@ -24,7 +24,12 @@ function nav() {
     label: SCALE_LABELS[s].name,
     soon: listIndicators(s).length === 0 ? SCALE_LABELS[s].phaseCode : null,
   }));
-  return [...scales, { href: "/synthese", label: "Synthèse", soon: "P8" }, { href: "/methode", label: "Méthode", soon: null }];
+  return [
+    ...scales,
+    { href: "/couverture", label: "Couverture", soon: null },
+    { href: "/synthese", label: "Synthèse", soon: "P8" },
+    { href: "/methode", label: "Méthode", soon: null },
+  ];
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

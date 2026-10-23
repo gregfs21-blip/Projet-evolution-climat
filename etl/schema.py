@@ -12,7 +12,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-SCHEMA_VERSION = "1.3"
+SCHEMA_VERSION = "1.4"
 Quality = Literal["homogenized", "raw"]
 
 Scale = Literal["gironde", "france", "monde"]
@@ -107,6 +107,22 @@ class NormalsComparison(_Strict):
         return self
 
 
+class ReferenceCheck(_Strict):
+    """Référence publiée, fixée AVANT le calcul (méthode « largeur d'abord »), et verdict du contrôle."""
+
+    statement: str = Field(min_length=1, description="La référence telle que publiée, en clair")
+    source: str = Field(min_length=1)
+    source_url: str = Field(pattern=r"^https?://")
+    kind: Literal["slope", "rate", "difference", "relative_slope", "not_significant"]
+    period: Period
+    expected_low: float | None = None
+    expected_high: float | None = None
+    measured: float | None = Field(default=None, description="Valeur calculée sur nos données, même définition")
+    unit: str
+    satisfied: bool
+    fixed_on: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$", description="Date de fixation de la référence (avant calcul)")
+
+
 class Station(_Strict):
     id: str = Field(min_length=1)
     name: str = Field(min_length=1)
@@ -166,7 +182,7 @@ class Series(_Strict):
 
 
 class Indicator(_Strict):
-    schema_version: Literal["1.3"] = SCHEMA_VERSION
+    schema_version: Literal["1.4"] = SCHEMA_VERSION
     id: str = Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")
     scale: Scale
     group: str | None = Field(default=None, description="Regroupement d'affichage (ex. 'Synthèse', 'Stations')")
@@ -186,6 +202,7 @@ class Indicator(_Strict):
         default="trend", description="Chiffre mis en avant : la tendance, ou l'écart entre normales (indice rare, E9)"
     )
     normals_comparison: NormalsComparison | None = None
+    reference_check: ReferenceCheck | None = None
     breakpoints: list[Breakpoint] = Field(default_factory=list)
     stations: list[Station] = Field(default_factory=list)
     method_note: str | None = Field(default=None, description="Construction de l'indicateur (ex. composite)")
@@ -246,7 +263,7 @@ class ManifestEntry(_Strict):
 
 
 class Manifest(_Strict):
-    schema_version: Literal["1.3"] = SCHEMA_VERSION
+    schema_version: Literal["1.4"] = SCHEMA_VERSION
     generated_at: datetime
     etl_version: str
     indicators: list[ManifestEntry]
@@ -298,3 +315,43 @@ class ValidationReport(_Strict):
         if self.closure_ok != all(c.satisfied for c in counted):
             raise ValueError("closure_ok incohérent avec les critères")
         return self
+
+
+# ---------------------------------------------------------------- Couverture du projet
+# data/processed/couverture.json : chaque paramètre des instructions du projet, à chaque échelle, avec son statut.
+# « publie » est calculé à partir du manifeste, jamais déclaré.
+
+COVERAGE_SCHEMA_VERSION = "1.0"
+CoverageStatus = Literal["publie", "prevu", "sans-donnee", "instantane"]
+
+
+class CoverageIndicator(_Strict):
+    id: str
+    title: str
+    confidence: Confidence
+
+
+class CoverageCell(_Strict):
+    scale: Scale
+    status: CoverageStatus
+    source: str | None = None
+    note: str | None = None
+    indicators: list[CoverageIndicator] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _coherent(self) -> "CoverageCell":
+        if (self.status == "publie") != bool(self.indicators):
+            raise ValueError("couverture : « publie » si et seulement si au moins un indicateur est publié")
+        return self
+
+
+class CoverageParameter(_Strict):
+    id: str = Field(pattern=SLUG)
+    label: str = Field(min_length=1)
+    cells: list[CoverageCell] = Field(min_length=1)
+
+
+class Coverage(_Strict):
+    schema_version: Literal["1.0"] = COVERAGE_SCHEMA_VERSION
+    generated_at: datetime
+    parameters: list[CoverageParameter] = Field(min_length=1)

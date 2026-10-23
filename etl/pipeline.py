@@ -122,6 +122,9 @@ def run(only: set[str] | None = None, out_dir: Path = PROCESSED_DIR, registry_pa
     manifest = build_manifest(out_dir, registry)
     (out_dir / "manifest.json").write_text(manifest.model_dump_json(indent=1) + "\n", encoding="utf-8")
     log.info("Manifeste : %d indicateur(s)", len(manifest.indicators))
+    from etl import couverture  # import local : la couverture dépend du manifeste, pas l'inverse
+
+    couverture.write(manifest, out_dir)
 
     if failures:
         log.error("%d indicateur(s) en échec : %s", len(failures), ", ".join(failures))

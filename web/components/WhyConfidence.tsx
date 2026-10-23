@@ -76,6 +76,26 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
           ? `${ind.breakpoints.length === 1 ? "1 rupture détectée, non établie : elle disparaît" : `${ind.breakpoints.length} ruptures détectées, aucune établie : chacune disparaît`} après retrait de la tendance ou coïncide avec une correction d'homogénéité.`
           : `${est.length > 1 ? "Ruptures" : "Rupture"} en ${est.join(", ")} : à interpréter avant toute conclusion sur la tendance.`,
   });
+  // Référence publiée fixée avant le calcul (méthode « largeur d'abord »).
+  const r = ind.reference_check;
+  if (r) {
+    const fmtN = (v: number) => v.toLocaleString("fr-FR", { maximumFractionDigits: 3 });
+    const expected =
+      r.kind === "not_significant"
+        ? "absence de tendance significative"
+        : `${fmtN(r.expected_low ?? 0)} à ${fmtN(r.expected_high ?? 0)} ${r.unit}`;
+    const measured =
+      r.measured === null
+        ? "non calculable sur nos données (période incomplète)"
+        : r.kind === "not_significant"
+          ? `p = ${fmtN(r.measured)} (Hamed-Rao)`
+          : `${fmtN(r.measured)} ${r.unit}`;
+    out.push({
+      ok: r.satisfied,
+      title: r.satisfied ? "Référence publiée retrouvée" : "Référence publiée non retrouvée",
+      text: `${r.statement}. Attendu : ${expected} ; mesuré : ${measured}. Source : ${r.source} (référence fixée le ${r.fixed_on}, avant calcul).`,
+    });
+  }
   // Seuls les rapports qui couvrent explicitement cet indicateur comptent.
   for (const r of reports.filter((x) => x.indicators.includes(ind.id))) {
     const counted = r.checks.filter((c) => c.kind === "critère");

@@ -8,7 +8,8 @@ import { getIndicator, listIndicators } from "./data";
 import type { Indicator, ManifestEntry, Place, Scale, Trend, Variable } from "./schema";
 
 export type Member = { entry: ManifestEntry; variable: Variable; place: Place };
-export type Theme = { id: string; label: string; variables: Variable[]; unit: string };
+/** `unit` null : thème à unités mélangées (ex. CO₂ en ppm, CH₄ en ppb) — pas de matrice ni de carte communes. */
+export type Theme = { id: string; label: string; variables: Variable[]; unit: string | null };
 
 export function members(scale: Scale): Member[] {
   return listIndicators(scale).flatMap((e) => (e.variable && e.place ? [{ entry: e, variable: e.variable, place: e.place }] : []));
@@ -34,10 +35,8 @@ export function themes(scale: Scale): Theme[] {
   for (const m of members(scale)) {
     const t: Theme = out.get(m.variable.theme) ?? { id: m.variable.theme, label: m.variable.theme_label, variables: [], unit: m.entry.unit };
     if (!t.variables.some((v) => v.id === m.variable.id)) t.variables.push(m.variable);
-    if (t.unit !== m.entry.unit) {
-      // Un thème rassemble des variables comparables : des unités différentes signalent une erreur de vocabulaire.
-      throw new Error(`thème « ${t.id} » : unités différentes (${t.unit}, ${m.entry.unit})`);
-    }
+    // Unités différentes dans un thème (gaz à effet de serre…) : permis, mais sans comparaison chiffrée commune.
+    if (t.unit !== m.entry.unit) t.unit = null;
     out.set(t.id, t);
   }
   return [...out.values()].map((t) => ({ ...t, variables: t.variables.sort(byOrder) }));
@@ -59,11 +58,21 @@ export function composites(scale: Scale, theme: string): { variable: Variable; i
 }
 
 /** `slope` null : la série existe mais ne couvre pas toute la période commune (années manquantes). */
+/** Cartes de tête d'un thème : ses composites ; à défaut (thème sans composite), ses stations, une carte chacune. */
+export function headlineCards(scale: Scale, theme: string): { variable: Variable; ind: Indicator; href: string; place: Place }[] {
+  const ms = inTheme(scale, theme);
+  const comps = ms.filter(isComposite);
+  const pick = comps.length ? comps : ms;
+  return pick
+    .sort((a, b) => byOrder(a.variable, b.variable) || a.place.name.localeCompare(b.place.name, "fr"))
+    .map((m) => ({ variable: m.variable, ind: load(m), href: href(m), place: m.place }));
+}
+
 export type Cell = { slope: number | null; low: number | null; high: number | null; href: string };
 export type MatrixRow = { place: string; name: string; isComposite: boolean; cells: Record<string, Cell> };
 export type Matrix = {
   variables: Variable[];
-  unit: string;
+  unit: string | null;
   rows: MatrixRow[];
   period: { start: number; end: number } | null;
   /** Écart entre la pente la plus forte et la plus faible des stations (composite exclu), par variable. */

@@ -278,3 +278,22 @@ Analyse : `docs/validation-p2a.md`.
 - À faire pour P2b : un contrôle de la correction qui porte sur la période ancienne (là où elle agit), pas seulement
   sur la période après la dernière rupture.
 - Publication en production décidée avec les écarts affichés (validation non close).
+
+## Méthode « largeur d'abord » (décision de Grég du 23/10/2026)
+
+Constat : après P0-P2a, une seule case sur 37 de la couverture (paramètres × échelles des instructions du projet)
+était publiée. Décision : publier d'abord **un indicateur par paramètre**, avec une référence publiée fixée avant
+calcul en une ligne et un niveau de confiance affiché ; la validation lourde (critères complets) reste réservée aux
+indicateurs phares. Une page « Couverture » montre l'état de chaque paramètre, trous compris.
+
+- Sonde des sources : `docs/sonde-largeur.md` (formats constatés avant d'écrire les lecteurs).
+- Constructeur générique : `etl/indicators/serie.py` ; lecteurs : `etl/sources/globaux.py`.
+- **Règle de confiance des séries simples** (fixée le 23/10/2026, avant le premier calcul) : « élevée » si tendance
+  significative (Hamed-Rao) et référence publiée satisfaite ; « moyenne » si significative sans référence ou avec une
+  référence non retrouvée ; « faible » si significative seulement sans correction ; « non établi » sinon.
+- Références : dans `etl/config/indicators.yaml`, commitées avant le calcul (champ `fixed_on`). Les régressions
+  de référence (`rate`, `relative_slope`) acceptent jusqu'à 20 % d'années manquantes, sans les compléter.
+- Limite assumée pour les gaz à effet de serre : la référence (taux NOAA) vient du même réseau de mesure que la série ;
+  le contrôle vérifie notre lecture et notre calcul, pas la mesure elle-même.
+- Sources non retenues à ce stade (sonde) : HadSST4 (404), altimétrie NOAA STAR (404), CSIRO et NASA Ozone Watch
+  (injoignables), Global Carbon Budget (404), CERES (compte requis). Foudre : aucune série ouverte longue.

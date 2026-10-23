@@ -9,6 +9,8 @@ import {
   indicatorSchema,
   manifestSchema,
   validationReportSchema,
+  coverageSchema,
+  type Coverage,
   type Indicator,
   type Manifest,
   type Scale,
@@ -72,4 +74,10 @@ export function getValidation(phase: string): ValidationReport | undefined {
   const rel = `validation-${phase}.json`;
   if (!existsSync(join(DATA_DIR, rel))) return undefined;
   return load(rel, validationReportSchema);
+}
+
+/** Couverture du projet (paramètres × échelles). Absente = page vide, jamais de valeur par défaut. */
+export function getCoverage(): Coverage | undefined {
+  if (!existsSync(join(DATA_DIR, "couverture.json"))) return undefined;
+  return load("couverture.json", coverageSchema);
 }

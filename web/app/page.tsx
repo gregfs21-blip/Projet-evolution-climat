@@ -3,7 +3,7 @@ import Link from "next/link";
 import CompositeCards from "@/components/CompositeCards";
 import IndicatorList from "@/components/IndicatorList";
 import { groupedIndicators, listIndicators } from "@/lib/data";
-import { themes } from "@/lib/family";
+import { composites, themes } from "@/lib/family";
 import { SCALE_LABELS } from "@/lib/format";
 import { SCALES } from "@/lib/schema";
 
@@ -39,7 +39,7 @@ export default function Home() {
               </Link>
             </div>
             {ths.length > 0 ? (
-              ths.map((t) => (
+              ths.filter((t) => composites(scale, t.id).length > 0).map((t) => (
                 <div key={t.id} className="space-y-2">
                   {ths.length > 1 && <h3 className="text-sm font-medium text-[var(--muted)]">{t.label}</h3>}
                   <CompositeCards scale={scale} theme={t.id} />

@@ -6,6 +6,14 @@
 themes:
   temperature: Températures annuelles
   extremes-temperature: Extrêmes de température
+  precipitations: Précipitations
+  ensoleillement: Ensoleillement
+  niveau-mer: Niveau de la mer
+  temperature-globale: Température globale
+  ges: Gaz à effet de serre
+  chaleur-ocean: Chaleur des océans
+  banquise: Banquise
+  enso: El Niño
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -18,3 +26,19 @@ variables:
   jours-tx35: {code: TX ≥ 35, label: journées très chaudes (TX ≥ 35 °C), theme: extremes-temperature, order: 2}
   nuits-tn20: {code: TN ≥ 20, label: nuits tropicales (TN ≥ 20 °C), theme: extremes-temperature, order: 3}
   jours-gel: {code: TN ≤ 0, label: jours de gel (TN ≤ 0 °C), theme: extremes-temperature, order: 4}
+
+# --- « largeur d'abord » (23/10/2026) : une série par paramètre
+  rr-cumul: {code: RR, label: précipitations annuelles, theme: precipitations, order: 0}
+  insolation: {code: INS, label: durée d'ensoleillement annuelle, theme: ensoleillement, order: 0}
+  niveau-mer: {code: NM, label: niveau marin moyen annuel, theme: niveau-mer, order: 0}
+  temperature-hadcrut5: {code: HadCRUT5, label: température globale (HadCRUT5), theme: temperature-globale, order: 0}
+  temperature-gistemp: {code: GISTEMP, label: température globale (GISTEMP), theme: temperature-globale, order: 1}
+  temperature-berkeley: {code: Berkeley, label: température globale (Berkeley Earth), theme: temperature-globale, order: 2}
+  co2: {code: CO₂, label: dioxyde de carbone, theme: ges, order: 0}
+  ch4: {code: CH₄, label: méthane, theme: ges, order: 1}
+  n2o: {code: N₂O, label: protoxyde d'azote, theme: ges, order: 2}
+  ohc-700: {code: 0-700 m, label: chaleur de l'océan entre 0 et 700 m, theme: chaleur-ocean, order: 0}
+  ohc-2000: {code: 0-2000 m, label: chaleur de l'océan entre 0 et 2000 m, theme: chaleur-ocean, order: 1}
+  banquise-arctique-septembre: {code: Arctique, label: banquise arctique en septembre, theme: banquise, order: 0}
+  banquise-antarctique-fevrier: {code: Antarctique, label: banquise antarctique en février, theme: banquise, order: 1}
+  oni: {code: ONI, label: indice El Niño (ONI), moyenne annuelle, theme: enso, order: 0}

@@ -67,6 +67,22 @@ const normalsComparisonSchema = z
   .refine((c) => Math.abs(c.difference - (c.second_value - c.first_value)) < 1e-6, "comparaison des normales : difference incohérente");
 export type NormalsComparison = z.infer<typeof normalsComparisonSchema>;
 
+// Référence publiée fixée avant calcul (méthode « largeur d'abord ») et verdict du contrôle.
+const referenceCheckSchema = z.strictObject({
+  statement: z.string().min(1),
+  source: z.string().min(1),
+  source_url: z.string().regex(/^https?:\/\//),
+  kind: z.enum(["slope", "rate", "difference", "relative_slope", "not_significant"]),
+  period: periodSchema,
+  expected_low: z.number().nullable(),
+  expected_high: z.number().nullable(),
+  measured: z.number().nullable(),
+  unit: z.string(),
+  satisfied: z.boolean(),
+  fixed_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+export type ReferenceCheck = z.infer<typeof referenceCheckSchema>;
+
 const stationSchema = z.strictObject({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -114,7 +130,7 @@ const seriesSchema = z
 
 export const indicatorSchema = z
   .strictObject({
-    schema_version: z.literal("1.3"),
+    schema_version: z.literal("1.4"),
     id: z.string().regex(SLUG),
     scale: scaleSchema,
     group: z.string().nullable(),
@@ -132,6 +148,7 @@ export const indicatorSchema = z
     alt_trends: z.array(trendSchema),
     headline: z.enum(["trend", "normals"]),
     normals_comparison: normalsComparisonSchema.nullable(),
+    reference_check: referenceCheckSchema.nullable(),
     breakpoints: z.array(breakpointSchema),
     stations: z.array(stationSchema),
     method_note: z.string().nullable(),
@@ -182,7 +199,7 @@ export type ManifestEntry = z.infer<typeof manifestEntrySchema>;
 
 export const manifestSchema = z
   .strictObject({
-    schema_version: z.literal("1.3"),
+    schema_version: z.literal("1.4"),
     generated_at: isoDate,
     etl_version: z.string(),
     indicators: z.array(manifestEntrySchema),
@@ -227,3 +244,25 @@ export const validationReportSchema = z
     "closure_ok incohérent avec les critères",
   );
 export type ValidationReport = z.infer<typeof validationReportSchema>;
+
+// ---------------------------------------------------------------- Couverture du projet
+// Miroir de Coverage (etl/schema.py). « publie » est calculé par l'ETL à partir du manifeste.
+const coverageCellSchema = z
+  .strictObject({
+    scale: scaleSchema,
+    status: z.enum(["publie", "prevu", "sans-donnee", "instantane"]),
+    source: z.string().nullable(),
+    note: z.string().nullable(),
+    indicators: z.array(z.strictObject({ id: z.string(), title: z.string(), confidence: confidenceSchema })),
+  })
+  .refine((c) => (c.status === "publie") === c.indicators.length > 0, "couverture : « publie » ssi indicateurs publiés");
+export type CoverageCell = z.infer<typeof coverageCellSchema>;
+
+export const coverageSchema = z.strictObject({
+  schema_version: z.literal("1.0"),
+  generated_at: isoDate,
+  parameters: z.array(
+    z.strictObject({ id: z.string().regex(SLUG), label: z.string().min(1), cells: z.array(coverageCellSchema).min(1) }),
+  ),
+});
+export type Coverage = z.infer<typeof coverageSchema>;
