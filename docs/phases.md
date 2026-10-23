@@ -261,3 +261,6 @@ le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts
   l'écart entre normales d'un indice rare (E9) sans le deviner.
 - 23/10/2026 : références E4 fixées (décision de Grég, deux sources concordantes, période 1961-2010, littoral et
   intérieur distingués). Les 34 indicateurs P2a sont activés dans le même commit, avant le premier calcul réel.
+- 23/10/2026, après le premier calcul : correction d'un écart entre le code et la règle de confiance fixée. Un indice
+  rare avec écart significatif entre normales était classé « faible » quand le contrôle A n'était pas évaluable ; la
+  règle dit « au plus moyenne », il est donc « moyenne ». Aucun chiffre ne change (3 libellés de confiance).

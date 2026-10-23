@@ -242,8 +242,9 @@ def confidence(main: Trend | None, rare: bool, comparison: NormalsComparison | N
     from etl.validation import p2a  # import tardif : évite le cycle
 
     if rare:
+        # E9 : « au plus moyenne ». Le contrôle A ne peut que limiter à « moyenne », ce qui est déjà le plafond.
         if comparison is not None and comparison.significant:
-            return "moyenne" if control_ok else "faible"
+            return "moyenne"
         return "non_etabli"
     if main is None:
         return "non_etabli"
