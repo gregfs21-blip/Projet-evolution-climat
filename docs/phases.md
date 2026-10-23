@@ -7,7 +7,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
-| P2 | Extrêmes et eau Gironde : jours > 30/35 °C, nuits tropicales, gelées, précipitations, insolation, SPEI | Critères proposés le 23/10/2026 (ci-dessous), **en attente de validation** | sonde faite |
+| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026 (E4 : références en attente) | P2a en cours |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
@@ -127,10 +127,15 @@ Limites assumées d'avance :
   p = 0,002), compensé sur la moyenne. Mise en garde automatique ajoutée aux indicateurs TN. La règle de
   confiance n'est pas modifiée.
 
-## P2 — PROPOSITION de critères (23/10/2026, non validée, aucun calcul lancé)
+## P2a — Critères de clôture (fixés le 23/10/2026, avant tout calcul)
 
-> Statut : **proposition**. Rien n'est calculé tant que Grég n'a pas tranché les décisions D-A à D-D.
-> À la validation, ce titre deviendra « Critères de clôture (fixés le …, avant tout calcul) ».
+> **Décisions de Grég du 23/10/2026**, avant tout calcul : D-A découpage P2a puis P2b ; D-B méthode C
+> (B en résultat principal, A en contrôle) ; D-C références R3/R4 à confirmer par Grég sur ClimatHD ;
+> D-D critères E1-E10 validés tels quels.
+>
+> **E4 n'est pas encore fixé** : ses fourchettes seront commitées dès que Grég aura relevé les valeurs
+> ClimatHD. D'ici là, **aucun indicateur P2a n'est calculé sur les données réelles** (entrées du registre
+> désactivées), pour que la référence ne puisse pas être choisie après coup.
 
 ### Constat de la sonde (`docs/sonde-p2.md`, 23/10/2026)
 
@@ -144,7 +149,7 @@ Limites assumées d'avance :
   (jusqu'en 2025), Cap-Ferret et Cazaux (jusqu'en 2017), mais les capteurs d'insolation ont changé au fil
   des décennies : rupture instrumentale probable, non corrigée.
 
-### Découpage proposé (décision D-A)
+### Découpage (décision D-A : retenu)
 
 - **P2a — Extrêmes de température** (7 postes de P1) : journées estivales TX ≥ 25 °C, chaudes TX ≥ 30 °C,
   très chaudes TX ≥ 35 °C, nuits tropicales TN ≥ 20 °C, jours de gel TN ≤ 0 °C. Réutilise toute
@@ -153,7 +158,7 @@ Limites assumées d'avance :
   SPEI (bilan RR − ETP Hargreaves, postes ayant TN, TX et RR homogénéisés : Paulin, Cap-Ferret, Cazaux,
   1962-2017). Critères fixés après la clôture de P2a.
 
-### Le problème central de P2a : le quotidien n'est pas homogénéisé (décision D-B)
+### Le problème central de P2a : le quotidien n'est pas homogénéisé (décision D-B : méthode C retenue)
 
 Un déplacement de station ou un changement d'abri décale toutes les températures d'une station : un
 décalage de quelques dixièmes change sensiblement le nombre de jours au-dessus d'un seuil. Météo-France a
@@ -168,7 +173,7 @@ corrigé ces ruptures au pas mensuel (LSH), pas au pas quotidien. Trois méthode
 - **C. B en résultat principal, A en contrôle** (recommandé) : la conclusion n'est publiée que si A et B
   concordent (critère E7).
 
-### Références externes (décision D-C)
+### Références externes (décision D-C : confirmation par Grég sur ClimatHD)
 
 Recueillies **de seconde main** (diagnostic de vulnérabilité du PNR Périgord-Limousin, oct. 2025, p. 28,
 citant ClimatHD) pour la Nouvelle-Aquitaine, 1961-2018 :
@@ -177,7 +182,7 @@ citant ClimatHD) pour la Nouvelle-Aquitaine, 1961-2018 :
 Ces valeurs doivent être **confirmées sur ClimatHD lui-même** (définitions exactes, zone, période) avant
 d'être commitées comme références. Faute de confirmation, E4 devient un critère d'information.
 
-### Critères proposés (seuils à valider, décision D-D)
+### Critères (décision D-D : validés tels quels, E4 en attente de ses références)
 
 | # | Critère | Seuil proposé |
 |---|---|---|
@@ -192,7 +197,7 @@ d'être commitées comme références. Faute de confirmation, E4 devient un crit
 | E9 | Indices rares | Si la médiane annuelle 1961-1990 est inférieure à 5 jours (ex. TX ≥ 35 °C, nuits tropicales sur le littoral), la pente de Sen n'est pas mise en avant : on publie l'écart entre normales 1961-1990 et 1991-2020, avec un test ; confiance au plus « moyenne » |
 | E10 | Technique | Tests et CI verts, contrat v1.2, vocabulaire des variables complété, pages déployées |
 
-**Règle de confiance proposée** (analogue à C7) : « élevée » seulement si Hamed-Rao significatif, E4 et E7
+**Règle de confiance** (analogue à C7) : « élevée » seulement si Hamed-Rao significatif, E4 et E7
 satisfaits, et indice non rare (E9).
 
 **Règle de clôture** : identique à P1 (critères satisfaits, ou chaque échec expliqué dans
