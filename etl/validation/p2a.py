@@ -4,8 +4,8 @@ Les critères et les seuils sont ceux de docs/phases.md, fixés le 23/10/2026 av
 Ce module mesure et publie ; il n'interprète pas. L'analyse des écarts sera rédigée à la main dans
 docs/validation-p2a.md.
 
-E4 (validation externe ClimatHD) : ses fourchettes ne sont pas encore fixées. Tant que REFERENCES est vide,
-E4 est publié « en attente », compte comme non satisfait, et aucune confiance « élevée » n'est possible.
+E4 (validation externe) : références fixées le 23/10/2026 par Grég, avant tout calcul sur données réelles
+(voir REFERENCES). Si REFERENCES est vide, E4 est publié « en attente » et compte comme non satisfait.
 
 Usage : python -m etl.validation.p2a   → écrit docs/validation-p2a-resultats.md et data/processed/validation-p2a.json
 """
@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,10 +23,22 @@ from etl.context import PROCESSED_DIR, RAW_DIR, ROOT
 from etl.indicators import extremes as X
 from etl.schema import Indicator, ValidationCheck, ValidationReport
 
-# E4 : références ClimatHD, à renseigner par un commit explicite avant tout calcul P2a sur données réelles.
-# Format : identifiant d'indice → (borne basse, borne haute) en jours par décennie, période CLIMATHD_WINDOW,
-# avec la définition exacte de l'indice ClimatHD (opérateur et seuil), qui peut différer de celle de E1.
-REFERENCES: dict[str, dict] = {}
+# E4 : références fixées le 23/10/2026 (décision de Grég), AVANT tout calcul P2a sur données réelles.
+# Deux sources concordantes citant les données Météo-France (ClimatHD), de seconde main :
+#   - CNPF Nouvelle-Aquitaine, « Le changement climatique et la forêt en Nouvelle-Aquitaine », 2023, p. 5-6 :
+#     journées chaudes (TX > 25 °C) +4 à +5 j/déc. sur la côte, +6 à +8 j/déc. à l'intérieur ; gelées −1 à −2 j/déc. ;
+#     période 1960-2010 ;
+#   - PNR Périgord-Limousin, diagnostic de vulnérabilité, oct. 2025, p. 28 (ClimatHD, 1961-2018) : mêmes ordres de grandeur.
+# Fourchettes publiées, prises telles quelles (pas d'élargissement), comme pour C3 en P1.
+# `stations` : postes moyennés ; None = membres du composite à réseau constant de la variable.
+REFERENCES: dict[str, dict] = {
+    "R3 littoral": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "journées chaudes (TX > 25 °C), littoral",
+                    "stations": ["33236002", "33529001"], "range": (4.0, 5.0)},          # Cap-Ferret, Cazaux
+    "R3 intérieur": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "journées chaudes (TX > 25 °C), intérieur",
+                     "stations": ["33281001", "33550001"], "range": (6.0, 8.0)},         # Mérignac, Villenave-d'Ornon
+    "R4": {"variable": "TN", "op": "<=", "threshold": 0.0, "definition": "jours de gel (TN ≤ 0 °C), composite",
+           "stations": None, "range": (-2.0, -1.0)},
+}
 
 E5_TOLERANCE = 0.05     # °C
 P2A_VARIABLES = tuple(X.INDICES)
@@ -58,7 +71,12 @@ def external_validation_passed(raw_dir: Path = RAW_DIR) -> bool:
     """E4. Faux tant que les références ne sont pas fixées."""
     if not REFERENCES:
         return False
-    return all(c.satisfied for c in e4(raw_dir))
+    return all(c.satisfied for c in _e4_cached(str(raw_dir)))
+
+
+@lru_cache(maxsize=4)
+def _e4_cached(raw_dir: str) -> tuple[Check, ...]:
+    return tuple(e4(Path(raw_dir)))
 
 
 def e4(raw_dir: Path) -> list[Check]:
@@ -67,16 +85,27 @@ def e4(raw_dir: Path) -> list[Check]:
                       "références R3/R4 en attente de confirmation sur ClimatHD (décision D-C du 23/10/2026)", pending=True)]
     out = []
     w = X.CLIMATHD_WINDOW
-    for index, ref in REFERENCES.items():
-        idx = X.IndexDef(index, ref["variable"], ref["op"], ref["threshold"], index, ref["definition"])
-        members, _ = X.composite_members(idx.variable, raw_dir)
+    names = X.T.station_config()
+    years = list(range(w.start, w.end + 1))
+    for key, ref in REFERENCES.items():
+        idx = X.IndexDef(key, ref["variable"], ref["op"], ref["threshold"], key, ref["definition"])
+        if ref["stations"] is None:
+            members, _ = X.composite_members(idx.variable, raw_dir)
+        else:
+            members = [X.station_daily(idx.variable, sid, raw_dir) for sid in ref["stations"]]
+        name = f"E4 {key} : {ref['definition']} {w.start}-{w.end}"
+        incomplete = [names.get(sd.station.id, {}).get("name", sd.station.id) for sd in members
+                      if any(sd.year_status.get(y) != "homogenized" for y in years)]
+        if incomplete or not members:
+            out.append(Check(name, False, f"non évaluable : années manquantes ou non corrigées pour {incomplete}"))
+            continue
         per = [X.counts(sd, idx) for sd in members]
-        years = list(range(w.start, w.end + 1))
         t = X.annual_trend(years, [sum(c[y] for c in per) / len(per) for y in years], label="E4")
         lo, hi = ref["range"]
-        out.append(Check(f"E4 {ref['definition']} composite {w.start}-{w.end}", lo <= t.slope_per_decade <= hi,
+        who = ", ".join(names.get(sd.station.id, {}).get("name", sd.station.id) for sd in members)
+        out.append(Check(name, lo <= t.slope_per_decade <= hi,
                          f"pente de Sen {t.slope_per_decade:+.2f} j/déc. (IC 95 % {t.slope_ci_low:+.2f} à "
-                         f"{t.slope_ci_high:+.2f}), attendu [{lo} ; {hi}], {len(members)} stations"))
+                         f"{t.slope_ci_high:+.2f}), attendu [{lo:g} ; {hi:g}] ; {who}"))
     return out
 
 

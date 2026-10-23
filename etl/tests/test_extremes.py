@@ -29,14 +29,20 @@ class ExtremesTest(unittest.TestCase):
         X._daily.cache_clear()
         cls.ctx = make_context(cls.raw)
         cls.patches = [mock.patch.object(T, "station_config", return_value=CONFIG),
-                       mock.patch("etl.validation.p1.external_validation_passed", return_value=True)]
+                       mock.patch("etl.validation.p1.external_validation_passed", return_value=True),
+                       # Par défaut, E4 « en attente » : les références réelles portent sur des postes absents des fixtures.
+                       mock.patch.object(p2a, "REFERENCES", {})]
         for p in cls.patches:
             p.start()
+
+    def setUp(self):
+        p2a._e4_cached.cache_clear()
 
     @classmethod
     def tearDownClass(cls):
         for p in cls.patches:
             p.stop()
+        p2a._e4_cached.cache_clear()
         T._department.cache_clear()
         X._daily.cache_clear()
         cls.tmp.cleanup()
@@ -89,6 +95,26 @@ class ExtremesTest(unittest.TestCase):
         # E4 en attente : jamais de confiance « élevée ».
         self.assertNotEqual(ind.confidence, "elevee")
         self.assertTrue(any("E4" in lim for lim in ind.limitations))
+
+    def test_e4_references_par_groupe_de_stations(self):
+        refs = {
+            "R3 test": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "journées chaudes (TX > 25 °C)",
+                        "stations": [A, B], "range": (0.0, 20.0)},
+            "R4 test": {"variable": "TN", "op": "<=", "threshold": 0.0, "definition": "gel", "stations": None,
+                        "range": (-0.1, 0.0)},
+            "R3 incomplet": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "x", "stations": [C],
+                             "range": (0.0, 20.0)},
+        }
+        with mock.patch.object(p2a, "REFERENCES", refs), mock.patch.object(X, "COMPOSITE_SPAN", X.Period(start=1963, end=2022)):
+            by = {c.name.split(" :")[0]: c for c in p2a.e4(self.raw)}
+        self.assertTrue(by["E4 R3 test"].passed)
+        self.assertFalse(by["E4 R4 test"].passed)          # le gel baisse : pente < −0,1 dans la fixture
+        self.assertIn("non évaluable", by["E4 R3 incomplet"].detail)  # C : année 1970 manquante
+
+    def test_operateur_strict(self):
+        strict = X.IndexDef("t", "TX", ">", 25.0, "t", "t")
+        self.assertFalse(strict.hit(25.0))
+        self.assertTrue(X.INDICES["jours-tx25"].hit(25.0))
 
     def test_indice_rare_met_en_avant_les_normales(self):
         ind = X.build_station(self.ctx, "jours-tx35", "station-a")

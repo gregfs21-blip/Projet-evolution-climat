@@ -7,7 +7,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
-| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026 (E4 : références en attente) | P2a en cours |
+| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul | P2a en cours |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
@@ -133,9 +133,9 @@ Limites assumées d'avance :
 > (B en résultat principal, A en contrôle) ; D-C références R3/R4 à confirmer par Grég sur ClimatHD ;
 > D-D critères E1-E10 validés tels quels.
 >
-> **E4 n'est pas encore fixé** : ses fourchettes seront commitées dès que Grég aura relevé les valeurs
-> ClimatHD. D'ici là, **aucun indicateur P2a n'est calculé sur les données réelles** (entrées du registre
-> désactivées), pour que la référence ne puisse pas être choisie après coup.
+> **E4 fixé le 23/10/2026 (décision de Grég), avant tout calcul sur données réelles.** ClimatHD n'étant pas
+> lisible hors navigateur, la référence repose sur deux sources concordantes citant les données Météo-France
+> (voir « Références externes »). Les indicateurs P2a ne sont activés qu'à partir de ce commit.
 
 ### Constat de la sonde (`docs/sonde-p2.md`, 23/10/2026)
 
@@ -179,8 +179,20 @@ Recueillies **de seconde main** (diagnostic de vulnérabilité du PNR Périgord-
 citant ClimatHD) pour la Nouvelle-Aquitaine, 1961-2018 :
 - **R3** journées chaudes (TX > 25 °C) : +6 à +8 jours par décennie (zones intérieures) ;
 - **R4** jours de gel : −1 à −2 jours par décennie.
-Ces valeurs doivent être **confirmées sur ClimatHD lui-même** (définitions exactes, zone, période) avant
-d'être commitées comme références. Faute de confirmation, E4 devient un critère d'information.
+**Fixation du 23/10/2026 (Grég), avant tout calcul.** Seconde source, concordante et plus détaillée :
+CNPF Nouvelle-Aquitaine, « Le changement climatique et la forêt en Nouvelle-Aquitaine », brochure 2023, p. 5-6,
+« d'après les données de Météo France », période **1960-2010** : journées chaudes (TX > 25 °C) **+4 à +5 j/déc.
+sur la côte**, **+6 à +8 j/déc. à l'intérieur** ; gelées **−1 à −2 j/déc.** E4 devient donc :
+
+| Référence | Définition | Postes | Période | Fourchette (j/déc.) |
+|---|---|---|---|---|
+| R3 littoral | TX > 25 °C (strict) | Cap-Ferret, Cazaux | 1961-2010 | [+4 ; +5] |
+| R3 intérieur | TX > 25 °C (strict) | Bordeaux-Mérignac, Villenave-d'Ornon | 1961-2010 | [+6 ; +8] |
+| R4 | TN ≤ 0 °C | composite TN à réseau constant | 1961-2010 | [−2 ; −1] |
+
+Fourchettes publiées prises telles quelles (pas d'élargissement), comme C3 en P1. Limites : sources de seconde
+main ; le seuil des « gelées » n'est pas précisé (TN ≤ 0 °C, convention Météo-France, retenue) ; Bordeaux-Paulin
+(TX depuis 1962, centre urbain) n'entre pas dans le groupe « intérieur ».
 
 ### Critères (décision D-D : validés tels quels, E4 en attente de ses références)
 
@@ -189,7 +201,7 @@ d'être commitées comme références. Faute de confirmation, E4 devient un crit
 | E1 | Exhaustivité | 7 postes × 5 indices traités ; toute exclusion justifiée par écrit |
 | E2 | Complétude (règle ETCCDI) | Un mois est manquant s'il lui manque plus de 3 jours ; une année est manquante si un de ses mois l'est. Aucune valeur complétée |
 | E3 | Brut ≠ homogénéisé | Les années non corrigeables (après 2022, ou hors période homogénéisée LSH) sont affichées « brutes » et exclues des tendances et normales (comme C2) |
-| E4 | Validation externe (R3, R4) | Composite Gironde 1961-2018 : TX > 25 °C dans [+6 ; +8] j/déc., gel dans [−2 ; −1] j/déc. (fourchettes publiées, sous réserve de confirmation) |
+| E4 | Validation externe (R3, R4) | Fixé le 23/10/2026, voir le tableau des références ci-dessus (1961-2010, littoral, intérieur, gel) |
 | E5 | Cohérence du correctif | Méthode B : la série corrigée reproduit la moyenne annuelle LSH à 0,05 °C près chaque année (contrôle automatique du calcul) |
 | E6 | Cohérence inter-stations | Même signe de tendance à toutes les stations pour TX ≥ 25 °C et pour le gel ; tout signe opposé expliqué |
 | E7 | Robustesse méthode | A et B : même signe et intervalles de confiance qui se recouvrent, pour chaque station et chaque indice |
@@ -247,3 +259,5 @@ le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts
 - Composite P2a : réseau constant sur 1961-2022 (couvre E4 1961-2018 et les deux normales), au moins 3 stations.
 - Contrat 1.3 : `headline` (« trend » ou « normals ») et `normals_comparison`, pour que le site mette en avant
   l'écart entre normales d'un indice rare (E9) sans le deviner.
+- 23/10/2026 : références E4 fixées (décision de Grég, deux sources concordantes, période 1961-2010, littoral et
+  intérieur distingués). Les 34 indicateurs P2a sont activés dans le même commit, avant le premier calcul réel.
