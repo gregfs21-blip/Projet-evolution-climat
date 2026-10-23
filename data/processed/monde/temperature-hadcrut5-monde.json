@@ -563,23 +563,41 @@
  },
  "normals": [],
  "trend": {
-  "label": "1850-2025",
+  "label": "1976-2025, 50 dernières années",
   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
   "period": {
-   "start": 1850,
+   "start": 1976,
    "end": 2025
   },
-  "slope_per_decade": 0.0623,
-  "slope_ci_low": 0.0547,
-  "slope_ci_high": 0.0699,
-  "fitted_start": -0.7261,
-  "fitted_end": 0.3639,
-  "p_value": 0.000289,
+  "slope_per_decade": 0.2061,
+  "slope_ci_low": 0.1814,
+  "slope_ci_high": 0.2324,
+  "fitted_start": -0.0462,
+  "fitted_end": 0.9639,
+  "p_value": 0.0,
   "significant": true,
   "alpha": 0.05,
   "p_value_classical": 0.0
  },
- "alt_trends": [],
+ "alt_trends": [
+  {
+   "label": "1850-2025, toute la série",
+   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
+   "period": {
+    "start": 1850,
+    "end": 2025
+   },
+   "slope_per_decade": 0.0623,
+   "slope_ci_low": 0.0547,
+   "slope_ci_high": 0.0699,
+   "fitted_start": -0.7261,
+   "fitted_end": 0.3639,
+   "p_value": 0.000289,
+   "significant": true,
+   "alpha": 0.05,
+   "p_value_classical": 0.0
+  }
+ ],
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": {
@@ -601,7 +619,7 @@
  "breakpoints": [],
  "stations": [],
  "method_note": null,
- "finding": "À l'échelle du globe, la température moyenne de surface a évolué de +0,06 °C par décennie entre 1850 et 2025, soit +1,09 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
+ "finding": "À l'échelle du globe, la température moyenne de surface a évolué de +0,21 °C par décennie entre 1976 et 2025, soit +1,01 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
  "confidence": "elevee",
  "limitations": [
   "Série publiée par Met Office Hadley Centre / CRU, reprise sans modification, sauf la période de référence ramenée à 1961-1990.",
@@ -611,9 +629,9 @@
   "source_name": "Met Office Hadley Centre / CRU — HadCRUT5, température globale",
   "source_url": "https://www.metoffice.gov.uk/hadobs/hadcrut5/",
   "license": "Open Government Licence v3",
-  "extracted_at": "2026-10-23T21:38:43Z",
+  "extracted_at": "2026-10-23T21:42:49Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+4e1451c",
+  "etl_version": "0.1.0+89c0009",
   "homogenized": true
  },
  "is_demo": false

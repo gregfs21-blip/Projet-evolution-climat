@@ -560,23 +560,41 @@
  },
  "normals": [],
  "trend": {
-  "label": "1850-2024",
+  "label": "1975-2024, 50 dernières années",
   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
   "period": {
-   "start": 1850,
+   "start": 1975,
    "end": 2024
   },
-  "slope_per_decade": 0.0675,
-  "slope_ci_low": 0.0598,
-  "slope_ci_high": 0.0751,
-  "fitted_start": -0.7988,
-  "fitted_end": 0.3757,
-  "p_value": 0.000311,
+  "slope_per_decade": 0.2043,
+  "slope_ci_low": 0.1825,
+  "slope_ci_high": 0.2292,
+  "fitted_start": -0.0576,
+  "fitted_end": 0.9434,
+  "p_value": 0.0,
   "significant": true,
   "alpha": 0.05,
   "p_value_classical": 0.0
  },
- "alt_trends": [],
+ "alt_trends": [
+  {
+   "label": "1850-2024, toute la série",
+   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
+   "period": {
+    "start": 1850,
+    "end": 2024
+   },
+   "slope_per_decade": 0.0675,
+   "slope_ci_low": 0.0598,
+   "slope_ci_high": 0.0751,
+   "fitted_start": -0.7988,
+   "fitted_end": 0.3757,
+   "p_value": 0.000311,
+   "significant": true,
+   "alpha": 0.05,
+   "p_value_classical": 0.0
+  }
+ ],
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": {
@@ -598,7 +616,7 @@
  "breakpoints": [],
  "stations": [],
  "method_note": null,
- "finding": "À l'échelle du globe, la température moyenne de surface a évolué de +0,07 °C par décennie entre 1850 et 2024, soit +1,17 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
+ "finding": "À l'échelle du globe, la température moyenne de surface a évolué de +0,20 °C par décennie entre 1975 et 2024, soit +1,00 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
  "confidence": "elevee",
  "limitations": [
   "Série publiée par Berkeley Earth, reprise sans modification, sauf la période de référence ramenée à 1961-1990.",
@@ -608,9 +626,9 @@
   "source_name": "Berkeley Earth — température globale terre-océan",
   "source_url": "https://berkeleyearth.org/data/",
   "license": "CC BY 4.0",
-  "extracted_at": "2026-10-23T21:38:43Z",
+  "extracted_at": "2026-10-23T21:42:49Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+4e1451c",
+  "etl_version": "0.1.0+89c0009",
   "homogenized": true
  },
  "is_demo": false

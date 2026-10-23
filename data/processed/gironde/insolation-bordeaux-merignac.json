@@ -292,23 +292,41 @@
   }
  ],
  "trend": {
-  "label": "1931-2014",
+  "label": "1965-2014, 50 dernières années",
   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
   "period": {
-   "start": 1931,
+   "start": 1965,
    "end": 2014
   },
-  "slope_per_decade": 3.0988,
-  "slope_ci_low": -10.619,
-  "slope_ci_high": 17.4839,
-  "fitted_start": 2056.9901,
-  "fitted_end": 2082.7099,
-  "p_value": 0.679295,
+  "slope_per_decade": 11.5862,
+  "slope_ci_low": -17.3043,
+  "slope_ci_high": 35.8571,
+  "fitted_start": 2031.3638,
+  "fitted_end": 2088.1362,
+  "p_value": 0.55854,
   "significant": false,
   "alpha": 0.05,
-  "p_value_classical": 0.63192
+  "p_value_classical": 0.42196
  },
- "alt_trends": [],
+ "alt_trends": [
+  {
+   "label": "1931-2014, toute la série",
+   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
+   "period": {
+    "start": 1931,
+    "end": 2014
+   },
+   "slope_per_decade": 3.0988,
+   "slope_ci_low": -10.619,
+   "slope_ci_high": 17.4839,
+   "fitted_start": 2056.9901,
+   "fitted_end": 2082.7099,
+   "p_value": 0.679295,
+   "significant": false,
+   "alpha": 0.05,
+   "p_value_classical": 0.63192
+  }
+ ],
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
@@ -334,7 +352,7 @@
   }
  ],
  "method_note": null,
- "finding": "À Bordeaux-Mérignac, la durée annuelle d'ensoleillement a évolué de +3,10 h par décennie entre 1931 et 2014, soit +25,72 h sur la période (pas de tendance significative après correction de l'autocorrélation).",
+ "finding": "À Bordeaux-Mérignac, la durée annuelle d'ensoleillement a évolué de +11,59 h par décennie entre 1965 et 2014, soit +56,77 h sur la période (pas de tendance significative après correction de l'autocorrélation).",
  "confidence": "non_etabli",
  "limitations": [
   "Série homogénéisée par Météo-France (méthode HOMER) ; au-delà de la période homogénéisée, valeurs brutes affichées pour information et exclues des tendances et des normales.",
@@ -346,9 +364,9 @@
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-23T21:38:43Z",
+  "extracted_at": "2026-10-23T21:42:49Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+4e1451c",
+  "etl_version": "0.1.0+89c0009",
   "homogenized": true
  },
  "is_demo": false
