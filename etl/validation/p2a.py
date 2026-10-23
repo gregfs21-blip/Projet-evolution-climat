@@ -228,6 +228,29 @@ def checks(inds: list[Indicator], raw_dir: Path) -> tuple[list[Check], list[str]
     out.append(Check("E8 robustesse au code qualité 9", not changed,
                      f"{len(changed)} conclusion(s) modifiée(s) sur {len([i for i in stations if i.trend])}"))
 
+    # Information (hors critères) : effet de la correction B sur toute la période corrigée.
+    # Le contrôle A ne porte que sur la période après la dernière rupture, où B ≈ brut par construction :
+    # ce tableau montre ce que la correction change là où elle agit vraiment.
+    lines += ["", "### Information — effet de la correction B sur toute la période (brut contre corrigé, mêmes années)", "",
+              "| Indicateur | Période | Pente brute | Pente corrigée | Écart | Même conclusion |", "|---|---|---|---|---|---|"]
+    effects = []
+    for i in stations:
+        if not i.trend:
+            continue
+        idx = X.INDICES[i.variable.id]
+        sd = X.station_daily(idx.variable, i.stations[0].id, raw_dir)
+        run = [y for y in range(i.trend.period.start, i.trend.period.end + 1)]
+        raw = X.counts(sd, idx, use_raw=True)
+        t = X.annual_trend(run, [raw[y] for y in run])
+        same = (t.significant == i.trend.significant) and (not t.significant or (t.slope_per_decade > 0) == (i.trend.slope_per_decade > 0))
+        effects.append(abs(t.slope_per_decade - i.trend.slope_per_decade))
+        lines.append(f"| {i.id} | {run[0]}-{run[-1]} | {t.slope_per_decade:+.2f} | {i.trend.slope_per_decade:+.2f} | "
+                     f"{i.trend.slope_per_decade - t.slope_per_decade:+.2f} | {'oui' if same else '**non**'} |")
+    if effects:
+        out.append(Check("Info effet de la correction B", True, f"écart absolu médian brut − corrigé : "
+                         f"{sorted(effects)[len(effects) // 2]:.2f} j/déc., maximal {max(effects):.2f} j/déc. (détail ci-dessous)",
+                         kind="info"))
+
     # E9 — indices rares : signalés, chiffre mis en avant = écart entre normales.
     rare = [i.id for i in inds if i.headline == "normals"]
     over = [i.id for i in inds if i.headline == "normals" and i.confidence == "elevee"]
