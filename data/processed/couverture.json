@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-23T21:17:17Z",
+ "generated_at": "2026-10-23T21:40:21Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -313,10 +313,26 @@
     },
     {
      "scale": "monde",
-     "status": "prevu",
+     "status": "publie",
      "source": "NASA GISTEMP, HadCRUT5, Berkeley Earth",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "temperature-hadcrut5-monde",
+       "title": "Température globale — HadCRUT5 (Met Office, CRU)",
+       "confidence": "elevee"
+      },
+      {
+       "id": "temperature-berkeley-monde",
+       "title": "Température globale — Berkeley Earth",
+       "confidence": "elevee"
+      },
+      {
+       "id": "temperature-gistemp-monde",
+       "title": "Température globale — GISTEMP v4 (NASA)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -334,7 +350,7 @@
     {
      "scale": "monde",
      "status": "prevu",
-     "source": "HadSST4 (Met Office)",
+     "source": "HadSST4 (Met Office) : lien de la sonde en 404, autre accès à trouver",
      "note": null,
      "indicators": []
     }
@@ -405,10 +421,61 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
+     "status": "publie",
      "source": "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "rr-cumul-gironde",
+       "title": "Précipitations annuelles en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-bordeaux-paulin",
+       "title": "Précipitations annuelles à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-hourtin",
+       "title": "Précipitations annuelles à Hourtin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-st-symphorien",
+       "title": "Précipitations annuelles à St-Symphorien",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-belin-beliet",
+       "title": "Précipitations annuelles à Belin-Beliet",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-captieux",
+       "title": "Précipitations annuelles à Captieux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-lacanau",
+       "title": "Précipitations annuelles à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-cap-ferret",
+       "title": "Précipitations annuelles à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-sauternes",
+       "title": "Précipitations annuelles à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-cazaux",
+       "title": "Précipitations annuelles à Cazaux",
+       "confidence": "non_etabli"
+      }
+     ]
     },
     {
      "scale": "france",
@@ -425,10 +492,16 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
+     "status": "publie",
      "source": "Météo-France LSH IN (Mérignac, homogénéisé 1931-2014)",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "insolation-bordeaux-merignac",
+       "title": "Ensoleillement annuel à Bordeaux-Mérignac",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -517,10 +590,21 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
+     "status": "publie",
      "source": "NSIDC Sea Ice Index",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "banquise-arctique-septembre-monde",
+       "title": "Banquise arctique en septembre (minimum annuel)",
+       "confidence": "elevee"
+      },
+      {
+       "id": "banquise-antarctique-fevrier-monde",
+       "title": "Banquise antarctique en février (minimum annuel)",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -530,15 +614,34 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
-     "source": "Marégraphes PSMSL (façade atlantique)",
+     "status": "publie",
+     "source": "Marégraphe PSMSL d'Arcachon-Eyrac",
+     "note": "Niveau relatif : inclut les mouvements verticaux du sol. Le Verdon écarté : moins de 10 années valides au PSMSL (calcul du 23/10/2026).",
+     "indicators": [
+      {
+       "id": "niveau-mer-arcachon-eyrac",
+       "title": "Niveau marin à Arcachon-Eyrac",
+       "confidence": "non_etabli"
+      }
+     ]
+    },
+    {
+     "scale": "france",
+     "status": "publie",
+     "source": "Marégraphe PSMSL de Brest, l'un des plus longs du monde",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "niveau-mer-brest",
+       "title": "Niveau marin à Brest",
+       "confidence": "elevee"
+      }
+     ]
     },
     {
      "scale": "monde",
      "status": "prevu",
-     "source": "Altimétrie satellitaire (NOAA STAR), reconstruction CSIRO",
+     "source": "Altimétrie satellitaire : liens NOAA STAR et CSIRO de la sonde injoignables, autre accès à trouver",
      "note": null,
      "indicators": []
     }
@@ -550,10 +653,21 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
+     "status": "publie",
      "source": "NOAA NCEI",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "ohc-700-monde",
+       "title": "Chaleur de l'océan mondial, 0 à 700 m",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "ohc-2000-monde",
+       "title": "Chaleur de l'océan mondial, 0 à 2000 m",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -576,10 +690,26 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
+     "status": "publie",
      "source": "NOAA GML",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "co2-monde",
+       "title": "Dioxyde de carbone (CO₂), moyenne mondiale",
+       "confidence": "elevee"
+      },
+      {
+       "id": "ch4-monde",
+       "title": "Méthane (CH₄), moyenne mondiale",
+       "confidence": "elevee"
+      },
+      {
+       "id": "n2o-monde",
+       "title": "Protoxyde d'azote (N₂O), moyenne mondiale",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -667,10 +797,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
+     "status": "publie",
      "source": "NOAA CPC, indice ONI",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "oni-monde",
+       "title": "El Niño : indice ONI, moyenne annuelle",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },

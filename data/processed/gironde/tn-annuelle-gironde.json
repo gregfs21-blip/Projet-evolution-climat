@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3",
+ "schema_version": "1.4",
  "id": "tn-annuelle-gironde",
  "scale": "gironde",
  "group": "Synthèse Gironde",
@@ -305,6 +305,7 @@
  ],
  "headline": "trend",
  "normals_comparison": null,
+ "reference_check": null,
  "breakpoints": [
   {
    "time": "1988",
@@ -448,9 +449,9 @@
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-23T17:05:05Z",
+  "extracted_at": "2026-10-23T21:38:43Z",
   "script": "etl/indicators/temperature.py",
-  "etl_version": "0.1.0+95e9a1f",
+  "etl_version": "0.1.0+4e1451c",
   "homogenized": true
  },
  "is_demo": false
