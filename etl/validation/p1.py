@@ -8,6 +8,7 @@ Ce module ne les interprète pas : il mesure et publie. L'analyse des écarts es
 rédigée à la main dans docs/validation-p1.md.
 
 Usage : python -m etl.validation.p1   → écrit docs/validation-p1-resultats.md
+                                         et data/processed/validation-p1.json
 """
 
 from __future__ import annotations
@@ -22,7 +23,7 @@ from pathlib import Path
 
 from etl.context import PROCESSED_DIR, RAW_DIR, ROOT
 from etl.indicators import temperature as T
-from etl.schema import Indicator
+from etl.schema import Indicator, ValidationCheck, ValidationReport
 from etl.sources import openmeteo_era5 as era5
 from etl.stats.trend import annual_trend, ols_slope_per_decade
 
@@ -47,6 +48,7 @@ ERA5_START, ERA5_END = "1958-12-01", "2022-12-31"   # décembre 1958 : hiver 195
 ACCEPTED = {"C3 TX composite 1959-2009": "écart accepté le 23/10/2026"}
 
 OUT = ROOT / "docs" / "validation-p1-resultats.md"
+OUT_JSON = PROCESSED_DIR / "validation-p1.json"   # lu par le site (encart « Résultats validés »)
 
 
 @dataclass(frozen=True)
@@ -299,6 +301,22 @@ def internal_checks(inds: list[Indicator], raw_dir: Path) -> tuple[list[Check], 
     return checks, lines
 
 
+def build_report(checks: list[Check], verdict: str, indicators: list[str]) -> ValidationReport:
+    """Version structurée du tableau publié, pour le site. Même contenu, aucune réinterprétation."""
+    from datetime import datetime, timezone
+
+    counted = [c for c in checks if c.kind == "critère"]
+    return ValidationReport(
+        phase="p1",
+        generated_at=datetime.now(timezone.utc).replace(microsecond=0),
+        closure_ok=all(c.satisfied for c in counted),
+        verdict=verdict,
+        indicators=indicators,
+        checks=[ValidationCheck(name=c.name, kind=c.kind, status=c.status, satisfied=c.satisfied, detail=c.detail)
+                for c in checks],
+    )
+
+
 def main() -> int:
     inds = load_indicators()
     ext = c3() + c4bis() + c4()
@@ -323,6 +341,9 @@ def main() -> int:
         "",
     ]
     OUT.write_text("\n".join(md), encoding="utf-8")
+    # Périmètre de P1 : les températures (TN, TM, TX). Les indicateurs des phases suivantes n'en relèvent pas.
+    scope = [i.id for i in inds if i.id.split("-")[0] in ("tn", "tm", "tx")]
+    OUT_JSON.write_text(build_report(checks, verdict, scope).model_dump_json(indent=2) + "\n", encoding="utf-8")
     print("\n".join(f"[{c.status}] {c.name} : {c.detail}" for c in checks))
     print(verdict)
     # Code de sortie 0 même en cas d'écart : un écart se documente, il ne bloque pas la publication.

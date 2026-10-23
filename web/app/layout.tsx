@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 
-import { getManifest } from "@/lib/data";
-import { fmtDateTime } from "@/lib/format";
+import NavLinks from "@/components/NavLinks";
+import { getManifest, listIndicators } from "@/lib/data";
+import { fmtDateTime, SCALE_LABELS } from "@/lib/format";
+import { SCALES } from "@/lib/schema";
 import "./globals.css";
 
 const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-plex-sans" });
@@ -14,13 +16,16 @@ export const metadata: Metadata = {
   description: "Évolution du climat en Gironde, en France et dans le monde, à partir de données ouvertes.",
 };
 
-const NAV = [
-  { href: "/gironde", label: "Gironde" },
-  { href: "/france", label: "France" },
-  { href: "/monde", label: "Monde" },
-  { href: "/synthese", label: "Synthèse" },
-  { href: "/methode", label: "Méthode" },
-];
+// Une entrée sans contenu publié reste accessible mais s'affiche « à venir », avec sa phase :
+// le menu ne promet pas ce que le site n'a pas encore.
+function nav() {
+  const scales = SCALES.map((s) => ({
+    href: `/${s}`,
+    label: SCALE_LABELS[s].name,
+    soon: listIndicators(s).length === 0 ? SCALE_LABELS[s].phaseCode : null,
+  }));
+  return [...scales, { href: "/synthese", label: "Synthèse", soon: "P8" }, { href: "/methode", label: "Méthode", soon: null }];
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const manifest = getManifest();
@@ -33,11 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="mr-auto font-semibold tracking-tight">
               Évolution climatique
             </Link>
-            {NAV.map((n) => (
-              <Link key={n.href} href={n.href} className="text-sm text-[var(--muted)] hover:text-[var(--ink)]">
-                {n.label}
-              </Link>
-            ))}
+            <NavLinks items={nav()} />
           </nav>
         </header>
         <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>

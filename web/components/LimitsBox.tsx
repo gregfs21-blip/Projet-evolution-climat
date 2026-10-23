@@ -1,12 +1,13 @@
 // Encart limites : tout ce qu'il faut pour juger de la solidité du chiffre affiché.
+// Affiché dans la section repliable « Limites et traçabilité » de la page indicateur.
 import { fmtDateTime } from "@/lib/format";
 import type { Indicator } from "@/lib/schema";
 
 export default function LimitsBox({ ind }: { ind: Indicator }) {
   const p = ind.provenance;
   return (
-    <aside className="rounded-md border border-[var(--rule)] p-4 text-sm">
-      <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Limites et traçabilité</h2>
+    <aside className="rounded-md border border-[var(--rule)] p-4 text-sm" aria-label="Limites et traçabilité">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Limites</h3>
       <ul className="mb-4 list-disc space-y-1 pl-5">
         {ind.limitations.map((l) => (
           <li key={l}>{l}</li>

@@ -13,7 +13,7 @@ Sources ouvertes ──► ETL Python (GitHub Actions, mensuel) ──► data/p
 | Dossier | Rôle |
 |---|---|
 | `etl/` | Calcul scientifique. `schema.py` = contrat de données, `pipeline.py` = orchestrateur, `config/indicators.yaml` = registre des indicateurs |
-| `data/processed/` | Résultats publiés (JSON + `manifest.json`). Seule interface entre l'ETL et le site |
+| `data/processed/` | Résultats publiés (JSON + `manifest.json`, rapports `validation-<phase>.json`). Seule interface entre l'ETL et le site |
 | `data/raw/` | Cache des téléchargements, hors Git |
 | `web/` | Site Next.js (App Router, TypeScript, Tailwind, ECharts, zod) |
 | `.github/workflows/` | `ci.yml` (tests à chaque push), `etl.yml` (exécution mensuelle) |
@@ -30,6 +30,8 @@ par la CI côté Python, puis par le build côté site.
 3. `python -m etl.pipeline --only <id>` puis `python -m etl.validate`.
 
 La page `/<échelle>/<id>` apparaît automatiquement au build suivant. Aucun code côté site.
+Un identifiant de la forme `tn|tm|tx-annuelle-<lieu>` rattache en plus l'indicateur à sa famille
+(matrice, superposition, carte, navigation entre lieux) ; `<lieu>` = l'échelle désigne le composite.
 
 ## Lancer en local
 
