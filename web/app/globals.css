@@ -11,6 +11,8 @@
   --cold: #2c66a3;
   --accent: #0e6f68;
   --good: #2e7a34;
+  --good-soft: #f1f8f1;
+  --card: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,6 +27,8 @@
     --cold: #6fa3dc;
     --accent: #3fb8ad;
     --good: #6cc070;
+    --good-soft: #142219;
+    --card: #181b1f;
   }
 }
 
@@ -56,14 +60,13 @@ body {
   );
 }
 
-/* Marqueurs de la carte des stations : du bleu (pente la plus faible) au rouge (la plus forte). */
+/* Marqueurs de la carte des stations : couleur posée par le script, sur l'échelle absolue de lib/heat.ts. */
 .station-marker {
   display: inline-block;
   padding: 2px 6px;
   border-radius: 9999px;
   font: 500 12px/1.4 var(--font-mono);
-  color: #fff;
-  background: color-mix(in srgb, var(--warm) calc(var(--k) * 100%), var(--cold));
+  border: 1px solid #fff;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
   text-decoration: none;
   white-space: nowrap;
@@ -74,4 +77,24 @@ body {
   text-shadow: 0 0 3px #fff, 0 0 3px #fff;
   white-space: nowrap;
   pointer-events: none;
+}
+
+/* Case « pas de série » des matrices : hachures discrètes, pour qu'une absence ne se lise pas comme une valeur. */
+.hatch {
+  background: repeating-linear-gradient(45deg, var(--hover), var(--hover) 4px, transparent 4px, transparent 8px);
+}
+
+/* Sections repliables : le triangle tourne à l'ouverture. */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details > summary .chevron {
+  display: inline-block;
+  transition: transform 0.15s;
+}
+details[open] > summary .chevron {
+  transform: rotate(90deg);
 }

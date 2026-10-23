@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "phase": "p1",
+  "generated_at": "2026-10-23T08:42:07Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits (écarts acceptés compris).",
+  "indicators": [
+    "tm-annuelle-bordeaux-merignac",
+    "tm-annuelle-bordeaux-paulin",
+    "tm-annuelle-cap-ferret",
+    "tm-annuelle-cazaux",
+    "tm-annuelle-gironde",
+    "tm-annuelle-villenave-d-ornon",
+    "tn-annuelle-bordeaux-merignac",
+    "tn-annuelle-bordeaux-paulin",
+    "tn-annuelle-cap-ferret",
+    "tn-annuelle-cazaux",
+    "tn-annuelle-gironde",
+    "tn-annuelle-lacanau",
+    "tn-annuelle-sauternes",
+    "tn-annuelle-villenave-d-ornon",
+    "tx-annuelle-bordeaux-merignac",
+    "tx-annuelle-bordeaux-paulin",
+    "tx-annuelle-cap-ferret",
+    "tx-annuelle-cazaux",
+    "tx-annuelle-gironde",
+    "tx-annuelle-villenave-d-ornon"
+  ],
+  "checks": [
+    {
+      "name": "C1 TN",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "7/7 séries LSH traitées"
+    },
+    {
+      "name": "C1 TX",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "5/5 séries LSH traitées"
+    },
+    {
+      "name": "C3 TN composite 1959-2009",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "pente de Sen +0.294 °C/déc. (IC 95 % +0.183 à +0.395), attendu [0.15 ; 0.35], 6 stations"
+    },
+    {
+      "name": "C3 TX composite 1959-2009",
+      "kind": "critère",
+      "status": "☑ écart accepté le 23/10/2026",
+      "satisfied": true,
+      "detail": "pente de Sen +0.354 °C/déc. (IC 95 % +0.237 à +0.457), attendu [0.25 ; 0.35], 4 stations"
+    },
+    {
+      "name": "C4bis Villenave TM annuelle 1979-2022",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "dérive LSH − ERA5 : pente +0.035 °C/déc. (IC 95 % -0.002 à +0.070), Hamed-Rao p = 0.187 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.14 °C ; maille ERA5 44.750 N ; -0.500 E, altitude 24 m (demandé 44.790 ; -0.577)"
+    },
+    {
+      "name": "C4bis (info) Villenave TN annuelle 1979-2022",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": false,
+      "detail": "dérive LSH − ERA5 : pente +0.099 °C/déc. (IC 95 % +0.057 à +0.139), Hamed-Rao p = 0.002 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.05 °C"
+    },
+    {
+      "name": "C4bis (info) Villenave TX annuelle 1979-2022",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": true,
+      "detail": "dérive LSH − ERA5 : pente -0.045 °C/déc. (IC 95 % -0.088 à -0.010), Hamed-Rao p = 0.078 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.24 °C"
+    },
+    {
+      "name": "C4bis (info) Villenave TM annuelle 1959-2019",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": true,
+      "detail": "dérive LSH − ERA5 : pente +0.029 °C/déc. (IC 95 % +0.004 à +0.046), Hamed-Rao p = 0.062 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.09 °C"
+    },
+    {
+      "name": "C4bis (info) Villenave TM hiver 1979-2022",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": true,
+      "detail": "dérive LSH − ERA5 : pente +0.037 °C/déc. (IC 95 % -0.016 à +0.086), Hamed-Rao p = 0.212 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.07 °C"
+    },
+    {
+      "name": "C4bis (info) Villenave TM printemps 1979-2022",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": false,
+      "detail": "dérive LSH − ERA5 : pente +0.045 °C/déc. (IC 95 % +0.011 à +0.075), Hamed-Rao p = 0.010 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.19 °C"
+    },
+    {
+      "name": "C4bis (info) Villenave TM été 1979-2022",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": true,
+      "detail": "dérive LSH − ERA5 : pente +0.024 °C/déc. (IC 95 % -0.047 à +0.102), Hamed-Rao p = 0.608 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.25 °C"
+    },
+    {
+      "name": "C4bis (info) Villenave TM automne 1979-2022",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": true,
+      "detail": "dérive LSH − ERA5 : pente +0.024 °C/déc. (IC 95 % -0.018 à +0.069), Hamed-Rao p = 0.288 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.05 °C"
+    },
+    {
+      "name": "C4 Villenave TM hiver 1959-2019",
+      "kind": "retiré",
+      "status": "↩ retiré, pour information",
+      "satisfied": false,
+      "detail": "régression linéaire +0.215, Sen +0.192, publié +0.13 °C/déc., écart +0.085 (tolérance ±0.05) — référence jugée invalide"
+    },
+    {
+      "name": "C4 Villenave TM printemps 1959-2019",
+      "kind": "retiré",
+      "status": "↩ retiré, pour information",
+      "satisfied": false,
+      "detail": "régression linéaire +0.364, Sen +0.370, publié +0.25 °C/déc., écart +0.114 (tolérance ±0.05) — référence jugée invalide"
+    },
+    {
+      "name": "C4 Villenave TM été 1959-2019",
+      "kind": "retiré",
+      "status": "↩ retiré, pour information",
+      "satisfied": false,
+      "detail": "régression linéaire +0.381, Sen +0.387, publié +0.23 °C/déc., écart +0.151 (tolérance ±0.05) — référence jugée invalide"
+    },
+    {
+      "name": "C4 Villenave TM automne 1959-2019",
+      "kind": "retiré",
+      "status": "↩ retiré, pour information",
+      "satisfied": false,
+      "detail": "régression linéaire +0.260, Sen +0.253, publié +0.12 °C/déc., écart +0.140 (tolérance ±0.05) — référence jugée invalide"
+    },
+    {
+      "name": "C5 TN",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "médiane +0.343 ; 0 station(s) à plus de 0.1 de la médiane"
+    },
+    {
+      "name": "C5 TX",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "médiane +0.429 ; 0 station(s) à plus de 0.1 de la médiane"
+    },
+    {
+      "name": "C5 TM",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "médiane +0.384 ; 0 station(s) à plus de 0.1 de la médiane"
+    },
+    {
+      "name": "C6",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "20 rupture(s) détectée(s), 4 marquée(s) artefact possible, 0 encore significative(s) après retrait de la tendance"
+    },
+    {
+      "name": "C7",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "0 série(s) dont la conclusion change avec la correction"
+    },
+    {
+      "name": "C8",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "métadonnées Météo-France complètes"
+    }
+  ]
+}

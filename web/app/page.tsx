@@ -1,59 +1,63 @@
 import Link from "next/link";
 
+import CompositeCards from "@/components/CompositeCards";
 import IndicatorList from "@/components/IndicatorList";
-import { getManifest, groupedIndicators, listIndicators } from "@/lib/data";
+import { groupedIndicators, listIndicators } from "@/lib/data";
+import { composites } from "@/lib/family";
 import { SCALE_LABELS } from "@/lib/format";
 import { SCALES } from "@/lib/schema";
 
 export default function Home() {
-  const manifest = getManifest();
-  const onlyDemo = manifest.indicators.length > 0 && manifest.indicators.every((e) => e.is_demo);
+  const published = SCALES.filter((s) => listIndicators(s).length > 0);
+  const upcoming = SCALES.filter((s) => listIndicators(s).length === 0);
 
   return (
     <div className="space-y-12">
-      <section className="max-w-2xl space-y-4">
+      <section className="max-w-2xl space-y-3">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Comment évolue le climat, ici et ailleurs ?</h1>
         <p className="text-[var(--muted)]">
-          Chaque chiffre de ce site est calculé à partir de données ouvertes, avec sa méthode, sa source et son niveau
-          de confiance. Les tendances sont testées statistiquement ; ce qui n&apos;est pas établi est présenté comme tel.
+          Chaque chiffre est calculé à partir de données ouvertes, avec sa méthode, sa source et son niveau de
+          confiance. Les tendances sont testées statistiquement ; ce qui n&apos;est pas établi est présenté comme tel.
         </p>
-        {onlyDemo && (
-          <p className="text-sm">
-            <strong>Phase 0 :</strong> seul un indicateur de démonstration est publié. Les premiers résultats réels
-            (températures de Bordeaux-Mérignac) arrivent en phase 1.
-          </p>
-        )}
       </section>
 
-      {SCALES.map((scale) => {
-        const all = listIndicators(scale);
-        // L'accueil ne montre que les synthèses ; le détail par station est sur la page de l'échelle.
-        const synth = groupedIndicators(scale).find(([g]) => g.startsWith("Synthèse"));
-        const items = synth ? synth[1] : all;
+      {published.map((scale) => {
         const label = SCALE_LABELS[scale];
+        const n = listIndicators(scale).length;
+        const hasComposites = composites(scale).length > 0;
+        const synth = groupedIndicators(scale).find(([g]) => g.startsWith("Synthèse"));
         return (
           <section key={scale} className="space-y-3">
-            <div className="flex items-baseline justify-between gap-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h2 className="text-xl font-semibold">
                 <Link href={`/${scale}`} className="hover:underline">
                   {label.name}
                 </Link>
               </h2>
-              <Link href={`/${scale}`} className="text-xs text-[var(--muted)] hover:underline">
-                {all.length} indicateur{all.length > 1 ? "s" : ""}
+              <Link href={`/${scale}`} className="text-sm text-[var(--muted)] hover:underline">
+                {n} indicateur{n > 1 ? "s" : ""}, stations comparées →
               </Link>
             </div>
-            <p className="text-sm text-[var(--muted)]">{label.blurb}</p>
-            {items.length > 0 ? (
-              <IndicatorList items={items} />
-            ) : (
-              <p className="border-y border-[var(--rule)] py-3 text-sm text-[var(--muted)]">
-                Aucun indicateur publié pour l&apos;instant ({label.phase}).
-              </p>
-            )}
+            {hasComposites ? <CompositeCards scale={scale} /> : <IndicatorList items={synth ? synth[1] : listIndicators(scale)} />}
           </section>
         );
       })}
+
+      {upcoming.length > 0 && (
+        <section className="space-y-2 border-t border-[var(--rule)] pt-4">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">À venir</h2>
+          <ul className="space-y-1 text-sm">
+            {upcoming.map((scale) => (
+              <li key={scale}>
+                <span className="font-medium">{SCALE_LABELS[scale].name}</span>{" "}
+                <span className="text-[var(--muted)]">
+                  ({SCALE_LABELS[scale].phase}) : {SCALE_LABELS[scale].blurb}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

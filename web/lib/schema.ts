@@ -135,3 +135,30 @@ export const manifestSchema = z.strictObject({
   indicators: z.array(manifestEntrySchema),
 });
 export type Manifest = z.infer<typeof manifestSchema>;
+
+// ---------------------------------------------------------------- Rapport de validation de phase
+// Miroir de ValidationReport (etl/schema.py). Fichier data/processed/validation-<phase>.json.
+const validationCheckSchema = z.strictObject({
+  name: z.string().min(1),
+  kind: z.enum(["critère", "info", "retiré"]),
+  status: z.string().min(1),
+  satisfied: z.boolean(),
+  detail: z.string().min(1),
+});
+export type ValidationCheck = z.infer<typeof validationCheckSchema>;
+
+export const validationReportSchema = z
+  .strictObject({
+    schema_version: z.literal("1.0"),
+    phase: z.string().regex(/^p[0-9]+$/),
+    generated_at: isoDate,
+    closure_ok: z.boolean(),
+    verdict: z.string().min(1),
+    indicators: z.array(z.string()).min(1),
+    checks: z.array(validationCheckSchema).min(1),
+  })
+  .refine(
+    (r) => r.closure_ok === r.checks.filter((c) => c.kind === "critère").every((c) => c.satisfied),
+    "closure_ok incohérent avec les critères",
+  );
+export type ValidationReport = z.infer<typeof validationReportSchema>;

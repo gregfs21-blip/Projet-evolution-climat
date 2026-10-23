@@ -126,3 +126,20 @@ Limites assumées d'avance :
   clôture sont satisfaits : **P1 close**. Réserve : écart significatif sur les minimales seules (+0,099,
   p = 0,002), compensé sur la moyenne. Mise en garde automatique ajoutée aux indicateurs TN. La règle de
   confiance n'est pas modifiée.
+
+## Journal ergonomie (entre P1 et P2)
+
+- 23/10/2026 : refonte de l'affichage, sans changement de calcul ni de contrat des indicateurs (v1.1).
+  - Page d'échelle : constat calculé (aucun texte rédigé à la main), chiffres-clés des composites,
+    stations superposées, matrice lieux × variables sur la période commune, carte avec sélecteur TN/TM/TX.
+  - **Correction de la carte** : la couleur était normalisée entre le minimum et le maximum observés
+    (0,343 en bleu, 0,361 en rouge pour un écart très inférieur à l'IC). Échelle désormais absolue et
+    fixe (`web/lib/heat.ts`, ±0,5 °C/déc.), commune à la carte et à la matrice.
+  - Page indicateur : bandeau tendance / cumul / normales, navigation entre lieux et variables, bascule
+    anomalie ↔ valeur absolue, superposition du composite, justification du niveau de confiance calculée
+    depuis le JSON, détail technique replié, export CSV et JSON.
+  - Menu : rubriques sans contenu grisées avec leur phase.
+  - `etl.validation.p1` publie aussi `data/processed/validation-p1.json` (schéma `ValidationReport` 1.0,
+    contrôlé par `etl.validate`), affiché tel quel par le site. Il liste les indicateurs qu'il couvre.
+- Dette assumée : la variable et le lieu sont lus dans l'identifiant (`tn-annuelle-<lieu>`). Un indicateur
+  hors de ce motif reste listé normalement. À faire en P2 : ajouter `variable` et `place` au contrat.

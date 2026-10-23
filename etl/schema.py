@@ -191,3 +191,36 @@ class Manifest(_Strict):
         if len(set(keys)) != len(keys):
             raise ValueError("couple (scale, id) dupliqué dans le manifeste")
         return self
+
+
+# ---------------------------------------------------------------- Rapport de validation de phase
+# Fichier distinct des indicateurs (data/processed/validation-<phase>.json), avec sa propre version.
+# Le site l'affiche tel quel : il ne réinterprète aucun critère.
+
+VALIDATION_SCHEMA_VERSION = "1.0"
+CheckKind = Literal["critère", "info", "retiré"]
+
+
+class ValidationCheck(_Strict):
+    name: str = Field(min_length=1)
+    kind: CheckKind = Field(description="« critère » compte pour la clôture ; « info » et « retiré » sont publiés sans effet")
+    status: str = Field(min_length=1, description="Libellé lisible, ex. « ✅ conforme »")
+    satisfied: bool = Field(description="Conforme, ou écart accepté explicitement")
+    detail: str = Field(min_length=1)
+
+
+class ValidationReport(_Strict):
+    schema_version: Literal["1.0"] = VALIDATION_SCHEMA_VERSION
+    phase: str = Field(pattern=r"^p[0-9]+$")
+    generated_at: datetime
+    closure_ok: bool = Field(description="Tous les critères comptant pour la clôture sont satisfaits")
+    verdict: str = Field(min_length=1)
+    indicators: list[str] = Field(min_length=1, description="Identifiants des indicateurs couverts par cette validation")
+    checks: list[ValidationCheck] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _coherent(self) -> "ValidationReport":
+        counted = [c for c in self.checks if c.kind == "critère"]
+        if self.closure_ok != all(c.satisfied for c in counted):
+            raise ValueError("closure_ok incohérent avec les critères")
+        return self

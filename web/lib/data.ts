@@ -1,11 +1,19 @@
 // Couche données : seule partie du site qui lit les fichiers.
 // Appelée uniquement au build (pages statiques). Un fichier invalide fait
 // échouer le build : aucune page ne peut afficher silencieusement un résultat faux.
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { z } from "zod";
 
-import { indicatorSchema, manifestSchema, type Indicator, type Manifest, type Scale } from "./schema";
+import {
+  indicatorSchema,
+  manifestSchema,
+  validationReportSchema,
+  type Indicator,
+  type Manifest,
+  type Scale,
+  type ValidationReport,
+} from "./schema";
 
 const DATA_DIR = join(process.cwd(), ".data");
 
@@ -30,13 +38,19 @@ export function listIndicators(scale: Scale) {
   return getManifest().indicators.filter((e) => e.scale === scale);
 }
 
+const indicatorCache = new Map<string, Indicator>();
+
 export function getIndicator(scale: Scale, id: string): Indicator | undefined {
+  const key = `${scale}/${id}`;
+  const cached = indicatorCache.get(key);
+  if (cached) return cached;
   const entry = getManifest().indicators.find((e) => e.scale === scale && e.id === id);
   if (!entry) return undefined;
   const ind = load(entry.path, indicatorSchema);
   if (ind.scale !== scale || ind.id !== id) {
     throw new Error(`${entry.path} : scale/id incohérents avec le manifeste`);
   }
+  indicatorCache.set(key, ind);
   return ind;
 }
 
@@ -50,22 +64,12 @@ export function groupedIndicators(scale: Scale) {
   return [...groups.entries()].sort(([a], [b]) => Number(b.startsWith("Synthèse")) - Number(a.startsWith("Synthèse")));
 }
 
-/** Points de carte : une station par indicateur mono-station dont l'identifiant commence par `prefix`. */
-export function stationPoints(scale: Scale, prefix: string, trendLabelStart: string) {
-  return listIndicators(scale)
-    .filter((e) => e.id.startsWith(prefix))
-    .map((e) => getIndicator(scale, e.id)!)
-    .filter((ind) => ind.stations.length === 1)
-    .map((ind) => {
-      const st = ind.stations[0]!;
-      const t = ind.alt_trends.find((a) => a.label.startsWith(trendLabelStart));
-      return {
-        id: st.id,
-        name: st.name,
-        lat: st.latitude,
-        lon: st.longitude,
-        value: t ? t.slope_per_decade : null,
-        href: `/${scale}/${ind.id}`,
-      };
-    });
+/**
+ * Rapport de validation d'une phase, s'il est publié. Absent = rien n'est affiché (jamais de valeur
+ * par défaut). Présent mais invalide = le build échoue, comme pour un indicateur.
+ */
+export function getValidation(phase: string): ValidationReport | undefined {
+  const rel = `validation-${phase}.json`;
+  if (!existsSync(join(DATA_DIR, rel))) return undefined;
+  return load(rel, validationReportSchema);
 }

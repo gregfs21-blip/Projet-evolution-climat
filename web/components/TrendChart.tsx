@@ -5,7 +5,9 @@
 // - valeurs absolues : ligne ;
 // - droite de Sen en pointillés si une tendance est fournie ;
 // - points non homogénéisés en gris : affichés pour information, jamais utilisés pour la tendance ;
-// - zoom à la molette et réglette en bas (séries longues).
+// - série de comparaison optionnelle (ex. composite départemental) en trait fin ;
+// - zoom à la molette et réglette en bas (séries longues). Pas de zoom au doigt sur écran tactile :
+//   le glissé doit faire défiler la page, pas le graphique.
 import { useEffect, useRef } from "react";
 
 type Props = {
@@ -16,13 +18,15 @@ type Props = {
   trend: { start: number; end: number; fittedStart: number; fittedEnd: number } | null;
   breakpoints: string[];
   quality?: ("homogenized" | "raw")[] | null;
+  /** Série de comparaison, alignée sur `time`. */
+  overlay?: { name: string; value: (number | null)[] } | null;
 };
 
 function cssVar(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-export default function TrendChart({ time, value, unit, isAnomaly, trend, breakpoints, quality }: Props) {
+export default function TrendChart({ time, value, unit, isAnomaly, trend, breakpoints, quality, overlay }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -96,7 +100,7 @@ export default function TrendChart({ time, value, unit, isAnomaly, trend, breakp
               splitLine: { lineStyle: { color: rule, type: "dashed" as const } },
             },
             dataZoom: [
-              { type: "inside" as const },
+              ...(window.matchMedia("(pointer: coarse)").matches ? [] : [{ type: "inside" as const }]),
               { type: "slider" as const, height: 22, bottom: 16, borderColor: rule, textStyle: { color: muted } },
             ],
             series: [
@@ -132,7 +136,28 @@ export default function TrendChart({ time, value, unit, isAnomaly, trend, breakp
                     lineStyle: { color: ink, width: 1.5 },
                     itemStyle: { color: ink },
                     data: value,
+                    // Années non homogénéisées : zone grisée, comme les barres grises du mode anomalie.
+                    markArea: (() => {
+                      const raw = time.filter((_, i) => quality?.[i] === "raw");
+                      return raw.length
+                        ? { silent: true, itemStyle: { color: muted, opacity: 0.12 }, data: [[{ xAxis: raw[0]! }, { xAxis: raw[raw.length - 1]! }]] }
+                        : undefined;
+                    })(),
                   },
+              ...(overlay
+                ? [
+                    {
+                      name: overlay.name,
+                      type: "line" as const,
+                      showSymbol: false,
+                      connectNulls: false,
+                      z: 3,
+                      lineStyle: { color: ink, width: 1.5, opacity: 0.55 },
+                      itemStyle: { color: ink },
+                      data: overlay.value,
+                    },
+                  ]
+                : []),
               ...(trendLine
                 ? [
                     {
@@ -168,7 +193,7 @@ export default function TrendChart({ time, value, unit, isAnomaly, trend, breakp
       disposed = true;
       cleanup();
     };
-  }, [time, value, unit, isAnomaly, trend, breakpoints, quality]);
+  }, [time, value, unit, isAnomaly, trend, breakpoints, quality, overlay]);
 
   return <div ref={ref} className="h-[360px] w-full sm:h-[420px]" role="img" aria-label="Graphique de la série" />;
 }

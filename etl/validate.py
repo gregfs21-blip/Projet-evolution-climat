@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 from etl.context import PROCESSED_DIR
-from etl.schema import Indicator, Manifest
+from etl.schema import Indicator, Manifest, ValidationReport
 
 
 def validate(out_dir: Path = PROCESSED_DIR) -> list[str]:
@@ -44,6 +44,13 @@ def validate(out_dir: Path = PROCESSED_DIR) -> list[str]:
             errors.append(f"{entry.path} : contenu incohérent avec le manifeste")
         if entry.path != f"{ind.scale}/{ind.id}.json":
             errors.append(f"{entry.path} : chemin incohérent avec scale/id")
+
+    # Rapports de validation de phase (validation-p1.json…) : hors manifeste, mais contrôlés aussi.
+    for path in sorted(out_dir.glob("validation-*.json")):
+        try:
+            ValidationReport.model_validate_json(path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"{path.name} invalide : {exc}")
     return errors
 
 
