@@ -32,7 +32,7 @@ export function placeLabel(place: Place): string {
 export function themes(scale: Scale): Theme[] {
   const out = new Map<string, Theme>();
   for (const m of members(scale)) {
-    const t = out.get(m.variable.theme) ?? { id: m.variable.theme, label: m.variable.theme_label, variables: [], unit: m.entry.unit };
+    const t: Theme = out.get(m.variable.theme) ?? { id: m.variable.theme, label: m.variable.theme_label, variables: [], unit: m.entry.unit };
     if (!t.variables.some((v) => v.id === m.variable.id)) t.variables.push(m.variable);
     if (t.unit !== m.entry.unit) {
       // Un thème rassemble des variables comparables : des unités différentes signalent une erreur de vocabulaire.

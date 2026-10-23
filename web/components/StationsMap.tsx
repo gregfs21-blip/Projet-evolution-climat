@@ -21,6 +21,7 @@ export default function StationsMap({
   variables,
   initial,
   period,
+  unit,
 }: {
   points: Record<string, MapPoint[]>;
   variables: VarOption[];

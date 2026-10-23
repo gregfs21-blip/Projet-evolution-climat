@@ -16,6 +16,7 @@ export default function StationsOverlay({
   data,
   variables,
   initial,
+  unit,
 }: {
   data: Record<string, Overlay>;
   variables: VarOption[];
