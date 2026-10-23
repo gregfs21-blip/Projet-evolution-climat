@@ -1,880 +1,52 @@
 {
  "schema_version": "1.3",
- "generated_at": "2026-10-23T16:36:37Z",
- "etl_version": "0.1.0+8a62665",
+ "generated_at": "2026-10-23T16:41:04Z",
+ "etl_version": "0.1.0+84013da",
  "indicators": [
   {
-   "id": "jours-gel-bordeaux-merignac",
+   "id": "tn-annuelle-gironde",
    "scale": "gironde",
-   "title": "Jours de gel à Bordeaux-Mérignac",
-   "unit": "jours",
-   "path": "gironde/jours-gel-bordeaux-merignac.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — jours de gel",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-gel-bordeaux-paulin",
-   "scale": "gironde",
-   "title": "Jours de gel à Bordeaux-Paulin",
-   "unit": "jours",
-   "path": "gironde/jours-gel-bordeaux-paulin.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — jours de gel",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "bordeaux-paulin",
-    "name": "Bordeaux-Paulin",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-gel-cap-ferret",
-   "scale": "gironde",
-   "title": "Jours de gel à Cap-Ferret",
-   "unit": "jours",
-   "path": "gironde/jours-gel-cap-ferret.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — jours de gel",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "cap-ferret",
-    "name": "Cap-Ferret",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-gel-cazaux",
-   "scale": "gironde",
-   "title": "Jours de gel à Cazaux",
-   "unit": "jours",
-   "path": "gironde/jours-gel-cazaux.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — jours de gel",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "cazaux",
-    "name": "Cazaux",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-gel-gironde",
-   "scale": "gironde",
-   "title": "Jours de gel en Gironde",
-   "unit": "jours",
-   "path": "gironde/jours-gel-gironde.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Synthèse Gironde — extrêmes",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "gironde",
-    "name": "Gironde",
-    "kind": "composite"
-   }
-  },
-  {
-   "id": "jours-gel-lacanau",
-   "scale": "gironde",
-   "title": "Jours de gel à Lacanau",
-   "unit": "jours",
-   "path": "gironde/jours-gel-lacanau.json",
-   "confidence": "non_etabli",
-   "is_demo": false,
-   "group": "Stations — jours de gel",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "lacanau",
-    "name": "Lacanau",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-gel-sauternes",
-   "scale": "gironde",
-   "title": "Jours de gel à Sauternes",
-   "unit": "jours",
-   "path": "gironde/jours-gel-sauternes.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — jours de gel",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "sauternes",
-    "name": "Sauternes",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-gel-villenave-d-ornon",
-   "scale": "gironde",
-   "title": "Jours de gel à Villenave-d'Ornon",
-   "unit": "jours",
-   "path": "gironde/jours-gel-villenave-d-ornon.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — jours de gel",
-   "variable": {
-    "id": "jours-gel",
-    "code": "TN ≤ 0",
-    "label": "jours de gel (TN ≤ 0 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 4
-   },
-   "place": {
-    "id": "villenave-d-ornon",
-    "name": "Villenave-d'Ornon",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx25-bordeaux-merignac",
-   "scale": "gironde",
-   "title": "Journées estivales à Bordeaux-Mérignac",
-   "unit": "jours",
-   "path": "gironde/jours-tx25-bordeaux-merignac.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées estivales",
-   "variable": {
-    "id": "jours-tx25",
-    "code": "TX ≥ 25",
-    "label": "journées estivales (TX ≥ 25 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 0
-   },
-   "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx25-bordeaux-paulin",
-   "scale": "gironde",
-   "title": "Journées estivales à Bordeaux-Paulin",
-   "unit": "jours",
-   "path": "gironde/jours-tx25-bordeaux-paulin.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées estivales",
-   "variable": {
-    "id": "jours-tx25",
-    "code": "TX ≥ 25",
-    "label": "journées estivales (TX ≥ 25 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 0
-   },
-   "place": {
-    "id": "bordeaux-paulin",
-    "name": "Bordeaux-Paulin",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx25-cap-ferret",
-   "scale": "gironde",
-   "title": "Journées estivales à Cap-Ferret",
-   "unit": "jours",
-   "path": "gironde/jours-tx25-cap-ferret.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées estivales",
-   "variable": {
-    "id": "jours-tx25",
-    "code": "TX ≥ 25",
-    "label": "journées estivales (TX ≥ 25 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 0
-   },
-   "place": {
-    "id": "cap-ferret",
-    "name": "Cap-Ferret",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx25-cazaux",
-   "scale": "gironde",
-   "title": "Journées estivales à Cazaux",
-   "unit": "jours",
-   "path": "gironde/jours-tx25-cazaux.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées estivales",
-   "variable": {
-    "id": "jours-tx25",
-    "code": "TX ≥ 25",
-    "label": "journées estivales (TX ≥ 25 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 0
-   },
-   "place": {
-    "id": "cazaux",
-    "name": "Cazaux",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx25-gironde",
-   "scale": "gironde",
-   "title": "Journées estivales en Gironde",
-   "unit": "jours",
-   "path": "gironde/jours-tx25-gironde.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Synthèse Gironde — extrêmes",
-   "variable": {
-    "id": "jours-tx25",
-    "code": "TX ≥ 25",
-    "label": "journées estivales (TX ≥ 25 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 0
-   },
-   "place": {
-    "id": "gironde",
-    "name": "Gironde",
-    "kind": "composite"
-   }
-  },
-  {
-   "id": "jours-tx25-villenave-d-ornon",
-   "scale": "gironde",
-   "title": "Journées estivales à Villenave-d'Ornon",
-   "unit": "jours",
-   "path": "gironde/jours-tx25-villenave-d-ornon.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées estivales",
-   "variable": {
-    "id": "jours-tx25",
-    "code": "TX ≥ 25",
-    "label": "journées estivales (TX ≥ 25 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 0
-   },
-   "place": {
-    "id": "villenave-d-ornon",
-    "name": "Villenave-d'Ornon",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx30-bordeaux-merignac",
-   "scale": "gironde",
-   "title": "Journées chaudes à Bordeaux-Mérignac",
-   "unit": "jours",
-   "path": "gironde/jours-tx30-bordeaux-merignac.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées chaudes",
-   "variable": {
-    "id": "jours-tx30",
-    "code": "TX ≥ 30",
-    "label": "journées chaudes (TX ≥ 30 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 1
-   },
-   "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx30-bordeaux-paulin",
-   "scale": "gironde",
-   "title": "Journées chaudes à Bordeaux-Paulin",
-   "unit": "jours",
-   "path": "gironde/jours-tx30-bordeaux-paulin.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées chaudes",
-   "variable": {
-    "id": "jours-tx30",
-    "code": "TX ≥ 30",
-    "label": "journées chaudes (TX ≥ 30 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 1
-   },
-   "place": {
-    "id": "bordeaux-paulin",
-    "name": "Bordeaux-Paulin",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx30-cap-ferret",
-   "scale": "gironde",
-   "title": "Journées chaudes à Cap-Ferret",
-   "unit": "jours",
-   "path": "gironde/jours-tx30-cap-ferret.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées chaudes",
-   "variable": {
-    "id": "jours-tx30",
-    "code": "TX ≥ 30",
-    "label": "journées chaudes (TX ≥ 30 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 1
-   },
-   "place": {
-    "id": "cap-ferret",
-    "name": "Cap-Ferret",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx30-cazaux",
-   "scale": "gironde",
-   "title": "Journées chaudes à Cazaux",
-   "unit": "jours",
-   "path": "gironde/jours-tx30-cazaux.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées chaudes",
-   "variable": {
-    "id": "jours-tx30",
-    "code": "TX ≥ 30",
-    "label": "journées chaudes (TX ≥ 30 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 1
-   },
-   "place": {
-    "id": "cazaux",
-    "name": "Cazaux",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx30-gironde",
-   "scale": "gironde",
-   "title": "Journées chaudes en Gironde",
-   "unit": "jours",
-   "path": "gironde/jours-tx30-gironde.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Synthèse Gironde — extrêmes",
-   "variable": {
-    "id": "jours-tx30",
-    "code": "TX ≥ 30",
-    "label": "journées chaudes (TX ≥ 30 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 1
-   },
-   "place": {
-    "id": "gironde",
-    "name": "Gironde",
-    "kind": "composite"
-   }
-  },
-  {
-   "id": "jours-tx30-villenave-d-ornon",
-   "scale": "gironde",
-   "title": "Journées chaudes à Villenave-d'Ornon",
-   "unit": "jours",
-   "path": "gironde/jours-tx30-villenave-d-ornon.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées chaudes",
-   "variable": {
-    "id": "jours-tx30",
-    "code": "TX ≥ 30",
-    "label": "journées chaudes (TX ≥ 30 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 1
-   },
-   "place": {
-    "id": "villenave-d-ornon",
-    "name": "Villenave-d'Ornon",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx35-bordeaux-merignac",
-   "scale": "gironde",
-   "title": "Journées très chaudes à Bordeaux-Mérignac",
-   "unit": "jours",
-   "path": "gironde/jours-tx35-bordeaux-merignac.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées très chaudes",
-   "variable": {
-    "id": "jours-tx35",
-    "code": "TX ≥ 35",
-    "label": "journées très chaudes (TX ≥ 35 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 2
-   },
-   "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx35-bordeaux-paulin",
-   "scale": "gironde",
-   "title": "Journées très chaudes à Bordeaux-Paulin",
-   "unit": "jours",
-   "path": "gironde/jours-tx35-bordeaux-paulin.json",
-   "confidence": "non_etabli",
-   "is_demo": false,
-   "group": "Stations — journées très chaudes",
-   "variable": {
-    "id": "jours-tx35",
-    "code": "TX ≥ 35",
-    "label": "journées très chaudes (TX ≥ 35 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 2
-   },
-   "place": {
-    "id": "bordeaux-paulin",
-    "name": "Bordeaux-Paulin",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx35-cap-ferret",
-   "scale": "gironde",
-   "title": "Journées très chaudes à Cap-Ferret",
-   "unit": "jours",
-   "path": "gironde/jours-tx35-cap-ferret.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées très chaudes",
-   "variable": {
-    "id": "jours-tx35",
-    "code": "TX ≥ 35",
-    "label": "journées très chaudes (TX ≥ 35 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 2
-   },
-   "place": {
-    "id": "cap-ferret",
-    "name": "Cap-Ferret",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx35-cazaux",
-   "scale": "gironde",
-   "title": "Journées très chaudes à Cazaux",
-   "unit": "jours",
-   "path": "gironde/jours-tx35-cazaux.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — journées très chaudes",
-   "variable": {
-    "id": "jours-tx35",
-    "code": "TX ≥ 35",
-    "label": "journées très chaudes (TX ≥ 35 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 2
-   },
-   "place": {
-    "id": "cazaux",
-    "name": "Cazaux",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "jours-tx35-gironde",
-   "scale": "gironde",
-   "title": "Journées très chaudes en Gironde",
-   "unit": "jours",
-   "path": "gironde/jours-tx35-gironde.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Synthèse Gironde — extrêmes",
-   "variable": {
-    "id": "jours-tx35",
-    "code": "TX ≥ 35",
-    "label": "journées très chaudes (TX ≥ 35 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 2
-   },
-   "place": {
-    "id": "gironde",
-    "name": "Gironde",
-    "kind": "composite"
-   }
-  },
-  {
-   "id": "jours-tx35-villenave-d-ornon",
-   "scale": "gironde",
-   "title": "Journées très chaudes à Villenave-d'Ornon",
-   "unit": "jours",
-   "path": "gironde/jours-tx35-villenave-d-ornon.json",
-   "confidence": "non_etabli",
-   "is_demo": false,
-   "group": "Stations — journées très chaudes",
-   "variable": {
-    "id": "jours-tx35",
-    "code": "TX ≥ 35",
-    "label": "journées très chaudes (TX ≥ 35 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 2
-   },
-   "place": {
-    "id": "villenave-d-ornon",
-    "name": "Villenave-d'Ornon",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "nuits-tn20-bordeaux-merignac",
-   "scale": "gironde",
-   "title": "Nuits tropicales à Bordeaux-Mérignac",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-bordeaux-merignac.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — nuits tropicales",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "nuits-tn20-bordeaux-paulin",
-   "scale": "gironde",
-   "title": "Nuits tropicales à Bordeaux-Paulin",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-bordeaux-paulin.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — nuits tropicales",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "bordeaux-paulin",
-    "name": "Bordeaux-Paulin",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "nuits-tn20-cap-ferret",
-   "scale": "gironde",
-   "title": "Nuits tropicales à Cap-Ferret",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-cap-ferret.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — nuits tropicales",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "cap-ferret",
-    "name": "Cap-Ferret",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "nuits-tn20-cazaux",
-   "scale": "gironde",
-   "title": "Nuits tropicales à Cazaux",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-cazaux.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — nuits tropicales",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "cazaux",
-    "name": "Cazaux",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "nuits-tn20-gironde",
-   "scale": "gironde",
-   "title": "Nuits tropicales en Gironde",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-gironde.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Synthèse Gironde — extrêmes",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "gironde",
-    "name": "Gironde",
-    "kind": "composite"
-   }
-  },
-  {
-   "id": "nuits-tn20-lacanau",
-   "scale": "gironde",
-   "title": "Nuits tropicales à Lacanau",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-lacanau.json",
-   "confidence": "non_etabli",
-   "is_demo": false,
-   "group": "Stations — nuits tropicales",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "lacanau",
-    "name": "Lacanau",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "nuits-tn20-sauternes",
-   "scale": "gironde",
-   "title": "Nuits tropicales à Sauternes",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-sauternes.json",
-   "confidence": "moyenne",
-   "is_demo": false,
-   "group": "Stations — nuits tropicales",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "sauternes",
-    "name": "Sauternes",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "nuits-tn20-villenave-d-ornon",
-   "scale": "gironde",
-   "title": "Nuits tropicales à Villenave-d'Ornon",
-   "unit": "jours",
-   "path": "gironde/nuits-tn20-villenave-d-ornon.json",
-   "confidence": "non_etabli",
-   "is_demo": false,
-   "group": "Stations — nuits tropicales",
-   "variable": {
-    "id": "nuits-tn20",
-    "code": "TN ≥ 20",
-    "label": "nuits tropicales (TN ≥ 20 °C)",
-    "theme": "extremes-temperature",
-    "theme_label": "Extrêmes de température",
-    "order": 3
-   },
-   "place": {
-    "id": "villenave-d-ornon",
-    "name": "Villenave-d'Ornon",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "tm-annuelle-bordeaux-merignac",
-   "scale": "gironde",
-   "title": "Température moyenne annuelle à Bordeaux-Mérignac",
+   "title": "Température minimale annuelle en Gironde",
    "unit": "°C",
-   "path": "gironde/tm-annuelle-bordeaux-merignac.json",
+   "path": "gironde/tn-annuelle-gironde.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures moyennes",
+   "group": "Synthèse Gironde",
    "variable": {
-    "id": "tm",
-    "code": "TM",
-    "label": "températures moyennes",
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
     "theme": "temperature",
     "theme_label": "Températures annuelles",
-    "order": 1
+    "order": 0
    },
    "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
-    "kind": "station"
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
    }
   },
   {
-   "id": "tm-annuelle-bordeaux-paulin",
+   "id": "tx-annuelle-gironde",
    "scale": "gironde",
-   "title": "Température moyenne annuelle à Bordeaux-Paulin",
+   "title": "Température maximale annuelle en Gironde",
    "unit": "°C",
-   "path": "gironde/tm-annuelle-bordeaux-paulin.json",
+   "path": "gironde/tx-annuelle-gironde.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures moyennes",
+   "group": "Synthèse Gironde",
    "variable": {
-    "id": "tm",
-    "code": "TM",
-    "label": "températures moyennes",
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
     "theme": "temperature",
     "theme_label": "Températures annuelles",
-    "order": 1
+    "order": 2
    },
    "place": {
-    "id": "bordeaux-paulin",
-    "name": "Bordeaux-Paulin",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "tm-annuelle-cap-ferret",
-   "scale": "gironde",
-   "title": "Température moyenne annuelle à Cap-Ferret",
-   "unit": "°C",
-   "path": "gironde/tm-annuelle-cap-ferret.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Stations — températures moyennes",
-   "variable": {
-    "id": "tm",
-    "code": "TM",
-    "label": "températures moyennes",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 1
-   },
-   "place": {
-    "id": "cap-ferret",
-    "name": "Cap-Ferret",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "tm-annuelle-cazaux",
-   "scale": "gironde",
-   "title": "Température moyenne annuelle à Cazaux",
-   "unit": "°C",
-   "path": "gironde/tm-annuelle-cazaux.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Stations — températures moyennes",
-   "variable": {
-    "id": "tm",
-    "code": "TM",
-    "label": "températures moyennes",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 1
-   },
-   "place": {
-    "id": "cazaux",
-    "name": "Cazaux",
-    "kind": "station"
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
    }
   },
   {
@@ -901,52 +73,6 @@
    }
   },
   {
-   "id": "tm-annuelle-villenave-d-ornon",
-   "scale": "gironde",
-   "title": "Température moyenne annuelle à Villenave-d'Ornon",
-   "unit": "°C",
-   "path": "gironde/tm-annuelle-villenave-d-ornon.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Stations — températures moyennes",
-   "variable": {
-    "id": "tm",
-    "code": "TM",
-    "label": "températures moyennes",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 1
-   },
-   "place": {
-    "id": "villenave-d-ornon",
-    "name": "Villenave-d'Ornon",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "tn-annuelle-bordeaux-merignac",
-   "scale": "gironde",
-   "title": "Température minimale annuelle à Bordeaux-Mérignac",
-   "unit": "°C",
-   "path": "gironde/tn-annuelle-bordeaux-merignac.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Stations — températures minimales",
-   "variable": {
-    "id": "tn",
-    "code": "TN",
-    "label": "températures minimales",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 0
-   },
-   "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
-    "kind": "station"
-   }
-  },
-  {
    "id": "tn-annuelle-bordeaux-paulin",
    "scale": "gironde",
    "title": "Température minimale annuelle à Bordeaux-Paulin",
@@ -966,6 +92,29 @@
    "place": {
     "id": "bordeaux-paulin",
     "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "tn-annuelle-lacanau",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Lacanau",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-lacanau.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
     "kind": "station"
    }
   },
@@ -993,11 +142,11 @@
    }
   },
   {
-   "id": "tn-annuelle-cazaux",
+   "id": "tn-annuelle-bordeaux-merignac",
    "scale": "gironde",
-   "title": "Température minimale annuelle à Cazaux",
+   "title": "Température minimale annuelle à Bordeaux-Mérignac",
    "unit": "°C",
-   "path": "gironde/tn-annuelle-cazaux.json",
+   "path": "gironde/tn-annuelle-bordeaux-merignac.json",
    "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales",
@@ -1010,54 +159,8 @@
     "order": 0
    },
    "place": {
-    "id": "cazaux",
-    "name": "Cazaux",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "tn-annuelle-gironde",
-   "scale": "gironde",
-   "title": "Température minimale annuelle en Gironde",
-   "unit": "°C",
-   "path": "gironde/tn-annuelle-gironde.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Synthèse Gironde",
-   "variable": {
-    "id": "tn",
-    "code": "TN",
-    "label": "températures minimales",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 0
-   },
-   "place": {
-    "id": "gironde",
-    "name": "Gironde",
-    "kind": "composite"
-   }
-  },
-  {
-   "id": "tn-annuelle-lacanau",
-   "scale": "gironde",
-   "title": "Température minimale annuelle à Lacanau",
-   "unit": "°C",
-   "path": "gironde/tn-annuelle-lacanau.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Stations — températures minimales",
-   "variable": {
-    "id": "tn",
-    "code": "TN",
-    "label": "températures minimales",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 0
-   },
-   "place": {
-    "id": "lacanau",
-    "name": "Lacanau",
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
     "kind": "station"
    }
   },
@@ -1085,6 +188,29 @@
    }
   },
   {
+   "id": "tn-annuelle-cazaux",
+   "scale": "gironde",
+   "title": "Température minimale annuelle à Cazaux",
+   "unit": "°C",
+   "path": "gironde/tn-annuelle-cazaux.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
    "id": "tn-annuelle-villenave-d-ornon",
    "scale": "gironde",
    "title": "Température minimale annuelle à Villenave-d'Ornon",
@@ -1104,29 +230,6 @@
    "place": {
     "id": "villenave-d-ornon",
     "name": "Villenave-d'Ornon",
-    "kind": "station"
-   }
-  },
-  {
-   "id": "tx-annuelle-bordeaux-merignac",
-   "scale": "gironde",
-   "title": "Température maximale annuelle à Bordeaux-Mérignac",
-   "unit": "°C",
-   "path": "gironde/tx-annuelle-bordeaux-merignac.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Stations — températures maximales",
-   "variable": {
-    "id": "tx",
-    "code": "TX",
-    "label": "températures maximales",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 2
-   },
-   "place": {
-    "id": "bordeaux-merignac",
-    "name": "Bordeaux-Mérignac",
     "kind": "station"
    }
   },
@@ -1177,6 +280,29 @@
    }
   },
   {
+   "id": "tx-annuelle-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Température maximale annuelle à Bordeaux-Mérignac",
+   "unit": "°C",
+   "path": "gironde/tx-annuelle-bordeaux-merignac.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures maximales",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
    "id": "tx-annuelle-cazaux",
    "scale": "gironde",
    "title": "Température maximale annuelle à Cazaux",
@@ -1200,29 +326,6 @@
    }
   },
   {
-   "id": "tx-annuelle-gironde",
-   "scale": "gironde",
-   "title": "Température maximale annuelle en Gironde",
-   "unit": "°C",
-   "path": "gironde/tx-annuelle-gironde.json",
-   "confidence": "elevee",
-   "is_demo": false,
-   "group": "Synthèse Gironde",
-   "variable": {
-    "id": "tx",
-    "code": "TX",
-    "label": "températures maximales",
-    "theme": "temperature",
-    "theme_label": "Températures annuelles",
-    "order": 2
-   },
-   "place": {
-    "id": "gironde",
-    "name": "Gironde",
-    "kind": "composite"
-   }
-  },
-  {
    "id": "tx-annuelle-villenave-d-ornon",
    "scale": "gironde",
    "title": "Température maximale annuelle à Villenave-d'Ornon",
@@ -1238,6 +341,903 @@
     "theme": "temperature",
     "theme_label": "Températures annuelles",
     "order": 2
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "tm-annuelle-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Bordeaux-Paulin",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-bordeaux-paulin.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "tm-annuelle-cap-ferret",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Cap-Ferret",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-cap-ferret.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "tm-annuelle-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Bordeaux-Mérignac",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-bordeaux-merignac.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "tm-annuelle-cazaux",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Cazaux",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-cazaux.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "tm-annuelle-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Température moyenne annuelle à Villenave-d'Ornon",
+   "unit": "°C",
+   "path": "gironde/tm-annuelle-villenave-d-ornon.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx25-gironde",
+   "scale": "gironde",
+   "title": "Journées estivales en Gironde",
+   "unit": "jours",
+   "path": "gironde/jours-tx25-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde — extrêmes",
+   "variable": {
+    "id": "jours-tx25",
+    "code": "TX ≥ 25",
+    "label": "journées estivales (TX ≥ 25 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-tx30-gironde",
+   "scale": "gironde",
+   "title": "Journées chaudes en Gironde",
+   "unit": "jours",
+   "path": "gironde/jours-tx30-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde — extrêmes",
+   "variable": {
+    "id": "jours-tx30",
+    "code": "TX ≥ 30",
+    "label": "journées chaudes (TX ≥ 30 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 1
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-tx35-gironde",
+   "scale": "gironde",
+   "title": "Journées très chaudes en Gironde",
+   "unit": "jours",
+   "path": "gironde/jours-tx35-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde — extrêmes",
+   "variable": {
+    "id": "jours-tx35",
+    "code": "TX ≥ 35",
+    "label": "journées très chaudes (TX ≥ 35 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 2
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "nuits-tn20-gironde",
+   "scale": "gironde",
+   "title": "Nuits tropicales en Gironde",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde — extrêmes",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-gel-gironde",
+   "scale": "gironde",
+   "title": "Jours de gel en Gironde",
+   "unit": "jours",
+   "path": "gironde/jours-gel-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde — extrêmes",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-tx25-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Journées estivales à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/jours-tx25-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées estivales",
+   "variable": {
+    "id": "jours-tx25",
+    "code": "TX ≥ 25",
+    "label": "journées estivales (TX ≥ 25 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx25-cap-ferret",
+   "scale": "gironde",
+   "title": "Journées estivales à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/jours-tx25-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées estivales",
+   "variable": {
+    "id": "jours-tx25",
+    "code": "TX ≥ 25",
+    "label": "journées estivales (TX ≥ 25 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 0
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx25-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Journées estivales à Bordeaux-Mérignac",
+   "unit": "jours",
+   "path": "gironde/jours-tx25-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées estivales",
+   "variable": {
+    "id": "jours-tx25",
+    "code": "TX ≥ 25",
+    "label": "journées estivales (TX ≥ 25 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx25-cazaux",
+   "scale": "gironde",
+   "title": "Journées estivales à Cazaux",
+   "unit": "jours",
+   "path": "gironde/jours-tx25-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées estivales",
+   "variable": {
+    "id": "jours-tx25",
+    "code": "TX ≥ 25",
+    "label": "journées estivales (TX ≥ 25 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 0
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx25-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Journées estivales à Villenave-d'Ornon",
+   "unit": "jours",
+   "path": "gironde/jours-tx25-villenave-d-ornon.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées estivales",
+   "variable": {
+    "id": "jours-tx25",
+    "code": "TX ≥ 25",
+    "label": "journées estivales (TX ≥ 25 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 0
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx30-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Journées chaudes à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/jours-tx30-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées chaudes",
+   "variable": {
+    "id": "jours-tx30",
+    "code": "TX ≥ 30",
+    "label": "journées chaudes (TX ≥ 30 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx30-cap-ferret",
+   "scale": "gironde",
+   "title": "Journées chaudes à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/jours-tx30-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées chaudes",
+   "variable": {
+    "id": "jours-tx30",
+    "code": "TX ≥ 30",
+    "label": "journées chaudes (TX ≥ 30 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 1
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx30-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Journées chaudes à Bordeaux-Mérignac",
+   "unit": "jours",
+   "path": "gironde/jours-tx30-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées chaudes",
+   "variable": {
+    "id": "jours-tx30",
+    "code": "TX ≥ 30",
+    "label": "journées chaudes (TX ≥ 30 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx30-cazaux",
+   "scale": "gironde",
+   "title": "Journées chaudes à Cazaux",
+   "unit": "jours",
+   "path": "gironde/jours-tx30-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées chaudes",
+   "variable": {
+    "id": "jours-tx30",
+    "code": "TX ≥ 30",
+    "label": "journées chaudes (TX ≥ 30 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 1
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx30-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Journées chaudes à Villenave-d'Ornon",
+   "unit": "jours",
+   "path": "gironde/jours-tx30-villenave-d-ornon.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées chaudes",
+   "variable": {
+    "id": "jours-tx30",
+    "code": "TX ≥ 30",
+    "label": "journées chaudes (TX ≥ 30 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 1
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx35-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Journées très chaudes à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/jours-tx35-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — journées très chaudes",
+   "variable": {
+    "id": "jours-tx35",
+    "code": "TX ≥ 35",
+    "label": "journées très chaudes (TX ≥ 35 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx35-cap-ferret",
+   "scale": "gironde",
+   "title": "Journées très chaudes à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/jours-tx35-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées très chaudes",
+   "variable": {
+    "id": "jours-tx35",
+    "code": "TX ≥ 35",
+    "label": "journées très chaudes (TX ≥ 35 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 2
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx35-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Journées très chaudes à Bordeaux-Mérignac",
+   "unit": "jours",
+   "path": "gironde/jours-tx35-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées très chaudes",
+   "variable": {
+    "id": "jours-tx35",
+    "code": "TX ≥ 35",
+    "label": "journées très chaudes (TX ≥ 35 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx35-cazaux",
+   "scale": "gironde",
+   "title": "Journées très chaudes à Cazaux",
+   "unit": "jours",
+   "path": "gironde/jours-tx35-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — journées très chaudes",
+   "variable": {
+    "id": "jours-tx35",
+    "code": "TX ≥ 35",
+    "label": "journées très chaudes (TX ≥ 35 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 2
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tx35-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Journées très chaudes à Villenave-d'Ornon",
+   "unit": "jours",
+   "path": "gironde/jours-tx35-villenave-d-ornon.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — journées très chaudes",
+   "variable": {
+    "id": "jours-tx35",
+    "code": "TX ≥ 35",
+    "label": "journées très chaudes (TX ≥ 35 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 2
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "nuits-tn20-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Nuits tropicales à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — nuits tropicales",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "nuits-tn20-lacanau",
+   "scale": "gironde",
+   "title": "Nuits tropicales à Lacanau",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — nuits tropicales",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "nuits-tn20-cap-ferret",
+   "scale": "gironde",
+   "title": "Nuits tropicales à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — nuits tropicales",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "nuits-tn20-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Nuits tropicales à Bordeaux-Mérignac",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — nuits tropicales",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "nuits-tn20-sauternes",
+   "scale": "gironde",
+   "title": "Nuits tropicales à Sauternes",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-sauternes.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — nuits tropicales",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "nuits-tn20-cazaux",
+   "scale": "gironde",
+   "title": "Nuits tropicales à Cazaux",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — nuits tropicales",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "nuits-tn20-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Nuits tropicales à Villenave-d'Ornon",
+   "unit": "jours",
+   "path": "gironde/nuits-tn20-villenave-d-ornon.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — nuits tropicales",
+   "variable": {
+    "id": "nuits-tn20",
+    "code": "TN ≥ 20",
+    "label": "nuits tropicales (TN ≥ 20 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 3
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-gel-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Jours de gel à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/jours-gel-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — jours de gel",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-gel-lacanau",
+   "scale": "gironde",
+   "title": "Jours de gel à Lacanau",
+   "unit": "jours",
+   "path": "gironde/jours-gel-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de gel",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-gel-cap-ferret",
+   "scale": "gironde",
+   "title": "Jours de gel à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/jours-gel-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — jours de gel",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-gel-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Jours de gel à Bordeaux-Mérignac",
+   "unit": "jours",
+   "path": "gironde/jours-gel-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — jours de gel",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-gel-sauternes",
+   "scale": "gironde",
+   "title": "Jours de gel à Sauternes",
+   "unit": "jours",
+   "path": "gironde/jours-gel-sauternes.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — jours de gel",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-gel-cazaux",
+   "scale": "gironde",
+   "title": "Jours de gel à Cazaux",
+   "unit": "jours",
+   "path": "gironde/jours-gel-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — jours de gel",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-gel-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Jours de gel à Villenave-d'Ornon",
+   "unit": "jours",
+   "path": "gironde/jours-gel-villenave-d-ornon.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — jours de gel",
+   "variable": {
+    "id": "jours-gel",
+    "code": "TN ≤ 0",
+    "label": "jours de gel (TN ≤ 0 °C)",
+    "theme": "extremes-temperature",
+    "theme_label": "Extrêmes de température",
+    "order": 4
    },
    "place": {
     "id": "villenave-d-ornon",

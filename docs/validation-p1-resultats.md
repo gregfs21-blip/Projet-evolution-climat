@@ -56,48 +56,48 @@ l'analyse des écarts est dans `docs/validation-p1.md`. Critères et seuils : `d
 
 | Indicateur | Nouveau régime | p | p après retrait de tendance | Artefact possible | Détail |
 |---|---|---|---|---|---|
-| tm-annuelle-bordeaux-merignac | 1988 | 0.0000 | 0.553 | **oui** | écart des moyennes +1,32 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,55) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
-| tm-annuelle-bordeaux-paulin | 1988 | 0.0000 | 0.943 | non | écart des moyennes +1,33 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,94) : la rupture traduit la tendance elle-même, pas un saut brusque |
-| tm-annuelle-cap-ferret | 1988 | 0.0000 | 0.342 | non | écart des moyennes +1,30 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,34) : la rupture traduit la tendance elle-même, pas un saut brusque |
-| tm-annuelle-cazaux | 1988 | 0.0000 | 0.601 | **oui** | écart des moyennes +1,27 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,60) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
-| tm-annuelle-gironde | 1988 | 0.0000 | 0.522 | non | écart des moyennes +1,29 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,52) : la rupture traduit la tendance elle-même, pas un saut brusque |
-| tm-annuelle-villenave-d-ornon | 1988 | 0.0000 | 0.569 | non | écart des moyennes +1,29 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,57) : la rupture traduit la tendance elle-même, pas un saut brusque |
-| tn-annuelle-bordeaux-merignac | 1988 | 0.0000 | 0.574 | **oui** | écart des moyennes +1,18 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,57) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
-| tn-annuelle-bordeaux-paulin | 1988 | 0.0000 | 0.512 | non | écart des moyennes +1,14 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,51) : la rupture traduit la tendance elle-même, pas un saut brusque |
-| tn-annuelle-cap-ferret | 1988 | 0.0000 | 0.327 | non | écart des moyennes +1,17 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,33) : la rupture traduit la tendance elle-même, pas un saut brusque |
-| tn-annuelle-cazaux | 1988 | 0.0000 | 0.640 | non | écart des moyennes +1,11 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,64) : la rupture traduit la tendance elle-même, pas un saut brusque |
 | tn-annuelle-gironde | 1988 | 0.0000 | 0.474 | non | écart des moyennes +1,15 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,47) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tx-annuelle-gironde | 1988 | 0.0000 | 0.512 | non | écart des moyennes +1,43 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,51) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tm-annuelle-gironde | 1988 | 0.0000 | 0.522 | non | écart des moyennes +1,29 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,52) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tn-annuelle-bordeaux-paulin | 1988 | 0.0000 | 0.512 | non | écart des moyennes +1,14 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,51) : la rupture traduit la tendance elle-même, pas un saut brusque |
 | tn-annuelle-lacanau | 1990 | 0.0000 | 0.733 | non | écart des moyennes +1,17 °C avant/après 1990 ; après retrait de la tendance, plus aucune rupture significative (p = 0,73) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tn-annuelle-cap-ferret | 1988 | 0.0000 | 0.327 | non | écart des moyennes +1,17 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,33) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tn-annuelle-bordeaux-merignac | 1988 | 0.0000 | 0.574 | **oui** | écart des moyennes +1,18 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,57) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
 | tn-annuelle-sauternes | 1988 | 0.0000 | 0.446 | non | écart des moyennes +1,13 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,45) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tn-annuelle-cazaux | 1988 | 0.0000 | 0.640 | non | écart des moyennes +1,11 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,64) : la rupture traduit la tendance elle-même, pas un saut brusque |
 | tn-annuelle-villenave-d-ornon | 1988 | 0.0000 | 0.569 | non | écart des moyennes +1,17 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,57) : la rupture traduit la tendance elle-même, pas un saut brusque |
-| tx-annuelle-bordeaux-merignac | 1989 | 0.0000 | 0.629 | non | écart des moyennes +1,46 °C avant/après 1989 ; après retrait de la tendance, plus aucune rupture significative (p = 0,63) : la rupture traduit la tendance elle-même, pas un saut brusque |
 | tx-annuelle-bordeaux-paulin | 1989 | 0.0000 | 1.000 | non | écart des moyennes +1,49 °C avant/après 1989 ; après retrait de la tendance, plus aucune rupture significative (p = 1,00) : la rupture traduit la tendance elle-même, pas un saut brusque |
 | tx-annuelle-cap-ferret | 1988 | 0.0000 | 0.299 | non | écart des moyennes +1,42 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,30) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tx-annuelle-bordeaux-merignac | 1989 | 0.0000 | 0.629 | non | écart des moyennes +1,46 °C avant/après 1989 ; après retrait de la tendance, plus aucune rupture significative (p = 0,63) : la rupture traduit la tendance elle-même, pas un saut brusque |
 | tx-annuelle-cazaux | 1988 | 0.0000 | 0.548 | **oui** | écart des moyennes +1,43 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,55) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
-| tx-annuelle-gironde | 1988 | 0.0000 | 0.512 | non | écart des moyennes +1,43 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,51) : la rupture traduit la tendance elle-même, pas un saut brusque |
 | tx-annuelle-villenave-d-ornon | 1989 | 0.0000 | 0.553 | non | écart des moyennes +1,42 °C avant/après 1989 ; après retrait de la tendance, plus aucune rupture significative (p = 0,55) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tm-annuelle-bordeaux-paulin | 1988 | 0.0000 | 0.943 | non | écart des moyennes +1,33 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,94) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tm-annuelle-cap-ferret | 1988 | 0.0000 | 0.342 | non | écart des moyennes +1,30 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,34) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tm-annuelle-bordeaux-merignac | 1988 | 0.0000 | 0.553 | **oui** | écart des moyennes +1,32 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,55) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
+| tm-annuelle-cazaux | 1988 | 0.0000 | 0.601 | **oui** | écart des moyennes +1,27 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,60) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
+| tm-annuelle-villenave-d-ornon | 1988 | 0.0000 | 0.569 | non | écart des moyennes +1,29 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,57) : la rupture traduit la tendance elle-même, pas un saut brusque |
 
 ### C7 — Significativité : Mann-Kendall classique vs Hamed-Rao (période homogénéisée)
 
 | Indicateur | Pente | p classique | p Hamed-Rao | Conclusion modifiée | Confiance |
 |---|---|---|---|---|---|
-| tm-annuelle-bordeaux-merignac | +0.335 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tm-annuelle-bordeaux-paulin | +0.381 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tm-annuelle-cap-ferret | +0.324 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tm-annuelle-cazaux | +0.318 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tm-annuelle-gironde | +0.322 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tm-annuelle-villenave-d-ornon | +0.320 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tn-annuelle-bordeaux-merignac | +0.303 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tn-annuelle-bordeaux-paulin | +0.288 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tn-annuelle-cap-ferret | +0.294 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tn-annuelle-cazaux | +0.288 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tn-annuelle-gironde | +0.294 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tx-annuelle-gironde | +0.357 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tm-annuelle-gironde | +0.322 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tn-annuelle-bordeaux-paulin | +0.288 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tn-annuelle-lacanau | +0.293 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tn-annuelle-cap-ferret | +0.294 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tn-annuelle-bordeaux-merignac | +0.303 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tn-annuelle-sauternes | +0.283 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tn-annuelle-cazaux | +0.288 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tn-annuelle-villenave-d-ornon | +0.292 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tx-annuelle-bordeaux-merignac | +0.372 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tx-annuelle-bordeaux-paulin | +0.433 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tx-annuelle-cap-ferret | +0.351 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tx-annuelle-bordeaux-merignac | +0.372 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tx-annuelle-cazaux | +0.361 | 0.00e+00 | 0.00e+00 | non | elevee |
-| tx-annuelle-gironde | +0.357 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tx-annuelle-villenave-d-ornon | +0.352 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tm-annuelle-bordeaux-paulin | +0.381 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tm-annuelle-cap-ferret | +0.324 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tm-annuelle-bordeaux-merignac | +0.335 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tm-annuelle-cazaux | +0.318 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tm-annuelle-villenave-d-ornon | +0.320 | 0.00e+00 | 0.00e+00 | non | elevee |
