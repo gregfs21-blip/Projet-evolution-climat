@@ -337,7 +337,7 @@
  ],
  "method_note": null,
  "finding": "À Cazaux, la température maximale annuelle a évolué de +0,36 °C par décennie entre 1953 et 2022, soit +2,5 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
- "confidence": "moyenne",
+ "confidence": "elevee",
  "limitations": [
   "Séries homogénéisées par Météo-France (méthode HOMER) : des ruptures résiduelles d'amplitude inférieure à l'amplitude minimale détectable peuvent subsister.",
   "Années 2023-2024 : prolongation par des données brutes non homogénéisées, affichées pour information et exclues des tendances et des normales.",
@@ -348,9 +348,9 @@
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-22T21:09:34Z",
+  "extracted_at": "2026-10-23T06:28:34Z",
   "script": "etl/indicators/temperature.py",
-  "etl_version": "0.1.0+0587963",
+  "etl_version": "0.1.0+b0c758e",
   "homogenized": true
  },
  "is_demo": false

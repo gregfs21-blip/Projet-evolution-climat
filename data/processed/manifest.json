@@ -1,7 +1,7 @@
 {
  "schema_version": "1.1",
- "generated_at": "2026-10-22T21:09:39Z",
- "etl_version": "0.1.0+0587963",
+ "generated_at": "2026-10-23T06:28:40Z",
+ "etl_version": "0.1.0+b0c758e",
  "indicators": [
   {
    "id": "tm-annuelle-bordeaux-merignac",
@@ -9,7 +9,7 @@
    "title": "Température moyenne annuelle à Bordeaux-Mérignac",
    "unit": "°C",
    "path": "gironde/tm-annuelle-bordeaux-merignac.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures moyennes"
   },
@@ -19,7 +19,7 @@
    "title": "Température moyenne annuelle à Bordeaux-Paulin",
    "unit": "°C",
    "path": "gironde/tm-annuelle-bordeaux-paulin.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures moyennes"
   },
@@ -29,7 +29,7 @@
    "title": "Température moyenne annuelle à Cap-Ferret",
    "unit": "°C",
    "path": "gironde/tm-annuelle-cap-ferret.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures moyennes"
   },
@@ -39,7 +39,7 @@
    "title": "Température moyenne annuelle à Cazaux",
    "unit": "°C",
    "path": "gironde/tm-annuelle-cazaux.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures moyennes"
   },
@@ -49,7 +49,7 @@
    "title": "Température moyenne annuelle en Gironde",
    "unit": "°C",
    "path": "gironde/tm-annuelle-gironde.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Synthèse Gironde"
   },
@@ -59,7 +59,7 @@
    "title": "Température moyenne annuelle à Villenave-d'Ornon",
    "unit": "°C",
    "path": "gironde/tm-annuelle-villenave-d-ornon.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures moyennes"
   },
@@ -69,7 +69,7 @@
    "title": "Température minimale annuelle à Bordeaux-Mérignac",
    "unit": "°C",
    "path": "gironde/tn-annuelle-bordeaux-merignac.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales"
   },
@@ -79,7 +79,7 @@
    "title": "Température minimale annuelle à Bordeaux-Paulin",
    "unit": "°C",
    "path": "gironde/tn-annuelle-bordeaux-paulin.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales"
   },
@@ -89,7 +89,7 @@
    "title": "Température minimale annuelle à Cap-Ferret",
    "unit": "°C",
    "path": "gironde/tn-annuelle-cap-ferret.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales"
   },
@@ -99,7 +99,7 @@
    "title": "Température minimale annuelle à Cazaux",
    "unit": "°C",
    "path": "gironde/tn-annuelle-cazaux.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales"
   },
@@ -109,7 +109,7 @@
    "title": "Température minimale annuelle en Gironde",
    "unit": "°C",
    "path": "gironde/tn-annuelle-gironde.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Synthèse Gironde"
   },
@@ -119,7 +119,7 @@
    "title": "Température minimale annuelle à Lacanau",
    "unit": "°C",
    "path": "gironde/tn-annuelle-lacanau.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales"
   },
@@ -129,7 +129,7 @@
    "title": "Température minimale annuelle à Sauternes",
    "unit": "°C",
    "path": "gironde/tn-annuelle-sauternes.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales"
   },
@@ -139,7 +139,7 @@
    "title": "Température minimale annuelle à Villenave-d'Ornon",
    "unit": "°C",
    "path": "gironde/tn-annuelle-villenave-d-ornon.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures minimales"
   },
@@ -149,7 +149,7 @@
    "title": "Température maximale annuelle à Bordeaux-Mérignac",
    "unit": "°C",
    "path": "gironde/tx-annuelle-bordeaux-merignac.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures maximales"
   },
@@ -159,7 +159,7 @@
    "title": "Température maximale annuelle à Bordeaux-Paulin",
    "unit": "°C",
    "path": "gironde/tx-annuelle-bordeaux-paulin.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures maximales"
   },
@@ -169,7 +169,7 @@
    "title": "Température maximale annuelle à Cap-Ferret",
    "unit": "°C",
    "path": "gironde/tx-annuelle-cap-ferret.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures maximales"
   },
@@ -179,7 +179,7 @@
    "title": "Température maximale annuelle à Cazaux",
    "unit": "°C",
    "path": "gironde/tx-annuelle-cazaux.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures maximales"
   },
@@ -189,7 +189,7 @@
    "title": "Température maximale annuelle en Gironde",
    "unit": "°C",
    "path": "gironde/tx-annuelle-gironde.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Synthèse Gironde"
   },
@@ -199,7 +199,7 @@
    "title": "Température maximale annuelle à Villenave-d'Ornon",
    "unit": "°C",
    "path": "gironde/tx-annuelle-villenave-d-ornon.json",
-   "confidence": "moyenne",
+   "confidence": "elevee",
    "is_demo": false,
    "group": "Stations — températures maximales"
   }
