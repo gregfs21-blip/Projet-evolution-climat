@@ -1,6 +1,6 @@
 # Sonde P2 — inventaire des données (généré)
 
-Généré par `python -m etl.probe.p2` le 23/10/2026 14:57 UTC. Aucun résultat climatique n'est calculé ici :
+Généré par `python -m etl.probe.p2` le 23/10/2026 16:23 UTC. Aucun résultat climatique n'est calculé ici :
 la sonde recense ce qui existe pour fixer les critères de P2 **avant** tout calcul.
 
 ## 1. LSH — autres paramètres que TN/TX
