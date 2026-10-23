@@ -77,7 +77,14 @@ export default function MethodePage() {
         <h2 className="text-xl font-semibold">Validation</h2>
         <p>
           Chaque phase compare ses résultats à des valeurs publiées (ClimatHD de Météo-France, rapports Copernicus,
-          séries NOAA). Une phase n&apos;est close que lorsque les écarts sont expliqués.
+          séries NOAA). Les critères et leurs seuils sont fixés et versionnés avant tout calcul. Une phase n&apos;est
+          close que lorsque les écarts sont expliqués.
+        </p>
+        <p>
+          Les tendances de température de Gironde sont en outre recoupées avec la réanalyse ERA5 (ECMWF / Copernicus).
+          Le test porte sur la série des différences entre station et réanalyse : la variabilité commune s&apos;annule,
+          et toute dérive relative apparaît. ERA5 n&apos;est pas une source totalement indépendante, puisqu&apos;elle
+          assimile les mesures des stations synoptiques : un accord vaut recoupement, pas preuve.
         </p>
       </section>
     </article>
