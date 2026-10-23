@@ -1,8 +1,21 @@
 {
- "schema_version": "1.1",
+ "schema_version": "1.2",
  "id": "tn-annuelle-villenave-d-ornon",
  "scale": "gironde",
  "group": "Stations — températures minimales",
+ "variable": {
+  "id": "tn",
+  "code": "TN",
+  "label": "températures minimales",
+  "theme": "temperature",
+  "theme_label": "Températures annuelles",
+  "order": 0
+ },
+ "place": {
+  "id": "villenave-d-ornon",
+  "name": "Villenave-d'Ornon",
+  "kind": "station"
+ },
  "title": "Température minimale annuelle à Villenave-d'Ornon",
  "unit": "°C",
  "description": "Moyenne annuelle des minimales quotidiennes, en écart à la moyenne 1961-1990 de la station (8,6 °C). Site INRAE, périphérie sud de Bordeaux.",
@@ -350,9 +363,9 @@
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-23T08:38:55Z",
+  "extracted_at": "2026-10-23T14:55:42Z",
   "script": "etl/indicators/temperature.py",
-  "etl_version": "0.1.0+f456e25",
+  "etl_version": "0.1.0+65ee8bc",
   "homogenized": true
  },
  "is_demo": false
