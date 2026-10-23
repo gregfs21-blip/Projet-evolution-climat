@@ -1,7 +1,7 @@
 {
- "schema_version": "1.1",
- "generated_at": "2026-10-23T08:39:00Z",
- "etl_version": "0.1.0+f456e25",
+ "schema_version": "1.3",
+ "generated_at": "2026-10-23T16:08:21Z",
+ "etl_version": "0.1.0+fb725c7",
  "indicators": [
   {
    "id": "tm-annuelle-bordeaux-merignac",
@@ -11,7 +11,20 @@
    "path": "gironde/tm-annuelle-bordeaux-merignac.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures moyennes"
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
   },
   {
    "id": "tm-annuelle-bordeaux-paulin",
@@ -21,7 +34,20 @@
    "path": "gironde/tm-annuelle-bordeaux-paulin.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures moyennes"
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
   },
   {
    "id": "tm-annuelle-cap-ferret",
@@ -31,7 +57,20 @@
    "path": "gironde/tm-annuelle-cap-ferret.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures moyennes"
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
   },
   {
    "id": "tm-annuelle-cazaux",
@@ -41,7 +80,20 @@
    "path": "gironde/tm-annuelle-cazaux.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures moyennes"
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
   },
   {
    "id": "tm-annuelle-gironde",
@@ -51,7 +103,20 @@
    "path": "gironde/tm-annuelle-gironde.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Synthèse Gironde"
+   "group": "Synthèse Gironde",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
   },
   {
    "id": "tm-annuelle-villenave-d-ornon",
@@ -61,7 +126,20 @@
    "path": "gironde/tm-annuelle-villenave-d-ornon.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures moyennes"
+   "group": "Stations — températures moyennes",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
   },
   {
    "id": "tn-annuelle-bordeaux-merignac",
@@ -71,7 +149,20 @@
    "path": "gironde/tn-annuelle-bordeaux-merignac.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures minimales"
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
   },
   {
    "id": "tn-annuelle-bordeaux-paulin",
@@ -81,7 +172,20 @@
    "path": "gironde/tn-annuelle-bordeaux-paulin.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures minimales"
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
   },
   {
    "id": "tn-annuelle-cap-ferret",
@@ -91,7 +195,20 @@
    "path": "gironde/tn-annuelle-cap-ferret.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures minimales"
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
   },
   {
    "id": "tn-annuelle-cazaux",
@@ -101,7 +218,20 @@
    "path": "gironde/tn-annuelle-cazaux.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures minimales"
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
   },
   {
    "id": "tn-annuelle-gironde",
@@ -111,7 +241,20 @@
    "path": "gironde/tn-annuelle-gironde.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Synthèse Gironde"
+   "group": "Synthèse Gironde",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
   },
   {
    "id": "tn-annuelle-lacanau",
@@ -121,7 +264,20 @@
    "path": "gironde/tn-annuelle-lacanau.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures minimales"
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
   },
   {
    "id": "tn-annuelle-sauternes",
@@ -131,7 +287,20 @@
    "path": "gironde/tn-annuelle-sauternes.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures minimales"
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
   },
   {
    "id": "tn-annuelle-villenave-d-ornon",
@@ -141,7 +310,20 @@
    "path": "gironde/tn-annuelle-villenave-d-ornon.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures minimales"
+   "group": "Stations — températures minimales",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
   },
   {
    "id": "tx-annuelle-bordeaux-merignac",
@@ -151,7 +333,20 @@
    "path": "gironde/tx-annuelle-bordeaux-merignac.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures maximales"
+   "group": "Stations — températures maximales",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
   },
   {
    "id": "tx-annuelle-bordeaux-paulin",
@@ -161,7 +356,20 @@
    "path": "gironde/tx-annuelle-bordeaux-paulin.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures maximales"
+   "group": "Stations — températures maximales",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
   },
   {
    "id": "tx-annuelle-cap-ferret",
@@ -171,7 +379,20 @@
    "path": "gironde/tx-annuelle-cap-ferret.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures maximales"
+   "group": "Stations — températures maximales",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
   },
   {
    "id": "tx-annuelle-cazaux",
@@ -181,7 +402,20 @@
    "path": "gironde/tx-annuelle-cazaux.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures maximales"
+   "group": "Stations — températures maximales",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
   },
   {
    "id": "tx-annuelle-gironde",
@@ -191,7 +425,20 @@
    "path": "gironde/tx-annuelle-gironde.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Synthèse Gironde"
+   "group": "Synthèse Gironde",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
   },
   {
    "id": "tx-annuelle-villenave-d-ornon",
@@ -201,7 +448,20 @@
    "path": "gironde/tx-annuelle-villenave-d-ornon.json",
    "confidence": "elevee",
    "is_demo": false,
-   "group": "Stations — températures maximales"
+   "group": "Stations — températures maximales",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
   }
  ]
 }

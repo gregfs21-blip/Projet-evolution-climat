@@ -7,10 +7,20 @@ import type { Indicator, ValidationReport } from "@/lib/schema";
 
 type Point = { ok: boolean; title: string; text: string };
 
+const CONTROL_A = "Contrôle A";
+const B_ON_A = "Série corrigée sur la période du contrôle A";
+
 function points(ind: Indicator, reports: ValidationReport[]): Point[] {
   const out: Point[] = [];
   const t = ind.trend;
-  if (t) {
+  const c = ind.headline === "normals" ? ind.normals_comparison : null;
+  if (c) {
+    out.push({
+      ok: c.significant,
+      title: c.significant ? "Écart entre normales significatif" : "Écart entre normales non significatif",
+      text: `${c.method} (${fmtPValue(c.p_value)}). Indice rare : confiance au plus « moyenne » (critère E9).`,
+    });
+  } else if (t) {
     out.push({
       ok: t.significant,
       title: t.significant ? "Tendance significative" : "Tendance non significative",
@@ -27,15 +37,32 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
       });
     }
   }
-  if (ind.alt_trends.length > 0 && t) {
-    const agree = ind.alt_trends.filter((a) => Math.sign(a.slope_per_decade) === Math.sign(t.slope_per_decade) && a.significant === t.significant);
+  // Contrôle sur données brutes (P2a, critère E7) : même signe et intervalles de confiance qui se recouvrent.
+  const a = ind.alt_trends.find((x) => x.label.startsWith(CONTROL_A));
+  const b = ind.alt_trends.find((x) => x.label.startsWith(B_ON_A));
+  if (a && b && a.slope_ci_low !== null && a.slope_ci_high !== null && b.slope_ci_low !== null && b.slope_ci_high !== null) {
+    const ok =
+      Math.sign(a.slope_per_decade) === Math.sign(b.slope_per_decade) &&
+      a.slope_ci_low <= b.slope_ci_high &&
+      b.slope_ci_low <= a.slope_ci_high;
     out.push({
-      ok: agree.length === ind.alt_trends.length,
+      ok,
+      title: ok ? "Contrôle brut concordant" : "Contrôle brut discordant",
+      text: `Sur ${a.period.start}-${a.period.end}, après la dernière rupture connue, la série brute donne ${a.slope_per_decade.toLocaleString("fr-FR", { signDisplay: "always", maximumFractionDigits: 2 })} contre ${b.slope_per_decade.toLocaleString("fr-FR", { signDisplay: "always", maximumFractionDigits: 2 })} ${ind.unit}/déc. pour la série corrigée.`,
+    });
+  }
+  const periods = ind.alt_trends.filter((x) => !x.label.startsWith(CONTROL_A) && !x.label.startsWith(B_ON_A));
+  if (periods.length > 0 && t && !c) {
+    const agree = periods.filter((x) => Math.sign(x.slope_per_decade) === Math.sign(t.slope_per_decade) && x.significant === t.significant);
+    const n = periods.length;
+    const bad = n - agree.length;
+    out.push({
+      ok: bad === 0,
       title: "Autres périodes",
       text:
-        agree.length === ind.alt_trends.length
-          ? `Même signe et même conclusion sur ${ind.alt_trends.length === 1 ? "l'autre période calculée" : `les ${ind.alt_trends.length} autres périodes calculées`} (${ind.alt_trends.map((a) => `${a.period.start}-${a.period.end}`).join(", ")}).`
-          : `${ind.alt_trends.length - agree.length} période${ind.alt_trends.length - agree.length > 1 ? "s" : ""} sur ${ind.alt_trends.length} ${ind.alt_trends.length - agree.length > 1 ? "aboutissent" : "aboutit"} à une conclusion différente (voir les détails statistiques).`,
+        bad === 0
+          ? `Même signe et même conclusion sur ${n === 1 ? "l'autre période calculée" : `les ${n} autres périodes calculées`} (${periods.map((x) => `${x.period.start}-${x.period.end}`).join(", ")}).`
+          : `${bad} période${bad > 1 ? "s" : ""} sur ${n} ${bad > 1 ? "aboutissent" : "aboutit"} à une conclusion différente (voir les détails statistiques).`,
     });
   }
   const est = establishedBreaks(ind);

@@ -12,7 +12,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.3"
 Quality = Literal["homogenized", "raw"]
 
 Scale = Literal["gironde", "france", "monde"]
@@ -84,6 +84,29 @@ class Normal(_Strict):
     value: float
 
 
+class NormalsComparison(_Strict):
+    """Écart entre deux normales, avec un test : chiffre mis en avant pour un indice rare (critère E9),
+    pour lequel la pente de Sen est souvent nulle ou instable (beaucoup d'années à 0)."""
+
+    first: Period
+    second: Period
+    first_value: float
+    second_value: float
+    difference: float = Field(description="second_value − first_value")
+    p_value: float = Field(ge=0, le=1)
+    significant: bool
+    alpha: float = Field(default=0.05, gt=0, lt=1)
+    method: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _coherent(self) -> "NormalsComparison":
+        if self.significant != (self.p_value < self.alpha):
+            raise ValueError("comparaison des normales : significant incohérent avec p_value")
+        if abs(self.difference - (self.second_value - self.first_value)) > 1e-6:
+            raise ValueError("comparaison des normales : difference incohérente")
+        return self
+
+
 class Station(_Strict):
     id: str = Field(min_length=1)
     name: str = Field(min_length=1)
@@ -95,6 +118,31 @@ class Station(_Strict):
     min_detectable_amplitude: float | None = Field(default=None, description="Amplitude minimale détectable, °C")
     homogenization_breaks: list[str] = Field(default_factory=list, description="Ruptures corrigées, AAAA-MM")
     file_produced: str | None = Field(default=None, description="Date de production du fichier source")
+
+
+SLUG = r"^[a-z0-9]+(-[a-z0-9]+)*$"
+
+
+class Variable(_Strict):
+    """Grandeur mesurée, identique en tout lieu : c'est elle qui rassemble une famille d'indicateurs.
+
+    Vocabulaire unique : etl/config/variables.yaml. Le site ne connaît aucune variable à l'avance.
+    """
+
+    id: str = Field(pattern=SLUG, description="Ex. 'tn', 'jours-tx-30'")
+    code: str = Field(min_length=1, max_length=12, description="Libellé court, ex. 'TN'")
+    label: str = Field(min_length=1, description="Ex. 'températures minimales'")
+    theme: str = Field(pattern=SLUG, description="Famille d'affichage, ex. 'temperature'")
+    theme_label: str = Field(min_length=1, description="Ex. 'Températures annuelles'")
+    order: int = Field(ge=0, description="Rang d'affichage dans le thème")
+
+
+class Place(_Strict):
+    """Lieu de l'indicateur : une station, ou le composite de l'échelle."""
+
+    id: str = Field(pattern=SLUG, description="Slug de station, ou l'échelle elle-même pour un composite")
+    name: str = Field(min_length=1)
+    kind: Literal["station", "composite"]
 
 
 class Series(_Strict):
@@ -118,10 +166,12 @@ class Series(_Strict):
 
 
 class Indicator(_Strict):
-    schema_version: Literal["1.1"] = SCHEMA_VERSION
+    schema_version: Literal["1.3"] = SCHEMA_VERSION
     id: str = Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")
     scale: Scale
     group: str | None = Field(default=None, description="Regroupement d'affichage (ex. 'Synthèse', 'Stations')")
+    variable: Variable | None = Field(default=None, description="Absent = indicateur hors famille (ex. un indice global)")
+    place: Place | None = None
     title: str = Field(min_length=1)
     unit: str
     description: str = Field(min_length=1)
@@ -132,6 +182,10 @@ class Indicator(_Strict):
     normals: list[Normal] = Field(default_factory=list)
     trend: Trend | None
     alt_trends: list[Trend] = Field(default_factory=list, description="Fenêtres de comparaison (validation)")
+    headline: Literal["trend", "normals"] = Field(
+        default="trend", description="Chiffre mis en avant : la tendance, ou l'écart entre normales (indice rare, E9)"
+    )
+    normals_comparison: NormalsComparison | None = None
     breakpoints: list[Breakpoint] = Field(default_factory=list)
     stations: list[Station] = Field(default_factory=list)
     method_note: str | None = Field(default=None, description="Construction de l'indicateur (ex. composite)")
@@ -152,6 +206,16 @@ class Indicator(_Strict):
     def _coherence(self) -> "Indicator":
         if self.is_anomaly and self.reference_period is None:
             raise ValueError("une anomalie exige une reference_period")
+        if self.headline == "normals" and self.normals_comparison is None:
+            raise ValueError("headline 'normals' sans normals_comparison")
+        if (self.variable is None) != (self.place is None):
+            raise ValueError("variable et place vont ensemble : toutes deux renseignées ou toutes deux absentes")
+        if self.place is not None:
+            if self.place.kind == "composite" and self.place.id != self.scale:
+                raise ValueError("un composite a pour lieu l'échelle elle-même (place.id == scale)")
+            # Un seul poste ; plusieurs séries possibles (TM de station = séries TN et TX du même poste).
+            if self.place.kind == "station" and (not self.stations or len({s.id for s in self.stations}) != 1):
+                raise ValueError("un indicateur de station porte un seul poste")
         for t in [self.trend, *self.alt_trends]:
             if t and t.significant != (t.p_value < t.alpha):
                 raise ValueError(f"tendance '{t.label}' : significant incohérent avec p_value et alpha")
@@ -177,10 +241,12 @@ class ManifestEntry(_Strict):
     confidence: Confidence
     is_demo: bool
     group: str | None = None
+    variable: Variable | None = None
+    place: Place | None = None
 
 
 class Manifest(_Strict):
-    schema_version: Literal["1.1"] = SCHEMA_VERSION
+    schema_version: Literal["1.3"] = SCHEMA_VERSION
     generated_at: datetime
     etl_version: str
     indicators: list[ManifestEntry]
@@ -190,6 +256,14 @@ class Manifest(_Strict):
         keys = [(e.scale, e.id) for e in self.indicators]
         if len(set(keys)) != len(keys):
             raise ValueError("couple (scale, id) dupliqué dans le manifeste")
+        members = [(e.scale, e.variable.id, e.place.id) for e in self.indicators if e.variable and e.place]
+        if len(set(members)) != len(members):
+            raise ValueError("deux indicateurs pour la même variable au même lieu")
+        seen: dict[str, Variable] = {}
+        for e in self.indicators:
+            if e.variable:
+                if seen.setdefault(e.variable.id, e.variable) != e.variable:
+                    raise ValueError(f"variable '{e.variable.id}' décrite de deux façons différentes")
         return self
 
 
@@ -211,7 +285,7 @@ class ValidationCheck(_Strict):
 
 class ValidationReport(_Strict):
     schema_version: Literal["1.0"] = VALIDATION_SCHEMA_VERSION
-    phase: str = Field(pattern=r"^p[0-9]+$")
+    phase: str = Field(pattern=r"^p[0-9]+[a-z]?$", description="Ex. 'p1', 'p2a'")
     generated_at: datetime
     closure_ok: bool = Field(description="Tous les critères comptant pour la clôture sont satisfaits")
     verdict: str = Field(min_length=1)

@@ -12,20 +12,20 @@ function Group({ label, items }: { label: string; items: Sibling[] }) {
         const base = "rounded-full border px-3 py-0.5 text-sm";
         if (s.active) {
           return (
-            <span key={s.key} aria-current="page" className={`${base} border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)]`}>
+            <span key={s.key} aria-current="page" title={s.title} className={`${base} border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)]`}>
               {s.label}
             </span>
           );
         }
         if (!s.href) {
           return (
-            <span key={s.key} title="Pas de série pour ce lieu" className={`${base} border-dashed border-[var(--rule)] text-[var(--muted)] opacity-60`}>
+            <span key={s.key} title={`${s.title ?? s.label} : pas de série pour ce lieu`} className={`${base} border-dashed border-[var(--rule)] text-[var(--muted)] opacity-60`}>
               {s.label}
             </span>
           );
         }
         return (
-          <Link key={s.key} href={s.href} className={`${base} border-[var(--rule)] bg-[var(--card)] hover:border-[var(--muted)]`}>
+          <Link key={s.key} href={s.href} title={s.title} className={`${base} border-[var(--rule)] bg-[var(--card)] hover:border-[var(--muted)]`}>
             {s.label}
           </Link>
         );

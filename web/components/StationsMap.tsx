@@ -9,11 +9,11 @@ import { useEffect, useRef, useState } from "react";
 
 import HeatLegend from "./HeatLegend";
 import Segmented from "./Segmented";
-import type { MapPoint, VarKey } from "@/lib/family";
+import type { MapPoint } from "@/lib/family";
+import type { VarOption } from "./StationsOverlay";
 import { heatColor } from "@/lib/heat";
 
 const STYLE = "https://tiles.openfreemap.org/styles/positron";
-const CODES: Record<VarKey, string> = { tn: "TN", tm: "TM", tx: "TX" };
 const fmt = (v: number) => v.toLocaleString("fr-FR", { signDisplay: "always", maximumFractionDigits: 2, minimumFractionDigits: 2 });
 
 export default function StationsMap({
@@ -21,13 +21,16 @@ export default function StationsMap({
   variables,
   initial,
   period,
+  unit,
 }: {
-  points: Partial<Record<VarKey, MapPoint[]>>;
-  variables: VarKey[];
-  initial: VarKey;
+  points: Record<string, MapPoint[]>;
+  variables: VarOption[];
+  initial: string;
   period: string;
+  unit: string;
 }) {
-  const [variable, setVariable] = useState<VarKey>(initial);
+  const [variable, setVariable] = useState<string>(initial);
+  const code = variables.find((v) => v.id === variable)?.code ?? variable;
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const markersRef = useRef<import("maplibre-gl").Marker[]>([]);
@@ -79,11 +82,11 @@ export default function StationsMap({
         el.className = "station-marker";
         el.textContent = p.value === null ? "—" : fmt(p.value);
         if (p.value !== null) {
-          const { bg, fg } = heatColor(p.value);
+          const { bg, fg } = heatColor(p.value, unit);
           el.style.background = bg;
           el.style.color = fg;
         }
-        el.title = `${p.name} : ${el.textContent} °C par décennie (${CODES[variable]}, ${period})`;
+        el.title = `${p.name} : ${el.textContent} ${unit} par décennie (${code}, ${period})`;
         const label = document.createElement("div");
         label.className = "station-label";
         label.textContent = p.name;
@@ -96,7 +99,7 @@ export default function StationsMap({
     return () => {
       disposed = true;
     };
-  }, [ready, variable, points, period]);
+  }, [ready, variable, points, period, unit, code]);
 
   return (
     <figure className="space-y-2">
@@ -105,15 +108,15 @@ export default function StationsMap({
           label="Variable"
           value={variable}
           onChange={setVariable}
-          options={variables.map((v) => ({ key: v, label: CODES[v], disabled: !points[v]?.length }))}
+          options={variables.map((v) => ({ key: v.id, label: v.code, title: v.label, disabled: !points[v.id]?.length }))}
         />
       </div>
       <div ref={ref} className="h-[340px] w-full overflow-hidden rounded-md border border-[var(--rule)] sm:h-[380px]" />
       <figcaption className="flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--muted)]">
         <span>
-          Tendance {CODES[variable]} {period}, en °C par décennie. Même échelle que la matrice. Une valeur ouvre la station.
+          Tendance {code} {period}, en {unit} par décennie. Même échelle que la matrice. Une valeur ouvre la station.
         </span>
-        <HeatLegend />
+        <HeatLegend unit={unit} />
       </figcaption>
     </figure>
   );

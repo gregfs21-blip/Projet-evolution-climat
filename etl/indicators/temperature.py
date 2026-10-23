@@ -24,6 +24,7 @@ from scipy import stats
 
 from etl.context import ROOT, BuildContext
 from etl.schema import Breakpoint, Indicator, Normal, Period, Provenance, Series, Station, Trend
+from etl import vocabulary as vocab
 from etl.sources import meteofrance_lsh as lsh
 from etl.stats.breaks import pettitt
 from etl.stats.trend import annual_trend
@@ -171,7 +172,7 @@ def mf_regime_years(stations: tuple[Station, ...]) -> list[int]:
     return out
 
 
-def detect_break(series: AnnualSeries, anomalies: dict[int, float], composite: bool) -> list[Breakpoint]:
+def detect_break(series: AnnualSeries, anomalies: dict[int, float], composite: bool, unit: str = "°C") -> list[Breakpoint]:
     hom = series.hom_years()
     res = pettitt([anomalies[y] for y in hom])
     if res.p_value >= 0.05:
@@ -194,7 +195,7 @@ def detect_break(series: AnnualSeries, anomalies: dict[int, float], composite: b
     slope, intercept, *_ = stats.theilslopes(y, x)
     detr = pettitt(y - (intercept + slope * x))
     shift = res.mean_after - res.mean_before
-    note = f"écart des moyennes {fr(shift)} °C avant/après {new_regime}"
+    note = f"écart des moyennes {fr(shift)} {unit} avant/après {new_regime}"
     if detr.p_value >= 0.05:
         note += (f" ; après retrait de la tendance, plus aucune rupture significative (p = {fr(detr.p_value, 2, False)}) : "
                  "la rupture traduit la tendance elle-même, pas un saut brusque")
@@ -280,7 +281,7 @@ def _provenance(ctx: BuildContext) -> Provenance:
 
 
 def _assemble(ctx, *, ind_id, group, title, description, series, anomalies, where, composite, method_note, extra_limits,
-              reference=REFERENCE):
+              place, reference=REFERENCE):
     years = sorted(anomalies)
     normals = []
     if not composite:  # un composite d'anomalies n'a pas de normale absolue
@@ -293,6 +294,8 @@ def _assemble(ctx, *, ind_id, group, title, description, series, anomalies, wher
         id=ind_id,
         scale="gironde",
         group=group,
+        variable=vocab.variable(series.variable.lower()),
+        place=place,
         title=title,
         unit="°C",
         description=description,
@@ -352,6 +355,7 @@ def build_station(ctx: BuildContext, variable: str, station: str) -> Indicator:
         composite=False,
         method_note=note,
         extra_limits=extra + _validation_caveats(variable, ctx.raw_dir) + [f"Particularité du site : {cfg['note']}"],
+        place=vocab.station(station, cfg["name"]),
         reference=reference,
     )
 
@@ -389,4 +393,5 @@ def build_composite(ctx: BuildContext, variable: str) -> Indicator:
             "Composite de stations, non pondéré par la surface : il ne représente pas une moyenne spatiale "
             "rigoureuse du département. Les stations littorales y pèsent autant que les stations intérieures."
         ],
+        place=vocab.composite("gironde", "Gironde"),
     )

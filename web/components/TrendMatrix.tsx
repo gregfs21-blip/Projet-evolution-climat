@@ -3,17 +3,17 @@
 import Link from "next/link";
 
 import HeatLegend from "./HeatLegend";
-import { VARIABLES, type Matrix } from "@/lib/family";
+import type { Matrix } from "@/lib/family";
 import { fmtSigned } from "@/lib/format";
 import { heatColor } from "@/lib/heat";
 
 export default function TrendMatrix({ matrix }: { matrix: Matrix }) {
-  const { variables, rows, period } = matrix;
+  const { variables, rows, period, unit } = matrix;
   if (rows.length === 0) return null;
   return (
     <div className="space-y-3">
       <p className="text-xs text-[var(--muted)]">
-        °C par décennie{period ? `, ${period.start}-${period.end}, période commune à toutes les stations` : ""}. Une case
+        {unit} par décennie{period ? `, ${period.start}-${period.end}, période commune à toutes les stations` : ""}. Une case
         ouvre la série.
       </p>
       <div className="overflow-x-auto">
@@ -22,8 +22,8 @@ export default function TrendMatrix({ matrix }: { matrix: Matrix }) {
             <tr>
               <th className="sr-only">Lieu</th>
               {variables.map((v) => (
-                <th key={v} className="px-1 text-center text-xs font-medium text-[var(--muted)]">
-                  {VARIABLES[v].code} · {VARIABLES[v].short}
+                <th key={v.id} title={v.label} className="px-1 text-center text-xs font-medium text-[var(--muted)]">
+                  {v.code}
                 </th>
               ))}
             </tr>
@@ -35,21 +35,21 @@ export default function TrendMatrix({ matrix }: { matrix: Matrix }) {
                   {r.name}
                 </th>
                 {variables.map((v) => {
-                  const c = r.cells[v];
+                  const c = r.cells[v.id];
                   if (!c) {
                     return (
-                      <td key={v} className="hatch rounded-md py-2 text-center text-[11px] text-[var(--muted)]">
+                      <td key={v.id} className="hatch rounded-md py-2 text-center text-[11px] text-[var(--muted)]">
                         pas de série
                       </td>
                     );
                   }
-                  const { bg, fg } = heatColor(c.slope);
+                  const { bg, fg } = heatColor(c.slope, unit);
                   const ci = c.low !== null && c.high !== null ? ` (IC 95 % ${fmtSigned(c.low)} à ${fmtSigned(c.high)})` : "";
                   return (
-                    <td key={v} className="p-0">
+                    <td key={v.id} className="p-0">
                       <Link
                         href={c.href}
-                        title={`${r.name}, ${VARIABLES[v].code} : ${fmtSigned(c.slope)} °C/déc.${ci}`}
+                        title={`${r.name}, ${v.code} : ${fmtSigned(c.slope)} ${unit}/déc.${ci}`}
                         className={`block rounded-md py-2 text-center font-mono tabular-nums hover:brightness-110 ${r.isComposite ? "ring-2 ring-[var(--ink)] ring-inset" : ""}`}
                         style={{ background: bg, color: fg }}
                       >
@@ -64,8 +64,8 @@ export default function TrendMatrix({ matrix }: { matrix: Matrix }) {
         </table>
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-xs text-[var(--muted)]">Échelle fixe, °C/déc.</span>
-        <HeatLegend className="flex-1" />
+        <span className="text-xs text-[var(--muted)]">Échelle fixe, {unit}/déc. Rouge : hausse ; bleu : baisse.</span>
+        <HeatLegend unit={unit} className="flex-1" />
       </div>
     </div>
   );

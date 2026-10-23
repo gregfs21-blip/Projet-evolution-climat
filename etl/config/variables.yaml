@@ -1,0 +1,20 @@
+# Vocabulaire des variables : une entrée par grandeur, quel que soit le lieu.
+# C'est la seule définition des libellés : le site les lit dans les JSON et n'en connaît aucun à l'avance.
+# `theme` regroupe des variables comparables (même unité de tendance) sur une même matrice, carte, superposition.
+# `order` fixe le rang d'affichage dans le thème.
+
+themes:
+  temperature: Températures annuelles
+  extremes-temperature: Extrêmes de température
+
+variables:
+  tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
+  tm: {code: TM, label: températures moyennes, theme: temperature, order: 1}
+  tx: {code: TX, label: températures maximales, theme: temperature, order: 2}
+
+# --- P2a : extrêmes de température (comptages annuels de jours, unité « jours »)
+  jours-tx25: {code: TX ≥ 25, label: journées estivales (TX ≥ 25 °C), theme: extremes-temperature, order: 0}
+  jours-tx30: {code: TX ≥ 30, label: journées chaudes (TX ≥ 30 °C), theme: extremes-temperature, order: 1}
+  jours-tx35: {code: TX ≥ 35, label: journées très chaudes (TX ≥ 35 °C), theme: extremes-temperature, order: 2}
+  nuits-tn20: {code: TN ≥ 20, label: nuits tropicales (TN ≥ 20 °C), theme: extremes-temperature, order: 3}
+  jours-gel: {code: TN ≤ 0, label: jours de gel (TN ≤ 0 °C), theme: extremes-temperature, order: 4}

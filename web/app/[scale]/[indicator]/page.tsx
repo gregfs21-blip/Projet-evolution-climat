@@ -17,7 +17,7 @@ import SiblingPills from "@/components/SiblingPills";
 import TrendTable from "@/components/TrendTable";
 import WhyConfidence from "@/components/WhyConfidence";
 import { getIndicator, getValidation } from "@/lib/data";
-import { members, placeName, siblings } from "@/lib/family";
+import { placeLabel, siblings } from "@/lib/family";
 import { SCALE_LABELS } from "@/lib/format";
 import { scaleSchema } from "@/lib/schema";
 import { indicatorParams } from "@/lib/static-params";
@@ -59,7 +59,6 @@ export default async function IndicatorPage({ params }: { params: Params }) {
   if (!ind) notFound();
 
   const label = SCALE_LABELS[ind.scale];
-  const self = members(ind.scale).find((m) => m.entry.id === ind.id);
   const sib = siblings(ind);
   const reports = label.validations.flatMap((p) => getValidation(p) ?? []);
   const ref = ind.reference_period;
@@ -74,10 +73,10 @@ export default async function IndicatorPage({ params }: { params: Params }) {
             {label.name}
           </Link>
           {ind.group && <> › {ind.group}</>}
-          {self && (
+          {ind.place && (
             <>
               {" "}
-              › <span className="text-[var(--ink)]">{placeName(self, ind)}</span>
+              › <span className="text-[var(--ink)]">{placeLabel(ind.place)}</span>
             </>
           )}
         </nav>
@@ -114,7 +113,7 @@ export default async function IndicatorPage({ params }: { params: Params }) {
         breakpoints={establishedBreaks(ind)}
         composite={
           sib?.composite
-            ? { name: SCALE_LABELS[ind.scale].name + " (composite)", time: sib.composite.series.time, value: sib.composite.series.value }
+            ? { name: sib.composite.place ? placeLabel(sib.composite.place) : "composite", time: sib.composite.series.time, value: sib.composite.series.value }
             : null
         }
       />

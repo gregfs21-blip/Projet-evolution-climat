@@ -108,7 +108,9 @@ class TemperatureTest(unittest.TestCase):
             "  - id: tn-annuelle-gironde\n    scale: gironde\n    builder: etl.indicators.temperature:build_composite\n"
             "    params: {variable: TN}\n"
             "  - id: tx-annuelle-station-b\n    scale: gironde\n    builder: etl.indicators.temperature:build_station\n"
-            "    params: {variable: TX, station: station-b}\n",
+            "    params: {variable: TX, station: station-b}\n"
+            "  - id: tm-annuelle-station-b\n    scale: gironde\n    builder: etl.indicators.temperature:build_station\n"
+            "    params: {variable: TM, station: station-b}\n",
             encoding="utf-8",
         )
         (out / "france").mkdir(exist_ok=True)
@@ -117,7 +119,13 @@ class TemperatureTest(unittest.TestCase):
         self.assertEqual(validate(out), [])
         self.assertFalse((out / "france" / "ancien.json").exists())
         manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
-        self.assertEqual({e["group"] for e in manifest["indicators"]}, {"Synthèse Gironde", "Stations — températures maximales"})
+        self.assertEqual({e["group"] for e in manifest["indicators"]},
+                         {"Synthèse Gironde", "Stations — températures maximales", "Stations — températures moyennes"})
+        # Contrat v1.2 : variable et lieu explicites, recopiés dans le manifeste.
+        got = {e["id"]: (e["variable"]["id"], e["place"]["id"], e["place"]["kind"]) for e in manifest["indicators"]}
+        self.assertEqual(got, {"tn-annuelle-gironde": ("tn", "gironde", "composite"),
+                               "tx-annuelle-station-b": ("tx", "station-b", "station"),
+                               "tm-annuelle-station-b": ("tm", "station-b", "station")})
 
 
 if __name__ == "__main__":

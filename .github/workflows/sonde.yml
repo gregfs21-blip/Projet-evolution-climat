@@ -1,0 +1,50 @@
+# Sondes de phase : inventaire des données disponibles avant de fixer les critères d'une phase.
+# Se déclenche quand un module de sonde change (les workflows ajoutés sur une branche ne peuvent pas
+# être lancés à la main avant d'être sur main). Le rapport est commité sur la branche concernée.
+name: Sonde de phase
+
+on:
+  push:
+    paths:
+      - "etl/probe/**"
+      - ".github/workflows/sonde.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sonde-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04   # épinglé, comme l'ETL
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: etl/requirements.txt
+      - run: pip install -r etl/requirements.txt
+      - uses: actions/cache@v6
+        with:
+          path: data/raw/probe
+          key: probe-${{ github.run_id }}
+          restore-keys: probe-
+      - name: Sonde P2
+        run: python -m etl.probe.p2
+      - name: Publication du rapport
+        run: |
+          git config user.name "etl-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/sonde-p2.md
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "docs: sonde P2 du $(date -u +%Y-%m-%d)"
+            git pull --rebase
+            git push
+          fi

@@ -7,7 +7,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
-| P2 | Extrêmes et eau Gironde : jours > 30/35 °C, nuits tropicales, gelées, précipitations, insolation, SPEI | | à faire |
+| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026 (E4 : références en attente) | P2a en cours |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
@@ -127,6 +127,87 @@ Limites assumées d'avance :
   p = 0,002), compensé sur la moyenne. Mise en garde automatique ajoutée aux indicateurs TN. La règle de
   confiance n'est pas modifiée.
 
+## P2a — Critères de clôture (fixés le 23/10/2026, avant tout calcul)
+
+> **Décisions de Grég du 23/10/2026**, avant tout calcul : D-A découpage P2a puis P2b ; D-B méthode C
+> (B en résultat principal, A en contrôle) ; D-C références R3/R4 à confirmer par Grég sur ClimatHD ;
+> D-D critères E1-E10 validés tels quels.
+>
+> **E4 n'est pas encore fixé** : ses fourchettes seront commitées dès que Grég aura relevé les valeurs
+> ClimatHD. D'ici là, **aucun indicateur P2a n'est calculé sur les données réelles** (entrées du registre
+> désactivées), pour que la référence ne puisse pas être choisie après coup.
+
+### Constat de la sonde (`docs/sonde-p2.md`, 23/10/2026)
+
+- **Quotidien** (Licence Ouverte 2.0) : les 7 postes LSH de P1 ont des séries quotidiennes TN, TX, RR longues
+  (Mérignac 1946-2025, Sauternes 1897-2025, Paulin 1953-2025…). Lacanau a des trous (1998, 2002, 2018).
+  Les données quotidiennes **ne sont pas homogénéisées**. Code qualité 9 fréquent à certains postes
+  (Villenave 34 %, Cap-Ferret 18 %, Paulin 8 %) : signification exacte à confirmer dans la notice Météo-France.
+- **Précipitations homogénéisées (LSH RR)** : 9 séries en Gironde, homogénéisées de 1950/1953 à **2017**
+  seulement (brut ensuite). Mérignac et Villenave n'en ont pas.
+- **Insolation homogénéisée (LSH IN)** : **Mérignac seul**, 1931-**2014**. Le quotidien INST existe à Mérignac
+  (jusqu'en 2025), Cap-Ferret et Cazaux (jusqu'en 2017), mais les capteurs d'insolation ont changé au fil
+  des décennies : rupture instrumentale probable, non corrigée.
+
+### Découpage (décision D-A : retenu)
+
+- **P2a — Extrêmes de température** (7 postes de P1) : journées estivales TX ≥ 25 °C, chaudes TX ≥ 30 °C,
+  très chaudes TX ≥ 35 °C, nuits tropicales TN ≥ 20 °C, jours de gel TN ≤ 0 °C. Réutilise toute
+  l'infrastructure de P1 (stations, homogénéisation, validation).
+- **P2b — Eau et soleil** : cumuls de précipitations (LSH RR), extrêmes de pluie (quotidien), insolation,
+  SPEI (bilan RR − ETP Hargreaves, postes ayant TN, TX et RR homogénéisés : Paulin, Cap-Ferret, Cazaux,
+  1962-2017). Critères fixés après la clôture de P2a.
+
+### Le problème central de P2a : le quotidien n'est pas homogénéisé (décision D-B : méthode C retenue)
+
+Un déplacement de station ou un changement d'abri décale toutes les températures d'une station : un
+décalage de quelques dixièmes change sensiblement le nombre de jours au-dessus d'un seuil. Météo-France a
+corrigé ces ruptures au pas mensuel (LSH), pas au pas quotidien. Trois méthodes possibles :
+
+- **A. Brut, après la dernière rupture** : séries quotidiennes brutes, tendances calculées seulement après
+  la dernière rupture d'homogénéité connue de la station (dates publiées dans les LSH). Aucune correction,
+  mais des périodes plus courtes (souvent 1990-2022).
+- **B. Brut corrigé par le décalage mensuel LSH** : chaque jour reçoit la correction de son mois,
+  LSH homogénéisé − moyenne mensuelle brute. Périodes complètes ; corrige la moyenne mais pas la forme de
+  la distribution (les queues peuvent rester biaisées).
+- **C. B en résultat principal, A en contrôle** (recommandé) : la conclusion n'est publiée que si A et B
+  concordent (critère E7).
+
+### Références externes (décision D-C : confirmation par Grég sur ClimatHD)
+
+Recueillies **de seconde main** (diagnostic de vulnérabilité du PNR Périgord-Limousin, oct. 2025, p. 28,
+citant ClimatHD) pour la Nouvelle-Aquitaine, 1961-2018 :
+- **R3** journées chaudes (TX > 25 °C) : +6 à +8 jours par décennie (zones intérieures) ;
+- **R4** jours de gel : −1 à −2 jours par décennie.
+Ces valeurs doivent être **confirmées sur ClimatHD lui-même** (définitions exactes, zone, période) avant
+d'être commitées comme références. Faute de confirmation, E4 devient un critère d'information.
+
+### Critères (décision D-D : validés tels quels, E4 en attente de ses références)
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| E1 | Exhaustivité | 7 postes × 5 indices traités ; toute exclusion justifiée par écrit |
+| E2 | Complétude (règle ETCCDI) | Un mois est manquant s'il lui manque plus de 3 jours ; une année est manquante si un de ses mois l'est. Aucune valeur complétée |
+| E3 | Brut ≠ homogénéisé | Les années non corrigeables (après 2022, ou hors période homogénéisée LSH) sont affichées « brutes » et exclues des tendances et normales (comme C2) |
+| E4 | Validation externe (R3, R4) | Composite Gironde 1961-2018 : TX > 25 °C dans [+6 ; +8] j/déc., gel dans [−2 ; −1] j/déc. (fourchettes publiées, sous réserve de confirmation) |
+| E5 | Cohérence du correctif | Méthode B : la série corrigée reproduit la moyenne annuelle LSH à 0,05 °C près chaque année (contrôle automatique du calcul) |
+| E6 | Cohérence inter-stations | Même signe de tendance à toutes les stations pour TX ≥ 25 °C et pour le gel ; tout signe opposé expliqué |
+| E7 | Robustesse méthode | A et B : même signe et intervalles de confiance qui se recouvrent, pour chaque station et chaque indice |
+| E8 | Robustesse qualité | Conclusions inchangées en excluant les valeurs de code qualité 9 |
+| E9 | Indices rares | Si la médiane annuelle 1961-1990 est inférieure à 5 jours (ex. TX ≥ 35 °C, nuits tropicales sur le littoral), la pente de Sen n'est pas mise en avant : on publie l'écart entre normales 1961-1990 et 1991-2020, avec un test ; confiance au plus « moyenne » |
+| E10 | Technique | Tests et CI verts, contrat v1.2, vocabulaire des variables complété, pages déployées |
+
+**Règle de confiance** (analogue à C7) : « élevée » seulement si Hamed-Rao significatif, E4 et E7
+satisfaits, et indice non rare (E9).
+
+**Règle de clôture** : identique à P1 (critères satisfaits, ou chaque échec expliqué dans
+`docs/validation-p2.md` et accepté par Grég).
+
+### Affichage (à prévoir)
+
+Pour le gel, une baisse traduit un réchauffement : la légende de l'échelle de couleur (bleu = baisse) devra
+le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts` avec sa propre saturation.
+
 ## Journal ergonomie (entre P1 et P2)
 
 - 23/10/2026 : refonte de l'affichage, sans changement de calcul ni de contrat des indicateurs (v1.1).
@@ -143,3 +224,26 @@ Limites assumées d'avance :
     contrôlé par `etl.validate`), affiché tel quel par le site. Il liste les indicateurs qu'il couvre.
 - Dette assumée : la variable et le lieu sont lus dans l'identifiant (`tn-annuelle-<lieu>`). Un indicateur
   hors de ce motif reste listé normalement. À faire en P2 : ajouter `variable` et `place` au contrat.
+
+## Journal contrat v1.2 (23/10/2026)
+
+- Contrat 1.2 : `variable` (vocabulaire `etl/config/variables.yaml`) et `place` explicites dans chaque
+  indicateur et dans le manifeste. Le site ne lit plus la variable dans l'identifiant ; familles par thème.
+- Données régénérées : contenu identique à la v1.1 pour les 20 indicateurs, hors champs ajoutés (vérifié).
+- Validation P1 restreinte explicitement à son périmètre (TN, TM, TX).
+- Sonde P2 exécutée dans GitHub Actions (`.github/workflows/sonde.yml`), rapport `docs/sonde-p2.md`.
+
+## Journal P2a
+
+- 23/10/2026 : code de P2a écrit et testé sur données **synthétiques** uniquement (`etl/tests/test_extremes.py`) :
+  source quotidienne (`etl/sources/meteofrance_quot.py`), indicateurs (`etl/indicators/extremes.py`, méthodes B et
+  A, règle ETCCDI, indices rares), validation E1-E9 (`etl/validation/p2a.py`, rapport `validation-p2a.json`).
+- Les 34 indicateurs P2a sont déclarés **désactivés** dans le registre : aucun calcul sur données réelles avant
+  que les références de E4 soient commitées.
+- Exclusions prévues (E1) : indices TX à Lacanau et Sauternes (pas de série LSH TX : ni correction B, ni dates de
+  ruptures pour le contrôle A).
+- Règle ajoutée à l'implémentation, dans l'esprit de C2 : une normale n'est calculée que si toutes ses années sont
+  complètes et corrigées ; un indice rare sans normales complètes n'a pas d'écart publiable et reste « non établi ».
+- Composite P2a : réseau constant sur 1961-2022 (couvre E4 1961-2018 et les deux normales), au moins 3 stations.
+- Contrat 1.3 : `headline` (« trend » ou « normals ») et `normals_comparison`, pour que le site mette en avant
+  l'écart entre normales d'un indice rare (E9) sans le deviner.

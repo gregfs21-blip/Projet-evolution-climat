@@ -4,9 +4,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import Segmented from "./Segmented";
-import type { Overlay, VarKey } from "@/lib/family";
+import type { Overlay } from "@/lib/family";
 
-const CODES: Record<VarKey, string> = { tn: "TN", tm: "TM", tx: "TX" };
+export type VarOption = { id: string; code: string; label: string };
 
 function cssVar(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -16,12 +16,14 @@ export default function StationsOverlay({
   data,
   variables,
   initial,
+  unit,
 }: {
-  data: Partial<Record<VarKey, Overlay>>;
-  variables: VarKey[];
-  initial: VarKey;
+  data: Record<string, Overlay>;
+  variables: VarOption[];
+  initial: string;
+  unit: string;
 }) {
-  const [variable, setVariable] = useState<VarKey>(initial);
+  const [variable, setVariable] = useState<string>(initial);
   const ref = useRef<HTMLDivElement>(null);
   const current = data[variable];
 
@@ -64,7 +66,7 @@ export default function StationsOverlay({
               borderColor: rule,
               textStyle: { color: ink, fontSize: 12 },
               valueFormatter: (v: unknown) =>
-                typeof v === "number" ? `${v.toLocaleString("fr-FR", { maximumFractionDigits: 2, signDisplay: "always" })} °C` : "—",
+                typeof v === "number" ? `${v.toLocaleString("fr-FR", { maximumFractionDigits: 2, signDisplay: "always" })} ${unit}` : "—",
             },
             xAxis: {
               type: "category" as const,
@@ -147,7 +149,7 @@ export default function StationsOverlay({
       disposed = true;
       cleanup();
     };
-  }, [current, years]);
+  }, [current, years, unit]);
 
   if (!current) return null;
   return (
@@ -157,12 +159,15 @@ export default function StationsOverlay({
           label="Variable"
           value={variable}
           onChange={setVariable}
-          options={variables.map((v) => ({ key: v, label: CODES[v], disabled: !data[v] }))}
+          options={variables.map((v) => ({ key: v.id, label: v.code, title: v.label, disabled: !data[v.id] }))}
         />
       </div>
-      <div ref={ref} className="h-[260px] w-full sm:h-[300px]" role="img" aria-label={`Séries ${CODES[variable]} de toutes les stations`} />
+      <div ref={ref} className="h-[260px] w-full sm:h-[300px]" role="img" aria-label={`Séries ${variables.find((v) => v.id === variable)?.label ?? variable} de toutes les stations`} />
       <figcaption className="text-xs text-[var(--muted)]">
-        Écart annuel de chaque station à sa propre moyenne de référence ({current.references.join(" ou ")}), en °C. Gris :
+        {current.references.length
+          ? `Écart annuel de chaque station à sa propre moyenne de référence (${current.references.join(" ou ")}), en ${unit}.`
+          : `Valeur annuelle de chaque station, en ${unit}.`}{" "}
+        Gris :
         les {current.stations.length} stations ; rouge :
         composite ; pointillés : sa tendance ; zone grisée : années non homogénéisées.
       </figcaption>
