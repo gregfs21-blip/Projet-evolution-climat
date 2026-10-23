@@ -30,8 +30,9 @@ par la CI côté Python, puis par le build côté site.
 3. `python -m etl.pipeline --only <id>` puis `python -m etl.validate`.
 
 La page `/<échelle>/<id>` apparaît automatiquement au build suivant. Aucun code côté site.
-Un identifiant de la forme `tn|tm|tx-annuelle-<lieu>` rattache en plus l'indicateur à sa famille
-(matrice, superposition, carte, navigation entre lieux) ; `<lieu>` = l'échelle désigne le composite.
+Pour rattacher l'indicateur à une famille (matrice, superposition, carte, navigation entre lieux),
+le constructeur renseigne `variable` (vocabulaire `etl/config/variables.yaml`) et `place` (station ou
+composite). Une nouvelle variable s'ajoute au vocabulaire ; le site n'en connaît aucune à l'avance.
 
 ## Lancer en local
 

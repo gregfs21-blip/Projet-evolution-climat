@@ -80,6 +80,8 @@ def build_manifest(out_dir: Path) -> Manifest:
                 confidence=ind.confidence,
                 is_demo=ind.is_demo,
                 group=ind.group,
+                variable=ind.variable,
+                place=ind.place,
             )
         )
     return Manifest(

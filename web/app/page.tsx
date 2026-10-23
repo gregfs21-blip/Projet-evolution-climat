@@ -3,7 +3,7 @@ import Link from "next/link";
 import CompositeCards from "@/components/CompositeCards";
 import IndicatorList from "@/components/IndicatorList";
 import { groupedIndicators, listIndicators } from "@/lib/data";
-import { composites } from "@/lib/family";
+import { themes } from "@/lib/family";
 import { SCALE_LABELS } from "@/lib/format";
 import { SCALES } from "@/lib/schema";
 
@@ -24,7 +24,7 @@ export default function Home() {
       {published.map((scale) => {
         const label = SCALE_LABELS[scale];
         const n = listIndicators(scale).length;
-        const hasComposites = composites(scale).length > 0;
+        const ths = themes(scale);
         const synth = groupedIndicators(scale).find(([g]) => g.startsWith("Synthèse"));
         return (
           <section key={scale} className="space-y-3">
@@ -38,7 +38,16 @@ export default function Home() {
                 {n} indicateur{n > 1 ? "s" : ""}, stations comparées →
               </Link>
             </div>
-            {hasComposites ? <CompositeCards scale={scale} /> : <IndicatorList items={synth ? synth[1] : listIndicators(scale)} />}
+            {ths.length > 0 ? (
+              ths.map((t) => (
+                <div key={t.id} className="space-y-2">
+                  {ths.length > 1 && <h3 className="text-sm font-medium text-[var(--muted)]">{t.label}</h3>}
+                  <CompositeCards scale={scale} theme={t.id} />
+                </div>
+              ))
+            ) : (
+              <IndicatorList items={synth ? synth[1] : listIndicators(scale)} />
+            )}
           </section>
         );
       })}

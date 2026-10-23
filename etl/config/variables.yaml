@@ -1,0 +1,12 @@
+# Vocabulaire des variables : une entrée par grandeur, quel que soit le lieu.
+# C'est la seule définition des libellés : le site les lit dans les JSON et n'en connaît aucun à l'avance.
+# `theme` regroupe des variables comparables (même unité de tendance) sur une même matrice, carte, superposition.
+# `order` fixe le rang d'affichage dans le thème.
+
+themes:
+  temperature: Températures annuelles
+
+variables:
+  tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
+  tm: {code: TM, label: températures moyennes, theme: temperature, order: 1}
+  tx: {code: TX, label: températures maximales, theme: temperature, order: 2}

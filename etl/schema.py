@@ -12,7 +12,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
 Quality = Literal["homogenized", "raw"]
 
 Scale = Literal["gironde", "france", "monde"]
@@ -97,6 +97,31 @@ class Station(_Strict):
     file_produced: str | None = Field(default=None, description="Date de production du fichier source")
 
 
+SLUG = r"^[a-z0-9]+(-[a-z0-9]+)*$"
+
+
+class Variable(_Strict):
+    """Grandeur mesurée, identique en tout lieu : c'est elle qui rassemble une famille d'indicateurs.
+
+    Vocabulaire unique : etl/config/variables.yaml. Le site ne connaît aucune variable à l'avance.
+    """
+
+    id: str = Field(pattern=SLUG, description="Ex. 'tn', 'jours-tx-30'")
+    code: str = Field(min_length=1, max_length=12, description="Libellé court, ex. 'TN'")
+    label: str = Field(min_length=1, description="Ex. 'températures minimales'")
+    theme: str = Field(pattern=SLUG, description="Famille d'affichage, ex. 'temperature'")
+    theme_label: str = Field(min_length=1, description="Ex. 'Températures annuelles'")
+    order: int = Field(ge=0, description="Rang d'affichage dans le thème")
+
+
+class Place(_Strict):
+    """Lieu de l'indicateur : une station, ou le composite de l'échelle."""
+
+    id: str = Field(pattern=SLUG, description="Slug de station, ou l'échelle elle-même pour un composite")
+    name: str = Field(min_length=1)
+    kind: Literal["station", "composite"]
+
+
 class Series(_Strict):
     """Série en colonnes : plus compacte qu'une liste d'objets pour 30 000 points."""
 
@@ -118,10 +143,12 @@ class Series(_Strict):
 
 
 class Indicator(_Strict):
-    schema_version: Literal["1.1"] = SCHEMA_VERSION
+    schema_version: Literal["1.2"] = SCHEMA_VERSION
     id: str = Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")
     scale: Scale
     group: str | None = Field(default=None, description="Regroupement d'affichage (ex. 'Synthèse', 'Stations')")
+    variable: Variable | None = Field(default=None, description="Absent = indicateur hors famille (ex. un indice global)")
+    place: Place | None = None
     title: str = Field(min_length=1)
     unit: str
     description: str = Field(min_length=1)
@@ -152,6 +179,13 @@ class Indicator(_Strict):
     def _coherence(self) -> "Indicator":
         if self.is_anomaly and self.reference_period is None:
             raise ValueError("une anomalie exige une reference_period")
+        if (self.variable is None) != (self.place is None):
+            raise ValueError("variable et place vont ensemble : toutes deux renseignées ou toutes deux absentes")
+        if self.place is not None:
+            if self.place.kind == "composite" and self.place.id != self.scale:
+                raise ValueError("un composite a pour lieu l'échelle elle-même (place.id == scale)")
+            if self.place.kind == "station" and len(self.stations) != 1:
+                raise ValueError("un indicateur de station porte exactement une station")
         for t in [self.trend, *self.alt_trends]:
             if t and t.significant != (t.p_value < t.alpha):
                 raise ValueError(f"tendance '{t.label}' : significant incohérent avec p_value et alpha")
@@ -177,10 +211,12 @@ class ManifestEntry(_Strict):
     confidence: Confidence
     is_demo: bool
     group: str | None = None
+    variable: Variable | None = None
+    place: Place | None = None
 
 
 class Manifest(_Strict):
-    schema_version: Literal["1.1"] = SCHEMA_VERSION
+    schema_version: Literal["1.2"] = SCHEMA_VERSION
     generated_at: datetime
     etl_version: str
     indicators: list[ManifestEntry]
@@ -190,6 +226,14 @@ class Manifest(_Strict):
         keys = [(e.scale, e.id) for e in self.indicators]
         if len(set(keys)) != len(keys):
             raise ValueError("couple (scale, id) dupliqué dans le manifeste")
+        members = [(e.scale, e.variable.id, e.place.id) for e in self.indicators if e.variable and e.place]
+        if len(set(members)) != len(members):
+            raise ValueError("deux indicateurs pour la même variable au même lieu")
+        seen: dict[str, Variable] = {}
+        for e in self.indicators:
+            if e.variable:
+                if seen.setdefault(e.variable.id, e.variable) != e.variable:
+                    raise ValueError(f"variable '{e.variable.id}' décrite de deux façons différentes")
         return self
 
 

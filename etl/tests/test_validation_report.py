@@ -8,8 +8,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from etl.context import PROCESSED_DIR
-from etl.schema import ValidationReport
+from etl.schema import Manifest, ValidationReport
 from etl.validate import validate
 from etl.validation.p1 import Check, build_report
 
@@ -44,10 +43,11 @@ class TestBuildReport(unittest.TestCase):
 
 class TestValidateDir(unittest.TestCase):
     def setUp(self):
+        # Dossier minimal et valide, indépendant des données publiées.
         self.tmp = Path(tempfile.mkdtemp())
-        shutil.copytree(PROCESSED_DIR, self.tmp, dirs_exist_ok=True)
-        for p in self.tmp.glob("validation-*.json"):
-            p.unlink()
+        (self.tmp / "manifest.json").write_text(
+            Manifest(generated_at="2026-10-23T00:00:00Z", etl_version="test", indicators=[]).model_dump_json()
+        )
 
     def tearDown(self):
         shutil.rmtree(self.tmp)

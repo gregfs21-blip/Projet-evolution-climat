@@ -234,20 +234,30 @@ def external_validation_passed(raw_dir: Path = RAW_DIR) -> bool:
 # ---------------------------------------------------------------- C1, C5-C8 (sur les JSON publiés)
 
 
+# Périmètre de P1 : les températures annuelles. Les indicateurs des phases suivantes n'en relèvent pas
+# et ne doivent ni entrer dans les contrôles C5-C8 ni figurer dans le rapport.
+P1_VARIABLES = ("tn", "tm", "tx")
+
+
+def in_scope(ind: Indicator) -> bool:
+    return ind.variable is not None and ind.variable.id in P1_VARIABLES
+
+
 def load_indicators(out_dir: Path = PROCESSED_DIR) -> list[Indicator]:
     manifest = json.loads((out_dir / "manifest.json").read_text(encoding="utf-8"))
-    return [Indicator.model_validate_json((out_dir / e["path"]).read_text(encoding="utf-8")) for e in manifest["indicators"]]
+    inds = [Indicator.model_validate_json((out_dir / e["path"]).read_text(encoding="utf-8")) for e in manifest["indicators"]]
+    return [i for i in inds if in_scope(i)]
 
 
 def internal_checks(inds: list[Indicator], raw_dir: Path) -> tuple[list[Check], list[str]]:
     checks: list[Check] = []
     lines: list[str] = []
-    stations = [i for i in inds if not i.id.endswith("-gironde")]
+    stations = [i for i in inds if i.place and i.place.kind == "station"]
 
     # C1 — exhaustivité
     for var in ("TN", "TX"):
         expected = set(T.stations_with(var, raw_dir))
-        got = {i.stations[0].id for i in stations if i.id.startswith(var.lower() + "-")}
+        got = {i.stations[0].id for i in stations if i.variable.id == var.lower()}
         checks.append(Check(f"C1 {var}", expected == got,
                             f"{len(got)}/{len(expected)} séries LSH traitées" + (f", manquantes : {sorted(expected - got)}" if expected - got else "")))
 
@@ -256,7 +266,7 @@ def internal_checks(inds: list[Indicator], raw_dir: Path) -> tuple[list[Check], 
     for var in ("tn", "tx", "tm"):
         rows = []
         for i in stations:
-            if not i.id.startswith(var + "-"):
+            if i.variable.id != var:
                 continue
             t = next((a for a in i.alt_trends if a.label.startswith("1962-2022")), None)
             if t:
@@ -341,8 +351,7 @@ def main() -> int:
         "",
     ]
     OUT.write_text("\n".join(md), encoding="utf-8")
-    # Périmètre de P1 : les températures (TN, TM, TX). Les indicateurs des phases suivantes n'en relèvent pas.
-    scope = [i.id for i in inds if i.id.split("-")[0] in ("tn", "tm", "tx")]
+    scope = [i.id for i in inds]   # déjà restreint au périmètre P1 par load_indicators
     OUT_JSON.write_text(build_report(checks, verdict, scope).model_dump_json(indent=2) + "\n", encoding="utf-8")
     print("\n".join(f"[{c.status}] {c.name} : {c.detail}" for c in checks))
     print(verdict)

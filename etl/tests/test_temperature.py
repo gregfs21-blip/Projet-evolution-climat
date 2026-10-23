@@ -118,6 +118,10 @@ class TemperatureTest(unittest.TestCase):
         self.assertFalse((out / "france" / "ancien.json").exists())
         manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
         self.assertEqual({e["group"] for e in manifest["indicators"]}, {"Synthèse Gironde", "Stations — températures maximales"})
+        # Contrat v1.2 : variable et lieu explicites, recopiés dans le manifeste.
+        got = {e["id"]: (e["variable"]["id"], e["place"]["id"], e["place"]["kind"]) for e in manifest["indicators"]}
+        self.assertEqual(got, {"tn-annuelle-gironde": ("tn", "gironde", "composite"),
+                               "tx-annuelle-station-b": ("tx", "station-b", "station")})
 
 
 if __name__ == "__main__":

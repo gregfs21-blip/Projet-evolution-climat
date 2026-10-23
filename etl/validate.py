@@ -40,7 +40,9 @@ def validate(out_dir: Path = PROCESSED_DIR) -> list[str]:
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{entry.path} invalide : {exc}")
             continue
-        if (ind.scale, ind.id, ind.title, ind.is_demo) != (entry.scale, entry.id, entry.title, entry.is_demo):
+        if (ind.scale, ind.id, ind.title, ind.is_demo, ind.variable, ind.place) != (
+            entry.scale, entry.id, entry.title, entry.is_demo, entry.variable, entry.place
+        ):
             errors.append(f"{entry.path} : contenu incohérent avec le manifeste")
         if entry.path != f"{ind.scale}/{ind.id}.json":
             errors.append(f"{entry.path} : chemin incohérent avec scale/id")
