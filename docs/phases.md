@@ -232,3 +232,18 @@ le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts
 - Données régénérées : contenu identique à la v1.1 pour les 20 indicateurs, hors champs ajoutés (vérifié).
 - Validation P1 restreinte explicitement à son périmètre (TN, TM, TX).
 - Sonde P2 exécutée dans GitHub Actions (`.github/workflows/sonde.yml`), rapport `docs/sonde-p2.md`.
+
+## Journal P2a
+
+- 23/10/2026 : code de P2a écrit et testé sur données **synthétiques** uniquement (`etl/tests/test_extremes.py`) :
+  source quotidienne (`etl/sources/meteofrance_quot.py`), indicateurs (`etl/indicators/extremes.py`, méthodes B et
+  A, règle ETCCDI, indices rares), validation E1-E9 (`etl/validation/p2a.py`, rapport `validation-p2a.json`).
+- Les 34 indicateurs P2a sont déclarés **désactivés** dans le registre : aucun calcul sur données réelles avant
+  que les références de E4 soient commitées.
+- Exclusions prévues (E1) : indices TX à Lacanau et Sauternes (pas de série LSH TX : ni correction B, ni dates de
+  ruptures pour le contrôle A).
+- Règle ajoutée à l'implémentation, dans l'esprit de C2 : une normale n'est calculée que si toutes ses années sont
+  complètes et corrigées ; un indice rare sans normales complètes n'a pas d'écart publiable et reste « non établi ».
+- Composite P2a : réseau constant sur 1961-2022 (couvre E4 1961-2018 et les deux normales), au moins 3 stations.
+- Contrat 1.3 : `headline` (« trend » ou « normals ») et `normals_comparison`, pour que le site mette en avant
+  l'écart entre normales d'un indice rare (E9) sans le deviner.
