@@ -34,13 +34,23 @@ from etl.schema import Indicator, ValidationCheck, ValidationReport
 REFERENCES: dict[str, dict] = {
     "R3 littoral": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "journées chaudes (TX > 25 °C), littoral",
                     "stations": ["33236002", "33529001"], "range": (4.0, 5.0)},          # Cap-Ferret, Cazaux
+    # Mérignac seul : Villenave (prévue à l'origine) a une année incomplète (2002) dans 1961-2010. Décision de Grég du
+    # 23/10/2026, prise APRÈS la publication des premiers résultats (les pentes de Mérignac étaient visibles) :
+    # tracée comme telle dans docs/phases.md et docs/validation-p2a.md.
     "R3 intérieur": {"variable": "TX", "op": ">", "threshold": 25.0, "definition": "journées chaudes (TX > 25 °C), intérieur",
-                     "stations": ["33281001", "33550001"], "range": (6.0, 8.0)},         # Mérignac, Villenave-d'Ornon
+                     "stations": ["33281001"], "range": (6.0, 8.0)},                     # Bordeaux-Mérignac
     "R4": {"variable": "TN", "op": "<=", "threshold": 0.0, "definition": "jours de gel (TN ≤ 0 °C), composite",
            "stations": None, "range": (-2.0, -1.0)},
 }
 
 E5_TOLERANCE = 0.05     # °C
+
+# Écarts acceptés par Grég, explications dans docs/validation-p2a.md. Un écart accepté compte comme satisfait
+# pour la clôture ; il ne relève pas la confiance des indicateurs concernés (elle reste plafonnée par leur règle).
+ACCEPTED = {
+    "E7 concordance des méthodes": "écart accepté le 23/10/2026",
+    "E8 robustesse au code qualité 9": "écart accepté le 23/10/2026",
+}
 P2A_VARIABLES = tuple(X.INDICES)
 OUT = ROOT / "docs" / "validation-p2a-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p2a.json"
@@ -60,11 +70,15 @@ class Check:
             return "ℹ information"
         if self.pending:
             return "⏳ en attente"
-        return "✅ conforme" if self.passed else "❌ écart"
+        if self.passed:
+            return "✅ conforme"
+        if self.name in ACCEPTED:
+            return f"☑ {ACCEPTED[self.name]}"
+        return "❌ écart"
 
     @property
     def satisfied(self) -> bool:
-        return self.passed and not self.pending
+        return not self.pending and (self.passed or self.name in ACCEPTED)
 
 
 def external_validation_passed(raw_dir: Path = RAW_DIR) -> bool:

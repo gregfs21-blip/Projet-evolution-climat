@@ -264,3 +264,17 @@ le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts
 - 23/10/2026, après le premier calcul : correction d'un écart entre le code et la règle de confiance fixée. Un indice
   rare avec écart significatif entre normales était classé « faible » quand le contrôle A n'était pas évaluable ; la
   règle dit « au plus moyenne », il est donc « moyenne ». Aucun chiffre ne change (3 libellés de confiance).
+
+### Décisions du 23/10/2026 (Grég), APRÈS le premier calcul réel
+
+Analyse : `docs/validation-p2a.md`.
+- **E4 R3 littoral** (+5,83 j/déc. pour [+4 ; +5]) : **écart maintenu, non accepté**. Les indices TX restent en
+  confiance « moyenne » au plus tant qu'il n'est pas expliqué (effet de la correction B à Cap-Ferret notamment).
+- **E4 R3 intérieur** : non évaluable (Villenave incomplète en 2002, erreur de choix de station au moment de fixer la
+  référence). **Évalué sur Bordeaux-Mérignac seul.** Décision prise **après** la publication des pentes de Mérignac :
+  ce n'est pas une référence fixée en aveugle, et elle doit être lue comme telle.
+- **E7** (11 non évaluables, contrôle faible par construction) et **E8** (3 pertes de significativité, même signe) :
+  **écarts expliqués et acceptés.** Les indicateurs concernés restent en confiance « moyenne » au plus.
+- À faire pour P2b : un contrôle de la correction qui porte sur la période ancienne (là où elle agit), pas seulement
+  sur la période après la dernière rupture.
+- Publication en production décidée avec les écarts affichés (validation non close).

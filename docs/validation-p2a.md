@@ -60,3 +60,10 @@ incomplètes et raccourcit la série. C'est une perte de puissance statistique, 
 
 E4 n'étant pas satisfait, **aucun indicateur P2a n'est en confiance « élevée »** : ils sont « moyenne » au mieux.
 C'est la règle fixée, appliquée.
+
+## Décisions de Grég (23/10/2026, après le premier calcul)
+
+- E4 R3 littoral : écart **maintenu**, non accepté.
+- E4 R3 intérieur : évalué sur **Bordeaux-Mérignac seul**, choix fait après publication de ses résultats.
+- E7 et E8 : écarts **acceptés**, explications ci-dessus.
+- Publication en production avec les écarts affichés.
