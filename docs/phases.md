@@ -297,3 +297,7 @@ indicateurs phares. Une page « Couverture » montre l'état de chaque paramètr
   le contrôle vérifie notre lecture et notre calcul, pas la mesure elle-même.
 - Sources non retenues à ce stade (sonde) : HadSST4 (404), altimétrie NOAA STAR (404), CSIRO et NASA Ozone Watch
   (injoignables), Global Carbon Budget (404), CERES (compte requis). Foudre : aucune série ouverte longue.
+- Règle ajoutée le 23/10/2026 **après** le premier calcul des séries simples (choix de présentation, appliqué à toutes) :
+  pour une série de plus de 80 ans, la tendance mise en avant porte sur les 50 dernières années ; la tendance sur toute
+  la série reste publiée. Motif : sur 1850-2025, la pente globale (+0,06 °C/déc.) noie le réchauffement récent.
+  Les références et leur verdict ne changent pas.

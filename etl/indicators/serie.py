@@ -28,6 +28,8 @@ from etl.stats.trend import annual_trend
 
 NORMALS = [Period(start=1961, end=1990), Period(start=1991, end=2020)]
 COMMON_WINDOW = Period(start=1962, end=2017)    # période commune des séries LSH RR (homogénéisées jusqu'en 2017)
+LONG_SERIES = 80      # au-delà, tendance mise en avant sur les RECENT_YEARS dernières années (règle du 23/10/2026)
+RECENT_YEARS = 50
 
 
 def slugify(name: str) -> str:
@@ -138,8 +140,15 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
     if not years:
         raise ValueError(f"{ind_id} : série vide")
     run = longest_run(sorted(hom & set(series)))
-    main = annual_trend(run, [series[y] for y in run], label=f"{run[0]}-{run[-1]}") if len(run) >= 10 else None
     alts = []
+    # Série de plus de LONG_SERIES ans : la tendance mise en avant porte sur les RECENT_YEARS dernières années
+    # (comparables d'un indicateur à l'autre) ; la tendance sur toute la série reste publiée à côté.
+    if len(run) > LONG_SERIES:
+        recent = run[-RECENT_YEARS:]
+        main = annual_trend(recent, [series[y] for y in recent], label=f"{recent[0]}-{recent[-1]}, {RECENT_YEARS} dernières années")
+        alts.append(annual_trend(run, [series[y] for y in run], label=f"{run[0]}-{run[-1]}, toute la série"))
+    else:
+        main = annual_trend(run, [series[y] for y in run], label=f"{run[0]}-{run[-1]}") if len(run) >= 10 else None
     ys = [y for y in run if COMMON_WINDOW.start <= y <= COMMON_WINDOW.end]
     if place.kind != "composite" or scale == "gironde":
         if len(ys) == COMMON_WINDOW.end - COMMON_WINDOW.start + 1 and len(run) > len(ys):

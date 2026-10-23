@@ -168,6 +168,11 @@ class TestBuild(unittest.TestCase):
         vals = dict(zip(ind.series.time, ind.series.value))
         self.assertAlmostEqual(sum(vals[str(y)] for y in range(1961, 1991)) / 30, 0.0, places=3)
 
+    def test_serie_longue_tendance_recente(self):
+        ind = self.build(series(1850, 2025, 0.005), baseline=[1961, 1990], source="hadcrut5", variable="temperature-hadcrut5")
+        self.assertEqual((ind.trend.period.start, ind.trend.period.end), (1976, 2025))
+        self.assertTrue(any(t.label.endswith("toute la série") and t.period.start == 1850 for t in ind.alt_trends))
+
     def test_ligne_de_base_serie(self):
         ind = self.build({**series(1990, 2020, 3.0, base=7000)}, baseline="series", source="psmsl-1", variable="niveau-mer",
                          scale="france", place={"id": "brest", "name": "Brest", "kind": "station"},
