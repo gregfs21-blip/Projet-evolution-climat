@@ -217,7 +217,7 @@ def variable_caveat(variable: str, raw_dir: Path = RAW_DIR) -> str | None:
     )
     return (
         f"Recoupement avec la réanalyse ERA5 à Villenave-d'Ornon (1979-2022) : pour cette variable, la station se "
-        f"réchauffe {sense} que la réanalyse, de {fr(abs(check.slope), '.2f')} °C par décennie "
+        f"réchauffe {sense} que la réanalyse, de {fr(abs(check.slope), '.3f')} °C par décennie "
         f"(p = {fr(check.p_value, '.3f')}) ; {reason}. La hausse est confirmée par les deux sources, sa valeur "
         "exacte est moins assurée que pour la température moyenne."
     )
