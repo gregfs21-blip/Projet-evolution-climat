@@ -93,7 +93,7 @@ parametres:
   - id: niveau-mer
     label: Niveau des océans
     echelles:
-      gironde: {statut: prevu, variables: [niveau-mer], source: "Marégraphes PSMSL : Le Verdon, Arcachon-Eyrac", note: "Niveau relatif : inclut les mouvements verticaux du sol."}
+      gironde: {statut: prevu, variables: [niveau-mer], source: "Marégraphe PSMSL d'Arcachon-Eyrac", note: "Niveau relatif : inclut les mouvements verticaux du sol. Le Verdon écarté : moins de 10 années valides au PSMSL (calcul du 23/10/2026)."}
       france: {statut: prevu, variables: [niveau-mer], source: "Marégraphe PSMSL de Brest, l'un des plus longs du monde"}
       monde: {statut: prevu, source: "Altimétrie satellitaire : liens NOAA STAR et CSIRO de la sonde injoignables, autre accès à trouver"}
 

@@ -528,30 +528,6 @@ indicators:
         statement: 'GIEC AR6 (SPM A.1.7) : hausse du niveau marin moyen mondial de 1,3 mm/an [0,6 à 2,1] entre 1901 et 1971 (référence mondiale appliquée à un marégraphe)'
         source: GIEC, 6e rapport, groupe I, résumé pour décideurs
         url: https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/
-  - id: niveau-mer-le-verdon
-    scale: gironde
-    builder: etl.indicators.serie:build
-    params:
-      source: psmsl-459
-      scale: gironde
-      variable: niveau-mer
-      place:
-        id: le-verdon
-        name: Le Verdon
-        kind: station
-      where: À Le Verdon
-      baseline: series
-      station:
-        id: PSMSL-459
-        name: Le Verdon
-        lat: 45.55
-        lon: -1.066667
-      label: le niveau marin moyen
-      title: Niveau marin à Le Verdon
-      description: Niveau marin moyen annuel au marégraphe de Le Verdon (PSMSL, référence locale révisée), en écart à la moyenne de la série.
-      limitations:
-      - 'Niveau relatif : il inclut les mouvements verticaux du sol (subsidence ou soulèvement), pas seulement la hausse des océans.'
-      - Années signalées douteuses par le PSMSL écartées ; aucune valeur complétée.
   - id: niveau-mer-arcachon-eyrac
     scale: gironde
     builder: etl.indicators.serie:build
