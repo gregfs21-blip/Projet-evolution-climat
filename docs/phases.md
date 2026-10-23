@@ -6,7 +6,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | Phase | Contenu | Validation | État |
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
-| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous | **en attente de décision** (C3 TX, C4) |
+| P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **en cours** (C4bis à évaluer) |
 | P2 | Extrêmes et eau Gironde : jours > 30/35 °C, nuits tropicales, gelées, précipitations, insolation, SPEI | | à faire |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
@@ -59,12 +59,50 @@ sans Lacanau ni Sauternes). Homogénéisé de 1953 (1955 Lacanau TN, 1962 Paulin
 | C4 | Validation stationnelle (R2) | Villenave TM saisonnière 1959-2019, régression linéaire : écart ≤ 0,05 °C/déc. sur chacune des 4 saisons (Sen publié en complément) |
 | C5 | Cohérence inter-stations | Période commune 1962-2022 : toute station à plus de 0,10 °C/déc. de la médiane des stations (même variable) est expliquée |
 | C6 | Ruptures | Test de Pettitt (p < 0,05) sur séries annuelles homogénéisées. Toute rupture à ±1 an d'une rupture d'homogénéité corrigée par Météo-France est marquée « artefact possible » et n'est pas interprétée comme climatique |
-| C7 | Autocorrélation | Significativité Hamed-Rao publiée ; écart avec le test classique documenté pour chaque série. Confiance « élevée » seulement si Hamed-Rao significatif **et** C3/C4 satisfaits |
+| C7 | Autocorrélation | Significativité Hamed-Rao publiée ; écart avec le test classique documenté pour chaque série. Confiance « élevée » seulement si Hamed-Rao significatif **et** C3/C4 satisfaits (C4 remplacé par C4bis le 23/10/2026, voir ci-dessous) |
 | C8 | Traçabilité | Chaque JSON porte : n° de série MF, amplitude minimale détectable, ruptures MF, période homogénéisée, date de production du fichier MF |
 | C9 | Technique | Tests et CI verts, pages déployées, indicateur démo retiré, `package-lock.json` commité |
 
 **Règle de clôture :** P1 est close quand C1-C9 sont satisfaits, ou quand chaque échec est expliqué dans
 `docs/validation-p1.md` **et** accepté par Grég. Un écart inexpliqué bloque la clôture.
+
+### Décisions du 23/10/2026 (Grég), avant tout calcul ERA5
+
+**C3 TX — écart accepté.** Pente composite 1959-2009 de +0,354 °C/déc. pour une borne de 0,35 : écart de
+0,004, inférieur à la précision de la référence (« +0,3 », arrondie au dixième), référence régionale
+contre composite départemental, intervalle de confiance qui contient toute la fourchette publiée.
+C3 est réputé satisfait pour l'application de C7.
+
+**C4 — retiré, remplacé par C4bis.** La référence R2 (ORACLE 2020, p. 26) est incohérente avec le reste
+du document (moyenne saisonnière +0,18 contre plus de +0,33 en annuel) : elle ne peut valider ni
+invalider nos calculs. C4 reste calculé et publié pour information, sans effet sur la clôture. C4bis est
+un **nouveau critère**, pas un assouplissement de C4 : il change de référence, de période et de test.
+
+| # | Critère | Seuil |
+|---|---|---|
+| C4bis | Recoupement stationnel par une réanalyse | Villenave-d'Ornon, TM annuelle 1979-2022. Série des différences D = TM(LSH) − TM(ERA5). Satisfait si **\|pente de Sen de D\| ≤ 0,10 °C/déc.** **et** tendance de D **non significative** (Hamed-Rao, p ≥ 0,05) |
+
+Protocole, fixé avant calcul :
+- **ERA5** (ECMWF / Copernicus, maille 0,25°), via l'API archive d'Open-Meteo avec `models=era5` (pas de
+  mélange de modèles), point 44,790 N ; 0,577 W. Maille effectivement retenue par l'API consignée dans le rapport.
+- Variables quotidiennes `temperature_2m_max` et `temperature_2m_min`, jour local. TM = (TN + TX) / 2 au pas
+  mensuel, puis moyenne annuelle sur 12 mois complets : même construction que pour LSH.
+- **1979-2022** : début de l'ère satellitaire, où ERA5 est la plus robuste ; fin de l'homogénéisation LSH.
+- Le test porte sur la série des différences, et non sur l'écart entre deux pentes : la variabilité
+  interannuelle commune s'annule, et le test devient bien plus sensible à une dérive relative.
+- Seuil de 0,10 °C/déc. choisi a priori : environ le quart de la tendance attendue sur 1979-2022. Au-delà,
+  l'écart modifierait l'interprétation. Ce n'est pas une valeur tirée de la littérature.
+- Publiés pour information, sans effet sur la clôture : TN et TX annuelles, TM saisonnière, TM 1959-2019.
+
+Limites assumées d'avance :
+- ERA5 n'est **pas totalement indépendante** : elle assimile les mesures synoptiques de surface,
+  vraisemblablement celles de Bordeaux-Mérignac, à 9 km. Elle n'est cependant ni homogénéisée par HOMER ni
+  contrainte par les mêmes stations voisines, et repose sur un modèle physique. Un accord vaut recoupement,
+  pas preuve indépendante.
+- Une maille de 25 km n'est pas un point : un décalage **constant** est attendu et sans importance, seule
+  une **dérive** de D compte.
+- En cas d'échec, l'écart ne désigne pas la série fautive : ERA5 a ses propres inhomogénéités, liées à
+  l'évolution des systèmes d'observation.
 
 ### Limites connues dès le départ
 
@@ -82,3 +120,5 @@ sans Lacanau ni Sauternes). Homogénéisé de 1953 (1955 Lacanau TN, 1962 Paulin
   présente une « rupture » artificielle (constaté sur les 20 séries).
 - pymannkendall 1.4.3 (PyPI) produit p = NaN dans certains cas : fonctions reprises du correctif amont
   dans `etl/stats/mannkendall.py`, recoupées en test.
+- 23/10/2026 : décisions de Grég. C3 TX accepté ; C4 retiré (référence invalide) et remplacé par C4bis
+  (recoupement ERA5), protocole et seuil commités avant tout téléchargement ERA5.
