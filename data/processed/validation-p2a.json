@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p2a",
-  "generated_at": "2026-10-23T16:34:31Z",
+  "generated_at": "2026-10-23T16:37:37Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
@@ -117,6 +117,13 @@
       "status": "❌ écart",
       "satisfied": false,
       "detail": "3 conclusion(s) modifiée(s) sur 29"
+    },
+    {
+      "name": "Info effet de la correction B",
+      "kind": "info",
+      "status": "ℹ information",
+      "satisfied": true,
+      "detail": "écart absolu médian brut − corrigé : 0.19 j/déc., maximal 2.34 j/déc. (détail ci-dessous)"
     },
     {
       "name": "E9 indices rares",

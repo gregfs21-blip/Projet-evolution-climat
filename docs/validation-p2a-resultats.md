@@ -17,6 +17,7 @@ Fichier généré par `python -m etl.validation.p2a` à chaque exécution de l'E
 | E6 même signe jours-gel | ✅ conforme | 0 hausse(s), 7 baisse(s), 0 nulle(s) |
 | E7 concordance des méthodes | ❌ écart | 23/34 concordants ; 0 discordant(s) ; 11 non évaluable(s) |
 | E8 robustesse au code qualité 9 | ❌ écart | 3 conclusion(s) modifiée(s) sur 29 |
+| Info effet de la correction B | ℹ information | écart absolu médian brut − corrigé : 0.19 j/déc., maximal 2.34 j/déc. (détail ci-dessous) |
 | E9 indices rares | ✅ conforme | 10 indicateur(s) rare(s), aucun en confiance « élevée » |
 
 ### E2 — Années complètes (règle ETCCDI) et corrigées, par poste
@@ -108,3 +109,37 @@ Fichier généré par `python -m etl.validation.p2a` à chaque exécution de l'E
 | nuits-tn20-lacanau | +0.83 | oui | +0.83 | oui | non |
 | nuits-tn20-sauternes | +0.26 | oui | +0.26 | oui | non |
 | nuits-tn20-villenave-d-ornon | +0.61 | oui | +0.71 | oui | non |
+
+### Information — effet de la correction B sur toute la période (brut contre corrigé, mêmes années)
+
+| Indicateur | Période | Pente brute | Pente corrigée | Écart | Même conclusion |
+|---|---|---|---|---|---|
+| jours-gel-bordeaux-merignac | 1953-2022 | -3.48 | -2.42 | +1.05 | oui |
+| jours-gel-bordeaux-paulin | 1953-2022 | -3.15 | -1.61 | +1.54 | oui |
+| jours-gel-cap-ferret | 1953-2022 | -1.37 | -1.25 | +0.12 | oui |
+| jours-gel-cazaux | 1953-2022 | -1.76 | -2.41 | -0.65 | oui |
+| jours-gel-lacanau | 1967-1997 | -4.00 | -3.16 | +0.84 | oui |
+| jours-gel-sauternes | 1953-2022 | -3.33 | -2.37 | +0.96 | oui |
+| jours-gel-villenave-d-ornon | 1953-2001 | -3.33 | -2.22 | +1.11 | oui |
+| jours-tx25-bordeaux-merignac | 1953-2022 | +7.93 | +6.73 | -1.20 | oui |
+| jours-tx25-bordeaux-paulin | 1962-2022 | +6.00 | +6.92 | +0.92 | oui |
+| jours-tx25-cap-ferret | 1953-2022 | +4.63 | +6.97 | +2.34 | oui |
+| jours-tx25-cazaux | 1953-2022 | +5.71 | +6.00 | +0.29 | oui |
+| jours-tx25-villenave-d-ornon | 1953-2001 | +5.59 | +5.71 | +0.13 | oui |
+| jours-tx30-bordeaux-merignac | 1953-2022 | +3.68 | +3.17 | -0.51 | oui |
+| jours-tx30-bordeaux-paulin | 1962-2022 | +3.75 | +4.00 | +0.25 | oui |
+| jours-tx30-cap-ferret | 1953-2022 | +1.05 | +1.52 | +0.47 | oui |
+| jours-tx30-cazaux | 1953-2022 | +2.11 | +2.22 | +0.12 | oui |
+| jours-tx30-villenave-d-ornon | 1953-2001 | +3.08 | +2.95 | -0.12 | oui |
+| jours-tx35-bordeaux-merignac | 1953-2022 | +0.56 | +0.48 | -0.08 | oui |
+| jours-tx35-bordeaux-paulin | 1962-2022 | +0.71 | +0.90 | +0.19 | oui |
+| jours-tx35-cap-ferret | 1953-2022 | -0.00 | -0.00 | +0.00 | **non** |
+| jours-tx35-cazaux | 1953-2022 | +0.45 | +0.47 | +0.01 | oui |
+| jours-tx35-villenave-d-ornon | 1953-2001 | -0.00 | -0.00 | +0.00 | oui |
+| nuits-tn20-bordeaux-merignac | 1953-2022 | +0.88 | +0.78 | -0.10 | oui |
+| nuits-tn20-bordeaux-paulin | 1953-2022 | +1.52 | +1.25 | -0.27 | oui |
+| nuits-tn20-cap-ferret | 1953-2022 | +1.67 | +1.61 | -0.05 | oui |
+| nuits-tn20-cazaux | 1953-2022 | +0.48 | +0.51 | +0.03 | oui |
+| nuits-tn20-lacanau | 1967-1997 | +0.71 | +0.83 | +0.12 | oui |
+| nuits-tn20-sauternes | 1953-2022 | +0.29 | +0.26 | -0.04 | oui |
+| nuits-tn20-villenave-d-ornon | 1953-2001 | +0.73 | +0.61 | -0.12 | oui |
