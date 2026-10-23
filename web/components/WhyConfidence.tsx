@@ -35,7 +35,7 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
       text:
         agree.length === ind.alt_trends.length
           ? `Même signe et même conclusion sur ${ind.alt_trends.length === 1 ? "l'autre période calculée" : `les ${ind.alt_trends.length} autres périodes calculées`} (${ind.alt_trends.map((a) => `${a.period.start}-${a.period.end}`).join(", ")}).`
-          : `${ind.alt_trends.length - agree.length} période(s) sur ${ind.alt_trends.length} aboutissent à une conclusion différente (voir les détails statistiques).`,
+          : `${ind.alt_trends.length - agree.length} période${ind.alt_trends.length - agree.length > 1 ? "s" : ""} sur ${ind.alt_trends.length} ${ind.alt_trends.length - agree.length > 1 ? "aboutissent" : "aboutit"} à une conclusion différente (voir les détails statistiques).`,
     });
   }
   const est = establishedBreaks(ind);
@@ -46,8 +46,8 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
       ind.breakpoints.length === 0
         ? "Aucune rupture détectée (test de Pettitt)."
         : est.length === 0
-          ? `${ind.breakpoints.length} rupture(s) détectée(s), aucune établie : chacune disparaît après retrait de la tendance ou coïncide avec une correction d'homogénéité.`
-          : `Rupture(s) en ${est.join(", ")} : à interpréter avant toute conclusion sur la tendance.`,
+          ? `${ind.breakpoints.length === 1 ? "1 rupture détectée, non établie : elle disparaît" : `${ind.breakpoints.length} ruptures détectées, aucune établie : chacune disparaît`} après retrait de la tendance ou coïncide avec une correction d'homogénéité.`
+          : `${est.length > 1 ? "Ruptures" : "Rupture"} en ${est.join(", ")} : à interpréter avant toute conclusion sur la tendance.`,
   });
   // Seuls les rapports qui couvrent explicitement cet indicateur comptent.
   for (const r of reports.filter((x) => x.indicators.includes(ind.id))) {
