@@ -78,7 +78,7 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
         <div className="space-y-2">
           <CompositeCards scale={scale} theme={theme.id} />
           <p className="text-xs text-[var(--muted)]">
-            {ref0 ? `Barres : écart annuel à la moyenne ${ref0.start}-${ref0.end}` : `Barres : valeur annuelle, en ${u}`} ; pointillés :
+            {ref0 ? `Barres : écart annuel à la moyenne ${ref0.start}-${ref0.end}` : `Barres : valeur annuelle${u ? `, en ${u}` : ""}`} ; pointillés :
             droite de Sen (absente pour un indice rare) ; gris : années non homogénéisées, hors tendance. Une carte ouvre la
             page détaillée.
           </p>
