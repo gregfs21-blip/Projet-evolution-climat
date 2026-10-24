@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import importlib
 import logging
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -115,6 +116,10 @@ def run(only: set[str] | None = None, out_dir: Path = PROCESSED_DIR, registry_pa
         except Exception as exc:  # noqa: BLE001 — on veut le rapport complet
             log.error("ÉCHEC %s : %s", entry["id"], exc)
             failures.append(entry["id"])
+            if os.environ.get("GITHUB_ACTIONS") == "true":
+                # Annotation GitHub : lisible dans l'interface et par l'API, même quand les journaux ne le sont pas.
+                msg = str(exc).replace("\n", " ").replace("%", "%25")[:900]
+                print(f"::error title=ETL {entry['id']}::{type(exc).__name__}: {msg}", flush=True)
 
     for path in prune(out_dir, registry):
         log.info("RETIRÉ %s", path.relative_to(out_dir))
@@ -122,6 +127,9 @@ def run(only: set[str] | None = None, out_dir: Path = PROCESSED_DIR, registry_pa
     manifest = build_manifest(out_dir, registry)
     (out_dir / "manifest.json").write_text(manifest.model_dump_json(indent=1) + "\n", encoding="utf-8")
     log.info("Manifeste : %d indicateur(s)", len(manifest.indicators))
+    from etl import couverture  # import local : la couverture dépend du manifeste, pas l'inverse
+
+    couverture.write(manifest, out_dir)
 
     if failures:
         log.error("%d indicateur(s) en échec : %s", len(failures), ", ".join(failures))

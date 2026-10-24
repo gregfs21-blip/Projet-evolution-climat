@@ -1,0 +1,133 @@
+{
+ "schema_version": "1.4",
+ "id": "niveau-mer-arcachon-eyrac",
+ "scale": "gironde",
+ "group": "Niveau de la mer",
+ "variable": {
+  "id": "niveau-mer",
+  "code": "NM",
+  "label": "niveau marin moyen annuel",
+  "theme": "niveau-mer",
+  "theme_label": "Niveau de la mer",
+  "order": 0
+ },
+ "place": {
+  "id": "arcachon-eyrac",
+  "name": "Arcachon-Eyrac",
+  "kind": "station"
+ },
+ "title": "Niveau marin à Arcachon-Eyrac",
+ "unit": "mm",
+ "description": "Niveau marin moyen annuel au marégraphe de Arcachon-Eyrac (PSMSL, référence locale révisée), en écart à la moyenne de la série.",
+ "frequency": "annual",
+ "is_anomaly": true,
+ "reference_period": {
+  "start": 2002,
+  "end": 2024
+ },
+ "series": {
+  "time": [
+   "2002",
+   "2003",
+   "2004",
+   "2005",
+   "2006",
+   "2007",
+   "2009",
+   "2010",
+   "2011",
+   "2012",
+   "2015",
+   "2017",
+   "2018",
+   "2019",
+   "2020",
+   "2021",
+   "2022",
+   "2023",
+   "2024"
+  ],
+  "value": [
+   -19.0526,
+   -26.0526,
+   -26.0526,
+   -77.0526,
+   -33.0526,
+   -38.0526,
+   -6.0526,
+   -2.0526,
+   -32.0526,
+   -28.0526,
+   -17.0526,
+   -19.0526,
+   25.9474,
+   40.9474,
+   62.9474,
+   23.9474,
+   20.9474,
+   76.9474,
+   71.9474
+  ],
+  "quality": [
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized"
+  ]
+ },
+ "normals": [],
+ "trend": null,
+ "alt_trends": [],
+ "headline": "trend",
+ "normals_comparison": null,
+ "reference_check": null,
+ "breakpoints": [],
+ "stations": [
+  {
+   "id": "PSMSL-1918",
+   "name": "Arcachon-Eyrac",
+   "latitude": 44.665001,
+   "longitude": -1.16355,
+   "altitude": 0.0,
+   "series_id": null,
+   "homogenized_period": null,
+   "min_detectable_amplitude": null,
+   "homogenization_breaks": [],
+   "file_produced": null
+  }
+ ],
+ "method_note": null,
+ "finding": "À Arcachon-Eyrac, la série de le niveau marin moyen est trop courte ou trop lacunaire pour une tendance.",
+ "confidence": "non_etabli",
+ "limitations": [
+  "Série publiée par PSMSL, reprise sans modification, sauf la période de référence ramenée à s-e.",
+  "Niveau relatif : il inclut les mouvements verticaux du sol (subsidence ou soulèvement), pas seulement la hausse des océans.",
+  "Années signalées douteuses par le PSMSL écartées ; aucune valeur complétée.",
+  "Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne »."
+ ],
+ "provenance": {
+  "source_name": "PSMSL — marégraphe de Arcachon-Eyrac, moyennes annuelles RLR",
+  "source_url": "https://psmsl.org/data/obtaining/stations/1918.php",
+  "license": "Libre, citation demandée (PSMSL)",
+  "extracted_at": "2026-10-23T21:42:49Z",
+  "script": "etl.indicators.serie",
+  "etl_version": "0.1.0+89c0009",
+  "homogenized": true
+ },
+ "is_demo": false
+}

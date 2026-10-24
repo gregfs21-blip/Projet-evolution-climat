@@ -8,7 +8,8 @@ import { fmtSigned } from "@/lib/format";
 import { heatColor } from "@/lib/heat";
 
 export default function TrendMatrix({ matrix }: { matrix: Matrix }) {
-  const { variables, rows, period, unit } = matrix;
+  const { variables, rows, period } = matrix;
+  const unit = matrix.unit ?? "";
   if (rows.length === 0) return null;
   return (
     <div className="space-y-3">

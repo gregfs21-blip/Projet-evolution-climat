@@ -24,6 +24,8 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
   const trended = comps.filter((c) => c.ind.headline !== "normals");
   const allSignificant = trended.length > 0 && trended.every((c) => c.ind.trend?.significant);
   const p0 = comps[0]?.ind.trend?.period;
+  // Périodes différentes selon les variables (ex. CO₂ depuis 1979, CH₄ depuis 1984) : période donnée pour chacune.
+  const samePeriod = trended.every((c) => c.ind.trend?.period.start === p0?.start && c.ind.trend?.period.end === p0?.end);
   const ref0 = comps[0]?.ind.reference_period;
   const u = theme.unit;
 
@@ -34,14 +36,17 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
         {comps.length > 0 && p0 && (
           // Constat entièrement calculé à partir des JSON publiés : aucune conclusion rédigée à la main ici.
           <p className="text-lg leading-relaxed">
-            Composite {scaleName} {p0.start}-{p0.end} :{" "}
+            {comps[0]?.ind.stations.length ? `Composite ${scaleName}` : scaleName}
+            {samePeriod ? ` ${p0.start}-${p0.end}` : ""} :{" "}
             {trended.map((c, i) => (
               <span key={c.variable.id}>
                 {i > 0 && (i === trended.length - 1 ? " et " : ", ")}
                 {c.variable.code} <b className="font-mono">{c.ind.trend ? fmtSigned(c.ind.trend.slope_per_decade) : "—"}</b>
+                {u === null && ` ${c.ind.unit}`}
+                {!samePeriod && c.ind.trend && ` (${c.ind.trend.period.start}-${c.ind.trend.period.end})`}
               </span>
             ))}{" "}
-            {u} par décennie{allSignificant ? (trended.length > 1 ? ", tendances toutes significatives" : ", tendance significative") + " après correction de l'autocorrélation" : ""}.
+            {u ?? ""} par décennie{allSignificant ? (trended.length > 1 ? ", tendances toutes significatives" : ", tendance significative") + " après correction de l'autocorrélation" : ""}.
             {comps
               .filter((c) => c.ind.headline === "normals" && c.ind.normals_comparison)
               .map((c) => {
@@ -50,12 +55,12 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
                   <span key={c.variable.id}>
                     {" "}
                     {c.variable.code} (indice rare) : <b className="font-mono">{fmt1(n.first_value)} → {fmt1(n.second_value)}</b>{" "}
-                    {u} par an entre {n.first.start}-{n.first.end} et {n.second.start}-{n.second.end}
+                    {c.ind.unit} par an entre {n.first.start}-{n.first.end} et {n.second.start}-{n.second.end}
                     {n.significant ? "" : ", écart non significatif"}.
                   </span>
                 );
               })}
-            {maxSpread !== null && nStations > 1 && (
+            {u !== null && maxSpread !== null && nStations > 1 && (
               <>
                 {" "}
                 Sur la période commune {period}, les pentes des {nStations} stations diffèrent au plus de{" "}
@@ -69,18 +74,18 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
         )}
       </div>
 
-      {comps.length > 0 && (
+      {(comps.length > 0 || matrix.rows.length > 0) && (
         <div className="space-y-2">
           <CompositeCards scale={scale} theme={theme.id} />
           <p className="text-xs text-[var(--muted)]">
-            {ref0 ? `Barres : écart annuel à la moyenne ${ref0.start}-${ref0.end}` : `Barres : valeur annuelle, en ${u}`} ; pointillés :
+            {ref0 ? `Barres : écart annuel à la moyenne ${ref0.start}-${ref0.end}` : `Barres : valeur annuelle${u ? `, en ${u}` : ""}`} ; pointillés :
             droite de Sen (absente pour un indice rare) ; gris : années non homogénéisées, hors tendance. Une carte ouvre la
             page détaillée.
           </p>
         </div>
       )}
 
-      {matrix.rows.length > 1 && (
+      {u !== null && matrix.rows.length > 1 && (
         <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr]">
           <div className="space-y-2 border-t border-[var(--rule)] pt-4">
             <h3 className="text-xl font-semibold">Les stations comparées</h3>
@@ -93,7 +98,7 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
         </div>
       )}
 
-      {Object.values(points).some((p) => p.length > 1) && (
+      {u !== null && Object.values(points).some((p) => p.length > 1) && (
         <div className="space-y-2 border-t border-[var(--rule)] pt-4">
           <h3 className="text-xl font-semibold">Carte des stations</h3>
           <StationsMap points={points} variables={vars} initial={initial} period={period} unit={u} />

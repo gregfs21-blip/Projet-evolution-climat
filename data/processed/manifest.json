@@ -1,7 +1,7 @@
 {
- "schema_version": "1.3",
- "generated_at": "2026-10-23T17:05:52Z",
- "etl_version": "0.1.0+95e9a1f",
+ "schema_version": "1.4",
+ "generated_at": "2026-10-23T21:44:07Z",
+ "etl_version": "0.1.0+89c0009",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -1242,6 +1242,558 @@
    "place": {
     "id": "villenave-d-ornon",
     "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "co2-monde",
+   "scale": "monde",
+   "title": "Dioxyde de carbone (CO₂), moyenne mondiale",
+   "unit": "ppm",
+   "path": "monde/co2-monde.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Gaz à effet de serre",
+   "variable": {
+    "id": "co2",
+    "code": "CO₂",
+    "label": "dioxyde de carbone",
+    "theme": "ges",
+    "theme_label": "Gaz à effet de serre",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "ch4-monde",
+   "scale": "monde",
+   "title": "Méthane (CH₄), moyenne mondiale",
+   "unit": "ppb",
+   "path": "monde/ch4-monde.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Gaz à effet de serre",
+   "variable": {
+    "id": "ch4",
+    "code": "CH₄",
+    "label": "méthane",
+    "theme": "ges",
+    "theme_label": "Gaz à effet de serre",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "n2o-monde",
+   "scale": "monde",
+   "title": "Protoxyde d'azote (N₂O), moyenne mondiale",
+   "unit": "ppb",
+   "path": "monde/n2o-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Gaz à effet de serre",
+   "variable": {
+    "id": "n2o",
+    "code": "N₂O",
+    "label": "protoxyde d'azote",
+    "theme": "ges",
+    "theme_label": "Gaz à effet de serre",
+    "order": 2
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "temperature-hadcrut5-monde",
+   "scale": "monde",
+   "title": "Température globale — HadCRUT5 (Met Office, CRU)",
+   "unit": "°C",
+   "path": "monde/temperature-hadcrut5-monde.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Température globale",
+   "variable": {
+    "id": "temperature-hadcrut5",
+    "code": "HadCRUT5",
+    "label": "température globale (HadCRUT5)",
+    "theme": "temperature-globale",
+    "theme_label": "Température globale",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "temperature-berkeley-monde",
+   "scale": "monde",
+   "title": "Température globale — Berkeley Earth",
+   "unit": "°C",
+   "path": "monde/temperature-berkeley-monde.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Température globale",
+   "variable": {
+    "id": "temperature-berkeley",
+    "code": "Berkeley",
+    "label": "température globale (Berkeley Earth)",
+    "theme": "temperature-globale",
+    "theme_label": "Température globale",
+    "order": 2
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "temperature-gistemp-monde",
+   "scale": "monde",
+   "title": "Température globale — GISTEMP v4 (NASA)",
+   "unit": "°C",
+   "path": "monde/temperature-gistemp-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Température globale",
+   "variable": {
+    "id": "temperature-gistemp",
+    "code": "GISTEMP",
+    "label": "température globale (GISTEMP)",
+    "theme": "temperature-globale",
+    "theme_label": "Température globale",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "ohc-700-monde",
+   "scale": "monde",
+   "title": "Chaleur de l'océan mondial, 0 à 700 m",
+   "unit": "10²² J",
+   "path": "monde/ohc-700-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Chaleur des océans",
+   "variable": {
+    "id": "ohc-700",
+    "code": "0-700 m",
+    "label": "chaleur de l'océan entre 0 et 700 m",
+    "theme": "chaleur-ocean",
+    "theme_label": "Chaleur des océans",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "ohc-2000-monde",
+   "scale": "monde",
+   "title": "Chaleur de l'océan mondial, 0 à 2000 m",
+   "unit": "10²² J",
+   "path": "monde/ohc-2000-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Chaleur des océans",
+   "variable": {
+    "id": "ohc-2000",
+    "code": "0-2000 m",
+    "label": "chaleur de l'océan entre 0 et 2000 m",
+    "theme": "chaleur-ocean",
+    "theme_label": "Chaleur des océans",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "banquise-arctique-septembre-monde",
+   "scale": "monde",
+   "title": "Banquise arctique en septembre (minimum annuel)",
+   "unit": "millions de km²",
+   "path": "monde/banquise-arctique-septembre-monde.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Banquise",
+   "variable": {
+    "id": "banquise-arctique-septembre",
+    "code": "Arctique",
+    "label": "banquise arctique en septembre",
+    "theme": "banquise",
+    "theme_label": "Banquise",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "banquise-antarctique-fevrier-monde",
+   "scale": "monde",
+   "title": "Banquise antarctique en février (minimum annuel)",
+   "unit": "millions de km²",
+   "path": "monde/banquise-antarctique-fevrier-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Banquise",
+   "variable": {
+    "id": "banquise-antarctique-fevrier",
+    "code": "Antarctique",
+    "label": "banquise antarctique en février",
+    "theme": "banquise",
+    "theme_label": "Banquise",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "oni-monde",
+   "scale": "monde",
+   "title": "El Niño : indice ONI, moyenne annuelle",
+   "unit": "°C",
+   "path": "monde/oni-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "El Niño",
+   "variable": {
+    "id": "oni",
+    "code": "ONI",
+    "label": "indice El Niño (ONI)",
+    "theme": "enso",
+    "theme_label": "El Niño",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "niveau-mer-brest",
+   "scale": "france",
+   "title": "Niveau marin à Brest",
+   "unit": "mm",
+   "path": "france/niveau-mer-brest.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Niveau de la mer",
+   "variable": {
+    "id": "niveau-mer",
+    "code": "NM",
+    "label": "niveau marin moyen annuel",
+    "theme": "niveau-mer",
+    "theme_label": "Niveau de la mer",
+    "order": 0
+   },
+   "place": {
+    "id": "brest",
+    "name": "Brest",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "niveau-mer-arcachon-eyrac",
+   "scale": "gironde",
+   "title": "Niveau marin à Arcachon-Eyrac",
+   "unit": "mm",
+   "path": "gironde/niveau-mer-arcachon-eyrac.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Niveau de la mer",
+   "variable": {
+    "id": "niveau-mer",
+    "code": "NM",
+    "label": "niveau marin moyen annuel",
+    "theme": "niveau-mer",
+    "theme_label": "Niveau de la mer",
+    "order": 0
+   },
+   "place": {
+    "id": "arcachon-eyrac",
+    "name": "Arcachon-Eyrac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-gironde",
+   "scale": "gironde",
+   "title": "Précipitations annuelles en Gironde",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse Gironde — eau et soleil",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "rr-cumul-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Bordeaux-Paulin",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-hourtin",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Hourtin",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-hourtin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "hourtin",
+    "name": "Hourtin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-st-symphorien",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à St-Symphorien",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-st-symphorien.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "st-symphorien",
+    "name": "St-Symphorien",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-belin-beliet",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Belin-Beliet",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-belin-beliet.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "belin-beliet",
+    "name": "Belin-Beliet",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-captieux",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Captieux",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-captieux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "captieux",
+    "name": "Captieux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-lacanau",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Lacanau",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-cap-ferret",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Cap-Ferret",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-sauternes",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Sauternes",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-sauternes.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rr-cumul-cazaux",
+   "scale": "gironde",
+   "title": "Précipitations annuelles à Cazaux",
+   "unit": "mm",
+   "path": "gironde/rr-cumul-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — précipitations annuelles",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "insolation-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Ensoleillement annuel à Bordeaux-Mérignac",
+   "unit": "h",
+   "path": "gironde/insolation-bordeaux-merignac.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — durée d'ensoleillement annuelle",
+   "variable": {
+    "id": "insolation",
+    "code": "INS",
+    "label": "durée d'ensoleillement annuelle",
+    "theme": "ensoleillement",
+    "theme_label": "Ensoleillement",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
     "kind": "station"
    }
   }

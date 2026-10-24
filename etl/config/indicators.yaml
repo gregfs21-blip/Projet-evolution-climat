@@ -227,3 +227,454 @@ indicators:
     scale: gironde
     builder: etl.indicators.extremes:build_station
     params: {index: jours-gel, station: villenave-d-ornon}
+
+  # --- « largeur d'abord » (décision de Grég du 23/10/2026) : une série par paramètre.
+  # Chaque référence est fixée ici, dans ce commit, AVANT le premier calcul de l'indicateur.
+  - id: co2-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: co2-gl
+      scale: monde
+      variable: co2
+      place:
+        id: monde
+        name: Monde
+      where: En moyenne mondiale
+      label: la concentration de CO₂
+      title: Dioxyde de carbone (CO₂), moyenne mondiale
+      description: Moyenne annuelle de la fraction molaire de CO₂ dans l'air de surface marine, réseau mondial de la NOAA.
+      limitations:
+      - 'Concentration atmosphérique : une cause du réchauffement, pas une mesure du climat lui-même.'
+      reference:
+        kind: rate
+        period:
+        - 2010
+        - 2019
+        range:
+        - 2.14
+        - 2.62
+        unit: ppm/an
+        fixed_on: '2026-10-23'
+        statement: 'NOAA : croissance annuelle du CO₂ global 2010-2019, moyenne des taux publiés 2,38 ppm/an (tolérance ±10 %, définitions voisines)'
+        source: NOAA GML, taux de croissance annuels du CO₂ global
+        url: https://gml.noaa.gov/ccgg/trends/gl_gr.html
+  - id: ch4-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: ch4-gl
+      scale: monde
+      variable: ch4
+      place:
+        id: monde
+        name: Monde
+      where: En moyenne mondiale
+      label: la concentration de méthane
+      title: Méthane (CH₄), moyenne mondiale
+      description: Moyenne annuelle de la fraction molaire de méthane dans l'air de surface marine, réseau mondial de la NOAA.
+      limitations:
+      - 'Concentration atmosphérique : une cause du réchauffement, pas une mesure du climat lui-même.'
+      reference:
+        kind: rate
+        period:
+        - 2010
+        - 2019
+        range:
+        - 6.82
+        - 8.34
+        unit: ppb/an
+        fixed_on: '2026-10-23'
+        statement: 'NOAA : croissance annuelle du méthane 2010-2019, moyenne des taux publiés 7,58 ppb/an (tolérance ±10 %)'
+        source: NOAA GML, taux de croissance annuels du méthane global
+        url: https://gml.noaa.gov/ccgg/trends_ch4/
+  - id: n2o-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: n2o-gl
+      scale: monde
+      variable: n2o
+      place:
+        id: monde
+        name: Monde
+      where: En moyenne mondiale
+      label: la concentration de protoxyde d'azote
+      title: Protoxyde d'azote (N₂O), moyenne mondiale
+      description: Moyenne annuelle de la fraction molaire de N₂O dans l'air de surface marine, réseau mondial de la NOAA.
+      limitations:
+      - 'Concentration atmosphérique : une cause du réchauffement, pas une mesure du climat lui-même.'
+  - id: temperature-hadcrut5-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: hadcrut5
+      scale: monde
+      variable: temperature-hadcrut5
+      place:
+        id: monde
+        name: Monde
+      where: À l'échelle du globe
+      baseline:
+      - 1961
+      - 1990
+      label: la température moyenne de surface
+      title: Température globale — HadCRUT5 (Met Office, CRU)
+      description: Anomalie annuelle de la température moyenne de surface (terres et océans), produit HadCRUT5 (Met Office, CRU), ramenée à la moyenne 1961-1990 pour comparer les produits.
+      limitations:
+      - 'Anomalie globale : moyenne de mesures terrestres et marines, interpolées là où les observations manquent (pôles, océans du Sud, XIXe siècle).'
+      reference:
+        kind: difference
+        base:
+        - 1850
+        - 1900
+        period:
+        - 2011
+        - 2020
+        range:
+        - 0.95
+        - 1.2
+        unit: °C
+        fixed_on: '2026-10-23'
+        statement: 'GIEC AR6 (SPM A.1.2) : 2011-2020 plus chaud de 1,09 °C [0,95 à 1,20] que 1850-1900'
+        source: GIEC, 6e rapport, groupe I, résumé pour décideurs
+        url: https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/
+  - id: temperature-berkeley-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: berkeley
+      scale: monde
+      variable: temperature-berkeley
+      place:
+        id: monde
+        name: Monde
+      where: À l'échelle du globe
+      baseline:
+      - 1961
+      - 1990
+      label: la température moyenne de surface
+      title: Température globale — Berkeley Earth
+      description: Anomalie annuelle de la température moyenne de surface (terres et océans), produit Berkeley Earth, ramenée à la moyenne 1961-1990 pour comparer les produits.
+      limitations:
+      - 'Anomalie globale : moyenne de mesures terrestres et marines, interpolées là où les observations manquent (pôles, océans du Sud, XIXe siècle).'
+      reference:
+        kind: difference
+        base:
+        - 1850
+        - 1900
+        period:
+        - 2011
+        - 2020
+        range:
+        - 0.95
+        - 1.2
+        unit: °C
+        fixed_on: '2026-10-23'
+        statement: 'GIEC AR6 (SPM A.1.2) : 2011-2020 plus chaud de 1,09 °C [0,95 à 1,20] que 1850-1900'
+        source: GIEC, 6e rapport, groupe I, résumé pour décideurs
+        url: https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/
+  - id: temperature-gistemp-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: gistemp
+      scale: monde
+      variable: temperature-gistemp
+      place:
+        id: monde
+        name: Monde
+      where: À l'échelle du globe
+      baseline:
+      - 1961
+      - 1990
+      label: la température moyenne de surface
+      title: Température globale — GISTEMP v4 (NASA)
+      description: Anomalie annuelle de la température moyenne de surface (terres et océans), produit GISTEMP v4 (NASA), ramenée à la moyenne 1961-1990 pour comparer les produits.
+      limitations:
+      - 'Anomalie globale : moyenne de mesures terrestres et marines, interpolées là où les observations manquent (pôles, océans du Sud, XIXe siècle).'
+  - id: ohc-700-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: ohc-700
+      scale: monde
+      variable: ohc-700
+      place:
+        id: monde
+        name: Monde
+      where: Dans l'océan mondial
+      label: le contenu thermique entre 0 à 700 m
+      title: Chaleur de l'océan mondial, 0 à 700 m
+      description: Contenu thermique de l'océan mondial entre 0 à 700 m de profondeur, moyenne annuelle (NOAA NCEI), en écart à la référence du producteur.
+      limitations:
+      - 'Couverture des mesures très inégale avant le réseau Argo (années 2000) : incertitude plus forte sur les premières décennies.'
+  - id: ohc-2000-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: ohc-2000
+      scale: monde
+      variable: ohc-2000
+      place:
+        id: monde
+        name: Monde
+      where: Dans l'océan mondial
+      label: le contenu thermique entre 0 à 2000 m
+      title: Chaleur de l'océan mondial, 0 à 2000 m
+      description: Contenu thermique de l'océan mondial entre 0 à 2000 m de profondeur, moyenne annuelle (NOAA NCEI), en écart à la référence du producteur.
+      limitations:
+      - 'Couverture des mesures très inégale avant le réseau Argo (années 2000) : incertitude plus forte sur les premières décennies.'
+  - id: banquise-arctique-septembre-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: nsidc-n09
+      scale: monde
+      variable: banquise-arctique-septembre
+      place:
+        id: monde
+        name: Monde
+      where: En Arctique
+      label: l'étendue de la banquise de septembre
+      title: Banquise arctique en septembre (minimum annuel)
+      description: Étendue moyenne de la banquise arctique en septembre, mois du minimum annuel, mesurée par satellite (NSIDC).
+      limitations:
+      - Étendue (surface avec au moins 15 % de glace), pas épaisseur ni volume.
+      reference:
+        kind: relative_slope
+        base:
+        - 1981
+        - 2010
+        period:
+        - 1979
+        - 2024
+        range:
+        - -12.6
+        - -11.6
+        unit: '%/déc.'
+        fixed_on: '2026-10-23'
+        statement: 'NSIDC : −12,1 % par décennie par rapport à la moyenne 1981-2010, entre 1979 et 2024 (régression linéaire ; tolérance ±0,5 point)'
+        source: NOAA Climate.gov, d'après le NSIDC
+        url: https://www.climate.gov/news-features/understanding-climate/climate-change-minimum-Arctic-sea-ice-extent
+  - id: banquise-antarctique-fevrier-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: nsidc-s02
+      scale: monde
+      variable: banquise-antarctique-fevrier
+      place:
+        id: monde
+        name: Monde
+      where: En Antarctique
+      label: l'étendue de la banquise de février
+      title: Banquise antarctique en février (minimum annuel)
+      description: Étendue moyenne de la banquise antarctique en février, mois du minimum annuel, mesurée par satellite (NSIDC).
+      limitations:
+      - Étendue, pas épaisseur ; forte variabilité d'une année à l'autre, et records bas récents après une longue période stable.
+  - id: oni-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: oni
+      scale: monde
+      variable: oni
+      place:
+        id: monde
+        name: Monde
+      where: Dans le Pacifique équatorial
+      label: l'indice El Niño annuel moyen
+      title: 'El Niño : indice ONI, moyenne annuelle'
+      description: 'Moyenne annuelle de l''indice océanique El Niño (ONI, NOAA CPC) : écart de température de surface de la mer dans la région Niño 3.4.'
+      limitations:
+      - 'L''ONI est calculé par rapport à des périodes de base de 30 ans mises à jour tous les 5 ans : il retire en partie le réchauffement de fond, ce qui est voulu pour suivre El Niño mais exclut d''y lire
+        une tendance climatique.'
+      - 'Moyenne annuelle : lisse les épisodes, qui se comptent normalement en saisons.'
+  - id: niveau-mer-brest
+    scale: france
+    builder: etl.indicators.serie:build
+    params:
+      source: psmsl-1
+      scale: france
+      variable: niveau-mer
+      place:
+        id: brest
+        name: Brest
+        kind: station
+      where: À Brest
+      baseline: series
+      station:
+        id: PSMSL-1
+        name: Brest
+        lat: 48.38285
+        lon: -4.494838
+      label: le niveau marin moyen
+      title: Niveau marin à Brest
+      description: Niveau marin moyen annuel au marégraphe de Brest (PSMSL, référence locale révisée), en écart à la moyenne de la série.
+      limitations:
+      - 'Niveau relatif : il inclut les mouvements verticaux du sol (subsidence ou soulèvement), pas seulement la hausse des océans.'
+      - Années signalées douteuses par le PSMSL écartées ; aucune valeur complétée.
+      reference:
+        kind: rate
+        period:
+        - 1901
+        - 1971
+        range:
+        - 0.6
+        - 2.1
+        unit: mm/an
+        fixed_on: '2026-10-23'
+        statement: 'GIEC AR6 (SPM A.1.7) : hausse du niveau marin moyen mondial de 1,3 mm/an [0,6 à 2,1] entre 1901 et 1971 (référence mondiale appliquée à un marégraphe)'
+        source: GIEC, 6e rapport, groupe I, résumé pour décideurs
+        url: https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/
+  - id: niveau-mer-arcachon-eyrac
+    scale: gironde
+    builder: etl.indicators.serie:build
+    params:
+      source: psmsl-1918
+      scale: gironde
+      variable: niveau-mer
+      place:
+        id: arcachon-eyrac
+        name: Arcachon-Eyrac
+        kind: station
+      where: À Arcachon-Eyrac
+      baseline: series
+      station:
+        id: PSMSL-1918
+        name: Arcachon-Eyrac
+        lat: 44.665001
+        lon: -1.16355
+      label: le niveau marin moyen
+      title: Niveau marin à Arcachon-Eyrac
+      description: Niveau marin moyen annuel au marégraphe de Arcachon-Eyrac (PSMSL, référence locale révisée), en écart à la moyenne de la série.
+      limitations:
+      - 'Niveau relatif : il inclut les mouvements verticaux du sol (subsidence ou soulèvement), pas seulement la hausse des océans.'
+      - Années signalées douteuses par le PSMSL écartées ; aucune valeur complétée.
+  - id: rr-cumul-gironde
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh_composite
+    params:
+      lsh_var: RR
+      variable: rr-cumul
+      span:
+      - 1961
+      - 2017
+      title: Précipitations annuelles en Gironde
+      label: le cumul annuel moyen de précipitations
+      description: Cumul annuel de précipitations, moyenne des stations homogénéisées par Météo-France (LSH).
+      limitations:
+      - 'Les précipitations varient beaucoup d''une année à l''autre : une tendance de quelques pour cent par décennie est difficile à distinguer du bruit.'
+      reference:
+        kind: not_significant
+        period:
+        - 1961
+        - 2010
+        unit: ''
+        fixed_on: '2026-10-23'
+        statement: Pas d'évolution significative des cumuls annuels de précipitations depuis 1961 (ClimatHD, repris par le diagnostic du PNR Périgord-Limousin)
+        source: PNR Périgord-Limousin, diagnostic de vulnérabilité, oct. 2025, p. 30-31
+        url: https://www.pnr-perigord-limousin.fr/wp-content/uploads/2025/11/PNRPL-Diagnostic_de_vulnerabilite_VF_Octobre-2025.pdf
+  - id: rr-cumul-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33063001'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-hourtin
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33203001'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-st-symphorien
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33484001'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-belin-beliet
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33042001'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-captieux
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33095001'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-lacanau
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33214002'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-cap-ferret
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33236002'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-sauternes
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33504001'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: rr-cumul-cazaux
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: RR
+      poste: '33529001'
+      variable: rr-cumul
+      title: Précipitations annuelles à {name}
+      label: le cumul annuel de précipitations
+      description: Cumul annuel des précipitations à {name}, série homogénéisée par Météo-France (LSH).
+  - id: insolation-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.serie:build_lsh
+    params:
+      lsh_var: IN
+      poste: '33281001'
+      variable: insolation
+      title: Ensoleillement annuel à {name}
+      label: la durée annuelle d'ensoleillement
+      description: Durée annuelle d'insolation à {name}, série homogénéisée par Météo-France (LSH), 1931-2014.
+      limitations:
+      - Seule série d'insolation homogénéisée de Gironde, arrêtée en 2014. Au-delà, les capteurs ont changé et les données brutes ne sont pas comparables.

@@ -1,0 +1,840 @@
+{
+ "schema_version": "1.0",
+ "generated_at": "2026-10-23T21:44:07Z",
+ "parameters": [
+  {
+   "id": "catastrophes",
+   "label": "Catastrophes naturelles",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "Base GASPAR (arrêtés CatNat), data.gouv.fr",
+     "note": "Compte des arrêtés, pas des aléas : dépend des déclarations et de l'exposition.",
+     "indicators": []
+    },
+    {
+     "scale": "france",
+     "status": "prevu",
+     "source": "Base GASPAR (arrêtés CatNat)",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "temperature-air",
+   "label": "Température de l'air (continent)",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "publie",
+     "source": "Météo-France LSH et quotidien",
+     "note": null,
+     "indicators": [
+      {
+       "id": "tn-annuelle-gironde",
+       "title": "Température minimale annuelle en Gironde",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tx-annuelle-gironde",
+       "title": "Température maximale annuelle en Gironde",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tm-annuelle-gironde",
+       "title": "Température moyenne annuelle en Gironde",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tn-annuelle-bordeaux-paulin",
+       "title": "Température minimale annuelle à Bordeaux-Paulin",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tn-annuelle-lacanau",
+       "title": "Température minimale annuelle à Lacanau",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tn-annuelle-cap-ferret",
+       "title": "Température minimale annuelle à Cap-Ferret",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tn-annuelle-bordeaux-merignac",
+       "title": "Température minimale annuelle à Bordeaux-Mérignac",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tn-annuelle-sauternes",
+       "title": "Température minimale annuelle à Sauternes",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tn-annuelle-cazaux",
+       "title": "Température minimale annuelle à Cazaux",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tn-annuelle-villenave-d-ornon",
+       "title": "Température minimale annuelle à Villenave-d'Ornon",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tx-annuelle-bordeaux-paulin",
+       "title": "Température maximale annuelle à Bordeaux-Paulin",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tx-annuelle-cap-ferret",
+       "title": "Température maximale annuelle à Cap-Ferret",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tx-annuelle-bordeaux-merignac",
+       "title": "Température maximale annuelle à Bordeaux-Mérignac",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tx-annuelle-cazaux",
+       "title": "Température maximale annuelle à Cazaux",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tx-annuelle-villenave-d-ornon",
+       "title": "Température maximale annuelle à Villenave-d'Ornon",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tm-annuelle-bordeaux-paulin",
+       "title": "Température moyenne annuelle à Bordeaux-Paulin",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tm-annuelle-cap-ferret",
+       "title": "Température moyenne annuelle à Cap-Ferret",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tm-annuelle-bordeaux-merignac",
+       "title": "Température moyenne annuelle à Bordeaux-Mérignac",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tm-annuelle-cazaux",
+       "title": "Température moyenne annuelle à Cazaux",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tm-annuelle-villenave-d-ornon",
+       "title": "Température moyenne annuelle à Villenave-d'Ornon",
+       "confidence": "elevee"
+      },
+      {
+       "id": "jours-tx25-gironde",
+       "title": "Journées estivales en Gironde",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx30-gironde",
+       "title": "Journées chaudes en Gironde",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx35-gironde",
+       "title": "Journées très chaudes en Gironde",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "nuits-tn20-gironde",
+       "title": "Nuits tropicales en Gironde",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-gel-gironde",
+       "title": "Jours de gel en Gironde",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx25-bordeaux-paulin",
+       "title": "Journées estivales à Bordeaux-Paulin",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx25-cap-ferret",
+       "title": "Journées estivales à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx25-bordeaux-merignac",
+       "title": "Journées estivales à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx25-cazaux",
+       "title": "Journées estivales à Cazaux",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx25-villenave-d-ornon",
+       "title": "Journées estivales à Villenave-d'Ornon",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx30-bordeaux-paulin",
+       "title": "Journées chaudes à Bordeaux-Paulin",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx30-cap-ferret",
+       "title": "Journées chaudes à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx30-bordeaux-merignac",
+       "title": "Journées chaudes à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx30-cazaux",
+       "title": "Journées chaudes à Cazaux",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx30-villenave-d-ornon",
+       "title": "Journées chaudes à Villenave-d'Ornon",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx35-bordeaux-paulin",
+       "title": "Journées très chaudes à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-tx35-cap-ferret",
+       "title": "Journées très chaudes à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx35-bordeaux-merignac",
+       "title": "Journées très chaudes à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx35-cazaux",
+       "title": "Journées très chaudes à Cazaux",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-tx35-villenave-d-ornon",
+       "title": "Journées très chaudes à Villenave-d'Ornon",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "nuits-tn20-bordeaux-paulin",
+       "title": "Nuits tropicales à Bordeaux-Paulin",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "nuits-tn20-lacanau",
+       "title": "Nuits tropicales à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "nuits-tn20-cap-ferret",
+       "title": "Nuits tropicales à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "nuits-tn20-bordeaux-merignac",
+       "title": "Nuits tropicales à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "nuits-tn20-sauternes",
+       "title": "Nuits tropicales à Sauternes",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "nuits-tn20-cazaux",
+       "title": "Nuits tropicales à Cazaux",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "nuits-tn20-villenave-d-ornon",
+       "title": "Nuits tropicales à Villenave-d'Ornon",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-gel-bordeaux-paulin",
+       "title": "Jours de gel à Bordeaux-Paulin",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-gel-lacanau",
+       "title": "Jours de gel à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-gel-cap-ferret",
+       "title": "Jours de gel à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-gel-bordeaux-merignac",
+       "title": "Jours de gel à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-gel-sauternes",
+       "title": "Jours de gel à Sauternes",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-gel-cazaux",
+       "title": "Jours de gel à Cazaux",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "jours-gel-villenave-d-ornon",
+       "title": "Jours de gel à Villenave-d'Ornon",
+       "confidence": "moyenne"
+      }
+     ]
+    },
+    {
+     "scale": "france",
+     "status": "prevu",
+     "source": "Météo-France LSH (indicateur thermique national)",
+     "note": null,
+     "indicators": []
+    },
+    {
+     "scale": "monde",
+     "status": "publie",
+     "source": "NASA GISTEMP, HadCRUT5, Berkeley Earth",
+     "note": null,
+     "indicators": [
+      {
+       "id": "temperature-hadcrut5-monde",
+       "title": "Température globale — HadCRUT5 (Met Office, CRU)",
+       "confidence": "elevee"
+      },
+      {
+       "id": "temperature-berkeley-monde",
+       "title": "Température globale — Berkeley Earth",
+       "confidence": "elevee"
+      },
+      {
+       "id": "temperature-gistemp-monde",
+       "title": "Température globale — GISTEMP v4 (NASA)",
+       "confidence": "moyenne"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "temperature-mer",
+   "label": "Température de la mer",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "NOAA OISST (golfe de Gascogne)",
+     "note": null,
+     "indicators": []
+    },
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "HadSST4 (Met Office) : lien de la sonde en 404, autre accès à trouver",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "temperature-altitude",
+   "label": "Température en altitude",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)",
+     "note": "Changements de sondes : séries à contrôler.",
+     "indicators": []
+    },
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "ERA5 niveaux de pression (compte Copernicus gratuit)",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "vent",
+   "label": "Vent",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "Quotidien Météo-France (rafales FXI), ERA5",
+     "note": "Vent très sensible à l'environnement de l'anémomètre : confiance faible attendue.",
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "pression",
+   "label": "Pression",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "ERA5 via Open-Meteo",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "humidite",
+   "label": "Humidité",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "ERA5 via Open-Meteo, quotidien Météo-France",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "precipitations",
+   "label": "Précipitations (cumul et quantité)",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "publie",
+     "source": "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien",
+     "note": null,
+     "indicators": [
+      {
+       "id": "rr-cumul-gironde",
+       "title": "Précipitations annuelles en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-bordeaux-paulin",
+       "title": "Précipitations annuelles à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-hourtin",
+       "title": "Précipitations annuelles à Hourtin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-st-symphorien",
+       "title": "Précipitations annuelles à St-Symphorien",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-belin-beliet",
+       "title": "Précipitations annuelles à Belin-Beliet",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-captieux",
+       "title": "Précipitations annuelles à Captieux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-lacanau",
+       "title": "Précipitations annuelles à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-cap-ferret",
+       "title": "Précipitations annuelles à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-sauternes",
+       "title": "Précipitations annuelles à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rr-cumul-cazaux",
+       "title": "Précipitations annuelles à Cazaux",
+       "confidence": "non_etabli"
+      }
+     ]
+    },
+    {
+     "scale": "france",
+     "status": "prevu",
+     "source": "Météo-France LSH RR",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "ensoleillement",
+   "label": "Ensoleillement",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "publie",
+     "source": "Météo-France LSH IN (Mérignac, homogénéisé 1931-2014)",
+     "note": null,
+     "indicators": [
+      {
+       "id": "insolation-bordeaux-merignac",
+       "title": "Ensoleillement annuel à Bordeaux-Mérignac",
+       "confidence": "non_etabli"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tempetes",
+   "label": "Force des tempêtes et ouragans",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "Quotidien Météo-France (rafales), ERA5",
+     "note": null,
+     "indicators": []
+    },
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "IBTrACS (NOAA) : nombre et énergie cumulée des ouragans de l'Atlantique Nord",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "foudre",
+   "label": "Impact de foudre",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "sans-donnee",
+     "source": null,
+     "note": "Les séries d'impacts (Météorage) ne sont pas ouvertes ; la climatologie satellite NASA (1995-2014) ne permet pas de tendance. Au mieux, un indicateur indirect « signal non établi » (P7).",
+     "indicators": []
+    },
+    {
+     "scale": "monde",
+     "status": "sans-donnee",
+     "source": null,
+     "note": "Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance.",
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "jet-stream-puissance",
+   "label": "Puissance du jet stream",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "ERA5 vent à 250 hPa (compte Copernicus gratuit)",
+     "note": "Littérature contradictoire : statut « signal non établi » attendu.",
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "jet-stream-trajectoire",
+   "label": "Trajectoire du jet stream",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "ERA5 vent à 250 hPa, latitude du maximum (Atlantique Nord)",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "geopotentiel",
+   "label": "Géopotentiel",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "ERA5 géopotentiel 500 hPa, indices de blocage",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "glaces",
+   "label": "Fonte des glaces",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "publie",
+     "source": "NSIDC Sea Ice Index",
+     "note": null,
+     "indicators": [
+      {
+       "id": "banquise-arctique-septembre-monde",
+       "title": "Banquise arctique en septembre (minimum annuel)",
+       "confidence": "elevee"
+      },
+      {
+       "id": "banquise-antarctique-fevrier-monde",
+       "title": "Banquise antarctique en février (minimum annuel)",
+       "confidence": "non_etabli"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "niveau-mer",
+   "label": "Niveau des océans",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "publie",
+     "source": "Marégraphe PSMSL d'Arcachon-Eyrac",
+     "note": "Niveau relatif : inclut les mouvements verticaux du sol. Le Verdon écarté : moins de 10 années valides au PSMSL (calcul du 23/10/2026).",
+     "indicators": [
+      {
+       "id": "niveau-mer-arcachon-eyrac",
+       "title": "Niveau marin à Arcachon-Eyrac",
+       "confidence": "non_etabli"
+      }
+     ]
+    },
+    {
+     "scale": "france",
+     "status": "publie",
+     "source": "Marégraphe PSMSL de Brest, l'un des plus longs du monde",
+     "note": null,
+     "indicators": [
+      {
+       "id": "niveau-mer-brest",
+       "title": "Niveau marin à Brest",
+       "confidence": "elevee"
+      }
+     ]
+    },
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "Altimétrie satellitaire : liens NOAA STAR et CSIRO de la sonde injoignables, autre accès à trouver",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "ocean-chaleur",
+   "label": "Contenu thermique des océans",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "publie",
+     "source": "NOAA NCEI",
+     "note": null,
+     "indicators": [
+      {
+       "id": "ohc-700-monde",
+       "title": "Chaleur de l'océan mondial, 0 à 700 m",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "ohc-2000-monde",
+       "title": "Chaleur de l'océan mondial, 0 à 2000 m",
+       "confidence": "moyenne"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ocean-acidification",
+   "label": "Acidification des océans",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "Station HOT (Hawaï) ou BATS ; Copernicus Marine",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "ges",
+   "label": "Concentration des gaz à effet de serre (CO₂, méthane, protoxyde d'azote)",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "publie",
+     "source": "NOAA GML",
+     "note": null,
+     "indicators": [
+      {
+       "id": "co2-monde",
+       "title": "Dioxyde de carbone (CO₂), moyenne mondiale",
+       "confidence": "elevee"
+      },
+      {
+       "id": "ch4-monde",
+       "title": "Méthane (CH₄), moyenne mondiale",
+       "confidence": "elevee"
+      },
+      {
+       "id": "n2o-monde",
+       "title": "Protoxyde d'azote (N₂O), moyenne mondiale",
+       "confidence": "moyenne"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "aerosols",
+   "label": "Aérosols",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "CAMS (Copernicus), MERRA-2",
+     "note": "Séries de réanalyse, pas d'observation directe longue.",
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "desequilibre-energetique",
+   "label": "Déséquilibre énergétique de la Terre",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "NASA CERES EBAF (compte Earthdata gratuit)",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "agroclimat",
+   "label": "Indicateurs agroclimatiques",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "Dates de vendanges (Bordeaux), degrés-jours, gelées tardives, SPEI",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "sante-ecologie",
+   "label": "Indicateurs sanitaires et écologiques",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "Vagues de chaleur (seuils canicule), pollens, phénologie",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "puits-carbone",
+   "label": "Santé des puits de carbone",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "Global Carbon Budget (puits océanique et terrestre)",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "ozone",
+   "label": "Couche d'ozone",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "prevu",
+     "source": "NASA Ozone Watch",
+     "note": null,
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "el-nino",
+   "label": "El Niño",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "publie",
+     "source": "NOAA CPC, indice ONI",
+     "note": null,
+     "indicators": [
+      {
+       "id": "oni-monde",
+       "title": "El Niño : indice ONI, moyenne annuelle",
+       "confidence": "non_etabli"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "localite-chaude",
+   "label": "Localité la plus chaude à l'instant t",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "instantane",
+     "source": "Open-Meteo sur une liste de villes",
+     "note": "Valeur du moment, pas une tendance : affichage à part.",
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "localite-froide",
+   "label": "Localité la plus froide à l'instant t",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "instantane",
+     "source": "Open-Meteo sur une liste de villes",
+     "note": "Valeur du moment, pas une tendance : affichage à part.",
+     "indicators": []
+    }
+   ]
+  }
+ ]
+}

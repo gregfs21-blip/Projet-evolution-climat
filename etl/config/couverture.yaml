@@ -1,0 +1,158 @@
+# Couverture du projet : chaque paramètre des instructions du projet, à chaque échelle pertinente.
+# Le statut « publié » est calculé par l'ETL (un indicateur publié porte l'une des `variables` à cette échelle) ;
+# il ne se déclare jamais à la main. Les autres statuts sont déclarés ici :
+#   prevu        : source ouverte identifiée, indicateur à construire
+#   sans-donnee  : aucune série ouverte assez longue pour une tendance ; dit tel quel, pas masqué
+#   instantane   : valeur du moment, pas une tendance climatique (affichage temps réel)
+# L'ordre est celui des instructions du projet.
+
+parametres:
+  - id: catastrophes
+    label: Catastrophes naturelles
+    echelles:
+      gironde: {statut: prevu, source: "Base GASPAR (arrêtés CatNat), data.gouv.fr", note: "Compte des arrêtés, pas des aléas : dépend des déclarations et de l'exposition."}
+      france: {statut: prevu, source: "Base GASPAR (arrêtés CatNat)"}
+
+  - id: temperature-air
+    label: Température de l'air (continent)
+    echelles:
+      gironde: {variables: [tn, tm, tx, jours-tx25, jours-tx30, jours-tx35, nuits-tn20, jours-gel], source: "Météo-France LSH et quotidien"}
+      france: {statut: prevu, source: "Météo-France LSH (indicateur thermique national)"}
+      monde: {statut: prevu, variables: [temperature-hadcrut5, temperature-gistemp, temperature-berkeley], source: "NASA GISTEMP, HadCRUT5, Berkeley Earth"}
+
+  - id: temperature-mer
+    label: Température de la mer
+    echelles:
+      gironde: {statut: prevu, source: "NOAA OISST (golfe de Gascogne)"}
+      monde: {statut: prevu, source: "HadSST4 (Met Office) : lien de la sonde en 404, autre accès à trouver"}
+
+  - id: temperature-altitude
+    label: Température en altitude
+    echelles:
+      gironde: {statut: prevu, source: "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)", note: "Changements de sondes : séries à contrôler."}
+      monde: {statut: prevu, source: "ERA5 niveaux de pression (compte Copernicus gratuit)"}
+
+  - id: vent
+    label: Vent
+    echelles:
+      gironde: {statut: prevu, source: "Quotidien Météo-France (rafales FXI), ERA5", note: "Vent très sensible à l'environnement de l'anémomètre : confiance faible attendue."}
+
+  - id: pression
+    label: Pression
+    echelles:
+      gironde: {statut: prevu, source: "ERA5 via Open-Meteo"}
+
+  - id: humidite
+    label: Humidité
+    echelles:
+      gironde: {statut: prevu, source: "ERA5 via Open-Meteo, quotidien Météo-France"}
+
+  - id: precipitations
+    label: Précipitations (cumul et quantité)
+    echelles:
+      gironde: {statut: prevu, variables: [rr-cumul], source: "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien"}
+      france: {statut: prevu, source: "Météo-France LSH RR"}
+
+  - id: ensoleillement
+    label: Ensoleillement
+    echelles:
+      gironde: {statut: prevu, variables: [insolation], source: "Météo-France LSH IN (Mérignac, homogénéisé 1931-2014)"}
+
+  - id: tempetes
+    label: Force des tempêtes et ouragans
+    echelles:
+      gironde: {statut: prevu, source: "Quotidien Météo-France (rafales), ERA5"}
+      monde: {statut: prevu, source: "IBTrACS (NOAA) : nombre et énergie cumulée des ouragans de l'Atlantique Nord"}
+
+  - id: foudre
+    label: Impact de foudre
+    echelles:
+      gironde: {statut: sans-donnee, note: "Les séries d'impacts (Météorage) ne sont pas ouvertes ; la climatologie satellite NASA (1995-2014) ne permet pas de tendance. Au mieux, un indicateur indirect « signal non établi » (P7)."}
+      monde: {statut: sans-donnee, note: "Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance."}
+
+  - id: jet-stream-puissance
+    label: Puissance du jet stream
+    echelles:
+      monde: {statut: prevu, source: "ERA5 vent à 250 hPa (compte Copernicus gratuit)", note: "Littérature contradictoire : statut « signal non établi » attendu."}
+
+  - id: jet-stream-trajectoire
+    label: Trajectoire du jet stream
+    echelles:
+      monde: {statut: prevu, source: "ERA5 vent à 250 hPa, latitude du maximum (Atlantique Nord)"}
+
+  - id: geopotentiel
+    label: Géopotentiel
+    echelles:
+      monde: {statut: prevu, source: "ERA5 géopotentiel 500 hPa, indices de blocage"}
+
+  - id: glaces
+    label: Fonte des glaces
+    echelles:
+      monde: {statut: prevu, variables: [banquise-arctique-septembre, banquise-antarctique-fevrier], source: "NSIDC Sea Ice Index"}
+
+  - id: niveau-mer
+    label: Niveau des océans
+    echelles:
+      gironde: {statut: prevu, variables: [niveau-mer], source: "Marégraphe PSMSL d'Arcachon-Eyrac", note: "Niveau relatif : inclut les mouvements verticaux du sol. Le Verdon écarté : moins de 10 années valides au PSMSL (calcul du 23/10/2026)."}
+      france: {statut: prevu, variables: [niveau-mer], source: "Marégraphe PSMSL de Brest, l'un des plus longs du monde"}
+      monde: {statut: prevu, source: "Altimétrie satellitaire : liens NOAA STAR et CSIRO de la sonde injoignables, autre accès à trouver"}
+
+  - id: ocean-chaleur
+    label: Contenu thermique des océans
+    echelles:
+      monde: {statut: prevu, variables: [ohc-700, ohc-2000], source: "NOAA NCEI"}
+
+  - id: ocean-acidification
+    label: Acidification des océans
+    echelles:
+      monde: {statut: prevu, source: "Station HOT (Hawaï) ou BATS ; Copernicus Marine"}
+
+  - id: ges
+    label: Concentration des gaz à effet de serre (CO₂, méthane, protoxyde d'azote)
+    echelles:
+      monde: {statut: prevu, variables: [co2, ch4, n2o], source: "NOAA GML"}
+
+  - id: aerosols
+    label: Aérosols
+    echelles:
+      monde: {statut: prevu, source: "CAMS (Copernicus), MERRA-2", note: "Séries de réanalyse, pas d'observation directe longue."}
+
+  - id: desequilibre-energetique
+    label: Déséquilibre énergétique de la Terre
+    echelles:
+      monde: {statut: prevu, source: "NASA CERES EBAF (compte Earthdata gratuit)"}
+
+  - id: agroclimat
+    label: Indicateurs agroclimatiques
+    echelles:
+      gironde: {statut: prevu, source: "Dates de vendanges (Bordeaux), degrés-jours, gelées tardives, SPEI"}
+
+  - id: sante-ecologie
+    label: Indicateurs sanitaires et écologiques
+    echelles:
+      gironde: {statut: prevu, source: "Vagues de chaleur (seuils canicule), pollens, phénologie"}
+
+  - id: puits-carbone
+    label: Santé des puits de carbone
+    echelles:
+      monde: {statut: prevu, source: "Global Carbon Budget (puits océanique et terrestre)"}
+
+  - id: ozone
+    label: Couche d'ozone
+    echelles:
+      monde: {statut: prevu, variables: [trou-ozone], source: "NASA Ozone Watch"}
+
+  - id: el-nino
+    label: El Niño
+    echelles:
+      monde: {statut: prevu, variables: [oni], source: "NOAA CPC, indice ONI"}
+
+  - id: localite-chaude
+    label: Localité la plus chaude à l'instant t
+    echelles:
+      monde: {statut: instantane, source: "Open-Meteo sur une liste de villes", note: "Valeur du moment, pas une tendance : affichage à part."}
+
+  - id: localite-froide
+    label: Localité la plus froide à l'instant t
+    echelles:
+      monde: {statut: instantane, source: "Open-Meteo sur une liste de villes", note: "Valeur du moment, pas une tendance : affichage à part."}
