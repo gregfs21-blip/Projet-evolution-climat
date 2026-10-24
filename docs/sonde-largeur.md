@@ -1,6 +1,6 @@
 # Sonde « largeur d'abord » — sources candidates (généré)
 
-Généré par `python -m etl.probe.largeur` le 23/10/2026 21:16 UTC. Aucun calcul : accessibilité et format constaté.
+Généré par `python -m etl.probe.largeur` le 24/10/2026 21:37 UTC. Aucun calcul : accessibilité et format constaté.
 
 | Source | Paramètre | Statut | Taille | Type |
 |---|---|---|---|---|
@@ -19,9 +19,9 @@ Généré par `python -m etl.probe.largeur` le 23/10/2026 21:16 UTC. Aucun calcu
 | `ohc-700` | Contenu thermique des océans 0-700 m (NOAA NCEI) | 200 | 4 ko |  |
 | `ohc-2000` | Contenu thermique des océans 0-2000 m (NOAA NCEI) | 200 | 1 ko |  |
 | `gmsl-star` | Niveau des océans — altimétrie (NOAA STAR) | 404 | 0 ko |  |
-| `gmsl-csiro` | Niveau des océans — reconstruction CSIRO (Church & White) | erreur : URLError <urlopen error [Errno 101] Network is unreachable> | 0 ko |  |
+| `gmsl-csiro` | Niveau des océans — reconstruction CSIRO (Church & White) | 200 | 389 ko | application/zip |
 | `psmsl-list` | Niveau des océans — liste des marégraphes PSMSL (annuel RLR) | 200 | 141 ko | text/plain; charset=UTF-8 |
-| `ozone-hole` | Couche d'ozone — trou antarctique (NASA Ozone Watch) | erreur : URLError <urlopen error [Errno 101] Network is unreachable> | 0 ko |  |
+| `ozone-hole` | Couche d'ozone — trou antarctique (NASA Ozone Watch) | 200 | 2 ko | text/plain; charset=utf-8 |
 | `ibtracs-na` | Ouragans — IBTrACS Atlantique Nord (NOAA) | 200 | 40000 ko | text/csv |
 | `igra-merignac` | Température en altitude — radiosondages Mérignac, dérivés (IGRA) | 200 | 40000 ko | application/zip |
 | `gcb` | Puits de carbone — Global Carbon Budget (liste des fichiers) | 404 | 0 ko |  |
@@ -308,7 +308,7 @@ https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/slr/slr_sla_gbl_free_txj1
 https://www.cmar.csiro.au/sealevel/downloads/church_white_gmsl_2011_up.zip
 
 ```
-(aucune donnée)
+[archive : 12 fichier(s) : church_white_gmsl_2011_up/, church_white_gmsl_2011_up/CSIRO_ALT_gmsl_mo_2015.csv, church_white_gmsl_2011_up/CSIRO_ALT_gmsl_mo_2015.txt, church_white_gmsl_2011_up/CSIRO_ALT_gmsl_yr_2015.csv, church_white_gmsl_2011_up/CSIRO_ALT_gmsl_yr_2015.txt, church_white_gmsl_2011_up/CSIRO_Recons_gmsl_mo_2015.csv]
 ```
 
 ### `psmsl-list` — Niveau des océans — liste des marégraphes PSMSL (annuel RLR)
@@ -346,7 +346,20 @@ https://psmsl.org/data/obtaining/rlr.annual.data/filelist.txt
 https://ozonewatch.gsfc.nasa.gov/meteorology/annual_data.txt
 
 ```
-(aucune donnée)
+# http://ozonewatch.gsfc.nasa.gov/meteorology/annual_data.txt
+# TOMS. OMI. and OMPS data
+# Missing data filled from NASA GMAO MERRA, MERRA-2, and GEOS FP
+# Southern Hemisphere
+# Ozone hole area mean (07 September -- 13 October)
+# Minimum ozone (21 September -- 16 October)
+      O3 Hole Area Minimum Ozone
+Year     (mil km2)          (DU)
+----  ------------ -------------
+1979           0.1         225.0
+1980           1.4         203.0
+1981           0.6         209.5
+1982           4.8         185.0
+1983           7.9         172.9
 ```
 
 ### `ibtracs-na` — Ouragans — IBTrACS Atlantique Nord (NOAA)
