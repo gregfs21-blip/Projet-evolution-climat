@@ -1,5 +1,5 @@
 {
- "schema_version": "1.4",
+ "schema_version": "1.5",
  "id": "niveau-mer-brest",
  "scale": "france",
  "group": "Niveau de la mer",
@@ -544,6 +544,7 @@
   "satisfied": true,
   "fixed_on": "2026-10-23"
  },
+ "indicative": false,
  "breakpoints": [
   {
    "time": "2000",
@@ -580,9 +581,9 @@
   "source_name": "PSMSL — marégraphe de Brest, moyennes annuelles RLR",
   "source_url": "https://psmsl.org/data/obtaining/stations/1.php",
   "license": "Libre, citation demandée (PSMSL)",
-  "extracted_at": "2026-10-25T09:17:58Z",
+  "extracted_at": "2026-10-25T09:33:25Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6f50917",
+  "etl_version": "0.1.0+6a3c53e",
   "homogenized": true
  },
  "is_demo": false

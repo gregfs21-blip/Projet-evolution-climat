@@ -1,5 +1,5 @@
 {
- "schema_version": "1.4",
+ "schema_version": "1.5",
  "id": "z500-bordeaux-merignac",
  "scale": "gironde",
  "group": "Radiosondages — Géopotentiel",
@@ -163,12 +163,38 @@
   ]
  },
  "normals": [],
- "trend": null,
+ "trend": {
+  "label": "2007-2025",
+  "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
+  "period": {
+   "start": 2007,
+   "end": 2025
+  },
+  "slope_per_decade": 17.6524,
+  "slope_ci_low": -1.65,
+  "slope_ci_high": 34.6536,
+  "fitted_start": 5669.9399,
+  "fitted_end": 5701.7141,
+  "p_value": 0.080243,
+  "significant": false,
+  "alpha": 0.05,
+  "p_value_classical": 0.080243
+ },
  "alt_trends": [],
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "indicative": true,
+ "breakpoints": [
+  {
+   "time": "2015",
+   "method": "Pettitt (1979)",
+   "p_value": 0.042873,
+   "possible_artifact": false,
+   "detrended_p_value": 0.641128,
+   "note": "écart des moyennes +29,76 m avant/après 2015 ; après retrait de la tendance, plus aucune rupture significative (p = 0,64) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [
   {
    "id": "FRM00007510",
@@ -184,21 +210,21 @@
   }
  ],
  "method_note": null,
- "finding": "Au-dessus de Bordeaux-Mérignac, l'altitude de la surface 500 hPa : série brute non homogénéisée, publiée sans tendance (règle C2) : les changements de sondes peuvent à eux seuls créer une évolution apparente.",
+ "finding": "Au-dessus de Bordeaux-Mérignac, l'altitude de la surface 500 hPa a évolué de +17,65 m par décennie entre 2007 et 2025, soit +31,77 m sur la période (pas de tendance significative après correction de l'autocorrélation). Tendance indicative : série brute, non homogénéisée.",
  "confidence": "non_etabli",
  "limitations": [
   "Radiosondages bruts : les changements de modèle de sonde et de correction du rayonnement solaire créent des sauts connus dans les séries d'altitude ; aucune homogénéisation n'est appliquée ici.",
   "Sondages de 12 UTC seulement ; un mois exige 15 sondages valides, une année ses 12 mois ; valeurs rejetées par le contrôle qualité d'IGRA exclues.",
   "Géopotentiel en un seul point : ne dit rien de la trajectoire du jet stream ni des blocages, qui demandent un champ sur tout l'Atlantique (ERA5, compte Copernicus).",
-  "Série brute, non homogénéisée : aucune tendance ni normale n'est calculée (règle C2 du projet)."
+  "Tendance INDICATIVE sur une série brute, non homogénéisée : exception à la règle C2 du projet, décidée par Grég le 25/10/2026 après avoir vu les séries. Un changement d'instrument ou d'emplacement peut à lui seul créer la pente affichée ; confiance au plus « faible »."
  ],
  "provenance": {
   "source_name": "NOAA NCEI — IGRA v2, radiosondages",
   "source_url": "https://www.ncei.noaa.gov/products/weather-balloon/integrated-global-radiosonde-archive",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-25T09:17:58Z",
+  "extracted_at": "2026-10-25T09:33:25Z",
   "script": "etl.indicators.atmosphere",
-  "etl_version": "0.1.0+6f50917",
+  "etl_version": "0.1.0+6a3c53e",
   "homogenized": false
  },
  "is_demo": false
