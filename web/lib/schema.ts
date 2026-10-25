@@ -72,7 +72,7 @@ const referenceCheckSchema = z.strictObject({
   statement: z.string().min(1),
   source: z.string().min(1),
   source_url: z.string().regex(/^https?:\/\//),
-  kind: z.enum(["slope", "rate", "difference", "relative_slope", "not_significant"]),
+  kind: z.enum(["slope", "rate", "difference", "relative_slope", "not_significant", "mean"]),
   period: periodSchema,
   expected_low: z.number().nullable(),
   expected_high: z.number().nullable(),

@@ -5,6 +5,8 @@ Une série annuelle publiée par un organisme de référence (ou une série LSH 
 
 Règle de confiance (fixée le 23/10/2026, avant le premier calcul de ces indicateurs) :
 - « élevée »     : tendance significative (Hamed-Rao) ET référence publiée satisfaite ;
+                   une référence de NIVEAU (kind « mean », ajouté le 25/10/2026 avant le premier calcul qui l'utilise)
+                   contrôle la lecture des données, pas l'évolution : elle ne suffit pas pour « élevée » ;
 - « moyenne »    : tendance significative, référence absente ou non satisfaite ;
 - « faible »     : significative seulement sans correction de l'autocorrélation ;
 - « non établi » : sinon (y compris quand la référence elle-même annonce l'absence de tendance).
@@ -84,6 +86,8 @@ def check_reference(ref: dict, series: dict[int, float], hom: set[int], unit: st
         base = mean_over(series, hom, b)
         if base:
             measured = round(float(np.polyfit(ys, [series[y] for y in ys], 1)[0]) * 10 / base * 100, 3)
+    elif complete and kind == "mean":
+        measured = round(sum(series[y] for y in ys) / n, 3)
     elif complete and kind == "not_significant":
         t = annual_trend(ys, [series[y] for y in ys])
         measured = t.p_value
@@ -100,7 +104,7 @@ def confidence(main: Trend | None, ref: ReferenceCheck | None) -> str:
     if main is None:
         return "non_etabli"
     if main.significant:
-        return "elevee" if (ref is not None and ref.satisfied and ref.kind != "not_significant") else "moyenne"
+        return "elevee" if (ref is not None and ref.satisfied and ref.kind not in ("not_significant", "mean")) else "moyenne"
     if main.p_value_classical is not None and main.p_value_classical < main.alpha:
         return "faible"
     return "non_etabli"
@@ -122,7 +126,10 @@ def _finding(where: str, label: str, unit: str, main: Trend | None, anomaly_ref:
 def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place: Place, title: str, description: str,
              unit: str, series: dict[int, float], hom: set[int], provenance: Provenance, limitations: list[str],
              stations: list[Station], method_note: str | None, reference: dict | None, baseline: list[int] | str | None,
-             group: str, where: str, label: str) -> Indicator:
+             group: str, where: str, label: str, raw_reason: str | None = None) -> Indicator:
+    """`raw_reason` : série brute, non homogénéisée (règle C2) — publiée sans tendance ni normale, raison donnée."""
+    if raw_reason:
+        hom = set()
     ref_period = None
     if baseline == "series":
         ys_ = sorted(y for y in series if y in hom)
@@ -161,17 +168,23 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
             if m is not None:
                 normals.append(Normal(period=p, value=round(m, 3)))
     lims = list(limitations)
-    if check is None:
+    if raw_reason:
+        lims.append("Série brute, non homogénéisée : aucune tendance ni normale n'est calculée (règle C2 du projet).")
+    elif check is None:
         lims.append("Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne ».")
     elif not check.satisfied:
         lims.append(f"Référence publiée non retrouvée ({check.statement}) : confiance au plus « moyenne ».")
+    elif check.kind == "mean":
+        lims.append("La référence publiée porte sur le niveau moyen : elle contrôle la lecture des données, pas "
+                    "l'évolution ; confiance au plus « moyenne ».")
     return Indicator(
         id=ind_id, scale=scale, group=group, variable=vocab.variable(variable), place=place, title=title, unit=unit,
         description=description, frequency="annual", is_anomaly=bool(baseline), reference_period=ref_period,
         series=Series(time=[str(y) for y in years], value=[round(series[y], 4) for y in years],
                       quality=["homogenized" if y in hom else "raw" for y in years]),
         normals=normals, trend=main, alt_trends=alts, reference_check=check, stations=stations, method_note=method_note,
-        finding=_finding(where, label, unit, main, ref_period), confidence=confidence(main, check), limitations=lims,
+        finding=(f"{where}, {label} : {raw_reason}" if raw_reason else _finding(where, label, unit, main, ref_period)),
+        confidence=confidence(main, check), limitations=lims,
         provenance=provenance,
     )
 

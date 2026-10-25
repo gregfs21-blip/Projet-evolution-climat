@@ -9,10 +9,13 @@ Toutes les séries sont rendues sous la même forme : {année: valeur}. Une vale
 
 from __future__ import annotations
 
+import io
 import os
 import re
+import zipfile
 import urllib.request
 from dataclasses import dataclass
+from functools import partial
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
@@ -30,6 +33,9 @@ class Source:
     unit: str
     parse: Callable[[str], dict[int, float]]
     drop_current_year: bool = False    # fichier annuel qui inclut l'année en cours, incomplète
+    cache: str | None = None           # fichier de cache partagé par plusieurs séries tirées du même fichier
+    timeout: int = 180
+    member: str | None = None          # archive zip : motif du nom du fichier à lire dans l'archive
 
 
 def _num(s: str) -> float | None:
@@ -149,10 +155,155 @@ def parse_psmsl(text: str) -> dict[int, float]:
     return out
 
 
+def parse_cag(text: str) -> dict[int, float]:
+    """NOAA NCEI « Climate at a Glance » : en-têtes « # », puis « Year,Departure from Average » (base 1901-2000)."""
+    out = {}
+    for ln in text.splitlines():
+        if ln.startswith("#") or not ln[:4].isdigit():
+            continue
+        parts = ln.split(",")
+        v = _num(parts[1])
+        if v is not None:
+            out[int(parts[0][:4])] = v
+    return out
+
+
+def parse_hadsst(text: str) -> dict[int, float]:
+    """HadSST 4.2 série annuelle : une ligne d'en-tête, puis « année,anomalie,incertitudes… » (base 1961-1990)."""
+    out = {}
+    for ln in text.splitlines():
+        parts = [p.strip() for p in ln.split(",")]
+        if len(parts) >= 2 and re.fullmatch(r"\d{4}", parts[0]):
+            v = _num(parts[1])
+            if v is not None:
+                out[int(parts[0])] = v
+    return out
+
+
+def parse_oisst_point(text: str) -> dict[int, float]:
+    """ERDDAP, OISST v2.1 quotidien en un point : deux lignes d'en-tête (noms, unités), puis « temps,zlev,lat,lon,sst ».
+
+    Moyenne annuelle des années dont au moins 360 jours sont présents ; aucune valeur n'est complétée.
+    """
+    days: dict[int, list[float]] = {}
+    for ln in text.splitlines()[2:]:
+        parts = ln.split(",")
+        if len(parts) >= 5 and parts[0][:4].isdigit():
+            v = _num(parts[4])
+            if v is not None:
+                days.setdefault(int(parts[0][:4]), []).append(v)
+    return {y: round(sum(v) / len(v), 3) for y, v in days.items() if len(v) >= 360}
+
+
+# --- IBTrACS (NOAA NCEI), Atlantique Nord : une ligne par point de trajectoire, deuxième ligne = unités.
+IBTRACS_START = 1966    # ère satellitaire : avant, des ouragans de haute mer échappaient à l'observation (fixé avant calcul)
+
+
+def _ibtracs_points(text: str):
+    """Points des trajectoires principales : saison, identifiant, heure, vent max (kt), catégorie Saffir-Simpson."""
+    import csv
+    import io
+    rows = csv.reader(io.StringIO(text))
+    header = [h.strip() for h in next(rows)]
+    next(rows)                                             # ligne des unités
+    ix = {h: header.index(h) for h in ("SID", "SEASON", "ISO_TIME", "TRACK_TYPE", "USA_WIND", "USA_SSHS")}
+    for r in rows:
+        if len(r) < len(header) or r[ix["TRACK_TYPE"]].strip() not in ("main", "PROVISIONAL"):
+            continue
+        sshs, wind = r[ix["USA_SSHS"]].strip(), r[ix["USA_WIND"]].strip()
+        yield (int(r[ix["SEASON"]]), r[ix["SID"]], r[ix["ISO_TIME"]].strip(),
+               float(wind) if wind else None, int(sshs) if sshs.lstrip("-").isdigit() else None)
+
+
+def parse_ibtracs_hurricanes(text: str) -> dict[int, float]:
+    """Nombre d'ouragans par saison : systèmes ayant atteint au moins la catégorie 1 (USA_SSHS ≥ 1)."""
+    seasons: dict[int, set[str]] = {}
+    hurricanes: dict[int, set[str]] = {}
+    for season, sid, _t, _w, sshs in _ibtracs_points(text):
+        seasons.setdefault(season, set())
+        if sshs is not None and sshs >= 1:
+            hurricanes.setdefault(season, set()).add(sid)
+    return {y: float(len(hurricanes.get(y, ()))) for y in seasons if y >= IBTRACS_START}
+
+
+def parse_ibtracs_ace(text: str) -> dict[int, float]:
+    """Énergie cumulée des cyclones (ACE) par saison, en 10⁴ kt² : somme des carrés du vent max aux heures
+    synoptiques (00, 06, 12, 18 UTC) des points de tempête tropicale ou d'ouragan (USA_SSHS ≥ 0, vent ≥ 34 kt)."""
+    out: dict[int, float] = {}
+    for season, _sid, t, wind, sshs in _ibtracs_points(text):
+        out.setdefault(season, 0.0)
+        if wind is not None and sshs is not None and sshs >= 0 and t[11:16] in ("00:00", "06:00", "12:00", "18:00"):
+            out[season] += wind * wind / 1e4
+    return {y: round(v, 2) for y, v in out.items() if y >= IBTRACS_START}
+
+
+
+# --- GASPAR (ministère de la Transition écologique), arrêtés de catastrophe naturelle.
+# Fichier « catnat_gaspar_AAAA-MM-JJ.csv » de l'archive data.gouv.fr (sonde du 25/10/2026, docs/sonde-catnat.md) :
+# « id_gaspar;code_commune;libelle_commune;num_risque_jo;lib_risque_jo;date_debut;date_fin;… », une ligne par
+# arrêté × commune × péril. Encodage mêlé (libellés parfois mal convertis) : seuls codes et dates sont utilisés.
+CATNAT_START = 1982           # loi du 13 juillet 1982 : création du régime
+CATNAT_LAG = 2                # les deux dernières années d'événement sont exclues (reconnaissances encore à venir)
+
+
+def parse_catnat(text: str, department: str | None = None, peril: str | None = None) -> dict[int, float]:
+    """Reconnaissances (commune × arrêté × péril, doublons retirés) par année de DÉBUT de l'événement."""
+    last = datetime.now(timezone.utc).year - 1 - CATNAT_LAG
+    seen: set[tuple[str, str, str]] = set()
+    out: dict[int, float] = {y: 0.0 for y in range(CATNAT_START, last + 1)}
+    lines = text.splitlines()
+    header = lines[0].lstrip("\ufeff").split(";")
+    ix = {h: header.index(h) for h in ("id_gaspar", "code_commune", "num_risque_jo", "lib_risque_jo", "date_debut")}
+    for ln in lines[1:]:
+        parts = ln.split(";")
+        if len(parts) < len(header):
+            continue
+        commune, start = parts[ix["code_commune"]].strip(), parts[ix["date_debut"]].strip()
+        if department and not commune.startswith(department):
+            continue
+        if peril and peril not in parts[ix["lib_risque_jo"]].lower():
+            continue
+        if not start[:4].isdigit() or not CATNAT_START <= int(start[:4]) <= last:
+            continue
+        key = (parts[ix["id_gaspar"]].strip(), commune, parts[ix["num_risque_jo"]].strip())
+        if key not in seen:
+            seen.add(key)
+            out[int(start[:4])] += 1
+    return out
+
+
 PSMSL = "https://psmsl.org/data/obtaining/rlr.annual.data/{id}.rlrdata"
 PSMSL_PAGE = "https://psmsl.org/data/obtaining/stations/{id}.php"
 
+_LAST = datetime.now(timezone.utc).year - 1    # dernière année complète
+
 SOURCES: dict[str, Source] = {s.id: s for s in [
+    *[Source(sid, "Ministère de la Transition écologique — base GASPAR, arrêtés de catastrophe naturelle",
+             "https://www.data.gouv.fr/api/1/datasets/r/d6fb9e18-b66b-499c-8284-46a3595579cc",
+             "https://www.data.gouv.fr/datasets/base-nationale-de-gestion-assistee-des-procedures-administratives-relatives-aux-risques-gaspar",
+             "Licence Ouverte 2.0 (Etalab)", "reconnaissances", partial(parse_catnat, department=dep, peril=per),
+             cache="gaspar-catnat", timeout=600, member=r"catnat_gaspar.*\.csv$")
+      for sid, dep, per in (("catnat-gironde", "33", None), ("catnat-france", None, None),
+                            ("catnat-secheresse-france", None, "cheresse"))],
+    Source("sst-noaa", "NOAA NCEI — NOAAGlobalTemp, température de surface de l'océan mondial (Climate at a Glance)",
+           f"https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/ocean/12/12/1850-{_LAST}/data.csv",
+           "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series", "Domaine public (NOAA)", "°C", parse_cag),
+    Source("hadsst", "Met Office Hadley Centre — HadSST 4.2, température de surface de la mer, moyenne mondiale",
+           "https://www.metoffice.gov.uk/hadobs/hadsst4/data/data/HadSST.4.2.0.0_annual_GLOBE.csv",
+           "https://www.metoffice.gov.uk/hadobs/hadsst4/", "Open Government Licence v3", "°C", parse_hadsst, drop_current_year=True),
+    Source("oisst-gascogne", "NOAA — OISST v2.1 (analyse quotidienne satellite et in situ), via ERDDAP (NOAA CoastWatch)",
+           "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg_LonPM180.csv?"
+           "sst%5B(1981-09-01):1:(last)%5D%5B(0.0)%5D%5B(45.125)%5D%5B(-1.875)%5D",
+           "https://www.ncei.noaa.gov/products/optimum-interpolation-sst", "Domaine public (NOAA)", "°C", parse_oisst_point,
+           drop_current_year=True, timeout=600),
+    Source("ibtracs-ouragans", "NOAA NCEI — IBTrACS v04r01, Atlantique Nord",
+           "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NA.list.v04r01.csv",
+           "https://www.ncei.noaa.gov/products/international-best-track-archive", "Domaine public (NOAA)", "ouragans",
+           parse_ibtracs_hurricanes, drop_current_year=True, cache="ibtracs-na", timeout=600),
+    Source("ibtracs-ace", "NOAA NCEI — IBTrACS v04r01, Atlantique Nord",
+           "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NA.list.v04r01.csv",
+           "https://www.ncei.noaa.gov/products/international-best-track-archive", "Domaine public (NOAA)", "10⁴ kt²",
+           parse_ibtracs_ace, drop_current_year=True, cache="ibtracs-na", timeout=600),
     Source("co2-mlo", "NOAA GML — CO₂ à Mauna Loa, moyennes annuelles", "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.csv",
            "https://gml.noaa.gov/ccgg/trends/", "Domaine public (NOAA), citation demandée", "ppm", parse_gml),
     Source("co2-gl", "NOAA GML — CO₂, moyenne globale annuelle (surface marine)", "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_gl.csv",
@@ -193,16 +344,27 @@ def _offline() -> bool:
     return os.environ.get("GLOBAUX_OFFLINE") == "1"
 
 
+_FETCHED: set[str] = set()     # fichiers partagés déjà téléchargés pendant cette exécution
+
+
 def fetch(src: Source, raw_dir: Path) -> str:
-    path = raw_dir / "globaux" / f"{src.id}.txt"
+    key = src.cache or src.id
+    path = raw_dir / "globaux" / f"{key}.txt"
     path.parent.mkdir(parents=True, exist_ok=True)
-    if not _offline():
+    if not _offline() and key not in _FETCHED:
         try:
-            with urllib.request.urlopen(urllib.request.Request(src.url, headers=UA), timeout=180) as r:
+            with urllib.request.urlopen(urllib.request.Request(src.url, headers=UA), timeout=src.timeout) as r:
                 data = r.read()
             if b"<html" in data[:2000].lower():
                 raise ValueError("page HTML reçue au lieu des données")
+            if src.member:
+                z = zipfile.ZipFile(io.BytesIO(data))
+                name = next((n for n in z.namelist() if re.search(src.member, n)), None)
+                if name is None:
+                    raise ValueError(f"aucun fichier « {src.member} » dans l'archive : {z.namelist()}")
+                data = z.read(name)
             path.write_bytes(data)
+            _FETCHED.add(key)
         except Exception as exc:  # noqa: BLE001
             if not path.exists():
                 raise RuntimeError(f"{src.id} : téléchargement impossible et aucun cache : {exc}") from exc

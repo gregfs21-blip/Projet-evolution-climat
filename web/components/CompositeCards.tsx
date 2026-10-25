@@ -54,7 +54,11 @@ export default function CompositeCards({ scale, theme }: { scale: Scale; theme: 
                 </div>
               </>
             ) : (
-              <p className="mt-2 text-sm text-[var(--muted)]">Pas de tendance calculée.</p>
+              <p className="mt-2 text-sm text-[var(--muted)]">
+                {ind.series.quality?.length && ind.series.quality.every((q) => q === "raw")
+                  ? "Série brute : pas de tendance (règle C2)."
+                  : "Pas de tendance calculée."}
+              </p>
             )}
             <MiniBars
               time={ind.series.time}

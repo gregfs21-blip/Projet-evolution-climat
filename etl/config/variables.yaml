@@ -14,6 +14,14 @@ themes:
   chaleur-ocean: Chaleur des océans
   banquise: Banquise
   enso: El Niño
+  temperature-mer: Température de la mer
+  ouragans: Ouragans de l'Atlantique Nord
+  vent: Vent et tempêtes
+  pression: Pression atmosphérique
+  humidite: Humidité de l'air
+  altitude: Température en altitude
+  geopotentiel: Géopotentiel
+  catastrophes: Catastrophes naturelles (arrêtés CatNat)
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -42,3 +50,20 @@ variables:
   banquise-arctique-septembre: {code: Arctique, label: banquise arctique en septembre, theme: banquise, order: 0}
   banquise-antarctique-fevrier: {code: Antarctique, label: banquise antarctique en février, theme: banquise, order: 1}
   oni: {code: ONI, label: indice El Niño (ONI), moyenne annuelle, theme: enso, order: 0}
+
+# --- « largeur d'abord », lot 2 (25/10/2026)
+  sst-noaa: {code: NOAA, label: température de surface de l'océan mondial (NOAAGlobalTemp), theme: temperature-mer, order: 0}
+  sst-hadsst: {code: HadSST, label: température de surface de l'océan mondial (HadSST), theme: temperature-mer, order: 1}
+  sst-gascogne: {code: OISST, label: température de surface de la mer au large de la Gironde, theme: temperature-mer, order: 2}
+  ouragans: {code: Ouragans, label: nombre d'ouragans par saison, theme: ouragans, order: 0}
+  ace: {code: ACE, label: énergie cumulée des cyclones (ACE), theme: ouragans, order: 1}
+  jours-vent-fort: {code: Vent fort, label: jours de vent fort (rafale ≥ 57,6 km/h), theme: vent, order: 0}
+  rafale-max: {code: Rafale max, label: rafale maximale de l'année, theme: vent, order: 1}
+  jours-tempete: {code: Rafale ≥ 100, label: jours de tempête (rafale ≥ 100 km/h), theme: vent, order: 2}
+  pression: {code: PMER, label: pression moyenne au niveau de la mer, theme: pression, order: 0}
+  humidite: {code: HR, label: humidité relative moyenne, theme: humidite, order: 0}
+  t850: {code: T850, label: température à 850 hPa (environ 1 500 m), theme: altitude, order: 0}
+  t500: {code: T500, label: température à 500 hPa (environ 5 500 m), theme: altitude, order: 1}
+  z500: {code: Z500, label: altitude de la surface 500 hPa (géopotentiel), theme: geopotentiel, order: 0}
+  catnat: {code: CatNat, label: reconnaissances de catastrophe naturelle, theme: catastrophes, order: 0}
+  catnat-secheresse: {code: Sécheresse, label: reconnaissances CatNat « sécheresse », theme: catastrophes, order: 1}

@@ -93,7 +93,9 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
     out.push({
       ok: r.satisfied,
       title: r.satisfied ? "Référence publiée retrouvée" : "Référence publiée non retrouvée",
-      text: `${r.statement}. Attendu : ${expected} ; mesuré : ${measured}. Source : ${r.source} (référence fixée le ${r.fixed_on}, avant calcul).`,
+      text:
+        `${r.statement}. Attendu : ${expected} ; mesuré : ${measured}. Source : ${r.source} (référence fixée le ${r.fixed_on}, avant calcul).` +
+        (r.kind === "mean" ? " Référence de niveau : elle contrôle la lecture des données, pas l'évolution, et ne relève pas la confiance." : ""),
     });
   }
   // Seuls les rapports qui couvrent explicitement cet indicateur comptent.

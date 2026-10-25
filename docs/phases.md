@@ -301,3 +301,28 @@ indicateurs phares. Une page « Couverture » montre l'état de chaque paramètr
   pour une série de plus de 80 ans, la tendance mise en avant porte sur les 50 dernières années ; la tendance sur toute
   la série reste publiée. Motif : sur 1850-2025, la pente globale (+0,06 °C/déc.) noie le réchauffement récent.
   Les références et leur verdict ne changent pas.
+
+### Lot 2 (25/10/2026) — choix fixés AVANT le premier calcul
+
+Sonde : `docs/sonde-largeur2.md` et `docs/sonde-catnat.md`. Lecteurs : `etl/sources/globaux.py` (mer, IBTrACS, GASPAR),
+`etl/sources/igra.py`, `etl/sources/openmeteo_era5.py` ; constructeurs : `etl/indicators/serie.py` et
+`etl/indicators/atmosphere.py`. Ces choix sont commités avant toute exécution de l'ETL sur ces séries.
+
+- **Séries brutes de station (rafales FXI, radiosondages IGRA)** : la règle C2 s'applique — publiées **sans tendance
+  ni normale** (confiance « non établi »), avec la raison affichée. Aucune exception n'est faite sans décision de Grég.
+- **ERA5 (réanalyse)** : traitée comme un produit publié (au même titre que les séries NOAA ou NASA), tendance calculée,
+  provenance marquée « non homogénéisée ». Aucune référence locale : confiance au plus « moyenne ».
+- **Nouveau type de référence `mean`** (niveau moyen sur une période) : il contrôle la lecture des données, pas
+  l'évolution ; il **ne permet pas** la confiance « élevée ».
+- **Références fixées** : température de surface de l'océan (NOAAGlobalTemp, HadSST) : GIEC AR6 GT1 ch. 9,
+  +0,88 °C [0,68 à 1,01] entre 1850-1900 et 2011-2020 ; ouragans de l'Atlantique Nord : moyenne NOAA 1991-2020 de
+  7 par saison (fourchette 6,5 à 7,5, valeur arrondie). Pas de référence pour l'ACE, ERA5, OISST, CatNat.
+- **Ouragans et ACE** : depuis 1966 (ère satellitaire), trajectoires principales (`main` et `PROVISIONAL`), saison
+  en cours exclue ; ouragan = catégorie Saffir-Simpson ≥ 1 ; ACE = vent² / 10⁴ aux heures synoptiques, catégorie ≥ 0.
+- **Rafales mesurées** : jours avec FXI ≥ 27,8 m/s (100 km/h), années complètes au sens ETCCDI (≤ 3 jours absents
+  par mois). Vent fort ERA5 : rafale ≥ 57,6 km/h (16 m/s, seuil Météo-France).
+- **Radiosondages** : 12 UTC seulement ; un mois exige 15 sondages valides, une année ses 12 mois ; drapeaux IGRA
+  « A », « B » ou blanc acceptés.
+- **CatNat** : reconnaissances (arrêté × commune × péril, doublons retirés) par année de début de l'événement, depuis
+  1982 ; les deux dernières années exclues (reconnaissances tardives) ; sécheresse = libellé contenant « sécheresse ».
+- **OISST** : maille 45,125° N ; 1,875° O ; années d'au moins 360 jours.
