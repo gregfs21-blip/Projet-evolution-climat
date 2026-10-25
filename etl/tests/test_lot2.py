@@ -76,6 +76,22 @@ class TestParsers(unittest.TestCase):
         self.assertEqual(set(out), {1982, 1984})
         self.assertAlmostEqual(out[1984], 14.5, places=2)
 
+    def test_oisst_cache_by_year_offline(self):
+        import os
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / "globaux" / "oisst-gascogne"
+            folder.mkdir(parents=True)
+            last = date.today().year - 1
+            for y in range(1981, last + 1):
+                (folder / f"{y}.csv").write_text(oisst({y: 365 if y > 1981 else 120}))
+            with mock.patch.dict(os.environ, {"GLOBAUX_OFFLINE": "1"}):
+                out = G.load("oisst-gascogne", Path(tmp))
+                self.assertEqual((min(out), max(out)), (1982, last))
+                (folder / "1990.csv").unlink()
+                with self.assertRaises(RuntimeError):
+                    G.load("oisst-gascogne", Path(tmp))
+
     def test_ibtracs_hurricanes(self):
         self.assertEqual(G.parse_ibtracs_hurricanes(IBTRACS), {2000: 1.0, 2001: 1.0})
 

@@ -36,6 +36,7 @@ class Source:
     cache: str | None = None           # fichier de cache partagé par plusieurs séries tirées du même fichier
     timeout: int = 180
     member: str | None = None          # archive zip : motif du nom du fichier à lire dans l'archive
+    fetcher: Callable[["Source", Path], str] | None = None    # téléchargement particulier (ex. par morceaux)
 
 
 def _num(s: str) -> float | None:
@@ -195,6 +196,32 @@ def parse_oisst_point(text: str) -> dict[int, float]:
     return {y: round(sum(v) / len(v), 3) for y, v in days.items() if len(v) >= 360}
 
 
+# OISST en un point : une requête ERDDAP par année (la série entière dépasse le délai du serveur, ETL du 25/10/2026).
+# Les années passées sont définitives : une fois en cache, elles ne sont plus retéléchargées.
+OISST_URL = ("https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg_LonPM180.csv?"
+             "sst%5B({start}):1:({end})%5D%5B(0.0)%5D%5B(45.125)%5D%5B(-1.875)%5D")
+
+
+def fetch_oisst_years(src: "Source", raw_dir: Path) -> str:
+    folder = raw_dir / "globaux" / src.id
+    folder.mkdir(parents=True, exist_ok=True)
+    last = datetime.now(timezone.utc).year - 1
+    parts = []
+    for y in range(1981, last + 1):
+        path = folder / f"{y}.csv"
+        if not path.exists():
+            if _offline():
+                raise RuntimeError(f"{src.id} : année {y} absente du cache (mode hors ligne)")
+            url = src.url.format(start=f"{y}-09-01" if y == 1981 else f"{y}-01-01", end=f"{y}-12-31")
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=src.timeout) as r:
+                data = r.read()
+            if not data.startswith(b"time,"):
+                raise ValueError(f"{src.id} {y} : réponse inattendue {data[:200]!r}")
+            path.write_bytes(data)
+        parts.append(path.read_text(encoding="utf-8"))
+    return "\n".join(parts)
+
+
 # --- IBTrACS (NOAA NCEI), Atlantique Nord : une ligne par point de trajectoire, deuxième ligne = unités.
 IBTRACS_START = 1966    # ère satellitaire : avant, des ouragans de haute mer échappaient à l'observation (fixé avant calcul)
 
@@ -292,10 +319,8 @@ SOURCES: dict[str, Source] = {s.id: s for s in [
            "https://www.metoffice.gov.uk/hadobs/hadsst4/data/data/HadSST.4.2.0.0_annual_GLOBE.csv",
            "https://www.metoffice.gov.uk/hadobs/hadsst4/", "Open Government Licence v3", "°C", parse_hadsst, drop_current_year=True),
     Source("oisst-gascogne", "NOAA — OISST v2.1 (analyse quotidienne satellite et in situ), via ERDDAP (NOAA CoastWatch)",
-           "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg_LonPM180.csv?"
-           "sst%5B(1981-09-01):1:(last)%5D%5B(0.0)%5D%5B(45.125)%5D%5B(-1.875)%5D",
-           "https://www.ncei.noaa.gov/products/optimum-interpolation-sst", "Domaine public (NOAA)", "°C", parse_oisst_point,
-           drop_current_year=True, timeout=600),
+           OISST_URL, "https://www.ncei.noaa.gov/products/optimum-interpolation-sst", "Domaine public (NOAA)", "°C",
+           parse_oisst_point, drop_current_year=True, timeout=300, fetcher=lambda src, raw: fetch_oisst_years(src, raw)),
     Source("ibtracs-ouragans", "NOAA NCEI — IBTrACS v04r01, Atlantique Nord",
            "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NA.list.v04r01.csv",
            "https://www.ncei.noaa.gov/products/international-best-track-archive", "Domaine public (NOAA)", "ouragans",
@@ -348,6 +373,8 @@ _FETCHED: set[str] = set()     # fichiers partagés déjà téléchargés pendan
 
 
 def fetch(src: Source, raw_dir: Path) -> str:
+    if src.fetcher:
+        return src.fetcher(src, raw_dir)
     key = src.cache or src.id
     path = raw_dir / "globaux" / f"{key}.txt"
     path.parent.mkdir(parents=True, exist_ok=True)
