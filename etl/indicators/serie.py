@@ -23,9 +23,10 @@ import numpy as np
 from etl import vocabulary as vocab
 from etl.context import BuildContext
 from etl.indicators import temperature as T
-from etl.schema import Indicator, Normal, Period, Place, Provenance, ReferenceCheck, Series, Station, Trend
+from etl.schema import Breakpoint, Indicator, Normal, Period, Place, Provenance, ReferenceCheck, Series, Station, Trend
 from etl.sources import globaux as G
 from etl.sources import meteofrance_lsh as lsh
+from etl.stats.breaks import pettitt
 from etl.stats.trend import annual_trend
 
 NORMALS = [Period(start=1961, end=1990), Period(start=1991, end=2020)]
@@ -110,6 +111,36 @@ def confidence(main: Trend | None, ref: ReferenceCheck | None) -> str:
     return "non_etabli"
 
 
+def detect_break(years: list[int], series: dict[int, float], stations: list[Station], unit: str) -> list[Breakpoint]:
+    """Test de Pettitt sur les années de la tendance, refait après retrait de la droite de Sen (même règle que P1).
+
+    Ajouté le 25/10/2026 : jusque-là, les séries simples n'étaient pas testées alors que le site affichait
+    « aucune rupture détectée ». Une rupture à ±1 an d'une correction d'homogénéité Météo-France est marquée artefact.
+    """
+    from scipy import stats as st
+    if len(years) < 10:
+        return []
+    y = np.asarray([series[k] for k in years])
+    res = pettitt(list(y))
+    if res.p_value >= 0.05:
+        return []
+    new_regime = years[res.index + 1]
+    x = np.asarray(years, dtype=float)
+    slope, intercept, *_ = st.theilslopes(y, x)
+    detr = pettitt(list(y - (intercept + slope * x)))
+    artifact = any(abs(r - new_regime) <= 1 for r in T.mf_regime_years(tuple(stations)))
+    note = f"écart des moyennes {T.fr(res.mean_after - res.mean_before)} {unit} avant/après {new_regime}"
+    if detr.p_value >= 0.05:
+        note += (f" ; après retrait de la tendance, plus aucune rupture significative (p = {T.fr(detr.p_value, 2, False)}) : "
+                 "la rupture traduit la tendance elle-même, pas un saut brusque")
+    else:
+        note += f" ; rupture encore significative après retrait de la tendance (p = {T.fr(detr.p_value, 3, False)})"
+    if artifact:
+        note += " ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique"
+    return [Breakpoint(time=str(new_regime), method="Pettitt (1979)", p_value=round(res.p_value, 6), possible_artifact=artifact,
+                       detrended_p_value=round(detr.p_value, 6), note=note)]
+
+
 # ---------------------------------------------------------------- assemblage
 
 
@@ -164,6 +195,7 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
         if len(ys) == common_window.end - common_window.start + 1 and len(run) > len(ys):
             alts.append(annual_trend(ys, [series[y] for y in ys], label=f"{common_window.start}-{common_window.end}, période commune des stations"))
     check = check_reference(reference, series, hom, unit) if reference else None
+    breaks = detect_break(run, series, stations, unit) if main is not None else []
     normals = []
     if not baseline:
         for p in NORMALS:
@@ -185,7 +217,7 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
         description=description, frequency="annual", is_anomaly=bool(baseline), reference_period=ref_period,
         series=Series(time=[str(y) for y in years], value=[round(series[y], 4) for y in years],
                       quality=["homogenized" if y in hom else "raw" for y in years]),
-        normals=normals, trend=main, alt_trends=alts, reference_check=check, stations=stations, method_note=method_note,
+        normals=normals, trend=main, alt_trends=alts, reference_check=check, breakpoints=breaks, stations=stations, method_note=method_note,
         finding=(f"{where}, {label} : {raw_reason}" if raw_reason else _finding(where, label, unit, main, ref_period)),
         confidence=confidence(main, check), limitations=lims,
         provenance=provenance,

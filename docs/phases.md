@@ -336,3 +336,9 @@ Sonde : `docs/sonde-largeur2.md` et `docs/sonde-catnat.md`. Lecteurs : `etl/sour
 - **Correctif de présentation** : la tendance « période commune des stations 1962-2017 », prévue pour les seules
   séries LSH, s'ajoutait aussi aux séries ERA5 (sans objet). Elle est retirée de ERA5 ; aucune autre série n'est touchée.
 - **Radiosondages** : 44 années complètes sur 1965-2025 ; trou 1989-1999 (mois à moins de 15 sondages de 12 UTC).
+- **Correctif d'affichage (toutes les séries simples, lots 1 et 2)** : les séries simples n'étaient soumises à aucun
+  test de rupture, alors que le site affichait « aucune rupture détectée (test de Pettitt) ». Le test de Pettitt (avec
+  contrôle après retrait de la tendance, même règle que P1) est désormais appliqué ; il ne change pas la règle de
+  confiance des séries simples. Pour une série brute, le site dit qu'aucun test n'est fait.
+- **Libellés coupés** : deux libellés de `variables.yaml` contenant une virgule non protégée étaient tronqués
+  (ONI, vent fort). Corrigés ; le vocabulaire refuse désormais toute clé inattendue.

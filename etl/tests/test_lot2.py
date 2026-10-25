@@ -203,6 +203,14 @@ class TestRules(unittest.TestCase):
         self.assertEqual(ind.reference_check.measured, 7.0)
         self.assertTrue(ind.reference_check.satisfied)
 
+    def test_break_detected_and_detrended(self):
+        step = {y: (0.0 if y < 1996 else 3.0) + (0.2 if y % 2 else -0.2) for y in range(1966, 2026)}
+        ind = self._assemble(step)
+        self.assertEqual(len(ind.breakpoints), 1)
+        self.assertIn(ind.breakpoints[0].time, ("1995", "1996", "1997"))
+        flat = {y: (0.2 if y % 2 else -0.2) for y in range(1966, 2026)}
+        self.assertEqual(self._assemble(flat).breakpoints, [])
+
     def test_raw_series_published_without_trend(self):
         series = {y: float(y % 5) for y in range(1950, 2026)}
         ind = self._assemble(series, raw_reason="série brute.")

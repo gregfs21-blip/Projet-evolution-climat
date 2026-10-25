@@ -49,7 +49,7 @@ variables:
   ohc-2000: {code: 0-2000 m, label: chaleur de l'océan entre 0 et 2000 m, theme: chaleur-ocean, order: 1}
   banquise-arctique-septembre: {code: Arctique, label: banquise arctique en septembre, theme: banquise, order: 0}
   banquise-antarctique-fevrier: {code: Antarctique, label: banquise antarctique en février, theme: banquise, order: 1}
-  oni: {code: ONI, label: indice El Niño (ONI), moyenne annuelle, theme: enso, order: 0}
+  oni: {code: ONI, label: "indice El Niño (ONI), moyenne annuelle", theme: enso, order: 0}
 
 # --- « largeur d'abord », lot 2 (25/10/2026)
   sst-noaa: {code: NOAA, label: température de surface de l'océan mondial (NOAAGlobalTemp), theme: temperature-mer, order: 0}
@@ -57,7 +57,7 @@ variables:
   sst-gascogne: {code: OISST, label: température de surface de la mer au large de la Gironde, theme: temperature-mer, order: 2}
   ouragans: {code: Ouragans, label: nombre d'ouragans par saison, theme: ouragans, order: 0}
   ace: {code: ACE, label: énergie cumulée des cyclones (ACE), theme: ouragans, order: 1}
-  jours-vent-fort: {code: Vent fort, label: jours de vent fort (rafale ≥ 57,6 km/h), theme: vent, order: 0}
+  jours-vent-fort: {code: Vent fort, label: "jours de vent fort (rafale ≥ 57,6 km/h)", theme: vent, order: 0}
   rafale-max: {code: Rafale max, label: rafale maximale de l'année, theme: vent, order: 1}
   jours-tempete: {code: Rafale ≥ 100, label: jours de tempête (rafale ≥ 100 km/h), theme: vent, order: 2}
   pression: {code: PMER, label: pression moyenne au niveau de la mer, theme: pression, order: 0}
