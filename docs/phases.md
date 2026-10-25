@@ -326,3 +326,13 @@ Sonde : `docs/sonde-largeur2.md` et `docs/sonde-catnat.md`. Lecteurs : `etl/sour
 - **CatNat** : reconnaissances (arrêté × commune × péril, doublons retirés) par année de début de l'événement, depuis
   1982 ; les deux dernières années exclues (reconnaissances tardives) ; sécheresse = libellé contenant « sécheresse ».
 - **OISST** : maille 45,125° N ; 1,875° O ; années d'au moins 360 jours.
+
+### Lot 2 — constats et corrections APRÈS le premier calcul (25/10/2026)
+
+- **OISST (mer au large de la Gironde) suspendu** : le serveur ERDDAP de NOAA CoastWatch a dépassé le délai (série
+  entière), puis renvoyé une erreur 503 (requêtes annuelles). Lecteur conservé, indicateur désactivé.
+- **NOAAGlobalTemp (océan)** : référence GIEC non retrouvée de justesse (+0,668 °C mesuré pour [0,68 ; 1,01]) ;
+  confiance « moyenne ». Rien n'est ajusté : la fourchette reste celle fixée avant calcul. HadSST la retrouve (+0,87 °C).
+- **Correctif de présentation** : la tendance « période commune des stations 1962-2017 », prévue pour les seules
+  séries LSH, s'ajoutait aussi aux séries ERA5 (sans objet). Elle est retirée de ERA5 ; aucune autre série n'est touchée.
+- **Radiosondages** : 44 années complètes sur 1965-2025 ; trou 1989-1999 (mois à moins de 15 sondages de 12 UTC).

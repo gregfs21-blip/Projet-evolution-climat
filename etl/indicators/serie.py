@@ -126,7 +126,8 @@ def _finding(where: str, label: str, unit: str, main: Trend | None, anomaly_ref:
 def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place: Place, title: str, description: str,
              unit: str, series: dict[int, float], hom: set[int], provenance: Provenance, limitations: list[str],
              stations: list[Station], method_note: str | None, reference: dict | None, baseline: list[int] | str | None,
-             group: str, where: str, label: str, raw_reason: str | None = None) -> Indicator:
+             group: str, where: str, label: str, raw_reason: str | None = None,
+             common_window: Period | None = None) -> Indicator:
     """`raw_reason` : série brute, non homogénéisée (règle C2) — publiée sans tendance ni normale, raison donnée."""
     if raw_reason:
         hom = set()
@@ -156,10 +157,12 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
         alts.append(annual_trend(run, [series[y] for y in run], label=f"{run[0]}-{run[-1]}, toute la série"))
     else:
         main = annual_trend(run, [series[y] for y in run], label=f"{run[0]}-{run[-1]}") if len(run) >= 10 else None
-    ys = [y for y in run if COMMON_WINDOW.start <= y <= COMMON_WINDOW.end]
-    if place.kind != "composite" or scale == "gironde":
-        if len(ys) == COMMON_WINDOW.end - COMMON_WINDOW.start + 1 and len(run) > len(ys):
-            alts.append(annual_trend(ys, [series[y] for y in ys], label=f"{COMMON_WINDOW.start}-{COMMON_WINDOW.end}, période commune des stations"))
+    # Période commune des stations d'un même réseau (LSH) : seuls les constructeurs LSH la demandent. Une série d'une
+    # autre source (ERA5…) n'a pas de « stations » à comparer (correctif du 25/10/2026, après le premier calcul ERA5).
+    if common_window:
+        ys = [y for y in run if common_window.start <= y <= common_window.end]
+        if len(ys) == common_window.end - common_window.start + 1 and len(run) > len(ys):
+            alts.append(annual_trend(ys, [series[y] for y in ys], label=f"{common_window.start}-{common_window.end}, période commune des stations"))
     check = check_reference(reference, series, hom, unit) if reference else None
     normals = []
     if not baseline:
@@ -259,7 +262,7 @@ def build_lsh(ctx: BuildContext, lsh_var: str, poste: str, variable: str, title:
                     title=title.format(name=name), description=description.format(name=name), unit=v_unit(variable),
                     series=series, hom=hom, provenance=prov, limitations=LSH_LIMITS + (limitations or []), stations=[st],
                     method_note=None, reference=reference, baseline=None, group=f"Stations — {v.label}", where=f"À {name}",
-                    label=label)
+                    label=label, common_window=COMMON_WINDOW)
 
 
 def build_lsh_composite(ctx: BuildContext, lsh_var: str, variable: str, span: list[int], title: str, description: str,
@@ -287,7 +290,7 @@ def build_lsh_composite(ctx: BuildContext, lsh_var: str, variable: str, span: li
                     place=vocab.composite("gironde", "Gironde"), title=title, description=description, unit=v_unit(variable),
                     series=series, hom=hom, provenance=prov, limitations=LSH_LIMITS + (limitations or []),
                     stations=[m[2] for m in members], method_note=note, reference=reference, baseline=None,
-                    group="Synthèse Gironde — eau et soleil", where="En Gironde", label=label)
+                    group="Synthèse Gironde — eau et soleil", where="En Gironde", label=label, common_window=COMMON_WINDOW)
 
 
 UNITS = {"rr-cumul": "mm", "insolation": "h"}
