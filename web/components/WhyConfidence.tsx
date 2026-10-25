@@ -66,7 +66,15 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
     });
   }
   const est = establishedBreaks(ind);
-  out.push({
+  // Série brute (règle C2) : aucun test n'a été fait, on ne peut pas afficher « pas de saut » comme un acquis.
+  const rawOnly = !ind.trend && !!ind.series.quality?.length && ind.series.quality.every((q) => q === "raw");
+  if (rawOnly) {
+    out.push({
+      ok: false,
+      title: "Série brute",
+      text: "Non homogénéisée : ni tendance, ni normale, ni test de rupture (règle C2). Les valeurs sont montrées telles que mesurées.",
+    });
+  } else out.push({
     ok: est.length === 0,
     title: est.length === 0 ? "Pas de saut brusque" : "Rupture établie",
     text:
@@ -93,7 +101,9 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
     out.push({
       ok: r.satisfied,
       title: r.satisfied ? "Référence publiée retrouvée" : "Référence publiée non retrouvée",
-      text: `${r.statement}. Attendu : ${expected} ; mesuré : ${measured}. Source : ${r.source} (référence fixée le ${r.fixed_on}, avant calcul).`,
+      text:
+        `${r.statement}. Attendu : ${expected} ; mesuré : ${measured}. Source : ${r.source} (référence fixée le ${r.fixed_on}, avant calcul).` +
+        (r.kind === "mean" ? " Référence de niveau : elle contrôle la lecture des données, pas l'évolution, et ne relève pas la confiance." : ""),
     });
   }
   // Seuls les rapports qui couvrent explicitement cet indicateur comptent.

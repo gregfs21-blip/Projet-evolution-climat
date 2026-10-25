@@ -139,3 +139,17 @@ def load(department: str, postes: set[str], variables: tuple[str, ...], raw_dir:
                     raise ValueError(f"{res['title']} : jour dupliqué {poste} {day} {v}")
                 series[day] = Daily(float(raw), row[q[v]].strip() if q[v] is not None else "")
     return out
+
+
+def meta(department: str, postes: set[str], raw_dir: Path) -> dict[str, tuple[str, float, float, float]]:
+    """Nom, latitude, longitude et altitude des postes, lus dans le fichier le plus récent du département."""
+    res = sorted(resources(department, raw_dir), key=lambda r: r["title"])[-1]
+    rows = _rows(fetch(res, raw_dir))
+    header = [h.strip() for h in next(rows)]
+    idx = {h: i for i, h in enumerate(header)}
+    out: dict[str, tuple[str, float, float, float]] = {}
+    for row in rows:
+        p = row[idx["NUM_POSTE"]].strip() if len(row) >= len(header) else ""
+        if p in postes and p not in out:
+            out[p] = (row[idx["NOM_USUEL"]].strip(), float(row[idx["LAT"]]), float(row[idx["LON"]]), float(row[idx["ALTI"]]))
+    return out

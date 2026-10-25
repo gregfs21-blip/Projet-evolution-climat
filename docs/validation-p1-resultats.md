@@ -11,14 +11,14 @@ l'analyse des écarts est dans `docs/validation-p1.md`. Critères et seuils : `d
 | C1 TX | ✅ conforme | 5/5 séries LSH traitées |
 | C3 TN composite 1959-2009 | ✅ conforme | pente de Sen +0.294 °C/déc. (IC 95 % +0.183 à +0.395), attendu [0.15 ; 0.35], 6 stations |
 | C3 TX composite 1959-2009 | ☑ écart accepté le 23/10/2026 | pente de Sen +0.354 °C/déc. (IC 95 % +0.237 à +0.457), attendu [0.25 ; 0.35], 4 stations |
-| C4bis Villenave TM annuelle 1979-2022 | ✅ conforme | dérive LSH − ERA5 : pente +0.035 °C/déc. (IC 95 % -0.002 à +0.070), Hamed-Rao p = 0.187 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.14 °C ; maille ERA5 44.750 N ; -0.500 E, altitude 24 m (demandé 44.790 ; -0.577) |
-| C4bis (info) Villenave TN annuelle 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.099 °C/déc. (IC 95 % +0.057 à +0.139), Hamed-Rao p = 0.002 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.05 °C |
-| C4bis (info) Villenave TX annuelle 1979-2022 | ℹ information | dérive LSH − ERA5 : pente -0.045 °C/déc. (IC 95 % -0.088 à -0.010), Hamed-Rao p = 0.078 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.24 °C |
-| C4bis (info) Villenave TM annuelle 1959-2019 | ℹ information | dérive LSH − ERA5 : pente +0.029 °C/déc. (IC 95 % +0.004 à +0.046), Hamed-Rao p = 0.062 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.09 °C |
-| C4bis (info) Villenave TM hiver 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.037 °C/déc. (IC 95 % -0.016 à +0.086), Hamed-Rao p = 0.212 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.07 °C |
-| C4bis (info) Villenave TM printemps 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.045 °C/déc. (IC 95 % +0.011 à +0.075), Hamed-Rao p = 0.010 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.19 °C |
-| C4bis (info) Villenave TM été 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.024 °C/déc. (IC 95 % -0.047 à +0.102), Hamed-Rao p = 0.608 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.25 °C |
-| C4bis (info) Villenave TM automne 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.024 °C/déc. (IC 95 % -0.018 à +0.069), Hamed-Rao p = 0.288 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.05 °C |
+| C4bis Villenave TM annuelle 1979-2022 | ✅ conforme | dérive LSH − ERA5 : pente +0.041 °C/déc. (IC 95 % +0.005 à +0.072), Hamed-Rao p = 0.089 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.18 °C ; maille ERA5 44.750 N ; -0.500 E, altitude 24 m (demandé 44.790 ; -0.577) |
+| C4bis (info) Villenave TN annuelle 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.111 °C/déc. (IC 95 % +0.070 à +0.156), Hamed-Rao p = 0.001 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.13 °C |
+| C4bis (info) Villenave TX annuelle 1979-2022 | ℹ information | dérive LSH − ERA5 : pente -0.044 °C/déc. (IC 95 % -0.087 à -0.009), Hamed-Rao p = 0.074 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.24 °C |
+| C4bis (info) Villenave TM annuelle 1959-2019 | ℹ information | dérive LSH − ERA5 : pente +0.034 °C/déc. (IC 95 % +0.011 à +0.052), Hamed-Rao p = 0.023 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.13 °C |
+| C4bis (info) Villenave TM hiver 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.046 °C/déc. (IC 95 % -0.006 à +0.093), Hamed-Rao p = 0.122 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.11 °C |
+| C4bis (info) Villenave TM printemps 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.053 °C/déc. (IC 95 % +0.018 à +0.086), Hamed-Rao p = 0.004 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.23 °C |
+| C4bis (info) Villenave TM été 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.030 °C/déc. (IC 95 % -0.035 à +0.113), Hamed-Rao p = 0.483 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.29 °C |
+| C4bis (info) Villenave TM automne 1979-2022 | ℹ information | dérive LSH − ERA5 : pente +0.029 °C/déc. (IC 95 % -0.007 à +0.078), Hamed-Rao p = 0.112 ; seuil |pente| ≤ 0.1 et p ≥ 0,05 ; décalage moyen +0.10 °C |
 | C4 Villenave TM hiver 1959-2019 | ↩ retiré, pour information | régression linéaire +0.215, Sen +0.192, publié +0.13 °C/déc., écart +0.085 (tolérance ±0.05) — référence jugée invalide |
 | C4 Villenave TM printemps 1959-2019 | ↩ retiré, pour information | régression linéaire +0.364, Sen +0.370, publié +0.25 °C/déc., écart +0.114 (tolérance ±0.05) — référence jugée invalide |
 | C4 Villenave TM été 1959-2019 | ↩ retiré, pour information | régression linéaire +0.381, Sen +0.387, publié +0.23 °C/déc., écart +0.151 (tolérance ±0.05) — référence jugée invalide |

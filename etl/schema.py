@@ -113,7 +113,7 @@ class ReferenceCheck(_Strict):
     statement: str = Field(min_length=1, description="La référence telle que publiée, en clair")
     source: str = Field(min_length=1)
     source_url: str = Field(pattern=r"^https?://")
-    kind: Literal["slope", "rate", "difference", "relative_slope", "not_significant"]
+    kind: Literal["slope", "rate", "difference", "relative_slope", "not_significant", "mean"]
     period: Period
     expected_low: float | None = None
     expected_high: float | None = None

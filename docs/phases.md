@@ -301,3 +301,48 @@ indicateurs phares. Une page « Couverture » montre l'état de chaque paramètr
   pour une série de plus de 80 ans, la tendance mise en avant porte sur les 50 dernières années ; la tendance sur toute
   la série reste publiée. Motif : sur 1850-2025, la pente globale (+0,06 °C/déc.) noie le réchauffement récent.
   Les références et leur verdict ne changent pas.
+
+### Lot 2 (25/10/2026) — choix fixés AVANT le premier calcul
+
+Sonde : `docs/sonde-largeur2.md` et `docs/sonde-catnat.md`. Lecteurs : `etl/sources/globaux.py` (mer, IBTrACS, GASPAR),
+`etl/sources/igra.py`, `etl/sources/openmeteo_era5.py` ; constructeurs : `etl/indicators/serie.py` et
+`etl/indicators/atmosphere.py`. Ces choix sont commités avant toute exécution de l'ETL sur ces séries.
+
+- **Séries brutes de station (rafales FXI, radiosondages IGRA)** : la règle C2 s'applique — publiées **sans tendance
+  ni normale** (confiance « non établi »), avec la raison affichée. Aucune exception n'est faite sans décision de Grég.
+- **ERA5 (réanalyse)** : traitée comme un produit publié (au même titre que les séries NOAA ou NASA), tendance calculée,
+  provenance marquée « non homogénéisée ». Aucune référence locale : confiance au plus « moyenne ».
+- **Nouveau type de référence `mean`** (niveau moyen sur une période) : il contrôle la lecture des données, pas
+  l'évolution ; il **ne permet pas** la confiance « élevée ».
+- **Références fixées** : température de surface de l'océan (NOAAGlobalTemp, HadSST) : GIEC AR6 GT1 ch. 9,
+  +0,88 °C [0,68 à 1,01] entre 1850-1900 et 2011-2020 ; ouragans de l'Atlantique Nord : moyenne NOAA 1991-2020 de
+  7 par saison (fourchette 6,5 à 7,5, valeur arrondie). Pas de référence pour l'ACE, ERA5, OISST, CatNat.
+- **Ouragans et ACE** : depuis 1966 (ère satellitaire), trajectoires principales (`main` et `PROVISIONAL`), saison
+  en cours exclue ; ouragan = catégorie Saffir-Simpson ≥ 1 ; ACE = vent² / 10⁴ aux heures synoptiques, catégorie ≥ 0.
+- **Rafales mesurées** : jours avec FXI ≥ 27,8 m/s (100 km/h), années complètes au sens ETCCDI (≤ 3 jours absents
+  par mois). Vent fort ERA5 : rafale ≥ 57,6 km/h (16 m/s, seuil Météo-France).
+- **Radiosondages** : 12 UTC seulement ; un mois exige 15 sondages valides, une année ses 12 mois ; drapeaux IGRA
+  « A », « B » ou blanc acceptés.
+- **CatNat** : reconnaissances (arrêté × commune × péril, doublons retirés) par année de début de l'événement, depuis
+  1982 ; les deux dernières années exclues (reconnaissances tardives) ; sécheresse = libellé contenant « sécheresse ».
+- **OISST** : maille 45,125° N ; 1,875° O ; années d'au moins 360 jours.
+
+### Lot 2 — constats et corrections APRÈS le premier calcul (25/10/2026)
+
+- **OISST (mer au large de la Gironde) suspendu** : le serveur ERDDAP de NOAA CoastWatch a dépassé le délai (série
+  entière), puis renvoyé une erreur 503 (requêtes annuelles). Lecteur conservé, indicateur désactivé.
+- **NOAAGlobalTemp (océan)** : référence GIEC non retrouvée de justesse (+0,668 °C mesuré pour [0,68 ; 1,01]) ;
+  confiance « moyenne ». Rien n'est ajusté : la fourchette reste celle fixée avant calcul. HadSST la retrouve (+0,87 °C).
+- **Correctif de présentation** : la tendance « période commune des stations 1962-2017 », prévue pour les seules
+  séries LSH, s'ajoutait aussi aux séries ERA5 (sans objet). Elle est retirée de ERA5 ; aucune autre série n'est touchée.
+- **Radiosondages** : 44 années complètes sur 1965-2025 ; trou 1989-1999 (mois à moins de 15 sondages de 12 UTC).
+- **Correctif d'affichage (toutes les séries simples, lots 1 et 2)** : les séries simples n'étaient soumises à aucun
+  test de rupture, alors que le site affichait « aucune rupture détectée (test de Pettitt) ». Le test de Pettitt (avec
+  contrôle après retrait de la tendance, même règle que P1) est désormais appliqué ; il ne change pas la règle de
+  confiance des séries simples. Pour une série brute, le site dit qu'aucun test n'est fait.
+- **Libellés coupés** : deux libellés de `variables.yaml` contenant une virgule non protégée étaient tronqués
+  (ONI, vent fort). Corrigés ; le vocabulaire refuse désormais toute clé inattendue.
+- **Période du test de rupture des séries simples** (choix fait APRÈS un premier calcul sur toute la série) : sur
+  1850-2025, la droite ne capte pas l'accélération récente et le test signalait une « rupture établie » vers 1937 pour
+  toutes les températures globales. Le test porte désormais sur les années de la tendance mise en avant. Restent
+  signalées : CO₂ (2002) et chaleur de l'océan 0-700 m (1991), deux accélérations connues — la note le dit.

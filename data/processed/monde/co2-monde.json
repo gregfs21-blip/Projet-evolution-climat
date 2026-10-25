@@ -216,7 +216,16 @@
   "satisfied": true,
   "fixed_on": "2026-10-23"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "2002",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": false,
+   "detrended_p_value": 0.018309,
+   "note": "écart des moyennes +44,20 ppm avant/après 2002 ; rupture encore significative après retrait de la tendance (p = 0,018) : saut brusque, ou accélération que la droite de Sen ne capte pas"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "En moyenne mondiale, la concentration de CO₂ a évolué de +18,94 ppm par décennie entre 1979 et 2025, soit +87,14 ppm sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -229,9 +238,9 @@
   "source_name": "NOAA GML — CO₂, moyenne globale annuelle (surface marine)",
   "source_url": "https://gml.noaa.gov/ccgg/trends/global.html",
   "license": "Domaine public (NOAA), citation demandée",
-  "extracted_at": "2026-10-23T21:42:49Z",
+  "extracted_at": "2026-10-25T09:17:58Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+89c0009",
+  "etl_version": "0.1.0+6f50917",
   "homogenized": true
  },
  "is_demo": false

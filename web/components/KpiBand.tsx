@@ -45,7 +45,17 @@ export default function KpiBand({ ind }: { ind: Indicator }) {
       </div>
     );
   }
-  if (!t) return <p className="text-sm text-[var(--muted)]">Pas de tendance calculée pour cet indicateur.</p>;
+  if (!t) {
+    // Série brute (règle C2) : publiée telle que mesurée, sans tendance ni normale.
+    const raw = !!ind.series.quality?.length && ind.series.quality.every((q) => q === "raw");
+    return (
+      <p className="max-w-3xl text-sm text-[var(--muted)]">
+        {raw
+          ? "Série brute, non homogénéisée : publiée sans tendance ni normale (règle C2 du projet). Un changement d'instrument ou d'emplacement peut à lui seul créer une évolution apparente ; le graphique montre les valeurs telles que mesurées."
+          : "Pas de tendance calculée pour cet indicateur."}
+      </p>
+    );
+  }
   const first = ind.normals[0];
   const last = ind.normals[ind.normals.length - 1];
   const years = t.period.end - t.period.start + 1;

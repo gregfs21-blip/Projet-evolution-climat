@@ -18,6 +18,9 @@ def _load() -> dict:
         data = yaml.safe_load(f)
     themes = data["themes"]
     for vid, v in data["variables"].items():
+        extra = set(v) - {"code", "label", "theme", "order"}
+        if extra:   # une virgule non protégée dans un libellé YAML en ligne le coupe en deux clés
+            raise ValueError(f"{PATH.name} : clés inattendues {sorted(extra)} pour '{vid}' (libellé à mettre entre guillemets ?)")
         if v["theme"] not in themes:
             raise ValueError(f"{PATH.name} : thème inconnu '{v['theme']}' pour la variable '{vid}'")
     return data

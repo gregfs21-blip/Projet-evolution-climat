@@ -10,8 +10,8 @@ parametres:
   - id: catastrophes
     label: Catastrophes naturelles
     echelles:
-      gironde: {statut: prevu, source: "Base GASPAR (arrêtés CatNat), data.gouv.fr", note: "Compte des arrêtés, pas des aléas : dépend des déclarations et de l'exposition."}
-      france: {statut: prevu, source: "Base GASPAR (arrêtés CatNat)"}
+      gironde: {statut: prevu, variables: [catnat], source: "Base GASPAR (arrêtés CatNat), data.gouv.fr", note: "Compte des reconnaissances, pas des aléas : dépend des demandes des communes, de l'exposition et des règles de reconnaissance."}
+      france: {statut: prevu, variables: [catnat, catnat-secheresse], source: "Base GASPAR (arrêtés CatNat), data.gouv.fr"}
 
   - id: temperature-air
     label: Température de l'air (continent)
@@ -23,29 +23,29 @@ parametres:
   - id: temperature-mer
     label: Température de la mer
     echelles:
-      gironde: {statut: prevu, source: "NOAA OISST (golfe de Gascogne)"}
-      monde: {statut: prevu, source: "HadSST4 (Met Office) : lien de la sonde en 404, autre accès à trouver"}
+      gironde: {statut: prevu, variables: [sst-gascogne], source: "NOAA OISST v2.1, maille au large de la Gironde (depuis 1982)", note: "Lecteur écrit, mais serveur ERDDAP instable le 25/10/2026 (délai dépassé, erreur 503) : indicateur suspendu."}
+      monde: {statut: prevu, variables: [sst-noaa, sst-hadsst], source: "NOAAGlobalTemp (NOAA NCEI), HadSST 4.2 (Met Office)"}
 
   - id: temperature-altitude
     label: Température en altitude
     echelles:
-      gironde: {statut: prevu, source: "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)", note: "Changements de sondes : séries à contrôler."}
+      gironde: {statut: prevu, variables: [t850, t500], source: "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)", note: "Radiosondages bruts (changements de sondes) : publiés sans tendance, règle C2."}
       monde: {statut: prevu, source: "ERA5 niveaux de pression (compte Copernicus gratuit)"}
 
   - id: vent
     label: Vent
     echelles:
-      gironde: {statut: prevu, source: "Quotidien Météo-France (rafales FXI), ERA5", note: "Vent très sensible à l'environnement de l'anémomètre : confiance faible attendue."}
+      gironde: {statut: prevu, variables: [jours-vent-fort], source: "ERA5 via Open-Meteo (rafales du modèle)", note: "Rafales de réanalyse, pas des mesures ; les mesures de station (FXI) sont brutes, voir « tempêtes »."}
 
   - id: pression
     label: Pression
     echelles:
-      gironde: {statut: prevu, source: "ERA5 via Open-Meteo"}
+      gironde: {statut: prevu, variables: [pression], source: "ERA5 via Open-Meteo"}
 
   - id: humidite
     label: Humidité
     echelles:
-      gironde: {statut: prevu, source: "ERA5 via Open-Meteo, quotidien Météo-France"}
+      gironde: {statut: prevu, variables: [humidite], source: "ERA5 via Open-Meteo"}
 
   - id: precipitations
     label: Précipitations (cumul et quantité)
@@ -61,8 +61,8 @@ parametres:
   - id: tempetes
     label: Force des tempêtes et ouragans
     echelles:
-      gironde: {statut: prevu, source: "Quotidien Météo-France (rafales), ERA5"}
-      monde: {statut: prevu, source: "IBTrACS (NOAA) : nombre et énergie cumulée des ouragans de l'Atlantique Nord"}
+      gironde: {statut: prevu, variables: [rafale-max, jours-tempete], source: "ERA5 (rafale maximale annuelle) ; quotidien Météo-France (rafales FXI ≥ 100 km/h à Mérignac, Cazaux, Cap-Ferret)", note: "Rafales mesurées brutes : publiées sans tendance (règle C2)."}
+      monde: {statut: prevu, variables: [ouragans, ace], source: "IBTrACS (NOAA) : nombre et énergie cumulée des ouragans de l'Atlantique Nord, depuis 1966"}
 
   - id: foudre
     label: Impact de foudre
@@ -83,6 +83,7 @@ parametres:
   - id: geopotentiel
     label: Géopotentiel
     echelles:
+      gironde: {statut: prevu, variables: [z500], source: "Radiosondages de Bordeaux-Mérignac (IGRA)", note: "Un seul point, brut : sans tendance (règle C2) ; ne remplace pas le champ ERA5."}
       monde: {statut: prevu, source: "ERA5 géopotentiel 500 hPa, indices de blocage"}
 
   - id: glaces

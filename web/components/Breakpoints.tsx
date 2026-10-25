@@ -9,6 +9,9 @@ export function establishedBreaks(ind: Indicator): string[] {
 }
 
 export default function Breakpoints({ ind }: { ind: Indicator }) {
+  if (!ind.trend && !!ind.series.quality?.length && ind.series.quality.every((q) => q === "raw")) {
+    return <p className="text-xs text-[var(--muted)]">Pas de test de rupture : série brute, non homogénéisée (règle C2).</p>;
+  }
   if (ind.breakpoints.length === 0) {
     return <p className="text-xs text-[var(--muted)]">Aucune rupture significative détectée (test de Pettitt).</p>;
   }

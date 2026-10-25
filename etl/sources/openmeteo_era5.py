@@ -113,3 +113,44 @@ def monthly_means(data: Era5Daily) -> dict[str, dict[tuple[int, int], float]]:
         tx = sum(data.tmax[d] for d in complete) / n_days
         out["TN"][(y, m)], out["TX"][(y, m)], out["TM"][(y, m)] = tn, tx, (tn + tx) / 2
     return out
+
+
+# ---------------------------------------------------------------- variables quotidiennes quelconques (lot 2)
+
+
+def fetch_daily_vars(lat: float, lon: float, start: str, end: str, variables: tuple[str, ...], raw_dir: Path,
+                     download: bool = True, timeout: int = 300) -> tuple[dict, dict[str, dict[date, float]]]:
+    """Variables quotidiennes ERA5 au point demandé : (métadonnées de la maille, variable → jour → valeur).
+
+    Valeur nulle dans la réponse = jour manquant (clé absente), jamais complété.
+    """
+    path = raw_dir / "era5" / f"era5_{lat:.3f}_{lon:.3f}_{start}_{end}_{'-'.join(sorted(variables))}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if download:
+        try:
+            query = urllib.parse.urlencode({
+                "latitude": f"{lat:.3f}", "longitude": f"{lon:.3f}", "start_date": start, "end_date": end,
+                "daily": ",".join(variables), "models": "era5", "timezone": "Europe/Paris",
+            })
+            req = urllib.request.Request(f"{API}?{query}", headers={"User-Agent": "projet-evolution-climat"})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                payload = json.loads(r.read())
+            if "daily" not in payload:
+                raise RuntimeError(f"réponse Open-Meteo sans données quotidiennes : {str(payload)[:300]}")
+            path.write_text(json.dumps(payload), encoding="utf-8")
+        except Exception as exc:  # noqa: BLE001
+            if not path.exists():
+                raise RuntimeError(f"ERA5 indisponible et aucun cache : {exc}") from exc
+            log.warning("ERA5 : téléchargement impossible (%s), cache réutilisé", exc)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    daily = payload["daily"]
+    days = [date.fromisoformat(t) for t in daily["time"]]
+    cols = {}
+    for v in variables:
+        col = _column(daily, v)
+        if len(col) != len(days):
+            raise ValueError(f"réponse ERA5 incohérente pour {v}")
+        cols[v] = {d: float(x) for d, x in zip(days, col) if x is not None}
+    meta = {"lat": float(payload["latitude"]), "lon": float(payload["longitude"]),
+            "elevation": float(payload.get("elevation", 0.0)), "units": payload.get("daily_units", {})}
+    return meta, cols

@@ -201,7 +201,16 @@
   "satisfied": true,
   "fixed_on": "2026-10-23"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "2003",
+   "method": "Pettitt (1979)",
+   "p_value": 1e-6,
+   "possible_artifact": false,
+   "detrended_p_value": 0.095789,
+   "note": "écart des moyennes +109,13 ppb avant/après 2003 ; après retrait de la tendance, plus aucune rupture significative (p = 0,10) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "En moyenne mondiale, la concentration de méthane a évolué de +58,13 ppb par décennie entre 1984 et 2025, soit +238,35 ppb sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -214,9 +223,9 @@
   "source_name": "NOAA GML — CH₄, moyenne globale annuelle",
   "source_url": "https://gml.noaa.gov/ccgg/trends_ch4/",
   "license": "Domaine public (NOAA), citation demandée",
-  "extracted_at": "2026-10-23T21:42:49Z",
+  "extracted_at": "2026-10-25T09:17:58Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+89c0009",
+  "etl_version": "0.1.0+6f50917",
   "homogenized": true
  },
  "is_demo": false

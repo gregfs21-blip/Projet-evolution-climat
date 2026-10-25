@@ -127,7 +127,16 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "2013",
+   "method": "Pettitt (1979)",
+   "p_value": 0.00025,
+   "possible_artifact": false,
+   "detrended_p_value": 0.211559,
+   "note": "écart des moyennes +11,84 ppb avant/après 2013 ; après retrait de la tendance, plus aucune rupture significative (p = 0,21) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "En moyenne mondiale, la concentration de protoxyde d'azote a évolué de +9,50 ppb par décennie entre 2001 et 2025, soit +22,81 ppb sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -141,9 +150,9 @@
   "source_name": "NOAA GML — N₂O, moyenne globale annuelle",
   "source_url": "https://gml.noaa.gov/ccgg/trends_n2o/",
   "license": "Domaine public (NOAA), citation demandée",
-  "extracted_at": "2026-10-23T21:42:49Z",
+  "extracted_at": "2026-10-25T09:17:58Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+89c0009",
+  "etl_version": "0.1.0+6f50917",
   "homogenized": true
  },
  "is_demo": false

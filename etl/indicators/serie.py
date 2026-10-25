@@ -5,6 +5,8 @@ Une série annuelle publiée par un organisme de référence (ou une série LSH 
 
 Règle de confiance (fixée le 23/10/2026, avant le premier calcul de ces indicateurs) :
 - « élevée »     : tendance significative (Hamed-Rao) ET référence publiée satisfaite ;
+                   une référence de NIVEAU (kind « mean », ajouté le 25/10/2026 avant le premier calcul qui l'utilise)
+                   contrôle la lecture des données, pas l'évolution : elle ne suffit pas pour « élevée » ;
 - « moyenne »    : tendance significative, référence absente ou non satisfaite ;
 - « faible »     : significative seulement sans correction de l'autocorrélation ;
 - « non établi » : sinon (y compris quand la référence elle-même annonce l'absence de tendance).
@@ -21,9 +23,10 @@ import numpy as np
 from etl import vocabulary as vocab
 from etl.context import BuildContext
 from etl.indicators import temperature as T
-from etl.schema import Indicator, Normal, Period, Place, Provenance, ReferenceCheck, Series, Station, Trend
+from etl.schema import Breakpoint, Indicator, Normal, Period, Place, Provenance, ReferenceCheck, Series, Station, Trend
 from etl.sources import globaux as G
 from etl.sources import meteofrance_lsh as lsh
+from etl.stats.breaks import pettitt
 from etl.stats.trend import annual_trend
 
 NORMALS = [Period(start=1961, end=1990), Period(start=1991, end=2020)]
@@ -84,6 +87,8 @@ def check_reference(ref: dict, series: dict[int, float], hom: set[int], unit: st
         base = mean_over(series, hom, b)
         if base:
             measured = round(float(np.polyfit(ys, [series[y] for y in ys], 1)[0]) * 10 / base * 100, 3)
+    elif complete and kind == "mean":
+        measured = round(sum(series[y] for y in ys) / n, 3)
     elif complete and kind == "not_significant":
         t = annual_trend(ys, [series[y] for y in ys])
         measured = t.p_value
@@ -100,10 +105,41 @@ def confidence(main: Trend | None, ref: ReferenceCheck | None) -> str:
     if main is None:
         return "non_etabli"
     if main.significant:
-        return "elevee" if (ref is not None and ref.satisfied and ref.kind != "not_significant") else "moyenne"
+        return "elevee" if (ref is not None and ref.satisfied and ref.kind not in ("not_significant", "mean")) else "moyenne"
     if main.p_value_classical is not None and main.p_value_classical < main.alpha:
         return "faible"
     return "non_etabli"
+
+
+def detect_break(years: list[int], series: dict[int, float], stations: list[Station], unit: str) -> list[Breakpoint]:
+    """Test de Pettitt sur les années de la tendance, refait après retrait de la droite de Sen (même règle que P1).
+
+    Ajouté le 25/10/2026 : jusque-là, les séries simples n'étaient pas testées alors que le site affichait
+    « aucune rupture détectée ». Une rupture à ±1 an d'une correction d'homogénéité Météo-France est marquée artefact.
+    """
+    from scipy import stats as st
+    if len(years) < 10:
+        return []
+    y = np.asarray([series[k] for k in years])
+    res = pettitt(list(y))
+    if res.p_value >= 0.05:
+        return []
+    new_regime = years[res.index + 1]
+    x = np.asarray(years, dtype=float)
+    slope, intercept, *_ = st.theilslopes(y, x)
+    detr = pettitt(list(y - (intercept + slope * x)))
+    artifact = any(abs(r - new_regime) <= 1 for r in T.mf_regime_years(tuple(stations)))
+    note = f"écart des moyennes {T.fr(res.mean_after - res.mean_before)} {unit} avant/après {new_regime}"
+    if detr.p_value >= 0.05:
+        note += (f" ; après retrait de la tendance, plus aucune rupture significative (p = {T.fr(detr.p_value, 2, False)}) : "
+                 "la rupture traduit la tendance elle-même, pas un saut brusque")
+    else:
+        note += (f" ; rupture encore significative après retrait de la tendance (p = {T.fr(detr.p_value, 3, False)}) : "
+                 "saut brusque, ou accélération que la droite de Sen ne capte pas")
+    if artifact:
+        note += " ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique"
+    return [Breakpoint(time=str(new_regime), method="Pettitt (1979)", p_value=round(res.p_value, 6), possible_artifact=artifact,
+                       detrended_p_value=round(detr.p_value, 6), note=note)]
 
 
 # ---------------------------------------------------------------- assemblage
@@ -122,7 +158,11 @@ def _finding(where: str, label: str, unit: str, main: Trend | None, anomaly_ref:
 def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place: Place, title: str, description: str,
              unit: str, series: dict[int, float], hom: set[int], provenance: Provenance, limitations: list[str],
              stations: list[Station], method_note: str | None, reference: dict | None, baseline: list[int] | str | None,
-             group: str, where: str, label: str) -> Indicator:
+             group: str, where: str, label: str, raw_reason: str | None = None,
+             common_window: Period | None = None) -> Indicator:
+    """`raw_reason` : série brute, non homogénéisée (règle C2) — publiée sans tendance ni normale, raison donnée."""
+    if raw_reason:
+        hom = set()
     ref_period = None
     if baseline == "series":
         ys_ = sorted(y for y in series if y in hom)
@@ -149,11 +189,17 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
         alts.append(annual_trend(run, [series[y] for y in run], label=f"{run[0]}-{run[-1]}, toute la série"))
     else:
         main = annual_trend(run, [series[y] for y in run], label=f"{run[0]}-{run[-1]}") if len(run) >= 10 else None
-    ys = [y for y in run if COMMON_WINDOW.start <= y <= COMMON_WINDOW.end]
-    if place.kind != "composite" or scale == "gironde":
-        if len(ys) == COMMON_WINDOW.end - COMMON_WINDOW.start + 1 and len(run) > len(ys):
-            alts.append(annual_trend(ys, [series[y] for y in ys], label=f"{COMMON_WINDOW.start}-{COMMON_WINDOW.end}, période commune des stations"))
+    # Période commune des stations d'un même réseau (LSH) : seuls les constructeurs LSH la demandent. Une série d'une
+    # autre source (ERA5…) n'a pas de « stations » à comparer (correctif du 25/10/2026, après le premier calcul ERA5).
+    if common_window:
+        ys = [y for y in run if common_window.start <= y <= common_window.end]
+        if len(ys) == common_window.end - common_window.start + 1 and len(run) > len(ys):
+            alts.append(annual_trend(ys, [series[y] for y in ys], label=f"{common_window.start}-{common_window.end}, période commune des stations"))
     check = check_reference(reference, series, hom, unit) if reference else None
+    # Test sur les années de la tendance mise en avant (sur 1850-2025, une droite ne capte pas l'accélération récente
+    # et le test signalerait une « rupture » vers 1937 : choix du 25/10/2026, après un premier calcul sur toute la série).
+    breaks = (detect_break([y for y in run if main.period.start <= y <= main.period.end], series, stations, unit)
+              if main is not None else [])
     normals = []
     if not baseline:
         for p in NORMALS:
@@ -161,17 +207,23 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
             if m is not None:
                 normals.append(Normal(period=p, value=round(m, 3)))
     lims = list(limitations)
-    if check is None:
+    if raw_reason:
+        lims.append("Série brute, non homogénéisée : aucune tendance ni normale n'est calculée (règle C2 du projet).")
+    elif check is None:
         lims.append("Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne ».")
     elif not check.satisfied:
         lims.append(f"Référence publiée non retrouvée ({check.statement}) : confiance au plus « moyenne ».")
+    elif check.kind == "mean":
+        lims.append("La référence publiée porte sur le niveau moyen : elle contrôle la lecture des données, pas "
+                    "l'évolution ; confiance au plus « moyenne ».")
     return Indicator(
         id=ind_id, scale=scale, group=group, variable=vocab.variable(variable), place=place, title=title, unit=unit,
         description=description, frequency="annual", is_anomaly=bool(baseline), reference_period=ref_period,
         series=Series(time=[str(y) for y in years], value=[round(series[y], 4) for y in years],
                       quality=["homogenized" if y in hom else "raw" for y in years]),
-        normals=normals, trend=main, alt_trends=alts, reference_check=check, stations=stations, method_note=method_note,
-        finding=_finding(where, label, unit, main, ref_period), confidence=confidence(main, check), limitations=lims,
+        normals=normals, trend=main, alt_trends=alts, reference_check=check, breakpoints=breaks, stations=stations, method_note=method_note,
+        finding=(f"{where}, {label} : {raw_reason}" if raw_reason else _finding(where, label, unit, main, ref_period)),
+        confidence=confidence(main, check), limitations=lims,
         provenance=provenance,
     )
 
@@ -246,7 +298,7 @@ def build_lsh(ctx: BuildContext, lsh_var: str, poste: str, variable: str, title:
                     title=title.format(name=name), description=description.format(name=name), unit=v_unit(variable),
                     series=series, hom=hom, provenance=prov, limitations=LSH_LIMITS + (limitations or []), stations=[st],
                     method_note=None, reference=reference, baseline=None, group=f"Stations — {v.label}", where=f"À {name}",
-                    label=label)
+                    label=label, common_window=COMMON_WINDOW)
 
 
 def build_lsh_composite(ctx: BuildContext, lsh_var: str, variable: str, span: list[int], title: str, description: str,
@@ -274,7 +326,7 @@ def build_lsh_composite(ctx: BuildContext, lsh_var: str, variable: str, span: li
                     place=vocab.composite("gironde", "Gironde"), title=title, description=description, unit=v_unit(variable),
                     series=series, hom=hom, provenance=prov, limitations=LSH_LIMITS + (limitations or []),
                     stations=[m[2] for m in members], method_note=note, reference=reference, baseline=None,
-                    group="Synthèse Gironde — eau et soleil", where="En Gironde", label=label)
+                    group="Synthèse Gironde — eau et soleil", where="En Gironde", label=label, common_window=COMMON_WINDOW)
 
 
 UNITS = {"rr-cumul": "mm", "insolation": "h"}

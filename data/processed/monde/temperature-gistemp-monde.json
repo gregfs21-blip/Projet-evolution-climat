@@ -511,7 +511,16 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "2001",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": false,
+   "detrended_p_value": 0.37238,
+   "note": "écart des moyennes +0,52 °C avant/après 2001 ; après retrait de la tendance, plus aucune rupture significative (p = 0,37) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "À l'échelle du globe, la température moyenne de surface a évolué de +0,20 °C par décennie entre 1976 et 2025, soit +1,00 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -525,9 +534,9 @@
   "source_name": "NASA GISS — GISTEMP v4, température globale terre-océan",
   "source_url": "https://data.giss.nasa.gov/gistemp/",
   "license": "Domaine public (NASA)",
-  "extracted_at": "2026-10-23T21:42:49Z",
+  "extracted_at": "2026-10-25T09:17:58Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+89c0009",
+  "etl_version": "0.1.0+6f50917",
   "homogenized": true
  },
  "is_demo": false

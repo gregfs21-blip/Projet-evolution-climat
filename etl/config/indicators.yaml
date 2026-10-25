@@ -678,3 +678,237 @@ indicators:
       description: Durée annuelle d'insolation à {name}, série homogénéisée par Météo-France (LSH), 1931-2014.
       limitations:
       - Seule série d'insolation homogénéisée de Gironde, arrêtée en 2014. Au-delà, les capteurs ont changé et les données brutes ne sont pas comparables.
+
+  # --- « largeur d'abord », lot 2 (25/10/2026). Références fixées le 25/10/2026, avant tout calcul de ces indicateurs.
+  # Température de la mer
+  - id: sst-noaa-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: sst-noaa
+      scale: monde
+      variable: sst-noaa
+      place: {id: monde, name: Monde}
+      where: À l'échelle de l'océan mondial
+      baseline: [1961, 1990]
+      label: la température de surface de l'océan
+      title: Température de surface de l'océan — NOAAGlobalTemp (NOAA)
+      description: Anomalie annuelle de la température de surface de l'océan mondial, composante océanique de NOAAGlobalTemp (NOAA NCEI, à partir d'ERSST), ramenée à la moyenne 1961-1990 pour comparer les produits.
+      limitations:
+      - 'Avant 1950, mesures rares et faites au seau puis à la prise d''eau des navires : corrections de méthode importantes, incertitude forte au XIXe siècle.'
+      reference: &sst-ref
+        kind: difference
+        base: [1850, 1900]
+        period: [2011, 2020]
+        range: [0.68, 1.01]
+        unit: °C
+        fixed_on: '2026-10-25'
+        statement: 'GIEC AR6 GT1, chapitre 9 (résumé exécutif) : la température de surface de l''océan a augmenté de 0,88 °C [0,68 à 1,01] entre 1850-1900 et 2011-2020'
+        source: GIEC AR6, groupe de travail I, chapitre 9
+        url: https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-9/
+  - id: sst-hadsst-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: hadsst
+      scale: monde
+      variable: sst-hadsst
+      place: {id: monde, name: Monde}
+      where: À l'échelle de l'océan mondial
+      baseline: [1961, 1990]
+      label: la température de surface de la mer
+      title: Température de surface de la mer — HadSST 4.2 (Met Office)
+      description: Anomalie annuelle de la température de surface de la mer, moyenne mondiale du produit HadSST 4.2 (Met Office Hadley Centre), par rapport à 1961-1990.
+      limitations:
+      - 'Moyenne des seules cases de grille observées, sans interpolation : couverture très incomplète avant 1950.'
+      reference: *sst-ref
+  - id: sst-gascogne-large-gironde
+    scale: gironde
+    # Désactivé le 25/10/2026 : serveur ERDDAP de NOAA CoastWatch instable (délai dépassé, puis erreur 503).
+    enabled: false
+    builder: etl.indicators.serie:build
+    params:
+      source: oisst-gascogne
+      scale: gironde
+      variable: sst-gascogne
+      place: {id: large-gironde, name: Large de la Gironde}
+      station: {id: oisst-45n-2w, name: "Large de la Gironde (OISST, 45,1° N ; 1,9° O)", lat: 45.125, lon: -1.875, alt: 0}
+      where: Au large de la Gironde
+      label: la température de surface de la mer
+      title: Température de surface de la mer au large de la Gironde (OISST)
+      description: Moyenne annuelle de la température de surface de la mer dans la maille OISST v2.1 (0,25°) centrée à 45,1° N et 1,9° O, à une soixantaine de kilomètres de la côte girondine. Analyse quotidienne NOAA combinant satellites, bouées et navires.
+      limitations:
+      - 'Série depuis septembre 1981 (début des mesures satellitaires) : années complètes à partir de 1982 seulement.'
+      - 'Une maille de 25 km : la température près de la côte et dans l''estuaire peut évoluer différemment.'
+  # Ouragans de l'Atlantique Nord
+  - id: ouragans-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: ibtracs-ouragans
+      scale: monde
+      variable: ouragans
+      place: {id: monde, name: Atlantique Nord}
+      where: Dans l'Atlantique Nord
+      label: le nombre d'ouragans par saison
+      title: Nombre d'ouragans par saison dans l'Atlantique Nord (IBTrACS)
+      description: Nombre de systèmes tropicaux ayant atteint au moins la catégorie 1 de l'échelle de Saffir-Simpson (vent soutenu ≥ 64 nœuds) au cours de la saison, d'après IBTrACS (NOAA NCEI), trajectoires principales.
+      limitations:
+      - 'Série limitée à l''ère satellitaire (depuis 1966, choix fixé avant calcul) : avant, des ouragans de haute mer échappaient à l''observation.'
+      - 'L''Atlantique Nord ne représente qu''environ un huitième des cyclones tropicaux du globe ; sa variabilité multidécennale (oscillation atlantique) pèse lourd sur une tendance depuis les années 1970.'
+      - 'La saison en cours est exclue.'
+      reference:
+        kind: mean
+        period: [1991, 2020]
+        range: [6.5, 7.5]
+        unit: ouragans par saison
+        fixed_on: '2026-10-25'
+        statement: 'NOAA (communiqué du 9 avril 2021) : moyenne 1991-2020 de 7 ouragans par saison atlantique (valeur arrondie à l''unité, d''où la fourchette 6,5 à 7,5)'
+        source: NOAA, nouvelles moyennes de la saison des ouragans atlantiques
+        url: https://www.noaa.gov/media-release/average-atlantic-hurricane-season-to-reflect-more-storms
+  - id: ace-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: ibtracs-ace
+      scale: monde
+      variable: ace
+      place: {id: monde, name: Atlantique Nord}
+      where: Dans l'Atlantique Nord
+      label: l'énergie cumulée des cyclones (ACE)
+      title: Énergie cumulée des cyclones (ACE) dans l'Atlantique Nord (IBTrACS)
+      description: Somme, sur la saison, des carrés du vent soutenu maximal (en nœuds, divisée par 10 000) relevé toutes les 6 heures pour chaque tempête tropicale ou ouragan. Mesure à la fois le nombre, la durée et l'intensité des cyclones.
+      limitations:
+      - 'Série limitée à l''ère satellitaire (depuis 1966, choix fixé avant calcul) ; la saison en cours est exclue.'
+      - 'Calcul fait ici à partir des trajectoires IBTrACS : peut différer de quelques unités des valeurs officielles de la NOAA (définition des systèmes subtropicaux).'
+  # ERA5 (Bordeaux)
+  - id: pression-bordeaux-era5
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_era5
+    params:
+      variable: pression
+      label: la pression moyenne au niveau de la mer
+      title: Pression atmosphérique moyenne à Bordeaux (réanalyse ERA5)
+      description: Moyenne annuelle de la pression ramenée au niveau de la mer, maille ERA5 de Bordeaux-Mérignac (ECMWF, via Open-Meteo).
+  - id: humidite-bordeaux-era5
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_era5
+    params:
+      variable: humidite
+      label: l'humidité relative moyenne
+      title: Humidité relative moyenne à Bordeaux (réanalyse ERA5)
+      description: Moyenne annuelle de l'humidité relative de l'air à 2 m, maille ERA5 de Bordeaux-Mérignac (ECMWF, via Open-Meteo).
+      limitations:
+      - 'Humidité relative : dépend de la température ; à humidité absolue constante, un air plus chaud est relativement plus sec.'
+  - id: jours-vent-fort-bordeaux-era5
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_era5
+    params:
+      variable: jours-vent-fort
+      label: le nombre de jours de vent fort
+      title: Jours de vent fort à Bordeaux (réanalyse ERA5)
+      description: Nombre de jours par an où la rafale maximale ERA5 atteint 57,6 km/h (16 m/s, seuil « vent fort » des statistiques Météo-France), maille de Bordeaux-Mérignac.
+      limitations:
+      - 'Les rafales ERA5 sont calculées par le modèle (paramétrisation), pas mesurées : elles sous-estiment souvent les rafales des stations.'
+  - id: rafale-max-bordeaux-era5
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_era5
+    params:
+      variable: rafale-max
+      label: la rafale maximale de l'année
+      title: Rafale maximale annuelle à Bordeaux (réanalyse ERA5)
+      description: Plus forte rafale quotidienne ERA5 de l'année, maille de Bordeaux-Mérignac. Indicateur de la force des tempêtes.
+      limitations:
+      - 'Les rafales ERA5 sont calculées par le modèle (paramétrisation), pas mesurées : elles sous-estiment souvent les rafales des stations, surtout en tempête.'
+      - 'Un maximum annuel dépend d''un seul événement : série très bruitée.'
+  # Rafales mesurées (brutes)
+  - id: jours-tempete-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_fxi
+    params: &fxi
+      station: '33281001'
+      variable: jours-tempete
+      threshold_ms: 27.8
+      label: le nombre de jours de tempête
+      title: Jours de tempête à {name} (rafale ≥ 100 km/h, mesures brutes)
+      description: Nombre de jours par an où la rafale maximale instantanée mesurée à {name} atteint 100 km/h (27,8 m/s). Données quotidiennes Météo-France, non homogénéisées.
+  - id: jours-tempete-cazaux
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_fxi
+    params:
+      <<: *fxi
+      station: '33529001'
+  - id: jours-tempete-cap-ferret
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_fxi
+    params:
+      <<: *fxi
+      station: '33236002'
+  # Radiosondages (bruts)
+  - id: t850-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_igra
+    params:
+      variable: t850
+      label: la température à 850 hPa
+      title: Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (radiosondages bruts)
+      description: Moyenne annuelle de la température mesurée à 850 hPa par les radiosondages de 12 UTC de Bordeaux-Mérignac (IGRA v2, NOAA NCEI).
+  - id: t500-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_igra
+    params:
+      variable: t500
+      label: la température à 500 hPa
+      title: Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)
+      description: Moyenne annuelle de la température mesurée à 500 hPa par les radiosondages de 12 UTC de Bordeaux-Mérignac (IGRA v2, NOAA NCEI).
+  - id: z500-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.atmosphere:build_igra
+    params:
+      variable: z500
+      label: l'altitude de la surface 500 hPa
+      title: Géopotentiel 500 hPa au-dessus de Bordeaux (radiosondages bruts)
+      description: Moyenne annuelle de l'altitude de la surface 500 hPa mesurée par les radiosondages de 12 UTC de Bordeaux-Mérignac (IGRA v2, NOAA NCEI). Elle monte quand la colonne d'air se réchauffe ou qu'un anticyclone s'installe.
+      limitations:
+      - 'Géopotentiel en un seul point : ne dit rien de la trajectoire du jet stream ni des blocages, qui demandent un champ sur tout l''Atlantique (ERA5, compte Copernicus).'
+  # Catastrophes naturelles (arrêtés CatNat, base GASPAR)
+  - id: catnat-gironde
+    scale: gironde
+    builder: etl.indicators.serie:build
+    params: &catnat
+      source: catnat-gironde
+      scale: gironde
+      variable: catnat
+      place: {id: gironde, name: Gironde}
+      where: En Gironde
+      label: le nombre de reconnaissances de catastrophe naturelle
+      title: Reconnaissances de catastrophe naturelle en Gironde (arrêtés CatNat)
+      description: Nombre de reconnaissances de l'état de catastrophe naturelle (une commune, un arrêté, un péril) des communes de Gironde, classées par année de début de l'événement. Base GASPAR du ministère de la Transition écologique.
+      limitations: &catnat-lims
+      - 'Compte administratif, pas une mesure de l''aléa : il dépend des demandes des communes, de l''exposition (urbanisation, constructions sur argiles) et des critères de reconnaissance, modifiés plusieurs fois (notamment pour la sécheresse en 2000, 2018 et 2019).'
+      - 'Un seul événement peut peser des centaines de reconnaissances (tempête de décembre 1999) : série très irrégulière.'
+      - 'Les deux dernières années d''événement sont exclues : les reconnaissances, surtout de sécheresse, arrivent un à deux ans après (choix fixé avant calcul).'
+  - id: catnat-france
+    scale: france
+    builder: etl.indicators.serie:build
+    params:
+      <<: *catnat
+      source: catnat-france
+      scale: france
+      place: {id: france, name: France}
+      where: En France
+      title: Reconnaissances de catastrophe naturelle en France (arrêtés CatNat)
+      description: Nombre de reconnaissances de l'état de catastrophe naturelle (une commune, un arrêté, un péril) en France, outre-mer compris, classées par année de début de l'événement. Base GASPAR du ministère de la Transition écologique.
+  - id: catnat-secheresse-france
+    scale: france
+    builder: etl.indicators.serie:build
+    params:
+      <<: *catnat
+      source: catnat-secheresse-france
+      scale: france
+      variable: catnat-secheresse
+      place: {id: france, name: France}
+      where: En France
+      label: le nombre de reconnaissances de catastrophe naturelle pour sécheresse
+      title: Reconnaissances CatNat « sécheresse » en France (retrait-gonflement des argiles)
+      description: Nombre de reconnaissances de l'état de catastrophe naturelle pour sécheresse (mouvements de terrain dus au retrait-gonflement des argiles), par année de début de l'événement, en France. Base GASPAR.
