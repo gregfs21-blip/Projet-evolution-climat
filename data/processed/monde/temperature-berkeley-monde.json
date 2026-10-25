@@ -615,12 +615,12 @@
  },
  "breakpoints": [
   {
-   "time": "1937",
+   "time": "2001",
    "method": "Pettitt (1979)",
    "p_value": 0.0,
    "possible_artifact": false,
-   "detrended_p_value": 2e-6,
-   "note": "écart des moyennes +0,61 °C avant/après 1937 ; rupture encore significative après retrait de la tendance (p = 0,000)"
+   "detrended_p_value": 0.481136,
+   "note": "écart des moyennes +0,52 °C avant/après 2001 ; après retrait de la tendance, plus aucune rupture significative (p = 0,48) : la rupture traduit la tendance elle-même, pas un saut brusque"
   }
  ],
  "stations": [],
@@ -635,9 +635,9 @@
   "source_name": "Berkeley Earth — température globale terre-océan",
   "source_url": "https://berkeleyearth.org/data/",
   "license": "CC BY 4.0",
-  "extracted_at": "2026-10-25T09:13:11Z",
+  "extracted_at": "2026-10-25T09:17:58Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+daced37",
+  "etl_version": "0.1.0+6f50917",
   "homogenized": true
  },
  "is_demo": false
