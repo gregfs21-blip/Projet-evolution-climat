@@ -1,7 +1,7 @@
 """Sonde « largeur d'abord », lot 2 : vent, pression, humidité, mer, altitude, ouragans, catastrophes naturelles.
 
 Aucun résultat climatique : formats, couverture et disponibilité constatés avant d'écrire les lecteurs.
-Usage : python -m etl.probe.largeur2   → écrit docs/sonde-largeur2.md
+Usage : python -m etl.probe.largeur2   → écrit docs/sonde-catnat.md (étapes restantes)
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from etl.context import RAW_DIR, ROOT
 from etl.sources import meteofrance_quot as quot
 
-OUT = ROOT / "docs" / "sonde-largeur2.md"
+OUT = ROOT / "docs" / "sonde-catnat.md"    # complément du 25/10 ; le rapport du lot 2 reste docs/sonde-largeur2.md
 UA = {"User-Agent": "projet-evolution-climat (sonde)"}
 
 
@@ -149,23 +149,43 @@ def hurricanes(md: list[str]) -> None:
 
 
 def catnat(md: list[str]) -> None:
+    """Fichiers GASPAR (ministère, data.gouv.fr) : format, colonnes, lignes de la Gironde."""
     md += ["", "## 6. Catastrophes naturelles : base GASPAR (data.gouv.fr)"]
-    url = "https://www.data.gouv.fr/api/1/datasets/?q=gaspar%20catnat&page_size=5"
-    st, data = get(url)
-    lines = []
-    if data:
-        for d in json.loads(data).get("data", []):
-            lines.append(f"{d['title']} — {d['page']}")
-            for r in d.get("resources", [])[:8]:
-                lines.append(f"    {r['title']} | {r.get('format')} | {r.get('filesize')} | {r['url']}")
-    block(md, "Recherche GASPAR", url, st, lines)
+    for title, url in [
+        ("GASPAR (ministère), ressource CSV", "https://www.data.gouv.fr/api/1/datasets/r/d6fb9e18-b66b-499c-8284-46a3595579cc"),
+        ("Arrêtés CatNat par commune (TACCT, dérivé de GASPAR)", "https://www.data.gouv.fr/api/1/datasets/r/b3d02000-5f25-4967-a210-a4051dd620a1"),
+    ]:
+        st, data = get(url)
+        lines = [f"[{len(data) / 1e6:.1f} Mo, début : {data[:4]!r}]"]
+        try:
+            if data[:2] == b"PK":
+                z = zipfile.ZipFile(io.BytesIO(data))
+                lines.append("archive : " + ", ".join(f"{i.filename} ({i.file_size / 1e6:.1f} Mo)" for i in z.infolist()[:20]))
+                name = next((n for n in z.namelist() if "catnat" in n.lower()), z.namelist()[0])
+                data = z.read(name)
+                lines.append(f"lu : {name}")
+            if data[:2] == b"\x1f\x8b":
+                data = gzip.decompress(data)
+            text = data.decode("utf-8", "replace")
+            if text.count("\ufffd") > 100:
+                text = data.decode("latin-1")
+            rows = text.splitlines()
+            lines += [f"{len(rows)} lignes"] + rows[:8]
+            g = [r for r in rows if re.search(r"[;,\"]33\d{3}[;,\"]", r)]
+            lines += [f"lignes avec un code commune 33xxx : {len(g)}"] + g[:8] + g[-4:]
+        except Exception as exc:  # noqa: BLE001
+            lines.append(f"illisible : {type(exc).__name__} {exc}")
+        block(md, title, url, st, lines)
+
+
+STEPS = (catnat,)    # sonde du 25/10 : les étapes 1 à 5 ont déjà été constatées (docs/sonde-largeur2.md, version 08:24)
 
 
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde « largeur d'abord », lot 2 (généré)", "",
           f"Généré par `python -m etl.probe.largeur2` le {now}. Aucun calcul : formats et couverture constatés."]
-    for step in (daily_wind, openmeteo, sst, igra, hurricanes, catnat):
+    for step in STEPS:
         try:
             step(md)
         except Exception as exc:  # noqa: BLE001
