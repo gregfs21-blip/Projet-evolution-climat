@@ -51,6 +51,7 @@ export default function CompositeCards({ scale, theme }: { scale: Scale; theme: 
                 <div className="mt-1.5 text-sm">
                   soit <b className="font-mono">{fmtSigned1(t.fitted_end - t.fitted_start)} {ind.unit}</b> sur la période
                   {!t.significant && <span className="text-[var(--muted)]"> (non significatif)</span>}
+                  {ind.indicative && <span className="text-[var(--warm)]"> · indicatif, série brute</span>}
                 </div>
               </>
             ) : (

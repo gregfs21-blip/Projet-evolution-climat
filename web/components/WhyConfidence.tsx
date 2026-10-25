@@ -65,6 +65,13 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
           : `${bad} période${bad > 1 ? "s" : ""} sur ${n} ${bad > 1 ? "aboutissent" : "aboutit"} à une conclusion différente (voir les détails statistiques).`,
     });
   }
+  if (ind.indicative) {
+    out.push({
+      ok: false,
+      title: "Tendance indicative",
+      text: "Série brute, non homogénéisée : la pente est publiée par exception à la règle C2 (décision du 25/10/2026), avec une confiance plafonnée à « faible ». Un changement d'instrument ou d'emplacement peut à lui seul la créer.",
+    });
+  }
   const est = establishedBreaks(ind);
   // Série brute (règle C2) : aucun test n'a été fait, on ne peut pas afficher « pas de saut » comme un acquis.
   const rawOnly = !ind.trend && !!ind.series.quality?.length && ind.series.quality.every((q) => q === "raw");

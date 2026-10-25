@@ -346,3 +346,22 @@ Sonde : `docs/sonde-largeur2.md` et `docs/sonde-catnat.md`. Lecteurs : `etl/sour
   1850-2025, la droite ne capte pas l'accélération récente et le test signalait une « rupture établie » vers 1937 pour
   toutes les températures globales. Le test porte désormais sur les années de la tendance mise en avant. Restent
   signalées : CO₂ (2002) et chaleur de l'océan 0-700 m (1991), deux accélérations connues — la note le dit.
+
+### Décision de Grég du 25/10/2026 — exception à la règle C2 pour les séries brutes (APRÈS avoir vu les séries)
+
+Contexte : les rafales mesurées (FXI, Mérignac, Cazaux, Cap-Ferret) et les radiosondages de Mérignac (T850, T500,
+Z500) avaient été publiés bruts, sans tendance, en application de C2. Grég a vu ces séries publiées (sans pente) avant
+de décider : la décision est donc **postérieure aux données**, mais antérieure au calcul des pentes elles-mêmes.
+
+Décision : **tendance indicative** autorisée sur ces seules séries (`indicative: true` au registre), avec des bornes
+inscrites dans le contrat (v1.5, champ `indicative`) et vérifiées par l'ETL et par le site :
+- confiance « faible » si la tendance est significative après correction de Hamed-Rao, « non établi » sinon —
+  jamais au-dessus, quelle que soit la pente ;
+- aucune normale, aucune référence publiée ; points marqués « bruts » sur le graphique ;
+- tendance sur la plus longue suite d'années complètes consécutives (exigence de Hamed-Rao) : selon les lacunes,
+  ce n'est pas forcément la période la plus récente ;
+- test de rupture de Pettitt appliqué et affiché ;
+- avertissement sur chaque page : un changement d'instrument ou d'emplacement peut à lui seul créer la pente.
+
+Recommandation contraire de Claude, consignée : garder C2 (radiosondages lacunaires 1989-1999, changements de sondes
+connus ; anémomètres jamais homogénéisés). Les bornes ci-dessus limitent le risque de lire ces pentes comme établies.

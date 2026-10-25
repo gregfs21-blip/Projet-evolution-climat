@@ -29,7 +29,7 @@ parametres:
   - id: temperature-altitude
     label: Température en altitude
     echelles:
-      gironde: {statut: prevu, variables: [t850, t500], source: "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)", note: "Radiosondages bruts (changements de sondes) : publiés sans tendance, règle C2."}
+      gironde: {statut: prevu, variables: [t850, t500], source: "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)", note: "Radiosondages bruts (changements de sondes) : tendance indicative seulement, confiance au plus « faible » (exception à la règle C2)."}
       monde: {statut: prevu, source: "ERA5 niveaux de pression (compte Copernicus gratuit)"}
 
   - id: vent
@@ -61,7 +61,7 @@ parametres:
   - id: tempetes
     label: Force des tempêtes et ouragans
     echelles:
-      gironde: {statut: prevu, variables: [rafale-max, jours-tempete], source: "ERA5 (rafale maximale annuelle) ; quotidien Météo-France (rafales FXI ≥ 100 km/h à Mérignac, Cazaux, Cap-Ferret)", note: "Rafales mesurées brutes : publiées sans tendance (règle C2)."}
+      gironde: {statut: prevu, variables: [rafale-max, jours-tempete], source: "ERA5 (rafale maximale annuelle) ; quotidien Météo-France (rafales FXI ≥ 100 km/h à Mérignac, Cazaux, Cap-Ferret)", note: "Rafales mesurées brutes : tendance indicative seulement, confiance au plus « faible » (exception à la règle C2)."}
       monde: {statut: prevu, variables: [ouragans, ace], source: "IBTrACS (NOAA) : nombre et énergie cumulée des ouragans de l'Atlantique Nord, depuis 1966"}
 
   - id: foudre
@@ -83,7 +83,7 @@ parametres:
   - id: geopotentiel
     label: Géopotentiel
     echelles:
-      gironde: {statut: prevu, variables: [z500], source: "Radiosondages de Bordeaux-Mérignac (IGRA)", note: "Un seul point, brut : sans tendance (règle C2) ; ne remplace pas le champ ERA5."}
+      gironde: {statut: prevu, variables: [z500], source: "Radiosondages de Bordeaux-Mérignac (IGRA)", note: "Un seul point, brut : tendance indicative seulement (exception à la règle C2) ; ne remplace pas le champ ERA5."}
       monde: {statut: prevu, source: "ERA5 géopotentiel 500 hPa, indices de blocage"}
 
   - id: glaces

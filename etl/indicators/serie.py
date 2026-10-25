@@ -159,10 +159,21 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
              unit: str, series: dict[int, float], hom: set[int], provenance: Provenance, limitations: list[str],
              stations: list[Station], method_note: str | None, reference: dict | None, baseline: list[int] | str | None,
              group: str, where: str, label: str, raw_reason: str | None = None,
-             common_window: Period | None = None) -> Indicator:
-    """`raw_reason` : série brute, non homogénéisée (règle C2) — publiée sans tendance ni normale, raison donnée."""
+             common_window: Period | None = None, indicative: bool = False) -> Indicator:
+    """`raw_reason` : série brute, non homogénéisée (règle C2) — publiée sans tendance ni normale, raison donnée.
+
+    `indicative` : série brute avec tendance INDICATIVE (exception à C2, décision de Grég du 25/10/2026, prise après
+    avoir vu les séries brutes) — toutes les années complètes entrent dans la tendance, points marqués « bruts »,
+    aucune normale, aucune référence, confiance « faible » si Hamed-Rao significatif, « non établi » sinon.
+    """
+    if raw_reason and indicative:
+        raise ValueError("raw_reason et indicative sont exclusifs")
     if raw_reason:
         hom = set()
+    quality_hom = set() if indicative else hom
+    if indicative:
+        hom = set(series)
+        reference = None
     ref_period = None
     if baseline == "series":
         ys_ = sorted(y for y in series if y in hom)
@@ -201,13 +212,17 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
     breaks = (detect_break([y for y in run if main.period.start <= y <= main.period.end], series, stations, unit)
               if main is not None else [])
     normals = []
-    if not baseline:
+    if not baseline and not indicative:
         for p in NORMALS:
             m = mean_over(series, hom, p)
             if m is not None:
                 normals.append(Normal(period=p, value=round(m, 3)))
     lims = list(limitations)
-    if raw_reason:
+    if indicative:
+        lims.append("Tendance INDICATIVE sur une série brute, non homogénéisée : exception à la règle C2 du projet, "
+                    "décidée par Grég le 25/10/2026 après avoir vu les séries. Un changement d'instrument ou "
+                    "d'emplacement peut à lui seul créer la pente affichée ; confiance au plus « faible ».")
+    elif raw_reason:
         lims.append("Série brute, non homogénéisée : aucune tendance ni normale n'est calculée (règle C2 du projet).")
     elif check is None:
         lims.append("Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne ».")
@@ -220,10 +235,13 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
         id=ind_id, scale=scale, group=group, variable=vocab.variable(variable), place=place, title=title, unit=unit,
         description=description, frequency="annual", is_anomaly=bool(baseline), reference_period=ref_period,
         series=Series(time=[str(y) for y in years], value=[round(series[y], 4) for y in years],
-                      quality=["homogenized" if y in hom else "raw" for y in years]),
+                      quality=["homogenized" if y in quality_hom else "raw" for y in years]),
         normals=normals, trend=main, alt_trends=alts, reference_check=check, breakpoints=breaks, stations=stations, method_note=method_note,
-        finding=(f"{where}, {label} : {raw_reason}" if raw_reason else _finding(where, label, unit, main, ref_period)),
-        confidence=confidence(main, check), limitations=lims,
+        finding=(f"{where}, {label} : {raw_reason}" if raw_reason
+                 else _finding(where, label, unit, main, ref_period)
+                 + (" Tendance indicative : série brute, non homogénéisée." if indicative else "")),
+        confidence=("faible" if main and main.significant else "non_etabli") if indicative else confidence(main, check),
+        indicative=indicative, limitations=lims,
         provenance=provenance,
     )
 
