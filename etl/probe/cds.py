@@ -11,7 +11,6 @@ import os
 import sys
 import tempfile
 import time
-import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -54,33 +53,49 @@ def describe(path: Path) -> list[str]:
     return lines
 
 
+DEADLINES = [8, 8, 8, 15]     # minutes par requête : la sonde du 25/10 (21 h) a dépassé 45 min sans rendre la main
+
+
+def _retrieve(req: dict, path: str, queue) -> None:
+    """Processus fils : une requête, résultat renvoyé par la file (le parent peut l'arrêter à l'échéance)."""
+    try:
+        import cdsapi
+        client = cdsapi.Client(url=os.environ.get("CDSAPI_URL", "https://cds.climate.copernicus.eu/api"),
+                               key=os.environ.get("CDSAPI_KEY"), quiet=True, progress=False)
+        client.retrieve(DATASET, {**BASE, **req}, path)
+        queue.put(("ok", ""))
+    except Exception as exc:  # noqa: BLE001
+        msg = str(exc).replace(os.environ.get("CDSAPI_KEY") or "§§", "***")
+        queue.put(("err", f"{type(exc).__name__} : {msg[:1500]}"))
+
+
 def main() -> int:
+    import multiprocessing as mp
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde Copernicus CDS — ERA5 niveaux de pression, moyennes mensuelles (généré)", "",
           f"Généré par `python -m etl.probe.cds` le {now}. Aucun calcul : accès, délais et format constatés.", "",
           f"Jeu de données : `{DATASET}`.", "",
           f"Clé présente dans l'environnement : **{'oui' if os.environ.get('CDSAPI_KEY') else 'NON'}** (jamais affichée)."]
-    try:
-        import cdsapi
-        client = cdsapi.Client(url=os.environ.get("CDSAPI_URL", "https://cds.climate.copernicus.eu/api"),
-                               key=os.environ.get("CDSAPI_KEY"), quiet=True, progress=False, timeout=600)
-    except Exception as exc:  # noqa: BLE001
-        md += ["", f"**Client cdsapi indisponible : {type(exc).__name__} {exc}**"]
-        client = None
-    if client:
-        with tempfile.TemporaryDirectory() as tmp:
-            for i, (title, req) in enumerate(REQUESTS):
-                path = Path(tmp) / f"r{i}.nc"
-                t0 = time.time()
-                try:
-                    client.retrieve(DATASET, {**BASE, **req}, str(path))
-                    lines = [f"OK en {time.time() - t0:.0f} s"] + describe(path)
-                except Exception as exc:  # noqa: BLE001
-                    msg = str(exc).replace(os.environ.get("CDSAPI_KEY") or "§§", "***")
-                    lines = [f"ÉCHEC après {time.time() - t0:.0f} s : {type(exc).__name__}", msg[:1500],
-                             traceback.format_exc().splitlines()[-1][:300]]
-                md += ["", f"### {title}", "", "```", *lines, "```"]
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+    with tempfile.TemporaryDirectory() as tmp:
+        for i, ((title, req), minutes) in enumerate(zip(REQUESTS, DEADLINES)):
+            path = Path(tmp) / f"r{i}.nc"
+            q = mp.Queue()
+            proc = mp.Process(target=_retrieve, args=(req, str(path), q))
+            t0 = time.time()
+            proc.start()
+            proc.join(minutes * 60)
+            if proc.is_alive():
+                proc.terminate()
+                proc.join(10)
+                lines = [f"PAS DE RÉPONSE après {minutes} min (requête encore en file d'attente ou en cours chez Copernicus)"]
+            else:
+                status, msg = q.get() if not q.empty() else ("err", "processus terminé sans résultat")
+                lines = ([f"OK en {time.time() - t0:.0f} s"] + describe(path)) if status == "ok" else \
+                        [f"ÉCHEC après {time.time() - t0:.0f} s", msg]
+            md += ["", f"### {title}", "", "```", *lines, "```"]
+            OUT.write_text("\n".join(md) + "\n", encoding="utf-8")     # rapport écrit au fil de l'eau
+            print(title, "→", lines[0], flush=True)
     print(f"→ {OUT.relative_to(ROOT)}")
     return 0
 
