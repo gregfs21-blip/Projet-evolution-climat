@@ -338,23 +338,6 @@
    "significant": false,
    "alpha": 0.05,
    "p_value_classical": 0.04674
-  },
-  {
-   "label": "1962-2017, période commune des stations",
-   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
-   "period": {
-    "start": 1962,
-    "end": 2017
-   },
-   "slope_per_decade": -0.0385,
-   "slope_ci_low": -1.5172,
-   "slope_ci_high": 1.8,
-   "fitted_start": 87.0558,
-   "fitted_end": 86.8442,
-   "p_value": 0.921147,
-   "significant": false,
-   "alpha": 0.05,
-   "p_value_classical": 0.921147
   }
  ],
  "headline": "trend",
@@ -389,9 +372,9 @@
   "source_name": "ERA5 (ECMWF / Copernicus) via Open-Meteo",
   "source_url": "https://open-meteo.com/en/docs/historical-weather-api",
   "license": "CC BY 4.0 (Copernicus) ; Open-Meteo, usage non commercial",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:11:10Z",
   "script": "etl.indicators.atmosphere",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+05d238b",
   "homogenized": false
  },
  "is_demo": false
