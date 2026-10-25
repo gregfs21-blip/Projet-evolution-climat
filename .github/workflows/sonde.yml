@@ -34,8 +34,11 @@ jobs:
           path: data/raw
           key: raw-${{ github.run_id }}
           restore-keys: raw-
-      - name: Sonde « largeur d'abord », lot 2
-        run: python -m etl.probe.largeur2
+      - name: Sonde Copernicus CDS (ERA5 niveaux de pression)
+        env:
+          CDSAPI_URL: https://cds.climate.copernicus.eu/api
+          CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # secret du dépôt, jamais affiché
+        run: python -m etl.probe.cds
       - name: Publication du rapport
         run: |
           git config user.name "etl-bot"
