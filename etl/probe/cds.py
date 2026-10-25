@@ -22,9 +22,10 @@ BASE = {"product_type": ["monthly_averaged_reanalysis"], "time": ["00:00"], "dat
         "download_format": "unarchived"}
 
 REQUESTS = [
-    ("1. Point de Bordeaux, 3 variables × 3 niveaux, janvier 2024",
+    ("1. Point de Bordeaux, 3 variables × 3 niveaux, 1940-2025 (la série dont les indicateurs auront besoin)",
      {"variable": ["temperature", "geopotential", "u_component_of_wind"], "pressure_level": ["250", "500", "850"],
-      "year": ["2024"], "month": ["01"], "area": [45.0, -1.0, 44.5, -0.5]}),
+      "year": [str(y) for y in range(1940, 2026)], "month": [f"{m:02d}" for m in range(1, 13)],
+      "area": [45.0, -1.0, 44.5, -0.5]}),
     ("2. Atlantique Nord (60° O-0°, 20-70° N), vent zonal 250 hPa, grille 1°, janvier 2024",
      {"variable": ["u_component_of_wind"], "pressure_level": ["250"], "year": ["2024"], "month": ["01"],
       "area": [70.0, -60.0, 20.0, 0.0], "grid": ["1.0", "1.0"]}),
@@ -53,7 +54,7 @@ def describe(path: Path) -> list[str]:
     return lines
 
 
-DEADLINES = [20, 0, 0, 25]   # minutes ; 0 = requête non soumise. Sonde du 25/10 (22 h) : file saturée, et le CDS
+DEADLINES = [40, 0, 0, 0]   # minutes ; 0 = requête non soumise. Sonde du 25/10 (22 h) : file saturée, et le CDS
                               # refuse au-delà d'un nombre de requêtes en attente par utilisateur → une à la fois.
 API = os.environ.get("CDSAPI_URL", "https://cds.climate.copernicus.eu/api")
 
@@ -125,8 +126,14 @@ def main() -> int:
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     with tempfile.TemporaryDirectory() as tmp:
         md += ["", "### 0. Travaux déjà soumis", "", "```", *jobs_report(tmp), "```"]
-        md += ["", "File : " + wait_queue_empty(15)]
+        state = wait_queue_empty(10)
+        md += ["", "File : " + state]
         OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+        if not state.startswith("aucun travail"):
+            # Travaux précédents encore en file : on n'en ajoute pas (le CDS rejette au-delà d'une limite par utilisateur).
+            md += ["", "Aucune nouvelle requête soumise : travaux précédents encore en file."]
+            OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+            return 0
         for i, ((title, req), minutes) in enumerate(zip(REQUESTS, DEADLINES)):
             if not minutes:
                 continue
