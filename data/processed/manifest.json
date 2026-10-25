@@ -1,7 +1,7 @@
 {
  "schema_version": "1.4",
- "generated_at": "2026-10-23T21:44:07Z",
- "etl_version": "0.1.0+89c0009",
+ "generated_at": "2026-10-25T09:05:25Z",
+ "etl_version": "0.1.0+325532e",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -1795,6 +1795,397 @@
     "id": "bordeaux-merignac",
     "name": "Bordeaux-Mérignac",
     "kind": "station"
+   }
+  },
+  {
+   "id": "sst-noaa-monde",
+   "scale": "monde",
+   "title": "Température de surface de l'océan — NOAAGlobalTemp (NOAA)",
+   "unit": "°C",
+   "path": "monde/sst-noaa-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Température de la mer",
+   "variable": {
+    "id": "sst-noaa",
+    "code": "NOAA",
+    "label": "température de surface de l'océan mondial (NOAAGlobalTemp)",
+    "theme": "temperature-mer",
+    "theme_label": "Température de la mer",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "sst-hadsst-monde",
+   "scale": "monde",
+   "title": "Température de surface de la mer — HadSST 4.2 (Met Office)",
+   "unit": "°C",
+   "path": "monde/sst-hadsst-monde.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Température de la mer",
+   "variable": {
+    "id": "sst-hadsst",
+    "code": "HadSST",
+    "label": "température de surface de l'océan mondial (HadSST)",
+    "theme": "temperature-mer",
+    "theme_label": "Température de la mer",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "ouragans-monde",
+   "scale": "monde",
+   "title": "Nombre d'ouragans par saison dans l'Atlantique Nord (IBTrACS)",
+   "unit": "ouragans",
+   "path": "monde/ouragans-monde.json",
+   "confidence": "faible",
+   "is_demo": false,
+   "group": "Ouragans de l'Atlantique Nord",
+   "variable": {
+    "id": "ouragans",
+    "code": "Ouragans",
+    "label": "nombre d'ouragans par saison",
+    "theme": "ouragans",
+    "theme_label": "Ouragans de l'Atlantique Nord",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Atlantique Nord",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "ace-monde",
+   "scale": "monde",
+   "title": "Énergie cumulée des cyclones (ACE) dans l'Atlantique Nord (IBTrACS)",
+   "unit": "10⁴ kt²",
+   "path": "monde/ace-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Ouragans de l'Atlantique Nord",
+   "variable": {
+    "id": "ace",
+    "code": "ACE",
+    "label": "énergie cumulée des cyclones (ACE)",
+    "theme": "ouragans",
+    "theme_label": "Ouragans de l'Atlantique Nord",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Atlantique Nord",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "pression-bordeaux-era5",
+   "scale": "gironde",
+   "title": "Pression atmosphérique moyenne à Bordeaux (réanalyse ERA5)",
+   "unit": "hPa",
+   "path": "gironde/pression-bordeaux-era5.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Pression atmosphérique",
+   "variable": {
+    "id": "pression",
+    "code": "PMER",
+    "label": "pression moyenne au niveau de la mer",
+    "theme": "pression",
+    "theme_label": "Pression atmosphérique",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-era5",
+    "name": "Bordeaux (ERA5)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "humidite-bordeaux-era5",
+   "scale": "gironde",
+   "title": "Humidité relative moyenne à Bordeaux (réanalyse ERA5)",
+   "unit": "%",
+   "path": "gironde/humidite-bordeaux-era5.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Humidité de l'air",
+   "variable": {
+    "id": "humidite",
+    "code": "HR",
+    "label": "humidité relative moyenne",
+    "theme": "humidite",
+    "theme_label": "Humidité de l'air",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-era5",
+    "name": "Bordeaux (ERA5)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-vent-fort-bordeaux-era5",
+   "scale": "gironde",
+   "title": "Jours de vent fort à Bordeaux (réanalyse ERA5)",
+   "unit": "jours",
+   "path": "gironde/jours-vent-fort-bordeaux-era5.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Vent et tempêtes",
+   "variable": {
+    "id": "jours-vent-fort",
+    "code": "Vent fort",
+    "label": "jours de vent fort (rafale ≥ 57",
+    "theme": "vent",
+    "theme_label": "Vent et tempêtes",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-era5",
+    "name": "Bordeaux (ERA5)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rafale-max-bordeaux-era5",
+   "scale": "gironde",
+   "title": "Rafale maximale annuelle à Bordeaux (réanalyse ERA5)",
+   "unit": "km/h",
+   "path": "gironde/rafale-max-bordeaux-era5.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Vent et tempêtes",
+   "variable": {
+    "id": "rafale-max",
+    "code": "Rafale max",
+    "label": "rafale maximale de l'année",
+    "theme": "vent",
+    "theme_label": "Vent et tempêtes",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-era5",
+    "name": "Bordeaux (ERA5)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tempete-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Jours de tempête à Bordeaux-Mérignac (rafale ≥ 100 km/h, mesures brutes)",
+   "unit": "jours",
+   "path": "gironde/jours-tempete-bordeaux-merignac.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — rafales mesurées (brutes)",
+   "variable": {
+    "id": "jours-tempete",
+    "code": "Rafale ≥ 100",
+    "label": "jours de tempête (rafale ≥ 100 km/h)",
+    "theme": "vent",
+    "theme_label": "Vent et tempêtes",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tempete-cazaux",
+   "scale": "gironde",
+   "title": "Jours de tempête à Cazaux (rafale ≥ 100 km/h, mesures brutes)",
+   "unit": "jours",
+   "path": "gironde/jours-tempete-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — rafales mesurées (brutes)",
+   "variable": {
+    "id": "jours-tempete",
+    "code": "Rafale ≥ 100",
+    "label": "jours de tempête (rafale ≥ 100 km/h)",
+    "theme": "vent",
+    "theme_label": "Vent et tempêtes",
+    "order": 2
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jours-tempete-cap-ferret",
+   "scale": "gironde",
+   "title": "Jours de tempête à Cap-Ferret (rafale ≥ 100 km/h, mesures brutes)",
+   "unit": "jours",
+   "path": "gironde/jours-tempete-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — rafales mesurées (brutes)",
+   "variable": {
+    "id": "jours-tempete",
+    "code": "Rafale ≥ 100",
+    "label": "jours de tempête (rafale ≥ 100 km/h)",
+    "theme": "vent",
+    "theme_label": "Vent et tempêtes",
+    "order": 2
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "t850-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (radiosondages bruts)",
+   "unit": "°C",
+   "path": "gironde/t850-bordeaux-merignac.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Radiosondages — Température en altitude",
+   "variable": {
+    "id": "t850",
+    "code": "T850",
+    "label": "température à 850 hPa (environ 1 500 m)",
+    "theme": "altitude",
+    "theme_label": "Température en altitude",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "t500-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)",
+   "unit": "°C",
+   "path": "gironde/t500-bordeaux-merignac.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Radiosondages — Température en altitude",
+   "variable": {
+    "id": "t500",
+    "code": "T500",
+    "label": "température à 500 hPa (environ 5 500 m)",
+    "theme": "altitude",
+    "theme_label": "Température en altitude",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "z500-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Géopotentiel 500 hPa au-dessus de Bordeaux (radiosondages bruts)",
+   "unit": "m",
+   "path": "gironde/z500-bordeaux-merignac.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Radiosondages — Géopotentiel",
+   "variable": {
+    "id": "z500",
+    "code": "Z500",
+    "label": "altitude de la surface 500 hPa (géopotentiel)",
+    "theme": "geopotentiel",
+    "theme_label": "Géopotentiel",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "catnat-gironde",
+   "scale": "gironde",
+   "title": "Reconnaissances de catastrophe naturelle en Gironde (arrêtés CatNat)",
+   "unit": "reconnaissances",
+   "path": "gironde/catnat-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Catastrophes naturelles (arrêtés CatNat)",
+   "variable": {
+    "id": "catnat",
+    "code": "CatNat",
+    "label": "reconnaissances de catastrophe naturelle",
+    "theme": "catastrophes",
+    "theme_label": "Catastrophes naturelles (arrêtés CatNat)",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "catnat-france",
+   "scale": "france",
+   "title": "Reconnaissances de catastrophe naturelle en France (arrêtés CatNat)",
+   "unit": "reconnaissances",
+   "path": "france/catnat-france.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Catastrophes naturelles (arrêtés CatNat)",
+   "variable": {
+    "id": "catnat",
+    "code": "CatNat",
+    "label": "reconnaissances de catastrophe naturelle",
+    "theme": "catastrophes",
+    "theme_label": "Catastrophes naturelles (arrêtés CatNat)",
+    "order": 0
+   },
+   "place": {
+    "id": "france",
+    "name": "France",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "catnat-secheresse-france",
+   "scale": "france",
+   "title": "Reconnaissances CatNat « sécheresse » en France (retrait-gonflement des argiles)",
+   "unit": "reconnaissances",
+   "path": "france/catnat-secheresse-france.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Catastrophes naturelles (arrêtés CatNat)",
+   "variable": {
+    "id": "catnat-secheresse",
+    "code": "Sécheresse",
+    "label": "reconnaissances CatNat « sécheresse »",
+    "theme": "catastrophes",
+    "theme_label": "Catastrophes naturelles (arrêtés CatNat)",
+    "order": 1
+   },
+   "place": {
+    "id": "france",
+    "name": "France",
+    "kind": "composite"
    }
   }
  ]

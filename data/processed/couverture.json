@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-23T21:44:07Z",
+ "generated_at": "2026-10-25T09:05:25Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -8,17 +8,34 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
+     "status": "publie",
      "source": "Base GASPAR (arrêtés CatNat), data.gouv.fr",
-     "note": "Compte des arrêtés, pas des aléas : dépend des déclarations et de l'exposition.",
-     "indicators": []
+     "note": "Compte des reconnaissances, pas des aléas : dépend des demandes des communes, de l'exposition et des règles de reconnaissance.",
+     "indicators": [
+      {
+       "id": "catnat-gironde",
+       "title": "Reconnaissances de catastrophe naturelle en Gironde (arrêtés CatNat)",
+       "confidence": "non_etabli"
+      }
+     ]
     },
     {
      "scale": "france",
-     "status": "prevu",
-     "source": "Base GASPAR (arrêtés CatNat)",
+     "status": "publie",
+     "source": "Base GASPAR (arrêtés CatNat), data.gouv.fr",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "catnat-france",
+       "title": "Reconnaissances de catastrophe naturelle en France (arrêtés CatNat)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "catnat-secheresse-france",
+       "title": "Reconnaissances CatNat « sécheresse » en France (retrait-gonflement des argiles)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -343,16 +360,27 @@
     {
      "scale": "gironde",
      "status": "prevu",
-     "source": "NOAA OISST (golfe de Gascogne)",
-     "note": null,
+     "source": "NOAA OISST v2.1, maille au large de la Gironde (depuis 1982)",
+     "note": "Lecteur écrit, mais serveur ERDDAP instable le 25/10/2026 (délai dépassé, erreur 503) : indicateur suspendu.",
      "indicators": []
     },
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "HadSST4 (Met Office) : lien de la sonde en 404, autre accès à trouver",
+     "status": "publie",
+     "source": "NOAAGlobalTemp (NOAA NCEI), HadSST 4.2 (Met Office)",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "sst-noaa-monde",
+       "title": "Température de surface de l'océan — NOAAGlobalTemp (NOAA)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "sst-hadsst-monde",
+       "title": "Température de surface de la mer — HadSST 4.2 (Met Office)",
+       "confidence": "elevee"
+      }
+     ]
     }
    ]
   },
@@ -362,10 +390,21 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
+     "status": "publie",
      "source": "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)",
-     "note": "Changements de sondes : séries à contrôler.",
-     "indicators": []
+     "note": "Radiosondages bruts (changements de sondes) : publiés sans tendance, règle C2.",
+     "indicators": [
+      {
+       "id": "t850-bordeaux-merignac",
+       "title": "Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (radiosondages bruts)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "t500-bordeaux-merignac",
+       "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)",
+       "confidence": "non_etabli"
+      }
+     ]
     },
     {
      "scale": "monde",
@@ -382,10 +421,16 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
-     "source": "Quotidien Météo-France (rafales FXI), ERA5",
-     "note": "Vent très sensible à l'environnement de l'anémomètre : confiance faible attendue.",
-     "indicators": []
+     "status": "publie",
+     "source": "ERA5 via Open-Meteo (rafales du modèle)",
+     "note": "Rafales de réanalyse, pas des mesures ; les mesures de station (FXI) sont brutes, voir « tempêtes ».",
+     "indicators": [
+      {
+       "id": "jours-vent-fort-bordeaux-era5",
+       "title": "Jours de vent fort à Bordeaux (réanalyse ERA5)",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -395,10 +440,16 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
+     "status": "publie",
      "source": "ERA5 via Open-Meteo",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "pression-bordeaux-era5",
+       "title": "Pression atmosphérique moyenne à Bordeaux (réanalyse ERA5)",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -408,10 +459,16 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
-     "source": "ERA5 via Open-Meteo, quotidien Météo-France",
+     "status": "publie",
+     "source": "ERA5 via Open-Meteo",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "humidite-bordeaux-era5",
+       "title": "Humidité relative moyenne à Bordeaux (réanalyse ERA5)",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -511,17 +568,49 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
-     "source": "Quotidien Météo-France (rafales), ERA5",
-     "note": null,
-     "indicators": []
+     "status": "publie",
+     "source": "ERA5 (rafale maximale annuelle) ; quotidien Météo-France (rafales FXI ≥ 100 km/h à Mérignac, Cazaux, Cap-Ferret)",
+     "note": "Rafales mesurées brutes : publiées sans tendance (règle C2).",
+     "indicators": [
+      {
+       "id": "rafale-max-bordeaux-era5",
+       "title": "Rafale maximale annuelle à Bordeaux (réanalyse ERA5)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-tempete-bordeaux-merignac",
+       "title": "Jours de tempête à Bordeaux-Mérignac (rafale ≥ 100 km/h, mesures brutes)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-tempete-cazaux",
+       "title": "Jours de tempête à Cazaux (rafale ≥ 100 km/h, mesures brutes)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-tempete-cap-ferret",
+       "title": "Jours de tempête à Cap-Ferret (rafale ≥ 100 km/h, mesures brutes)",
+       "confidence": "non_etabli"
+      }
+     ]
     },
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "IBTrACS (NOAA) : nombre et énergie cumulée des ouragans de l'Atlantique Nord",
+     "status": "publie",
+     "source": "IBTrACS (NOAA) : nombre et énergie cumulée des ouragans de l'Atlantique Nord, depuis 1966",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "ouragans-monde",
+       "title": "Nombre d'ouragans par saison dans l'Atlantique Nord (IBTrACS)",
+       "confidence": "faible"
+      },
+      {
+       "id": "ace-monde",
+       "title": "Énergie cumulée des cyclones (ACE) dans l'Atlantique Nord (IBTrACS)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -575,6 +664,19 @@
    "id": "geopotentiel",
    "label": "Géopotentiel",
    "cells": [
+    {
+     "scale": "gironde",
+     "status": "publie",
+     "source": "Radiosondages de Bordeaux-Mérignac (IGRA)",
+     "note": "Un seul point, brut : sans tendance (règle C2) ; ne remplace pas le champ ERA5.",
+     "indicators": [
+      {
+       "id": "z500-bordeaux-merignac",
+       "title": "Géopotentiel 500 hPa au-dessus de Bordeaux (radiosondages bruts)",
+       "confidence": "non_etabli"
+      }
+     ]
+    },
     {
      "scale": "monde",
      "status": "prevu",

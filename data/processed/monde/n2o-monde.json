@@ -141,9 +141,9 @@
   "source_name": "NOAA GML — N₂O, moyenne globale annuelle",
   "source_url": "https://gml.noaa.gov/ccgg/trends_n2o/",
   "license": "Domaine public (NOAA), citation demandée",
-  "extracted_at": "2026-10-23T21:42:49Z",
+  "extracted_at": "2026-10-25T09:03:14Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+89c0009",
+  "etl_version": "0.1.0+325532e",
   "homogenized": true
  },
  "is_demo": false

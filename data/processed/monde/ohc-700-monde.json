@@ -294,9 +294,9 @@
   "source_name": "NOAA NCEI — contenu thermique de l'océan mondial, 0-700 m",
   "source_url": "https://www.ncei.noaa.gov/access/global-ocean-heat-content/",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-23T21:42:49Z",
+  "extracted_at": "2026-10-25T09:03:14Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+89c0009",
+  "etl_version": "0.1.0+325532e",
   "homogenized": true
  },
  "is_demo": false
