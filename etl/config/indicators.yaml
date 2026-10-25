@@ -724,6 +724,8 @@ indicators:
       reference: *sst-ref
   - id: sst-gascogne-large-gironde
     scale: gironde
+    # Désactivé le 25/10/2026 : serveur ERDDAP de NOAA CoastWatch instable (délai dépassé, puis erreur 503).
+    enabled: false
     builder: etl.indicators.serie:build
     params:
       source: oisst-gascogne
