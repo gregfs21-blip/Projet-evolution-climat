@@ -211,6 +211,40 @@ class TestRules(unittest.TestCase):
         flat = {y: (0.2 if y % 2 else -0.2) for y in range(1966, 2026)}
         self.assertEqual(self._assemble(flat).breakpoints, [])
 
+    def _indicative(self, series):
+        prov = Provenance(source_name="x", source_url="https://example.org", license="l", extracted_at=self.ctx.extracted_at,
+                          script="t", etl_version="0", homogenized=False)
+        return S.assemble(self.ctx, ind_id="t850-x", scale="gironde", variable="t850", place=vocab.station("x", "X"),
+                          title="t", description="d", unit="°C", series=series, hom=set(), provenance=prov,
+                          limitations=["l"], stations=[A.Station(id="s", name="X", latitude=44.8, longitude=-0.7, altitude=50)],
+                          method_note=None, reference=self.REF, baseline=None, group="g", where="Ici", label="x",
+                          indicative=True)
+
+    def test_indicative_trend_capped_at_low(self):
+        series = {y: 5.0 + 0.05 * (y - 1965) + (0.1 if y % 2 else -0.1) for y in range(1965, 2026)}
+        ind = self._indicative(series)
+        self.assertTrue(ind.indicative and ind.trend.significant)
+        self.assertEqual(ind.confidence, "faible")                    # jamais plus, même significatif
+        self.assertEqual((ind.normals, ind.reference_check), ([], None))
+        self.assertEqual(set(ind.series.quality), {"raw"})
+        self.assertIn("indicative", ind.finding)
+        Indicator.model_validate(ind.model_dump())
+
+    def test_indicative_trend_not_significant(self):
+        series = {y: (0.3 if y % 3 else -0.6) for y in range(1965, 2026)}
+        self.assertEqual(self._indicative(series).confidence, "non_etabli")
+
+    def test_contract_rejects_indicative_above_low(self):
+        series = {y: 5.0 + 0.05 * (y - 1965) for y in range(1965, 2026)}
+        data = self._indicative(series).model_dump()
+        data["confidence"] = "moyenne"
+        with self.assertRaises(Exception):
+            Indicator.model_validate(data)
+        data["confidence"] = "faible"
+        data["indicative"] = False                                    # sans l'exception, C2 refuse la tendance sur du brut
+        with self.assertRaises(Exception):
+            Indicator.model_validate(data)
+
     def test_raw_series_published_without_trend(self):
         series = {y: float(y % 5) for y in range(1950, 2026)}
         ind = self._assemble(series, raw_reason="série brute.")

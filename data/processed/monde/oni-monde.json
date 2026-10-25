@@ -1,5 +1,5 @@
 {
- "schema_version": "1.4",
+ "schema_version": "1.5",
  "id": "oni-monde",
  "scale": "monde",
  "group": "El Niño",
@@ -295,6 +295,7 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
+ "indicative": false,
  "breakpoints": [],
  "stations": [],
  "method_note": null,
@@ -310,9 +311,9 @@
   "source_name": "NOAA CPC — indice océanique El Niño (ONI)",
   "source_url": "https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-25T09:17:58Z",
+  "extracted_at": "2026-10-25T09:33:25Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6f50917",
+  "etl_version": "0.1.0+6a3c53e",
   "homogenized": true
  },
  "is_demo": false

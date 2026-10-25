@@ -98,6 +98,7 @@ export default async function IndicatorPage({ params }: { params: Params }) {
         quality={ind.series.quality}
         unit={ind.unit}
         isAnomaly={ind.is_anomaly}
+        indicative={ind.indicative}
         reference={ref ? `${ref.start}-${ref.end}` : null}
         offset={refNormal?.value ?? null}
         trend={

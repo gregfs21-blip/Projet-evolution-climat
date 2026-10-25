@@ -130,7 +130,7 @@ const seriesSchema = z
 
 export const indicatorSchema = z
   .strictObject({
-    schema_version: z.literal("1.4"),
+    schema_version: z.literal("1.5"),
     id: z.string().regex(SLUG),
     scale: scaleSchema,
     group: z.string().nullable(),
@@ -149,6 +149,7 @@ export const indicatorSchema = z
     headline: z.enum(["trend", "normals"]),
     normals_comparison: normalsComparisonSchema.nullable(),
     reference_check: referenceCheckSchema.nullable(),
+    indicative: z.boolean(),
     breakpoints: z.array(breakpointSchema),
     stations: z.array(stationSchema),
     method_note: z.string().nullable(),
@@ -171,9 +172,14 @@ export const indicatorSchema = z
     (d) => [d.trend, ...d.alt_trends].every((t) => !t || t.significant === t.p_value < t.alpha),
     "tendance : significant incohérent avec p_value",
   )
+  .refine(
+    (d) => !d.indicative || ((d.confidence === "faible" || d.confidence === "non_etabli") && d.normals.length === 0),
+    "tendance indicative : confiance au plus « faible », sans normale",
+  )
   .refine((d) => {
     // Règle C2 : aucune tendance ni normale ne s'appuie sur un point non homogénéisé.
-    if (!d.series.quality) return true;
+    // Exception : tendance indicative sur série brute (décision de Grég du 25/10/2026), bornée ci-dessus.
+    if (!d.series.quality || d.indicative) return true;
     const raw = d.series.time.filter((_, i) => d.series.quality![i] === "raw").map((t) => Number(t.slice(0, 4)));
     const spans = [d.trend, ...d.alt_trends].filter((t) => t !== null).map((t) => t!.period);
     spans.push(...d.normals.map((n) => n.period));
@@ -199,7 +205,7 @@ export type ManifestEntry = z.infer<typeof manifestEntrySchema>;
 
 export const manifestSchema = z
   .strictObject({
-    schema_version: z.literal("1.4"),
+    schema_version: z.literal("1.5"),
     generated_at: isoDate,
     etl_version: z.string(),
     indicators: z.array(manifestEntrySchema),

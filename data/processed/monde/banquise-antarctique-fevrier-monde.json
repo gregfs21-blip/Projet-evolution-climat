@@ -1,5 +1,5 @@
 {
- "schema_version": "1.4",
+ "schema_version": "1.5",
  "id": "banquise-antarctique-fevrier-monde",
  "scale": "monde",
  "group": "Banquise",
@@ -204,6 +204,7 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
+ "indicative": false,
  "breakpoints": [
   {
    "time": "2016",
@@ -227,9 +228,9 @@
   "source_name": "NSIDC — Sea Ice Index v4, banquise antarctique en février",
   "source_url": "https://nsidc.org/data/g02135",
   "license": "Libre, citation demandée (NSIDC)",
-  "extracted_at": "2026-10-25T09:17:58Z",
+  "extracted_at": "2026-10-25T09:33:25Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6f50917",
+  "etl_version": "0.1.0+6a3c53e",
   "homogenized": true
  },
  "is_demo": false

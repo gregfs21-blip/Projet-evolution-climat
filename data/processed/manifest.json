@@ -1,7 +1,7 @@
 {
- "schema_version": "1.4",
- "generated_at": "2026-10-25T09:20:05Z",
- "etl_version": "0.1.0+6f50917",
+ "schema_version": "1.5",
+ "generated_at": "2026-10-25T09:36:23Z",
+ "etl_version": "0.1.0+6a3c53e",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -2056,7 +2056,7 @@
    "title": "Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (radiosondages bruts)",
    "unit": "°C",
    "path": "gironde/t850-bordeaux-merignac.json",
-   "confidence": "non_etabli",
+   "confidence": "faible",
    "is_demo": false,
    "group": "Radiosondages — Température en altitude",
    "variable": {
@@ -2079,7 +2079,7 @@
    "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)",
    "unit": "°C",
    "path": "gironde/t500-bordeaux-merignac.json",
-   "confidence": "non_etabli",
+   "confidence": "faible",
    "is_demo": false,
    "group": "Radiosondages — Température en altitude",
    "variable": {

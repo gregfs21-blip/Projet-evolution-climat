@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-25T09:20:05Z",
+ "generated_at": "2026-10-25T09:36:23Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -392,17 +392,17 @@
      "scale": "gironde",
      "status": "publie",
      "source": "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)",
-     "note": "Radiosondages bruts (changements de sondes) : publiés sans tendance, règle C2.",
+     "note": "Radiosondages bruts (changements de sondes) : tendance indicative seulement, confiance au plus « faible » (exception à la règle C2).",
      "indicators": [
       {
        "id": "t850-bordeaux-merignac",
        "title": "Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (radiosondages bruts)",
-       "confidence": "non_etabli"
+       "confidence": "faible"
       },
       {
        "id": "t500-bordeaux-merignac",
        "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)",
-       "confidence": "non_etabli"
+       "confidence": "faible"
       }
      ]
     },
@@ -570,7 +570,7 @@
      "scale": "gironde",
      "status": "publie",
      "source": "ERA5 (rafale maximale annuelle) ; quotidien Météo-France (rafales FXI ≥ 100 km/h à Mérignac, Cazaux, Cap-Ferret)",
-     "note": "Rafales mesurées brutes : publiées sans tendance (règle C2).",
+     "note": "Rafales mesurées brutes : tendance indicative seulement, confiance au plus « faible » (exception à la règle C2).",
      "indicators": [
       {
        "id": "rafale-max-bordeaux-era5",
@@ -668,7 +668,7 @@
      "scale": "gironde",
      "status": "publie",
      "source": "Radiosondages de Bordeaux-Mérignac (IGRA)",
-     "note": "Un seul point, brut : sans tendance (règle C2) ; ne remplace pas le champ ERA5.",
+     "note": "Un seul point, brut : tendance indicative seulement (exception à la règle C2) ; ne remplace pas le champ ERA5.",
      "indicators": [
       {
        "id": "z500-bordeaux-merignac",

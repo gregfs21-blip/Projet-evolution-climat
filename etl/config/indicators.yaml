@@ -827,6 +827,7 @@ indicators:
     builder: etl.indicators.atmosphere:build_fxi
     params: &fxi
       station: '33281001'
+      indicative: true    # exception à la règle C2 décidée par Grég le 25/10/2026 (docs/phases.md)
       variable: jours-tempete
       threshold_ms: 27.8
       label: le nombre de jours de tempête
@@ -850,6 +851,7 @@ indicators:
     builder: etl.indicators.atmosphere:build_igra
     params:
       variable: t850
+      indicative: true    # exception à la règle C2 décidée par Grég le 25/10/2026
       label: la température à 850 hPa
       title: Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (radiosondages bruts)
       description: Moyenne annuelle de la température mesurée à 850 hPa par les radiosondages de 12 UTC de Bordeaux-Mérignac (IGRA v2, NOAA NCEI).
@@ -858,6 +860,7 @@ indicators:
     builder: etl.indicators.atmosphere:build_igra
     params:
       variable: t500
+      indicative: true    # exception à la règle C2 décidée par Grég le 25/10/2026
       label: la température à 500 hPa
       title: Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)
       description: Moyenne annuelle de la température mesurée à 500 hPa par les radiosondages de 12 UTC de Bordeaux-Mérignac (IGRA v2, NOAA NCEI).
@@ -866,6 +869,7 @@ indicators:
     builder: etl.indicators.atmosphere:build_igra
     params:
       variable: z500
+      indicative: true    # exception à la règle C2 décidée par Grég le 25/10/2026
       label: l'altitude de la surface 500 hPa
       title: Géopotentiel 500 hPa au-dessus de Bordeaux (radiosondages bruts)
       description: Moyenne annuelle de l'altitude de la surface 500 hPa mesurée par les radiosondages de 12 UTC de Bordeaux-Mérignac (IGRA v2, NOAA NCEI). Elle monte quand la colonne d'air se réchauffe ou qu'un anticyclone s'installe.

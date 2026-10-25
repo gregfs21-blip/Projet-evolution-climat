@@ -62,7 +62,7 @@ export default function KpiBand({ ind }: { ind: Indicator }) {
 
   return (
     <div className="grid rounded-lg border border-[var(--rule)] bg-[var(--card)] sm:grid-cols-[1.25fr_1fr_1fr]">
-      <Cell label={`Tendance ${t.period.start}-${t.period.end}`}>
+      <Cell label={`${ind.indicative ? "Tendance indicative" : "Tendance"} ${t.period.start}-${t.period.end}`}>
         <div className="font-mono text-3xl tabular-nums">
           {fmtSigned(t.slope_per_decade)} <span className="text-sm text-[var(--muted)]">{u} / décennie</span>
         </div>
@@ -100,6 +100,11 @@ export default function KpiBand({ ind }: { ind: Indicator }) {
               normale {first.period.start}-{first.period.end} (une seule publiée)
             </div>
           </>
+        ) : ind.indicative ? (
+          <div className="mt-2 text-sm text-[var(--warm)]">
+            Série brute, non homogénéisée : pente indicative seulement (exception à la règle C2), ni normale ni
+            référence. Un changement d&apos;instrument peut à lui seul créer cette pente.
+          </div>
         ) : (
           <div className="mt-2 text-sm text-[var(--muted)]">Aucune normale publiée pour cette série.</div>
         )}

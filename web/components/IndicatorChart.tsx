@@ -14,6 +14,8 @@ type Props = {
   quality: ("homogenized" | "raw")[] | null;
   unit: string;
   isAnomaly: boolean;
+  /** Tendance indicative sur série brute (exception à C2) : les points bruts entrent dans la tendance. */
+  indicative?: boolean;
   reference: string | null;
   /** Normale de la période de référence : valeur absolue = anomalie + offset. null = bascule indisponible. */
   offset: number | null;
@@ -106,7 +108,7 @@ export default function IndicatorChart(p: Props) {
         {p.quality?.includes("raw") && (
           <li>
             <i className="mr-1.5 inline-block h-2.5 w-3 bg-[var(--muted)] opacity-50 align-[-1px]" />
-            années non homogénéisées, hors tendance
+            {p.indicative ? "valeurs brutes, non homogénéisées (tendance indicative)" : "années non homogénéisées, hors tendance"}
           </li>
         )}
         {trend && (

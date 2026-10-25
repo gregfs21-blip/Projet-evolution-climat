@@ -1,5 +1,5 @@
 {
- "schema_version": "1.4",
+ "schema_version": "1.5",
  "id": "ohc-2000-monde",
  "scale": "monde",
  "group": "Chaleur des océans",
@@ -115,6 +115,7 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
+ "indicative": false,
  "breakpoints": [
   {
    "time": "2015",
@@ -138,9 +139,9 @@
   "source_name": "NOAA NCEI — contenu thermique de l'océan mondial, 0-2000 m",
   "source_url": "https://www.ncei.noaa.gov/access/global-ocean-heat-content/",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-25T09:17:58Z",
+  "extracted_at": "2026-10-25T09:33:25Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6f50917",
+  "etl_version": "0.1.0+6a3c53e",
   "homogenized": true
  },
  "is_demo": false

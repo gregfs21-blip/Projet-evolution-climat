@@ -12,7 +12,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-SCHEMA_VERSION = "1.4"
+SCHEMA_VERSION = "1.5"
 Quality = Literal["homogenized", "raw"]
 
 Scale = Literal["gironde", "france", "monde"]
@@ -182,7 +182,7 @@ class Series(_Strict):
 
 
 class Indicator(_Strict):
-    schema_version: Literal["1.4"] = SCHEMA_VERSION
+    schema_version: Literal["1.5"] = SCHEMA_VERSION
     id: str = Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")
     scale: Scale
     group: str | None = Field(default=None, description="Regroupement d'affichage (ex. 'Synthèse', 'Stations')")
@@ -203,6 +203,11 @@ class Indicator(_Strict):
     )
     normals_comparison: NormalsComparison | None = None
     reference_check: ReferenceCheck | None = None
+    indicative: bool = Field(
+        default=False,
+        description="Tendance indicative sur série BRUTE : exception à la règle C2 (décision de Grég du 25/10/2026), "
+                    "confiance au plus « faible », sans normale",
+    )
     breakpoints: list[Breakpoint] = Field(default_factory=list)
     stations: list[Station] = Field(default_factory=list)
     method_note: str | None = Field(default=None, description="Construction de l'indicateur (ex. composite)")
@@ -236,7 +241,13 @@ class Indicator(_Strict):
         for t in [self.trend, *self.alt_trends]:
             if t and t.significant != (t.p_value < t.alpha):
                 raise ValueError(f"tendance '{t.label}' : significant incohérent avec p_value et alpha")
-        if self.series.quality is not None:
+        if self.indicative:
+            # Exception à C2 (25/10/2026) : bornée pour ne jamais passer pour une tendance établie.
+            if self.confidence not in ("faible", "non_etabli"):
+                raise ValueError("tendance indicative (série brute) : confiance au plus « faible »")
+            if self.normals or self.provenance.homogenized:
+                raise ValueError("tendance indicative : ni normale, ni provenance « homogénéisée »")
+        elif self.series.quality is not None:
             # Règle C2 : aucune tendance ni normale ne peut s'appuyer sur un point non homogénéisé.
             raw_years = {int(t[:4]) for t, q in zip(self.series.time, self.series.quality) if q == "raw"}
             spans = [(t.label or "tendance", t.period) for t in [self.trend, *self.alt_trends] if t]
@@ -263,7 +274,7 @@ class ManifestEntry(_Strict):
 
 
 class Manifest(_Strict):
-    schema_version: Literal["1.4"] = SCHEMA_VERSION
+    schema_version: Literal["1.5"] = SCHEMA_VERSION
     generated_at: datetime
     etl_version: str
     indicators: list[ManifestEntry]

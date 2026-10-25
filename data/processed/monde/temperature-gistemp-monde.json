@@ -1,5 +1,5 @@
 {
- "schema_version": "1.4",
+ "schema_version": "1.5",
  "id": "temperature-gistemp-monde",
  "scale": "monde",
  "group": "Température globale",
@@ -511,6 +511,7 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
+ "indicative": false,
  "breakpoints": [
   {
    "time": "2001",
@@ -534,9 +535,9 @@
   "source_name": "NASA GISS — GISTEMP v4, température globale terre-océan",
   "source_url": "https://data.giss.nasa.gov/gistemp/",
   "license": "Domaine public (NASA)",
-  "extracted_at": "2026-10-25T09:17:58Z",
+  "extracted_at": "2026-10-25T09:33:25Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6f50917",
+  "etl_version": "0.1.0+6a3c53e",
   "homogenized": true
  },
  "is_demo": false

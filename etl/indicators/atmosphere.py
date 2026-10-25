@@ -5,8 +5,10 @@ Trois sources, trois statuts — fixés avant le premier calcul :
   NOAA ou NASA (tendance calculée), sans référence publiée locale → confiance au plus « moyenne ». Série de plus de
   80 ans : la tendance mise en avant porte sur les 50 dernières années (ère satellitaire, règle du 23/10/2026).
 - Rafales quotidiennes Météo-France (FXI), Mérignac, Cazaux, Cap-Ferret : mesures BRUTES, jamais homogénéisées
-  (anémomètres déplacés, changés, automatisés). Règle C2 : publiées sans tendance ni normale.
-- Radiosondages IGRA de Bordeaux-Mérignac (12 UTC) : mesures BRUTES (changements de sondes). Règle C2 : idem.
+  (anémomètres déplacés, changés, automatisés).
+- Radiosondages IGRA de Bordeaux-Mérignac (12 UTC) : mesures BRUTES (changements de sondes).
+Pour ces deux sources, tendance INDICATIVE (`indicative: true` au registre) : exception à la règle C2 décidée par
+Grég le 25/10/2026, après avoir vu les séries brutes ; confiance au plus « faible », sans normale ni référence.
 """
 
 from __future__ import annotations
@@ -131,7 +133,7 @@ def fxi_counts(daily: dict[str, quot.Daily], threshold_ms: float) -> dict[int, f
 
 
 def build_fxi(ctx: BuildContext, station: str, variable: str, threshold_ms: float, title: str, description: str,
-              label: str, limitations: list[str] | None = None) -> Indicator:
+              label: str, limitations: list[str] | None = None, indicative: bool = False) -> Indicator:
     daily, meta = _fxi(str(ctx.raw_dir))
     if station not in daily or not daily[station]:
         raise KeyError(f"pas de rafales FXI pour le poste {station}")
@@ -159,8 +161,10 @@ def build_fxi(ctx: BuildContext, station: str, variable: str, threshold_ms: floa
                       description=description.format(name=name), unit="jours", series=series, hom=set(), provenance=prov,
                       limitations=lims, stations=[st], method_note=None, reference=None, baseline=None,
                       group="Stations — rafales mesurées (brutes)", where=f"À {name}", label=label,
-                      raw_reason="série brute non homogénéisée, publiée sans tendance (règle C2) : les changements "
-                                 "d'anémomètre peuvent à eux seuls créer ou masquer une évolution.")
+                      indicative=indicative,
+                      raw_reason=None if indicative else
+                      "série brute non homogénéisée, publiée sans tendance (règle C2) : les changements "
+                      "d'anémomètre peuvent à eux seuls créer ou masquer une évolution.")
 
 
 # ---------------------------------------------------------------- radiosondages IGRA (bruts)
@@ -192,7 +196,7 @@ def igra_annual(monthly: dict[tuple[int, int], list[float]]) -> dict[int, float]
 
 
 def build_igra(ctx: BuildContext, variable: str, title: str, description: str, label: str,
-               limitations: list[str] | None = None) -> Indicator:
+               limitations: list[str] | None = None, indicative: bool = False) -> Indicator:
     level, what, unit, bounds = IGRA_VARS[variable]
     series = igra_annual(_igra(str(ctx.raw_dir))[level][what])
     _check(variable, series, bounds)
@@ -212,5 +216,7 @@ def build_igra(ctx: BuildContext, variable: str, title: str, description: str, l
                       description=description, unit=unit, series=series, hom=set(), provenance=prov, limitations=lims,
                       stations=[st], method_note=None, reference=None, baseline=None,
                       group=f"Radiosondages — {v.theme_label}", where="Au-dessus de Bordeaux-Mérignac", label=label,
-                      raw_reason="série brute non homogénéisée, publiée sans tendance (règle C2) : les changements de "
-                                 "sondes peuvent à eux seuls créer une évolution apparente.")
+                      indicative=indicative,
+                      raw_reason=None if indicative else
+                      "série brute non homogénéisée, publiée sans tendance (règle C2) : les changements de "
+                      "sondes peuvent à eux seuls créer une évolution apparente.")
