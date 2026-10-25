@@ -1,6 +1,6 @@
 # Sonde « largeur d'abord », lot 2 (généré)
 
-Généré par `python -m etl.probe.largeur2` le 25/10/2026 08:30 UTC. Aucun calcul : formats et couverture constatés.
+Généré par `python -m etl.probe.largeur2` le 25/10/2026 09:25 UTC. Aucun calcul : formats et couverture constatés.
 
 ## 6. Catastrophes naturelles : base GASPAR (data.gouv.fr)
 
