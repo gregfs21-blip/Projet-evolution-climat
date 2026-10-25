@@ -342,3 +342,7 @@ Sonde : `docs/sonde-largeur2.md` et `docs/sonde-catnat.md`. Lecteurs : `etl/sour
   confiance des séries simples. Pour une série brute, le site dit qu'aucun test n'est fait.
 - **Libellés coupés** : deux libellés de `variables.yaml` contenant une virgule non protégée étaient tronqués
   (ONI, vent fort). Corrigés ; le vocabulaire refuse désormais toute clé inattendue.
+- **Période du test de rupture des séries simples** (choix fait APRÈS un premier calcul sur toute la série) : sur
+  1850-2025, la droite ne capte pas l'accélération récente et le test signalait une « rupture établie » vers 1937 pour
+  toutes les températures globales. Le test porte désormais sur les années de la tendance mise en avant. Restent
+  signalées : CO₂ (2002) et chaleur de l'océan 0-700 m (1991), deux accélérations connues — la note le dit.

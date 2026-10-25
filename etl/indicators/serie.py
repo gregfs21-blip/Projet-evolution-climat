@@ -134,7 +134,8 @@ def detect_break(years: list[int], series: dict[int, float], stations: list[Stat
         note += (f" ; après retrait de la tendance, plus aucune rupture significative (p = {T.fr(detr.p_value, 2, False)}) : "
                  "la rupture traduit la tendance elle-même, pas un saut brusque")
     else:
-        note += f" ; rupture encore significative après retrait de la tendance (p = {T.fr(detr.p_value, 3, False)})"
+        note += (f" ; rupture encore significative après retrait de la tendance (p = {T.fr(detr.p_value, 3, False)}) : "
+                 "saut brusque, ou accélération que la droite de Sen ne capte pas")
     if artifact:
         note += " ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique"
     return [Breakpoint(time=str(new_regime), method="Pettitt (1979)", p_value=round(res.p_value, 6), possible_artifact=artifact,
@@ -195,7 +196,10 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
         if len(ys) == common_window.end - common_window.start + 1 and len(run) > len(ys):
             alts.append(annual_trend(ys, [series[y] for y in ys], label=f"{common_window.start}-{common_window.end}, période commune des stations"))
     check = check_reference(reference, series, hom, unit) if reference else None
-    breaks = detect_break(run, series, stations, unit) if main is not None else []
+    # Test sur les années de la tendance mise en avant (sur 1850-2025, une droite ne capte pas l'accélération récente
+    # et le test signalerait une « rupture » vers 1937 : choix du 25/10/2026, après un premier calcul sur toute la série).
+    breaks = (detect_break([y for y in run if main.period.start <= y <= main.period.end], series, stations, unit)
+              if main is not None else [])
     normals = []
     if not baseline:
         for p in NORMALS:
