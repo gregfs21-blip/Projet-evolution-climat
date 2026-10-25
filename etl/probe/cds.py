@@ -53,7 +53,53 @@ def describe(path: Path) -> list[str]:
     return lines
 
 
-DEADLINES = [8, 8, 8, 15]     # minutes par requête : la sonde du 25/10 (21 h) a dépassé 45 min sans rendre la main
+DEADLINES = [20, 0, 0, 25]   # minutes ; 0 = requête non soumise. Sonde du 25/10 (22 h) : file saturée, et le CDS
+                              # refuse au-delà d'un nombre de requêtes en attente par utilisateur → une à la fois.
+API = os.environ.get("CDSAPI_URL", "https://cds.climate.copernicus.eu/api")
+
+
+def _api(path: str) -> dict:
+    import json
+    import urllib.request
+    req = urllib.request.Request(f"{API}/retrieve/v1/{path}", headers={"PRIVATE-TOKEN": os.environ.get("CDSAPI_KEY", "")})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        return json.loads(r.read())
+
+
+def jobs_report(tmp: str) -> list[str]:
+    """Travaux déjà soumis (sondes précédentes) : état, et lecture des résultats de ceux qui ont abouti."""
+    lines = []
+    try:
+        data = _api("jobs?limit=20")
+    except Exception as exc:  # noqa: BLE001
+        return [f"liste des travaux impossible : {type(exc).__name__} {exc}"]
+    for j in data.get("jobs", []):
+        lines.append(f"{j.get('jobID')} {j.get('processID')} {j.get('status')} créé {j.get('created')} "
+                     f"début {j.get('started')} fin {j.get('finished')}")
+        if j.get("status") == "successful":
+            try:
+                href = _api(f"jobs/{j['jobID']}/results")["asset"]["value"]["href"]
+                import urllib.request
+                path = Path(tmp) / f"{j['jobID']}.nc"
+                with urllib.request.urlopen(href, timeout=300) as r:
+                    path.write_bytes(r.read())
+                lines += ["    " + x for x in describe(path)]
+            except Exception as exc:  # noqa: BLE001
+                lines.append(f"    résultat illisible : {type(exc).__name__} {exc}")
+    return lines or ["aucun travail"]
+
+
+def wait_queue_empty(max_minutes: int) -> str:
+    t0 = time.time()
+    while time.time() - t0 < max_minutes * 60:
+        try:
+            pending = [j for j in _api("jobs?limit=50").get("jobs", []) if j.get("status") in ("accepted", "running")]
+        except Exception as exc:  # noqa: BLE001
+            return f"état de la file illisible : {exc}"
+        if not pending:
+            return f"aucun travail en attente (après {time.time() - t0:.0f} s)"
+        time.sleep(60)
+    return f"encore {len(pending)} travail(aux) en attente après {max_minutes} min"
 
 
 def _retrieve(req: dict, path: str, queue) -> None:
@@ -78,7 +124,12 @@ def main() -> int:
           f"Clé présente dans l'environnement : **{'oui' if os.environ.get('CDSAPI_KEY') else 'NON'}** (jamais affichée)."]
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     with tempfile.TemporaryDirectory() as tmp:
+        md += ["", "### 0. Travaux déjà soumis", "", "```", *jobs_report(tmp), "```"]
+        md += ["", "File : " + wait_queue_empty(15)]
+        OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
         for i, ((title, req), minutes) in enumerate(zip(REQUESTS, DEADLINES)):
+            if not minutes:
+                continue
             path = Path(tmp) / f"r{i}.nc"
             q = mp.Queue()
             proc = mp.Process(target=_retrieve, args=(req, str(path), q))
