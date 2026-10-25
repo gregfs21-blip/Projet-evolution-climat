@@ -186,7 +186,16 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1989",
+   "method": "Pettitt (1979)",
+   "p_value": 0.017337,
+   "possible_artifact": false,
+   "detrended_p_value": 0.291748,
+   "note": "écart des moyennes +1188,20 reconnaissances avant/après 1989 ; après retrait de la tendance, plus aucune rupture significative (p = 0,29) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "En France, le nombre de reconnaissances de catastrophe naturelle pour sécheresse a évolué de +181,43 reconnaissances par décennie entre 1982 et 2023, soit +743,86 reconnaissances sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -202,9 +211,9 @@
   "source_name": "Ministère de la Transition écologique — base GASPAR, arrêtés de catastrophe naturelle",
   "source_url": "https://www.data.gouv.fr/datasets/base-nationale-de-gestion-assistee-des-procedures-administratives-relatives-aux-risques-gaspar",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

@@ -240,7 +240,16 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1995",
+   "method": "Pettitt (1979)",
+   "p_value": 0.000598,
+   "possible_artifact": false,
+   "detrended_p_value": 0.634399,
+   "note": "écart des moyennes +60,78 10⁴ kt² avant/après 1995 ; après retrait de la tendance, plus aucune rupture significative (p = 0,63) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "Dans l'Atlantique Nord, l'énergie cumulée des cyclones (ACE) a évolué de +12,74 10⁴ kt² par décennie entre 1966 et 2025, soit +75,19 10⁴ kt² sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -255,9 +264,9 @@
   "source_name": "NOAA NCEI — IBTrACS v04r01, Atlantique Nord",
   "source_url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

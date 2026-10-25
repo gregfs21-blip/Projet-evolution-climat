@@ -544,7 +544,16 @@
   "satisfied": true,
   "fixed_on": "2026-10-23"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "2000",
+   "method": "Pettitt (1979)",
+   "p_value": 8e-6,
+   "possible_artifact": false,
+   "detrended_p_value": 0.461591,
+   "note": "écart des moyennes +59,80 mm avant/après 2000 ; après retrait de la tendance, plus aucune rupture significative (p = 0,46) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [
   {
    "id": "PSMSL-1",
@@ -571,9 +580,9 @@
   "source_name": "PSMSL — marégraphe de Brest, moyennes annuelles RLR",
   "source_url": "https://psmsl.org/data/obtaining/stations/1.php",
   "license": "Libre, citation demandée (PSMSL)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

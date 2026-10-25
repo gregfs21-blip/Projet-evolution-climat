@@ -1,7 +1,7 @@
 {
  "schema_version": "1.4",
- "generated_at": "2026-10-25T09:11:15Z",
- "etl_version": "0.1.0+05d238b",
+ "generated_at": "2026-10-25T09:15:29Z",
+ "etl_version": "0.1.0+daced37",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -1487,7 +1487,7 @@
    "variable": {
     "id": "oni",
     "code": "ONI",
-    "label": "indice El Niño (ONI)",
+    "label": "indice El Niño (ONI), moyenne annuelle",
     "theme": "enso",
     "theme_label": "El Niño",
     "order": 0
@@ -1947,7 +1947,7 @@
    "variable": {
     "id": "jours-vent-fort",
     "code": "Vent fort",
-    "label": "jours de vent fort (rafale ≥ 57",
+    "label": "jours de vent fort (rafale ≥ 57,6 km/h)",
     "theme": "vent",
     "theme_label": "Vent et tempêtes",
     "order": 0

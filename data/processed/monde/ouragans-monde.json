@@ -255,7 +255,16 @@
   "satisfied": true,
   "fixed_on": "2026-10-25"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1995",
+   "method": "Pettitt (1979)",
+   "p_value": 0.011101,
+   "possible_artifact": false,
+   "detrended_p_value": 0.692666,
+   "note": "écart des moyennes +2,39 ouragans avant/après 1995 ; après retrait de la tendance, plus aucune rupture significative (p = 0,69) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "Dans l'Atlantique Nord, le nombre d'ouragans par saison a évolué de +0,44 ouragans par décennie entre 1966 et 2025, soit +2,62 ouragans sur la période (pas de tendance significative après correction de l'autocorrélation).",
@@ -271,9 +280,9 @@
   "source_name": "NOAA NCEI — IBTrACS v04r01, Atlantique Nord",
   "source_url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

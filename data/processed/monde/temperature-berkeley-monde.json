@@ -613,7 +613,16 @@
   "satisfied": true,
   "fixed_on": "2026-10-23"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1937",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": false,
+   "detrended_p_value": 2e-6,
+   "note": "écart des moyennes +0,61 °C avant/après 1937 ; rupture encore significative après retrait de la tendance (p = 0,000)"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "À l'échelle du globe, la température moyenne de surface a évolué de +0,20 °C par décennie entre 1975 et 2024, soit +1,00 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -626,9 +635,9 @@
   "source_name": "Berkeley Earth — température globale terre-océan",
   "source_url": "https://berkeleyearth.org/data/",
   "license": "CC BY 4.0",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

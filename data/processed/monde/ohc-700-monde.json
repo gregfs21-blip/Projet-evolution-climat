@@ -280,7 +280,16 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1991",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": false,
+   "detrended_p_value": 0.003203,
+   "note": "écart des moyennes +12,65 10²² J avant/après 1991 ; rupture encore significative après retrait de la tendance (p = 0,003)"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "Dans l'océan mondial, le contenu thermique entre 0 à 700 m a évolué de +3,64 10²² J par décennie entre 1955 et 2025, soit +25,48 10²² J sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -294,9 +303,9 @@
   "source_name": "NOAA NCEI — contenu thermique de l'océan mondial, 0-700 m",
   "source_url": "https://www.ncei.noaa.gov/access/global-ocean-heat-content/",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

@@ -616,7 +616,16 @@
   "satisfied": true,
   "fixed_on": "2026-10-23"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1936",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": false,
+   "detrended_p_value": 1e-6,
+   "note": "écart des moyennes +0,58 °C avant/après 1936 ; rupture encore significative après retrait de la tendance (p = 0,000)"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "À l'échelle du globe, la température moyenne de surface a évolué de +0,21 °C par décennie entre 1976 et 2025, soit +1,01 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -629,9 +638,9 @@
   "source_name": "Met Office Hadley Centre / CRU — HadCRUT5, température globale",
   "source_url": "https://www.metoffice.gov.uk/hadobs/hadcrut5/",
   "license": "Open Government Licence v3",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

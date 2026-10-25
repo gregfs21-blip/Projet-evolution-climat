@@ -219,7 +219,16 @@
   "satisfied": true,
   "fixed_on": "2026-10-23"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "2002",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": false,
+   "detrended_p_value": 0.357439,
+   "note": "écart des moyennes -2,01 millions de km² avant/après 2002 ; après retrait de la tendance, plus aucune rupture significative (p = 0,36) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "En Arctique, l'étendue de la banquise de septembre a évolué de -0,72 millions de km² par décennie entre 1979 et 2026, soit -3,38 millions de km² sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -232,9 +241,9 @@
   "source_name": "NSIDC — Sea Ice Index v4, banquise arctique en septembre",
   "source_url": "https://nsidc.org/data/g02135",
   "license": "Libre, citation demandée (NSIDC)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

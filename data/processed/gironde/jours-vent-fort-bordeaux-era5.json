@@ -6,7 +6,7 @@
  "variable": {
   "id": "jours-vent-fort",
   "code": "Vent fort",
-  "label": "jours de vent fort (rafale ≥ 57",
+  "label": "jours de vent fort (rafale ≥ 57,6 km/h)",
   "theme": "vent",
   "theme_label": "Vent et tempêtes",
   "order": 0
@@ -343,7 +343,16 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1978",
+   "method": "Pettitt (1979)",
+   "p_value": 0.00003,
+   "possible_artifact": false,
+   "detrended_p_value": 0.751471,
+   "note": "écart des moyennes +6,39 jours avant/après 1978 ; après retrait de la tendance, plus aucune rupture significative (p = 0,75) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [
   {
    "id": "era5-bordeaux",
@@ -371,9 +380,9 @@
   "source_name": "ERA5 (ECMWF / Copernicus) via Open-Meteo",
   "source_url": "https://open-meteo.com/en/docs/historical-weather-api",
   "license": "CC BY 4.0 (Copernicus) ; Open-Meteo, usage non commercial",
-  "extracted_at": "2026-10-25T09:11:10Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.atmosphere",
-  "etl_version": "0.1.0+05d238b",
+  "etl_version": "0.1.0+daced37",
   "homogenized": false
  },
  "is_demo": false

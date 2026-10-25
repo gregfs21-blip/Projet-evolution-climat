@@ -204,7 +204,16 @@
  "headline": "trend",
  "normals_comparison": null,
  "reference_check": null,
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "2016",
+   "method": "Pettitt (1979)",
+   "p_value": 0.007552,
+   "possible_artifact": false,
+   "detrended_p_value": 0.117327,
+   "note": "écart des moyennes -0,63 millions de km² avant/après 2016 ; après retrait de la tendance, plus aucune rupture significative (p = 0,12) : la rupture traduit la tendance elle-même, pas un saut brusque"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "En Antarctique, l'étendue de la banquise de février a évolué de -0,07 millions de km² par décennie entre 1979 et 2026, soit -0,33 millions de km² sur la période (pas de tendance significative après correction de l'autocorrélation).",
@@ -218,9 +227,9 @@
   "source_name": "NSIDC — Sea Ice Index v4, banquise antarctique en février",
   "source_url": "https://nsidc.org/data/g02135",
   "license": "Libre, citation demandée (NSIDC)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false

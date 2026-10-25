@@ -616,7 +616,16 @@
   "satisfied": false,
   "fixed_on": "2026-10-25"
  },
- "breakpoints": [],
+ "breakpoints": [
+  {
+   "time": "1940",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": false,
+   "detrended_p_value": 0.0,
+   "note": "écart des moyennes +0,38 °C avant/après 1940 ; rupture encore significative après retrait de la tendance (p = 0,000)"
+  }
+ ],
  "stations": [],
  "method_note": null,
  "finding": "À l'échelle de l'océan mondial, la température de surface de l'océan a évolué de +0,13 °C par décennie entre 1976 et 2025, soit +0,62 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
@@ -630,9 +639,9 @@
   "source_name": "NOAA NCEI — NOAAGlobalTemp, température de surface de l'océan mondial (Climate at a Glance)",
   "source_url": "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-25T09:03:14Z",
+  "extracted_at": "2026-10-25T09:13:11Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+325532e",
+  "etl_version": "0.1.0+daced37",
   "homogenized": true
  },
  "is_demo": false
