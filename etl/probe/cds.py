@@ -101,6 +101,12 @@ def jobs_report(tmp: str, md: list[str]) -> None:
         return
     for j in jobs:
         md.append(f"{j.get('jobID')} {j.get('status')} créé {j.get('created')} début {j.get('started')} fin {j.get('finished')}")
+        if j.get("status") in ("rejected", "failed") and j.get("created", "") >= "2026-10-26":
+            try:
+                _api(f"jobs/{j['jobID']}/results")
+            except Exception as exc:  # noqa: BLE001
+                body = getattr(exc, "read", lambda: b"")()[:600].decode("utf-8", "replace")
+                md.append(f"    motif : {body}")
     md.append("```")
     flush()
     for j in [j for j in jobs if j.get("status") == "successful"][:4]:
@@ -155,6 +161,25 @@ USEFUL = {
 MAX_PENDING = 4      # le CDS a rejeté la 5e requête en attente le 25/10/2026
 
 
+# Requêtes de test du 25/10/2026 (un mois, janvier 2024) restées en file : inutiles, elles occupent le quota de
+# requêtes en attente. Annulées (26/10/2026) pour laisser passer les requêtes utiles.
+OBSOLETE = ("14c71edd-e872-46c9-999b-41277d0bc5de", "55875211-dff8-4682-abca-59c589116bf2")
+
+
+def cancel_obsolete(md: list[str]) -> None:
+    import urllib.request
+    lines = []
+    for jid in OBSOLETE:
+        try:
+            req = urllib.request.Request(f"{API}/retrieve/v1/jobs/{jid}", method="DELETE",
+                                         headers={"PRIVATE-TOKEN": os.environ.get("CDSAPI_KEY", "")})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                lines.append(f"{jid} : annulé ({r.status})")
+        except Exception as exc:  # noqa: BLE001
+            lines.append(f"{jid} : {type(exc).__name__} {exc}")
+    md += ["", "### Annulation des requêtes de test inutiles", "", "```", *lines, "```"]
+
+
 def submit_useful(md: list[str]) -> None:
     import json
     import urllib.request
@@ -207,6 +232,7 @@ def main() -> int:
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     with tempfile.TemporaryDirectory() as tmp:
         jobs_report(tmp, md)
+        cancel_obsolete(md)
         submit_useful(md)
         OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
         md += ["", "Mode relevé : aucune requête bloquante (le CDS traite en plusieurs heures)."]
