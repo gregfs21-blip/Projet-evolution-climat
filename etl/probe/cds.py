@@ -47,7 +47,11 @@ def describe(path: Path) -> list[str]:
             lines.append("dimensions : " + ", ".join(f"{k}={len(v)}" for k, v in ds.dimensions.items()))
             for name, var in ds.variables.items():
                 attrs = {a: getattr(var, a) for a in ("units", "long_name") if a in var.ncattrs()}
-                head = var[:].ravel()[:4].tolist() if var.size else []
+                try:
+                    import numpy as np
+                    head = np.asarray(var[:]).ravel()[:4].tolist() if var.size else []
+                except Exception as exc:  # noqa: BLE001
+                    head = f"illisible ({exc})"
                 lines.append(f"  {name} {var.dimensions} {var.shape} {attrs} : {head}")
     except Exception as exc:  # noqa: BLE001
         lines.append(f"lecture netCDF impossible : {type(exc).__name__} {exc}")
@@ -67,13 +71,15 @@ def _api(path: str) -> dict:
         return json.loads(r.read())
 
 
-def _download(href: str, path: Path, max_seconds: int = 300) -> str:
+def _download(href: str, path: Path, max_seconds: int = 300, max_mb: float = 200) -> str:
     """Téléchargement par morceaux avec une durée TOTALE bornée (un serveur lent ne doit pas bloquer la sonde)."""
     import urllib.request
     t0, size = time.time(), 0
     req = urllib.request.Request(href, headers={"PRIVATE-TOKEN": os.environ.get("CDSAPI_KEY", "")})
     with urllib.request.urlopen(req, timeout=60) as r, path.open("wb") as f:
         total = r.headers.get("Content-Length")
+        if total and int(total) > max_mb * 1e6:
+            return f"non téléchargé : {int(total) / 1e9:.1f} Go (au-delà de {max_mb:.0f} Mo, pas une requête de la sonde)"
         while chunk := r.read(1 << 20):
             f.write(chunk)
             size += len(chunk)
@@ -97,7 +103,7 @@ def jobs_report(tmp: str, md: list[str]) -> None:
         md.append(f"{j.get('jobID')} {j.get('status')} créé {j.get('created')} début {j.get('started')} fin {j.get('finished')}")
     md.append("```")
     flush()
-    for j in [j for j in jobs if j.get("status") == "successful"][:3]:
+    for j in [j for j in jobs if j.get("status") == "successful"][:4]:
         lines = [f"Résultat du travail {j['jobID']} :"]
         try:
             href = _api(f"jobs/{j['jobID']}/results")["asset"]["value"]["href"]
@@ -136,6 +142,61 @@ def _retrieve(req: dict, path: str, queue) -> None:
         queue.put(("err", f"{type(exc).__name__} : {msg[:1500]}"))
 
 
+# Requêtes utiles (25-26/10/2026) : le CDS met des HEURES à les traiter (file de 3 à 7 h constatée) ; elles sont
+# donc soumises sans attendre, et leurs résultats relevés par une exécution ultérieure (liste des travaux ci-dessus).
+USEFUL = {
+    "bordeaux-1940-2025": {"variable": ["temperature", "geopotential", "u_component_of_wind"],
+                           "pressure_level": ["250", "500", "850"], "year": [str(y) for y in range(1940, 2026)],
+                           "month": [f"{m:02d}" for m in range(1, 13)], "area": [45.0, -1.0, 44.5, -0.5]},
+    "atlantique-u250-1940-2025": {"variable": ["u_component_of_wind"], "pressure_level": ["250"],
+                                  "year": [str(y) for y in range(1940, 2026)], "month": [f"{m:02d}" for m in range(1, 13)],
+                                  "area": [70.0, -60.0, 20.0, 0.0], "grid": ["1.0", "1.0"]},
+}
+MAX_PENDING = 4      # le CDS a rejeté la 5e requête en attente le 25/10/2026
+
+
+def submit_useful(md: list[str]) -> None:
+    import json
+    import urllib.request
+    try:
+        jobs = _api("jobs?limit=50").get("jobs", [])
+        pending = [j for j in jobs if j.get("status") in ("accepted", "running")]
+        # Une requête déjà soumise (même contenu) n'est jamais resoumise.
+        known = []
+        for j in jobs:
+            if j.get("status") in ("accepted", "running", "successful"):
+                try:
+                    known.append(_api(f"jobs/{j['jobID']}?request=true").get("metadata", {}).get("request", {}).get("ids", {}))
+                except Exception:  # noqa: BLE001
+                    pass
+    except Exception as exc:  # noqa: BLE001
+        md += ["", f"Soumission impossible : {type(exc).__name__} {exc}"]
+        return
+    lines = []
+    for name, req in USEFUL.items():
+        body = {**BASE, **req}
+        if any(k and k.get("variable") == body["variable"] and k.get("area") == body.get("area") and
+               len(k.get("year", [])) == len(body["year"]) for k in known):
+            lines.append(f"{name} : déjà soumise")
+            continue
+        if len(pending) >= MAX_PENDING:
+            lines.append(f"{name} : non soumise, {len(pending)} travaux déjà en attente")
+            continue
+        try:
+            req_ = urllib.request.Request(f"{API}/retrieve/v1/processes/{DATASET}/execution",
+                                          data=json.dumps({"inputs": body}).encode(), method="POST",
+                                          headers={"PRIVATE-TOKEN": os.environ.get("CDSAPI_KEY", ""),
+                                                   "Content-Type": "application/json"})
+            with urllib.request.urlopen(req_, timeout=60) as r:
+                job = json.loads(r.read())
+            pending.append(job)
+            lines.append(f"{name} : soumise, travail {job.get('jobID')} ({job.get('status')})")
+        except Exception as exc:  # noqa: BLE001
+            detail = getattr(exc, "read", lambda: b"")()[:500]
+            lines.append(f"{name} : ÉCHEC {type(exc).__name__} {exc} {detail!r}")
+    md += ["", "### Soumission des requêtes utiles (sans attendre)", "", "```", *lines, "```"]
+
+
 def main() -> int:
     import multiprocessing as mp
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
@@ -146,6 +207,11 @@ def main() -> int:
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     with tempfile.TemporaryDirectory() as tmp:
         jobs_report(tmp, md)
+        submit_useful(md)
+        OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+        md += ["", "Mode relevé : aucune requête bloquante (le CDS traite en plusieurs heures)."]
+        OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+        return 0
         state = wait_queue_empty(10)
         md += ["", "File : " + state]
         OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
