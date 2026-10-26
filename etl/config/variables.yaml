@@ -22,6 +22,7 @@ themes:
   altitude: Température en altitude
   geopotentiel: Géopotentiel
   catastrophes: Catastrophes naturelles (arrêtés CatNat)
+  jet-stream: Jet stream (Atlantique Nord, hiver)
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -67,3 +68,7 @@ variables:
   z500: {code: Z500, label: altitude de la surface 500 hPa (géopotentiel), theme: geopotentiel, order: 0}
   catnat: {code: CatNat, label: reconnaissances de catastrophe naturelle, theme: catastrophes, order: 0}
   catnat-secheresse: {code: Sécheresse, label: reconnaissances CatNat « sécheresse », theme: catastrophes, order: 1}
+
+# --- ERA5 niveaux de pression (Copernicus CDS, 26/10/2026)
+  jet-vitesse: {code: Vitesse, label: "vitesse du jet stream en hiver (250 hPa)", theme: jet-stream, order: 0}
+  jet-latitude: {code: Latitude, label: "latitude du jet stream en hiver (250 hPa)", theme: jet-stream, order: 1}

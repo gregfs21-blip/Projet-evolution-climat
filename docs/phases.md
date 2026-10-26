@@ -365,3 +365,16 @@ inscrites dans le contrat (v1.5, champ `indicative`) et vérifiées par l'ETL et
 
 Recommandation contraire de Claude, consignée : garder C2 (radiosondages lacunaires 1989-1999, changements de sondes
 connus ; anémomètres jamais homogénéisés). Les bornes ci-dessus limitent le risque de lire ces pentes comme établies.
+
+## Copernicus CDS — ERA5 niveaux de pression (26/10/2026)
+
+- Accès : compte et licence de Grég (25/10/2026), clé dans le secret `CDSAPI_KEY` du dépôt. Sonde : `docs/sonde-cds.md`.
+- Constat : une requête attend **3 à 7 heures** en file avant un traitement de quelques secondes, et le CDS rejette
+  au-delà de trois requêtes en attente par utilisateur. Deux requêtes de test inutiles (janvier 2024) ont été annulées.
+- Conception retenue : workflow quotidien « Copernicus » qui relève les travaux aboutis, commite de petites séries
+  extraites (`data/sources/era5-pl/`) et soumet ce qui manque ; l'ETL ne lit que ces CSV (aucune attente).
+- Indicateurs prévus, choix fixés AVANT tout calcul (`etl/indicators/altitude.py`) : T850, T500 et Z500 au-dessus de
+  Bordeaux (maille ERA5 44,75° N ; 0,75° O, moyennes annuelles de 12 mois) ; vitesse et latitude du jet stream de
+  l'Atlantique Nord en hiver (DJF, vent zonal 250 hPa moyenné sur 60° O-0°, 20-70° N, maximum du profil, latitude
+  affinée par parabole). ERA5 traitée comme les autres séries ERA5 : confiance au plus « moyenne », sans référence.
+  Ils restent désactivés au registre tant que les séries n'ont pas été relevées.
