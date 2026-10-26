@@ -445,7 +445,7 @@
     "start": 2006,
     "end": 2017
    },
-   "slope_per_decade": -0.0,
+   "slope_per_decade": 0.0,
    "slope_ci_low": -33.5714,
    "slope_ci_high": 34.4444,
    "fitted_start": 78.25,
@@ -462,7 +462,7 @@
     "start": 2006,
     "end": 2017
    },
-   "slope_per_decade": -0.0,
+   "slope_per_decade": 0.0,
    "slope_ci_low": -33.5714,
    "slope_ci_high": 34.4444,
    "fitted_start": 78.25,
@@ -509,9 +509,9 @@
   "source_name": "Météo-France — données climatologiques de base quotidiennes, corrigées par les Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b51ae64326786e4e8e1a",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-26T11:58:04Z",
+  "extracted_at": "2026-10-26T12:06:45Z",
   "script": "etl.indicators.pluie",
-  "etl_version": "0.1.0+523eb71",
+  "etl_version": "0.1.0+b0d2429",
   "homogenized": true
  },
  "is_demo": false

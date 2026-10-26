@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p2a",
-  "generated_at": "2026-10-26T12:03:44Z",
+  "generated_at": "2026-10-26T12:10:19Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [

@@ -332,8 +332,8 @@
    "start": 1953,
    "end": 2022
   },
-  "slope_per_decade": -0.0,
-  "slope_ci_low": -0.0,
+  "slope_per_decade": 0.0,
+  "slope_ci_low": 0.0,
   "slope_ci_high": 0.303,
   "fitted_start": 1.0,
   "fitted_end": 1.0,
@@ -351,7 +351,7 @@
     "end": 2022
    },
    "slope_per_decade": 0.2151,
-   "slope_ci_low": -0.0,
+   "slope_ci_low": 0.0,
    "slope_ci_high": 0.4348,
    "fitted_start": 0.3548,
    "fitted_end": 1.6452,
@@ -367,9 +367,9 @@
     "start": 1961,
     "end": 2010
    },
-   "slope_per_decade": -0.0,
-   "slope_ci_low": -0.0,
-   "slope_ci_high": -0.0,
+   "slope_per_decade": 0.0,
+   "slope_ci_low": 0.0,
+   "slope_ci_high": 0.0,
    "fitted_start": 0.0,
    "fitted_end": 0.0,
    "p_value": 0.067755,
@@ -401,7 +401,7 @@
     "start": 2005,
     "end": 2022
    },
-   "slope_per_decade": -0.0,
+   "slope_per_decade": 0.0,
    "slope_ci_low": -0.7143,
    "slope_ci_high": 3.3333,
    "fitted_start": 2.0,
@@ -478,9 +478,9 @@
   "source_name": "Météo-France — données climatologiques de base quotidiennes, corrigées par les Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b51ae64326786e4e8e1a",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-26T11:58:04Z",
+  "extracted_at": "2026-10-26T12:06:45Z",
   "script": "etl.indicators.extremes",
-  "etl_version": "0.1.0+523eb71",
+  "etl_version": "0.1.0+b0d2429",
   "homogenized": true
  },
  "is_demo": false

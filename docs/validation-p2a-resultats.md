@@ -42,30 +42,30 @@ Fichier généré par `python -m etl.validation.p2a` à chaque exécution de l'E
 | Indicateur | Période | Pente A | IC A | Pente B | IC B | Concordance |
 |---|---|---|---|---|---|---|
 | jours-tx25-gironde | 2005-2022 | +13.33 | -2.50 à +27.58 | +13.70 | -1.67 à +28.21 | oui |
-| jours-tx30-gironde | 2005-2022 | +10.00 | +0.71 à +15.15 | +10.00 | -0.00 à +15.00 | oui |
+| jours-tx30-gironde | 2005-2022 | +10.00 | +0.71 à +15.15 | +10.00 | +0.00 à +15.00 | oui |
 | jours-tx35-gironde | 2005-2022 | +2.50 | -0.33 à +4.76 | +2.08 | -0.56 à +4.44 | oui |
 | nuits-tn20-gironde | — | — | — | — | — | non évaluable (période trop courte) |
 | jours-gel-gironde | — | — | — | — | — | non évaluable (période trop courte) |
-| jours-tx25-bordeaux-paulin | 1995-2022 | +4.68 | -2.22 à +11.25 | +6.92 | -0.00 à +13.16 | oui |
+| jours-tx25-bordeaux-paulin | 1995-2022 | +4.68 | -2.22 à +11.25 | +6.92 | +0.00 à +13.16 | oui |
 | jours-tx25-cap-ferret | 2005-2022 | +20.00 | +5.00 à +38.00 | +21.43 | +5.00 à +38.75 | oui |
 | jours-tx25-bordeaux-merignac | 2000-2022 | +8.67 | -0.95 à +20.00 | +10.00 | -1.67 à +21.67 | oui |
-| jours-tx25-cazaux | 1987-2022 | +5.00 | -0.00 à +10.53 | +5.45 | -0.00 à +10.77 | oui |
+| jours-tx25-cazaux | 1987-2022 | +5.00 | +0.00 à +10.53 | +5.45 | +0.00 à +10.77 | oui |
 | jours-tx25-villenave-d-ornon | — | — | — | — | — | non évaluable (période trop courte) |
 | jours-tx30-bordeaux-paulin | 1995-2022 | +5.56 | +1.11 à +10.00 | +4.76 | -1.05 à +10.00 | oui |
 | jours-tx30-cap-ferret | 2005-2022 | +3.33 | -1.43 à +11.67 | +3.33 | -1.43 à +10.00 | oui |
 | jours-tx30-bordeaux-merignac | 2000-2022 | +6.67 | -1.33 à +15.00 | +6.67 | -1.18 à +14.00 | oui |
 | jours-tx30-cazaux | 1987-2022 | +1.67 | -0.59 à +4.21 | +1.54 | -0.67 à +4.12 | oui |
 | jours-tx30-villenave-d-ornon | — | — | — | — | — | non évaluable (période trop courte) |
-| jours-tx35-bordeaux-paulin | 1995-2022 | +2.50 | -0.00 à +5.00 | +2.31 | -0.00 à +4.29 | oui |
-| jours-tx35-cap-ferret | 2005-2022 | +0.00 | -0.77 à +4.00 | -0.00 | -0.71 à +3.33 | oui |
-| jours-tx35-bordeaux-merignac | 2000-2022 | +2.22 | -0.00 à +4.29 | +2.50 | -0.00 à +4.00 | oui |
-| jours-tx35-cazaux | 1987-2022 | +1.00 | -0.00 à +2.00 | +1.00 | -0.00 à +1.90 | oui |
+| jours-tx35-bordeaux-paulin | 1995-2022 | +2.50 | +0.00 à +5.00 | +2.31 | +0.00 à +4.29 | oui |
+| jours-tx35-cap-ferret | 2005-2022 | +0.00 | -0.77 à +4.00 | +0.00 | -0.71 à +3.33 | oui |
+| jours-tx35-bordeaux-merignac | 2000-2022 | +2.22 | +0.00 à +4.29 | +2.50 | +0.00 à +4.00 | oui |
+| jours-tx35-cazaux | 1987-2022 | +1.00 | +0.00 à +2.00 | +1.00 | +0.00 à +1.90 | oui |
 | jours-tx35-villenave-d-ornon | — | — | — | — | — | non évaluable (période trop courte) |
 | nuits-tn20-bordeaux-paulin | — | — | — | — | — | non évaluable (période trop courte) |
 | nuits-tn20-lacanau | — | — | — | — | — | non évaluable (période trop courte) |
 | nuits-tn20-cap-ferret | 1995-2022 | +2.16 | -1.67 à +5.91 | +1.90 | -1.54 à +5.56 | oui |
-| nuits-tn20-bordeaux-merignac | 1988-2022 | +1.07 | -0.00 à +2.38 | +1.15 | -0.00 à +2.50 | oui |
-| nuits-tn20-sauternes | 1991-2022 | +0.61 | -0.00 à +1.43 | +0.48 | -0.00 à +1.25 | oui |
+| nuits-tn20-bordeaux-merignac | 1988-2022 | +1.07 | +0.00 à +2.38 | +1.15 | +0.00 à +2.50 | oui |
+| nuits-tn20-sauternes | 1991-2022 | +0.61 | +0.00 à +1.43 | +0.48 | +0.00 à +1.25 | oui |
 | nuits-tn20-cazaux | 2008-2022 | +4.00 | +2.00 à +6.00 | +4.00 | +1.67 à +6.25 | oui |
 | nuits-tn20-villenave-d-ornon | — | — | — | — | — | non évaluable (période trop courte) |
 | jours-gel-bordeaux-paulin | — | — | — | — | — | non évaluable (période trop courte) |
@@ -91,10 +91,10 @@ Fichier généré par `python -m etl.validation.p2a` à chaque exécution de l'E
 | jours-tx30-cazaux | +2.22 | oui | +2.22 | oui | non |
 | jours-tx30-villenave-d-ornon | +2.95 | oui | +3.33 | oui | non |
 | jours-tx35-bordeaux-paulin | +0.90 | oui | +2.50 | oui | non |
-| jours-tx35-cap-ferret | -0.00 | oui | -0.00 | oui | non |
+| jours-tx35-cap-ferret | +0.00 | oui | +0.00 | oui | non |
 | jours-tx35-bordeaux-merignac | +0.48 | oui | +0.50 | oui | non |
 | jours-tx35-cazaux | +0.47 | oui | +0.47 | oui | non |
-| jours-tx35-villenave-d-ornon | -0.00 | non | -0.00 | non | non |
+| jours-tx35-villenave-d-ornon | +0.00 | non | +0.00 | non | non |
 | nuits-tn20-bordeaux-paulin | +1.25 | oui | +1.54 | oui | non |
 | nuits-tn20-lacanau | +0.83 | oui | +0.83 | oui | non |
 | nuits-tn20-cap-ferret | +1.61 | oui | +1.61 | oui | non |
@@ -125,10 +125,10 @@ Fichier généré par `python -m etl.validation.p2a` à chaque exécution de l'E
 | jours-tx30-cazaux | 1953-2022 | +2.11 | +2.22 | +0.12 | oui |
 | jours-tx30-villenave-d-ornon | 1953-2001 | +3.08 | +2.95 | -0.12 | oui |
 | jours-tx35-bordeaux-paulin | 1962-2022 | +0.71 | +0.90 | +0.19 | oui |
-| jours-tx35-cap-ferret | 1953-2022 | -0.00 | -0.00 | +0.00 | **non** |
+| jours-tx35-cap-ferret | 1953-2022 | +0.00 | +0.00 | +0.00 | **non** |
 | jours-tx35-bordeaux-merignac | 1953-2022 | +0.56 | +0.48 | -0.08 | oui |
 | jours-tx35-cazaux | 1953-2022 | +0.45 | +0.47 | +0.01 | oui |
-| jours-tx35-villenave-d-ornon | 1953-2001 | -0.00 | -0.00 | +0.00 | oui |
+| jours-tx35-villenave-d-ornon | 1953-2001 | +0.00 | +0.00 | +0.00 | oui |
 | nuits-tn20-bordeaux-paulin | 1953-2022 | +1.52 | +1.25 | -0.27 | oui |
 | nuits-tn20-lacanau | 1967-1997 | +0.71 | +0.83 | +0.12 | oui |
 | nuits-tn20-cap-ferret | 1953-2022 | +1.67 | +1.61 | -0.05 | oui |

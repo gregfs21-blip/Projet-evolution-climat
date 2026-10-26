@@ -397,7 +397,7 @@
    "start": 1953,
    "end": 2017
   },
-  "slope_per_decade": -0.0,
+  "slope_per_decade": 0.0,
   "slope_ci_low": -0.5556,
   "slope_ci_high": 0.1887,
   "fitted_start": 7.0,
@@ -415,7 +415,7 @@
     "start": 1953,
     "end": 2017
    },
-   "slope_per_decade": -0.0,
+   "slope_per_decade": 0.0,
    "slope_ci_low": -0.5556,
    "slope_ci_high": 0.1852,
    "fitted_start": 7.0,
@@ -432,7 +432,7 @@
     "start": 1953,
     "end": 2017
    },
-   "slope_per_decade": -0.0,
+   "slope_per_decade": 0.0,
    "slope_ci_low": -0.5556,
    "slope_ci_high": 0.1887,
    "fitted_start": 7.0,
@@ -466,7 +466,7 @@
   }
  ],
  "method_note": "Indice calculé sur les pluies quotidiennes corrigées : chaque jour d'un mois complet est multiplié par le rapport entre le cumul mensuel homogénéisé (LSH) et le cumul brut. Contrôle : même calcul sur les valeurs brutes, après la dernière rupture d'homogénéité connue.",
- "finding": "À Bordeaux-Paulin, le nombre annuel de jours de pluie d'au moins 20 mm a évolué de -0,00 jours par décennie entre 1953 et 2017, soit +0,00 jours sur la période (tendance non significative après correction de l'autocorrélation).",
+ "finding": "À Bordeaux-Paulin, le nombre annuel de jours de pluie d'au moins 20 mm a évolué de +0,00 jours par décennie entre 1953 et 2017, soit +0,00 jours sur la période (tendance non significative après correction de l'autocorrélation).",
  "confidence": "non_etabli",
  "limitations": [
   "Pluie quotidienne non homogénéisée, corrigée mois par mois par le rapport entre le cumul homogénéisé LSH et le cumul brut (méthode B′) : le cumul de chaque mois est rétabli, pas la forme de la distribution des pluies.",
@@ -477,9 +477,9 @@
   "source_name": "Météo-France — données climatologiques de base quotidiennes, corrigées par les Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b51ae64326786e4e8e1a",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-26T11:58:04Z",
+  "extracted_at": "2026-10-26T12:06:45Z",
   "script": "etl.indicators.pluie",
-  "etl_version": "0.1.0+523eb71",
+  "etl_version": "0.1.0+b0d2429",
   "homogenized": true
  },
  "is_demo": false

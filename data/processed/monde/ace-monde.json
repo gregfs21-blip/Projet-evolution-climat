@@ -265,9 +265,9 @@
   "source_name": "NOAA NCEI — IBTrACS v04r01, Atlantique Nord",
   "source_url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-26T11:58:04Z",
+  "extracted_at": "2026-10-26T12:06:45Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+523eb71",
+  "etl_version": "0.1.0+b0d2429",
   "homogenized": true
  },
  "is_demo": false

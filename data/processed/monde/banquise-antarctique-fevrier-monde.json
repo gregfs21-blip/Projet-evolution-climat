@@ -228,9 +228,9 @@
   "source_name": "NSIDC — Sea Ice Index v4, banquise antarctique en février",
   "source_url": "https://nsidc.org/data/g02135",
   "license": "Libre, citation demandée (NSIDC)",
-  "extracted_at": "2026-10-26T11:58:04Z",
+  "extracted_at": "2026-10-26T12:06:45Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+523eb71",
+  "etl_version": "0.1.0+b0d2429",
   "homogenized": true
  },
  "is_demo": false

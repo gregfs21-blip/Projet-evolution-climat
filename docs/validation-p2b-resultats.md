@@ -26,23 +26,23 @@ Fichier généré par `python -m etl.validation.p2b` à chaque exécution de l'E
 |---|---|---|---|---|
 | r10mm-belin-beliet | 1985-2017 | -0.57 | -0.62 | oui |
 | r10mm-bordeaux-paulin | 1953-2017 | +0.21 | +0.19 | oui |
-| r10mm-cap-ferret | 1996-2017 | -0.00 | -0.00 | oui |
+| r10mm-cap-ferret | 1996-2017 | +0.00 | +0.00 | oui |
 | r10mm-captieux | 1992-2017 | -3.64 | -3.64 | oui |
-| r10mm-cazaux | 1969-2017 | -0.00 | -0.00 | oui |
+| r10mm-cazaux | 1969-2017 | +0.00 | +0.00 | oui |
 | r10mm-gironde | 2006-2017 | +0.21 | +0.23 | oui |
 | r10mm-hourtin | 1985-2017 | +0.83 | +0.83 | oui |
 | r10mm-lacanau | 2003-2015 | +10.00 | +10.00 | oui |
 | r10mm-sauternes | 2006-2017 | -5.50 | -5.50 | oui |
 | r10mm-st-symphorien | 1985-2017 | -1.00 | -1.00 | oui |
 | r20mm-belin-beliet | 1985-2017 | -0.80 | -0.83 | oui |
-| r20mm-bordeaux-paulin | 1953-2017 | -0.00 | -0.00 | oui |
-| r20mm-cap-ferret | 1996-2017 | -0.00 | -0.00 | oui |
+| r20mm-bordeaux-paulin | 1953-2017 | +0.00 | +0.00 | oui |
+| r20mm-cap-ferret | 1996-2017 | +0.00 | +0.00 | oui |
 | r20mm-captieux | 1992-2017 | -1.67 | -1.67 | oui |
 | r20mm-cazaux | 1969-2017 | -0.32 | -0.32 | oui |
 | r20mm-gironde | 2006-2017 | +0.49 | +0.49 | oui |
-| r20mm-hourtin | 1985-2017 | -0.00 | -0.00 | oui |
-| r20mm-lacanau | 2003-2015 | -0.00 | -0.00 | oui |
-| r20mm-sauternes | 2006-2017 | -0.00 | -0.00 | oui |
+| r20mm-hourtin | 1985-2017 | +0.00 | +0.00 | oui |
+| r20mm-lacanau | 2003-2015 | +0.00 | +0.00 | oui |
+| r20mm-sauternes | 2006-2017 | +0.00 | +0.00 | oui |
 | r20mm-st-symphorien | 1985-2017 | -0.38 | -0.38 | oui |
 | rx1day-belin-beliet | 1985-2017 | -2.26 | -2.26 | oui |
 | rx1day-bordeaux-paulin | 1953-2017 | +0.48 | +0.49 | oui |
@@ -62,7 +62,7 @@ Fichier généré par `python -m etl.validation.p2b` à chaque exécution de l'E
 | rx5day-gironde | 2006-2017 | +14.26 | +14.26 | oui |
 | rx5day-hourtin | 1985-2017 | +1.23 | +1.23 | oui |
 | rx5day-lacanau | 2003-2015 | +11.02 | +11.02 | oui |
-| rx5day-sauternes | 2006-2017 | -0.00 | -0.00 | oui |
+| rx5day-sauternes | 2006-2017 | +0.00 | +0.00 | oui |
 | rx5day-st-symphorien | 1985-2017 | -2.38 | -2.38 | oui |
 
 ### F8 — période ancienne, pluies
