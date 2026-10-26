@@ -59,6 +59,11 @@ def requests() -> dict[str, dict]:
                      "area": [45.0, -1.0, 44.5, -0.5]},
         "atlantique-u250": {**BASE, "variable": ["u_component_of_wind"], "pressure_level": ["250"], "year": years,
                             "month": months, "area": JET_BOX, "grid": ["1.0", "1.0"]},
+        # Vent zonal à 850 hPa, 0-60° O, 15-75° N (Woollings et al., 2010) : jet « des tempêtes », séparé du jet
+        # subtropical. Demandé le 26/10/2026 après le constat que le profil à 250 hPa a deux maxima (voir phases.md) ;
+        # l'indice à retenir reste une décision de Grég.
+        "atlantique-u850": {**BASE, "variable": ["u_component_of_wind"], "pressure_level": ["850"], "year": years,
+                            "month": months, "area": [75.0, -60.0, 15.0, 0.0], "grid": ["1.0", "1.0"]},
     }
 
 

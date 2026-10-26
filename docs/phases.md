@@ -378,3 +378,13 @@ connus ; anémomètres jamais homogénéisés). Les bornes ci-dessus limitent le
   l'Atlantique Nord en hiver (DJF, vent zonal 250 hPa moyenné sur 60° O-0°, 20-70° N, maximum du profil, latitude
   affinée par parabole). ERA5 traitée comme les autres séries ERA5 : confiance au plus « moyenne », sans référence.
   Ils restent désactivés au registre tant que les séries n'ont pas été relevées.
+
+### Constat du 26/10/2026 sur le vent à 250 hPa (avant tout calcul de tendance du jet)
+
+Premier relevé (vent zonal 250 hPa, 60° O-0°, 20-70° N, 1940-2025). En lisant la seule distribution de l'indice
+(aucune pente calculée), le profil moyen d'hiver a **deux maxima** : le jet subtropical, au bord sud de la boîte
+(≈ 20° N, 25,6 m/s), et le jet des tempêtes (≈ 45° N, 24,9 m/s). L'indice fixé le 26/10 (maximum du profil) passe
+de l'un à l'autre : 36 hivers sur 85 au jet subtropical, dont 33 tronqués au bord de la boîte, surtout avant 1970.
+Une tendance calculée ainsi mesurerait ce basculement, pas l'évolution du jet. Les deux indicateurs du jet
+**restent désactivés** ; le changement d'indice est soumis à Grég. Requête préparée : vent zonal à 850 hPa,
+0-60° O, 15-75° N (indice de Woollings et al., 2010).
