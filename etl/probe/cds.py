@@ -67,27 +67,47 @@ def _api(path: str) -> dict:
         return json.loads(r.read())
 
 
-def jobs_report(tmp: str) -> list[str]:
-    """Travaux déjà soumis (sondes précédentes) : état, et lecture des résultats de ceux qui ont abouti."""
-    lines = []
+def _download(href: str, path: Path, max_seconds: int = 300) -> str:
+    """Téléchargement par morceaux avec une durée TOTALE bornée (un serveur lent ne doit pas bloquer la sonde)."""
+    import urllib.request
+    t0, size = time.time(), 0
+    req = urllib.request.Request(href, headers={"PRIVATE-TOKEN": os.environ.get("CDSAPI_KEY", "")})
+    with urllib.request.urlopen(req, timeout=60) as r, path.open("wb") as f:
+        total = r.headers.get("Content-Length")
+        while chunk := r.read(1 << 20):
+            f.write(chunk)
+            size += len(chunk)
+            if time.time() - t0 > max_seconds:
+                return f"interrompu après {max_seconds} s : {size / 1e6:.1f} Mo sur {int(total) / 1e6 if total else '?'} Mo"
+    return f"{size / 1e6:.2f} Mo en {time.time() - t0:.0f} s"
+
+
+def jobs_report(tmp: str, md: list[str]) -> None:
+    """Travaux déjà soumis : état (écrit tout de suite), puis lecture des résultats de ceux qui ont abouti."""
+    def flush():
+        OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+    md += ["", "### 0. Travaux déjà soumis", "", "```"]
     try:
-        data = _api("jobs?limit=20")
+        jobs = _api("jobs?limit=20").get("jobs", [])
     except Exception as exc:  # noqa: BLE001
-        return [f"liste des travaux impossible : {type(exc).__name__} {exc}"]
-    for j in data.get("jobs", []):
-        lines.append(f"{j.get('jobID')} {j.get('processID')} {j.get('status')} créé {j.get('created')} "
-                     f"début {j.get('started')} fin {j.get('finished')}")
-        if j.get("status") == "successful":
-            try:
-                href = _api(f"jobs/{j['jobID']}/results")["asset"]["value"]["href"]
-                import urllib.request
-                path = Path(tmp) / f"{j['jobID']}.nc"
-                with urllib.request.urlopen(href, timeout=300) as r:
-                    path.write_bytes(r.read())
-                lines += ["    " + x for x in describe(path)]
-            except Exception as exc:  # noqa: BLE001
-                lines.append(f"    résultat illisible : {type(exc).__name__} {exc}")
-    return lines or ["aucun travail"]
+        md += [f"liste des travaux impossible : {type(exc).__name__} {exc}", "```"]
+        flush()
+        return
+    for j in jobs:
+        md.append(f"{j.get('jobID')} {j.get('status')} créé {j.get('created')} début {j.get('started')} fin {j.get('finished')}")
+    md.append("```")
+    flush()
+    for j in [j for j in jobs if j.get("status") == "successful"][:3]:
+        lines = [f"Résultat du travail {j['jobID']} :"]
+        try:
+            href = _api(f"jobs/{j['jobID']}/results")["asset"]["value"]["href"]
+            path = Path(tmp) / f"{j['jobID']}.nc"
+            lines.append(_download(href, path))
+            lines += describe(path)
+        except Exception as exc:  # noqa: BLE001
+            lines.append(f"résultat illisible : {type(exc).__name__} {exc}")
+        md += ["", "```", *lines, "```"]
+        flush()
 
 
 def wait_queue_empty(max_minutes: int) -> str:
@@ -125,7 +145,7 @@ def main() -> int:
           f"Clé présente dans l'environnement : **{'oui' if os.environ.get('CDSAPI_KEY') else 'NON'}** (jamais affichée)."]
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     with tempfile.TemporaryDirectory() as tmp:
-        md += ["", "### 0. Travaux déjà soumis", "", "```", *jobs_report(tmp), "```"]
+        jobs_report(tmp, md)
         state = wait_queue_empty(10)
         md += ["", "File : " + state]
         OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
