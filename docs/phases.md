@@ -225,7 +225,13 @@ le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts
 > **Décisions de Grég du 26/10/2026, avant tout calcul** : D-E périmètre et indices validés tels quels ; D-F
 > correction multiplicative B′ avec contrôle A validée ; D-G référence R6 (ETP) acceptée avec sa limite de méthode,
 > **R7 (pluies intenses) : Grég consulte ClimatHD** — aucun indice de pluie intense ne sera calculé avant que R7 soit
-> fixée (ou abandonnée) et commitée ; D-H critère F8 appliqué à P2b et, en diagnostic, à P2a. Déjà publiés hors P2b (méthode « largeur d'abord », non recalculés) :
+> fixée (ou abandonnée) et commitée ; D-H critère F8 appliqué à P2b et, en diagnostic, à P2a.
+>
+> **R7 abandonnée (Grég, 26/10/2026, avant tout calcul)** : ClimatHD n'affiche pour la région que le cumul annuel
+> (captures de Sauternes, Pau-Uzein, Dax, Agen : pas d'indicateur de pluies fortes). Les indices de pluie intense
+> n'ont donc pas de référence externe : confiance au plus « moyenne ». Les captures recoupent les cumuls annuels
+> (Sauternes : moyenne glissante proche de 100 % de la normale sur 1959-2025), mais ces cumuls étant déjà calculés,
+> ce recoupement n'a pas valeur de validation en aveugle. Déjà publiés hors P2b (méthode « largeur d'abord », non recalculés) :
 > cumuls annuels de pluie (LSH RR, 9 postes et composite, référence « pas de tendance significative » fixée le
 > 23/10/2026) et insolation de Mérignac (LSH IN, 1931-2014, sans référence).
 
