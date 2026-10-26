@@ -235,6 +235,25 @@ le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts
 > cumuls annuels de pluie (LSH RR, 9 postes et composite, référence « pas de tendance significative » fixée le
 > 23/10/2026) et insolation de Mérignac (LSH IN, 1931-2014, sans référence).
 
+### Précisions de mise en œuvre (26/10/2026, avant tout calcul d'indice)
+
+Fixées en écrivant le code (`etl/indicators/pluie.py`, `etl/indicators/eau.py`), avant toute exécution :
+- **B′ exige des mois complets** (tous les jours présents) : avec des jours absents, le rapport LSH ÷ brut
+  attribuerait la pluie des jours manquants aux jours présents et fausserait les maxima. C'est plus strict que la
+  règle ETCCDI de F2 ; une année complète au sens ETCCDI mais non entièrement corrigeable est affichée brute.
+- **F1** : un poste est retenu s'il a au moins 30 années corrigeables ; composite à réseau constant sur 1961-2017
+  (au moins 3 postes), sinon composite exclu avec motif. Les postes retenus sont lus dans une sonde de
+  disponibilité (`docs/sonde-p2b.md`), qui ne calcule aucun indice.
+- **F8** : écart du poste à la moyenne des autres postes retenus, années antérieures à sa dernière rupture LSH,
+  au moins 15 années ; rupture « établie » si significative aussi après retrait de la tendance ; sans rupture LSH,
+  « sans objet ».
+- **F9** ne s'applique qu'aux indices de jours (R10mm, R20mm), comme E9. Conséquence assumée : la pluie n'étant
+  homogénéisée que jusqu'en 2017, la normale 1991-2020 est toujours incomplète ; un indice rare n'a donc ni pente
+  mise en avant ni écart entre normales : « non établi ».
+- **Mois secs (SPEI-3 ≤ −1)** : compte de mois, hors F9 ; tendance calculée normalement.
+- **SPEI** : calé et calculé sur les seuls mois homogénéisés (pluie et températures) ; un mois manquant interrompt
+  les cumuls de 3 ou 12 mois (aucune valeur complétée).
+
 ### Périmètre
 
 - **Pluies intenses** (indices ETCCDI, données quotidiennes) : jours de pluie ≥ 10 mm (R10mm), jours ≥ 20 mm
