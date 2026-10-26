@@ -7,7 +7,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
-| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 proposés le 26/10/2026 | P2a publiée, validation non close (E4 littoral) ; P2b en attente de validation des critères |
+| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a publiée, validation non close (E4 littoral) ; P2b en cours |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
@@ -220,10 +220,12 @@ satisfaits, et indice non rare (E9).
 Pour le gel, une baisse traduit un réchauffement : la légende de l'échelle de couleur (bleu = baisse) devra
 le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts` avec sa propre saturation.
 
-## P2b — Critères de clôture (PROPOSITION du 26/10/2026, à valider par Grég avant tout calcul)
+## P2b — Critères de clôture (proposés et validés le 26/10/2026, avant tout calcul)
 
-> Statut : **proposition**. Rien de ce qui suit n'est calculé. Les indicateurs P2b ne seront activés qu'après la
-> validation de Grég, consignée ici avec sa date. Déjà publiés hors P2b (méthode « largeur d'abord », non recalculés) :
+> **Décisions de Grég du 26/10/2026, avant tout calcul** : D-E périmètre et indices validés tels quels ; D-F
+> correction multiplicative B′ avec contrôle A validée ; D-G référence R6 (ETP) acceptée avec sa limite de méthode,
+> **R7 (pluies intenses) : Grég consulte ClimatHD** — aucun indice de pluie intense ne sera calculé avant que R7 soit
+> fixée (ou abandonnée) et commitée ; D-H critère F8 appliqué à P2b et, en diagnostic, à P2a. Déjà publiés hors P2b (méthode « largeur d'abord », non recalculés) :
 > cumuls annuels de pluie (LSH RR, 9 postes et composite, référence « pas de tendance significative » fixée le
 > 23/10/2026) et insolation de Mérignac (LSH IN, 1931-2014, sans référence).
 
