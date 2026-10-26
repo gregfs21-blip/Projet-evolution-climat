@@ -953,8 +953,8 @@ indicators:
     params:
       variable: jet-vitesse
       label: la vitesse du jet stream en hiver
-      title: Vitesse du jet stream de l'Atlantique Nord en hiver (ERA5, 250 hPa)
-      description: Maximum, en latitude, du vent d'ouest moyen à 250 hPa entre 60° O et 0°, moyenné sur décembre, janvier et février. Réanalyse ERA5 (Copernicus).
+      title: Vitesse du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)
+      description: Maximum, en latitude, du vent d'ouest moyen à 850 hPa (environ 1 500 m) entre 60° O et 0°, moyenné sur décembre, janvier et février (indice de Woollings et al., 2010). Réanalyse ERA5 (Copernicus).
       limitations:
       - 'Vent moyen de l''hiver : un jet très ondulant (blocages) peut donner un maximum moyen plus faible sans que le jet du jour soit moins fort.'
       - 'Les tendances publiées du jet nord-atlantique divergent selon l''indice, le niveau et la période ; aucune référence n''est fixée.'
@@ -965,8 +965,8 @@ indicators:
     params:
       variable: jet-latitude
       label: la latitude du jet stream en hiver
-      title: Latitude du jet stream de l'Atlantique Nord en hiver (ERA5, 250 hPa)
-      description: Latitude du maximum du vent d'ouest moyen à 250 hPa entre 60° O et 0°, moyenné sur décembre, janvier et février. Réanalyse ERA5 (Copernicus).
+      title: Latitude du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)
+      description: Latitude du maximum du vent d'ouest moyen à 850 hPa entre 60° O et 0°, moyenné sur décembre, janvier et février (indice de Woollings et al., 2010). C'est la route des dépressions vers l'Europe. Réanalyse ERA5 (Copernicus).
       limitations:
       - 'Une seule latitude pour tout l''hiver et tout le bassin : un jet dédoublé ou très incliné est mal résumé.'
       - 'Les tendances publiées du jet nord-atlantique divergent selon l''indice, le niveau et la période ; aucune référence n''est fixée.'

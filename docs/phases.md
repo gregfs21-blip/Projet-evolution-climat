@@ -388,3 +388,8 @@ de l'un à l'autre : 36 hivers sur 85 au jet subtropical, dont 33 tronqués au b
 Une tendance calculée ainsi mesurerait ce basculement, pas l'évolution du jet. Les deux indicateurs du jet
 **restent désactivés** ; le changement d'indice est soumis à Grég. Requête préparée : vent zonal à 850 hPa,
 0-60° O, 15-75° N (indice de Woollings et al., 2010).
+
+**Décision de Grég du 26/10/2026** (après la distribution à 250 hPa, avant tout calcul de tendance) : indice de
+**Woollings et al. (2010)** — vent zonal à 850 hPa, 0-60° O, 15-75° N, profil moyen de l'hiver (DJF), vitesse et
+latitude du maximum (parabole). Limite assumée : moyennes mensuelles au lieu de valeurs quotidiennes filtrées, ce qui
+lisse les déplacements du jet au sein de l'hiver. La série à 250 hPa déjà relevée n'est pas utilisée.

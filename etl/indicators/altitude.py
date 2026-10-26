@@ -4,8 +4,11 @@ Choix fixés le 26/10/2026, AVANT tout calcul (aucune série ERA5 niveaux de pre
 - température à 850 et 500 hPa et altitude de la surface 500 hPa, maille ERA5 la plus proche de Bordeaux-Mérignac :
   moyenne annuelle des 12 moyennes mensuelles ; une année exige ses 12 mois ;
 - jet stream de l'Atlantique Nord en hiver (décembre de l'année précédente, janvier, février) : vent zonal à
-  250 hPa moyenné sur 60° O-0°, entre 20 et 70° N, grille 1° ; VITESSE = maximum du profil moyen de l'hiver,
-  LATITUDE = position de ce maximum, affinée par une parabole sur les trois latitudes qui l'encadrent ;
+  850 hPa moyenné sur 60° O-0°, entre 15 et 75° N, grille 1° (indice de Woollings et al., 2010, adapté aux moyennes
+  mensuelles) ; VITESSE = maximum du profil moyen de l'hiver, LATITUDE = position de ce maximum, affinée par une
+  parabole sur les trois latitudes qui l'encadrent.
+  Décision de Grég du 26/10/2026 : la première définition, à 250 hPa, basculait entre jet subtropical et jet des
+  tempêtes (constat sur la distribution seule, avant tout calcul de tendance) ;
 - ERA5 traitée comme un produit publié (comme les autres séries ERA5 du projet) : tendance calculée, provenance
   « non homogénéisée », sans référence publiée → confiance au plus « moyenne ». Séries de plus de 80 ans : tendance
   mise en avant sur les 50 dernières années (règle du 23/10/2026).
@@ -25,7 +28,7 @@ POINT_VARS = {
     "t500": (500, "t_c", "°C", (-35.0, -5.0)),
     "z500": (500, "z_m", "m", (5400.0, 5900.0)),
 }
-JET_VARS = {"jet-vitesse": ("m/s", (10.0, 80.0)), "jet-latitude": ("°N", (25.0, 65.0))}
+JET_VARS = {"jet-vitesse": ("m/s", (3.0, 30.0)), "jet-latitude": ("°N", (25.0, 72.0))}
 
 LIMITS = [
     "Réanalyse ERA5 : un modèle météorologique contraint par les observations disponibles (radiosondages, avions, "
@@ -104,9 +107,10 @@ def build_jet(ctx: BuildContext, variable: str, title: str, description: str, la
     idx = jet_indices(cds.load_zonal())
     series = {y: (s if variable == "jet-vitesse" else lat) for y, (s, lat) in idx.items()}
     _check(variable, series, bounds)
-    note = ("Vent zonal à 250 hPa moyenné sur 60° O-0°, entre 20 et 70° N (grille 1°), puis sur l'hiver "
+    note = ("Vent zonal à 850 hPa (environ 1 500 m) moyenné sur 60° O-0°, entre 15 et 75° N (grille 1°), puis sur l'hiver "
             "(décembre de l'année précédente, janvier, février) ; vitesse = maximum du profil en latitude, latitude = "
-            "position de ce maximum affinée par une parabole sur trois points. L'année est celle de janvier.")
+            "position de ce maximum affinée par une parabole sur trois points. L'année est celle de janvier. Indice de "
+            "Woollings et al. (2010), calculé ici sur des moyennes mensuelles et non sur des valeurs quotidiennes filtrées.")
     return S.assemble(ctx, ind_id=f"{variable}-monde", scale="monde", variable=variable,
                       place=vocab.composite("monde", "Atlantique Nord"), title=title, description=description,
                       unit=unit, series=series, hom=set(series), provenance=_provenance(ctx),

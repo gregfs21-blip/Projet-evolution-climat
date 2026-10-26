@@ -76,7 +76,7 @@ class TestBuilders(unittest.TestCase):
                 point[850]["t_c"][k] = 4.0 + 0.02 * (y - 1940) + (0.3 if y % 2 else -0.3)
                 point[500]["t_c"][k] = -20.0
                 point[500]["z_m"][k] = 5650.0
-                zonal[k] = {float(la): 30.0 - abs(la - 45.0) for la in range(20, 71)}
+                zonal[k] = {float(la): 15.0 - 0.3 * abs(la - 45.0) for la in range(15, 76)}
         with mock.patch.object(A.cds, "load_point", return_value=point), mock.patch.object(A.cds, "load_zonal", return_value=zonal):
             ind = A.build_point(self.ctx, "t850", "t", "d", "x")
             self.assertEqual(ind.trend.period.start, 1976)              # plus de 80 ans : 50 dernières années
@@ -90,7 +90,7 @@ class TestBuilders(unittest.TestCase):
     def test_csv_round_trip(self):
         d = Path(self.tmp.name)
         cds._write_csv(d / "bordeaux.csv", [{"month": "2000-01", "level": 850, "t_c": 4.0, "z_m": 1500.0, "u_ms": 2.0}])
-        cds._write_csv(d / "atlantique-u250.csv", [{"month": "2000-01", "lat": 45.0, "u_ms": 30.0}])
+        cds._write_csv(d / "atlantique-u850.csv", [{"month": "2000-01", "lat": 45.0, "u_ms": 30.0}])
         self.assertEqual(cds.load_point(d)[850]["z_m"]["2000-01"], 1500.0)
         self.assertEqual(cds.load_zonal(d)["2000-01"][45.0], 30.0)
 

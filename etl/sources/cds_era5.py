@@ -61,7 +61,7 @@ def requests() -> dict[str, dict]:
                             "month": months, "area": JET_BOX, "grid": ["1.0", "1.0"]},
         # Vent zonal à 850 hPa, 0-60° O, 15-75° N (Woollings et al., 2010) : jet « des tempêtes », séparé du jet
         # subtropical. Demandé le 26/10/2026 après le constat que le profil à 250 hPa a deux maxima (voir phases.md) ;
-        # l'indice à retenir reste une décision de Grég.
+        # indice retenu par Grég le 26/10/2026 (après la distribution à 250 hPa, avant tout calcul de tendance).
         "atlantique-u850": {**BASE, "variable": ["u_component_of_wind"], "pressure_level": ["850"], "year": years,
                             "month": months, "area": [75.0, -60.0, 15.0, 0.0], "grid": ["1.0", "1.0"]},
     }
@@ -125,10 +125,10 @@ def load_point(out_dir: Path = OUT_DIR) -> dict[int, dict[str, dict[str, float]]
     return out
 
 
-def load_zonal(out_dir: Path = OUT_DIR) -> dict[str, dict[float, float]]:
-    """mois « AAAA-MM » → latitude → vent zonal moyen (m/s)."""
+def load_zonal(out_dir: Path = OUT_DIR, name: str = "atlantique-u850") -> dict[str, dict[float, float]]:
+    """mois « AAAA-MM » → latitude → vent zonal moyen (m/s). Par défaut 850 hPa (indice retenu le 26/10/2026)."""
     out: dict[str, dict[float, float]] = {}
-    with (out_dir / "atlantique-u250.csv").open(encoding="utf-8") as f:
+    with (out_dir / f"{name}.csv").open(encoding="utf-8") as f:
         for r in csv.DictReader(f):
             out.setdefault(r["month"], {})[float(r["lat"])] = float(r["u_ms"])
     return out

@@ -70,5 +70,5 @@ variables:
   catnat-secheresse: {code: Sécheresse, label: reconnaissances CatNat « sécheresse », theme: catastrophes, order: 1}
 
 # --- ERA5 niveaux de pression (Copernicus CDS, 26/10/2026)
-  jet-vitesse: {code: Vitesse, label: "vitesse du jet stream en hiver (250 hPa)", theme: jet-stream, order: 0}
-  jet-latitude: {code: Latitude, label: "latitude du jet stream en hiver (250 hPa)", theme: jet-stream, order: 1}
+  jet-vitesse: {code: Vitesse, label: "vitesse du jet stream en hiver (850 hPa)", theme: jet-stream, order: 0}
+  jet-latitude: {code: Latitude, label: "latitude du jet stream en hiver (850 hPa)", theme: jet-stream, order: 1}
