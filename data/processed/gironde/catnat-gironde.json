@@ -203,9 +203,9 @@
   "source_name": "Ministère de la Transition écologique — base GASPAR, arrêtés de catastrophe naturelle",
   "source_url": "https://www.data.gouv.fr/datasets/base-nationale-de-gestion-assistee-des-procedures-administratives-relatives-aux-risques-gaspar",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-25T09:33:25Z",
+  "extracted_at": "2026-10-26T14:44:59Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6a3c53e",
+  "etl_version": "0.1.0+ddafd8c",
   "homogenized": true
  },
  "is_demo": false

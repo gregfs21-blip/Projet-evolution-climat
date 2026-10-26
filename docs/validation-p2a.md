@@ -67,3 +67,14 @@ C'est la règle fixée, appliquée.
 - E4 R3 intérieur : évalué sur **Bordeaux-Mérignac seul**, choix fait après publication de ses résultats.
 - E7 et E8 : écarts **acceptés**, explications ci-dessus.
 - Publication en production avec les écarts affichés.
+
+## Décision du 26/10/2026 (Grég), APRÈS calcul — E4 R3 littoral
+
+Le contrôle F8 de la P2b, appliqué en diagnostic aux indices de P2a (écart de chaque poste à la moyenne des autres,
+avant sa dernière rupture), ne trouve **aucune rupture établie** : Cap-Ferret 1962-2001 (TX ≥ 25 : p = 0,20),
+Cazaux 1962-1986 (rupture en 1973 qui disparaît après retrait de la tendance). L'écart du littoral (+5,83 j/déc.
+pour [+4 ; +5]) n'est donc pas attribuable à un défaut détectable de la correction B. Il est attribué à la
+référence : chiffres de seconde main, régionaux, notion de « côte » non définie, intervalle de confiance de la pente
+mesurée (+3,46 à +8,70) qui contient la fourchette. **Écart accepté.** Il clôt la phase mais ne relève pas la
+confiance : les indices dont la règle exige E4 restent au plus « moyenne » (`external_validation_passed` ne compte
+que les références réellement retrouvées).

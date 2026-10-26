@@ -34,8 +34,8 @@ jobs:
           path: data/raw
           key: raw-${{ github.run_id }}
           restore-keys: raw-
-      - name: Sonde « largeur d'abord », lot 2
-        run: python -m etl.probe.largeur2
+      - name: Sonde P2b (disponibilité des données, aucun indice)
+        run: python -m etl.probe.p2b
       - name: Publication du rapport
         run: |
           git config user.name "etl-bot"

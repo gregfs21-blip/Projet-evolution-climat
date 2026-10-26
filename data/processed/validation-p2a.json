@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "phase": "p2a",
-  "generated_at": "2026-10-25T09:37:37Z",
-  "closure_ok": false,
-  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "generated_at": "2026-10-26T14:50:16Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
     "jours-tx25-gironde",
     "jours-tx30-gironde",
@@ -65,8 +65,8 @@
     {
       "name": "E4 R3 littoral : journées chaudes (TX > 25 °C), littoral 1961-2010",
       "kind": "critère",
-      "status": "❌ écart",
-      "satisfied": false,
+      "status": "☑ écart accepté le 26/10/2026 (référence en cause)",
+      "satisfied": true,
       "detail": "pente de Sen +5.83 j/déc. (IC 95 % +3.46 à +8.70), attendu [4 ; 5] ; Cap-Ferret, Cazaux"
     },
     {

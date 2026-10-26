@@ -301,7 +301,7 @@
     "end": 2022
    },
    "slope_per_decade": 2.5,
-   "slope_ci_low": -0.0,
+   "slope_ci_low": 0.0,
    "slope_ci_high": 5.0,
    "fitted_start": 1.125,
    "fitted_end": 7.875,
@@ -318,7 +318,7 @@
     "end": 2022
    },
    "slope_per_decade": 2.3077,
-   "slope_ci_low": -0.0,
+   "slope_ci_low": 0.0,
    "slope_ci_high": 4.2857,
    "fitted_start": 0.8846,
    "fitted_end": 7.1154,
@@ -379,9 +379,9 @@
   "source_name": "Météo-France — données climatologiques de base quotidiennes, corrigées par les Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b51ae64326786e4e8e1a",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-25T09:33:25Z",
+  "extracted_at": "2026-10-26T14:44:59Z",
   "script": "etl.indicators.extremes",
-  "etl_version": "0.1.0+6a3c53e",
+  "etl_version": "0.1.0+ddafd8c",
   "homogenized": true
  },
  "is_demo": false

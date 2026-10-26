@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-25T09:36:23Z",
- "etl_version": "0.1.0+6a3c53e",
+ "generated_at": "2026-10-26T14:49:16Z",
+ "etl_version": "0.1.0+ddafd8c",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -2186,6 +2186,1202 @@
     "id": "france",
     "name": "France",
     "kind": "composite"
+   }
+  },
+  {
+   "id": "r10mm-gironde",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm en Gironde",
+   "unit": "jours",
+   "path": "gironde/r10mm-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse Gironde — pluies intenses",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "r20mm-gironde",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm en Gironde",
+   "unit": "jours",
+   "path": "gironde/r20mm-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse Gironde — pluies intenses",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "rx1day-gironde",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour en Gironde",
+   "unit": "mm",
+   "path": "gironde/rx1day-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse Gironde — pluies intenses",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "rx5day-gironde",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours en Gironde",
+   "unit": "mm",
+   "path": "gironde/rx5day-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse Gironde — pluies intenses",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "r10mm-belin-beliet",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Belin-Beliet",
+   "unit": "jours",
+   "path": "gironde/r10mm-belin-beliet.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "belin-beliet",
+    "name": "Belin-Beliet",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/r10mm-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-captieux",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Captieux",
+   "unit": "jours",
+   "path": "gironde/r10mm-captieux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "captieux",
+    "name": "Captieux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-hourtin",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Hourtin",
+   "unit": "jours",
+   "path": "gironde/r10mm-hourtin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "hourtin",
+    "name": "Hourtin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-lacanau",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Lacanau",
+   "unit": "jours",
+   "path": "gironde/r10mm-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-cap-ferret",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/r10mm-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-st-symphorien",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à St-Symphorien",
+   "unit": "jours",
+   "path": "gironde/r10mm-st-symphorien.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "st-symphorien",
+    "name": "St-Symphorien",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-sauternes",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Sauternes",
+   "unit": "jours",
+   "path": "gironde/r10mm-sauternes.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r10mm-cazaux",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 10 mm à Cazaux",
+   "unit": "jours",
+   "path": "gironde/r10mm-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 10 mm",
+   "variable": {
+    "id": "r10mm",
+    "code": "RR ≥ 10",
+    "label": "jours de pluie ≥ 10 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 0
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-belin-beliet",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Belin-Beliet",
+   "unit": "jours",
+   "path": "gironde/r20mm-belin-beliet.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "belin-beliet",
+    "name": "Belin-Beliet",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/r20mm-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-captieux",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Captieux",
+   "unit": "jours",
+   "path": "gironde/r20mm-captieux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "captieux",
+    "name": "Captieux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-hourtin",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Hourtin",
+   "unit": "jours",
+   "path": "gironde/r20mm-hourtin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "hourtin",
+    "name": "Hourtin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-lacanau",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Lacanau",
+   "unit": "jours",
+   "path": "gironde/r20mm-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-cap-ferret",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/r20mm-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-st-symphorien",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à St-Symphorien",
+   "unit": "jours",
+   "path": "gironde/r20mm-st-symphorien.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "st-symphorien",
+    "name": "St-Symphorien",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-sauternes",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Sauternes",
+   "unit": "jours",
+   "path": "gironde/r20mm-sauternes.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "r20mm-cazaux",
+   "scale": "gironde",
+   "title": "Jours de pluie ≥ 20 mm à Cazaux",
+   "unit": "jours",
+   "path": "gironde/r20mm-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — jours de pluie ≥ 20 mm",
+   "variable": {
+    "id": "r20mm",
+    "code": "RR ≥ 20",
+    "label": "jours de pluie ≥ 20 mm",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 1
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-belin-beliet",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Belin-Beliet",
+   "unit": "mm",
+   "path": "gironde/rx1day-belin-beliet.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "belin-beliet",
+    "name": "Belin-Beliet",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Bordeaux-Paulin",
+   "unit": "mm",
+   "path": "gironde/rx1day-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-captieux",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Captieux",
+   "unit": "mm",
+   "path": "gironde/rx1day-captieux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "captieux",
+    "name": "Captieux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-hourtin",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Hourtin",
+   "unit": "mm",
+   "path": "gironde/rx1day-hourtin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "hourtin",
+    "name": "Hourtin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-lacanau",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Lacanau",
+   "unit": "mm",
+   "path": "gironde/rx1day-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-cap-ferret",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Cap-Ferret",
+   "unit": "mm",
+   "path": "gironde/rx1day-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-st-symphorien",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à St-Symphorien",
+   "unit": "mm",
+   "path": "gironde/rx1day-st-symphorien.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "st-symphorien",
+    "name": "St-Symphorien",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-sauternes",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Sauternes",
+   "unit": "mm",
+   "path": "gironde/rx1day-sauternes.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx1day-cazaux",
+   "scale": "gironde",
+   "title": "Pluie maximale en un jour à Cazaux",
+   "unit": "mm",
+   "path": "gironde/rx1day-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en un jour",
+   "variable": {
+    "id": "rx1day",
+    "code": "RX1j",
+    "label": "pluie maximale en un jour",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 2
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-belin-beliet",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Belin-Beliet",
+   "unit": "mm",
+   "path": "gironde/rx5day-belin-beliet.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "belin-beliet",
+    "name": "Belin-Beliet",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Bordeaux-Paulin",
+   "unit": "mm",
+   "path": "gironde/rx5day-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-captieux",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Captieux",
+   "unit": "mm",
+   "path": "gironde/rx5day-captieux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "captieux",
+    "name": "Captieux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-hourtin",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Hourtin",
+   "unit": "mm",
+   "path": "gironde/rx5day-hourtin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "hourtin",
+    "name": "Hourtin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-lacanau",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Lacanau",
+   "unit": "mm",
+   "path": "gironde/rx5day-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-cap-ferret",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Cap-Ferret",
+   "unit": "mm",
+   "path": "gironde/rx5day-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-st-symphorien",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à St-Symphorien",
+   "unit": "mm",
+   "path": "gironde/rx5day-st-symphorien.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "st-symphorien",
+    "name": "St-Symphorien",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-sauternes",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Sauternes",
+   "unit": "mm",
+   "path": "gironde/rx5day-sauternes.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "rx5day-cazaux",
+   "scale": "gironde",
+   "title": "Pluie maximale en cinq jours à Cazaux",
+   "unit": "mm",
+   "path": "gironde/rx5day-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — pluie maximale en cinq jours",
+   "variable": {
+    "id": "rx5day",
+    "code": "RX5j",
+    "label": "pluie maximale en cinq jours",
+    "theme": "pluies-intenses",
+    "theme_label": "Pluies intenses",
+    "order": 3
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "etp-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Évapotranspiration potentielle (Hargreaves) à Bordeaux-Paulin",
+   "unit": "mm",
+   "path": "gironde/etp-bordeaux-paulin.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "etp",
+    "code": "ETP",
+    "label": "évapotranspiration potentielle (Hargreaves)",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "etp-cap-ferret",
+   "scale": "gironde",
+   "title": "Évapotranspiration potentielle (Hargreaves) à Cap-Ferret",
+   "unit": "mm",
+   "path": "gironde/etp-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "etp",
+    "code": "ETP",
+    "label": "évapotranspiration potentielle (Hargreaves)",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 0
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "etp-cazaux",
+   "scale": "gironde",
+   "title": "Évapotranspiration potentielle (Hargreaves) à Cazaux",
+   "unit": "mm",
+   "path": "gironde/etp-cazaux.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "etp",
+    "code": "ETP",
+    "label": "évapotranspiration potentielle (Hargreaves)",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 0
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "bilan-hydrique-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Bilan climatique pluie − ETP à Bordeaux-Paulin",
+   "unit": "mm",
+   "path": "gironde/bilan-hydrique-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "bilan-hydrique",
+    "code": "P − ETP",
+    "label": "bilan climatique pluie − ETP",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "bilan-hydrique-cap-ferret",
+   "scale": "gironde",
+   "title": "Bilan climatique pluie − ETP à Cap-Ferret",
+   "unit": "mm",
+   "path": "gironde/bilan-hydrique-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "bilan-hydrique",
+    "code": "P − ETP",
+    "label": "bilan climatique pluie − ETP",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 1
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "bilan-hydrique-cazaux",
+   "scale": "gironde",
+   "title": "Bilan climatique pluie − ETP à Cazaux",
+   "unit": "mm",
+   "path": "gironde/bilan-hydrique-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "bilan-hydrique",
+    "code": "P − ETP",
+    "label": "bilan climatique pluie − ETP",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 1
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "spei12-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Indice de sécheresse SPEI-12 (bilan de l'année) à Bordeaux-Paulin",
+   "unit": "SPEI",
+   "path": "gironde/spei12-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "spei12",
+    "code": "SPEI-12",
+    "label": "indice de sécheresse SPEI à 12 mois",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "spei12-cap-ferret",
+   "scale": "gironde",
+   "title": "Indice de sécheresse SPEI-12 (bilan de l'année) à Cap-Ferret",
+   "unit": "SPEI",
+   "path": "gironde/spei12-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "spei12",
+    "code": "SPEI-12",
+    "label": "indice de sécheresse SPEI à 12 mois",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 2
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "spei12-cazaux",
+   "scale": "gironde",
+   "title": "Indice de sécheresse SPEI-12 (bilan de l'année) à Cazaux",
+   "unit": "SPEI",
+   "path": "gironde/spei12-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "spei12",
+    "code": "SPEI-12",
+    "label": "indice de sécheresse SPEI à 12 mois",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 2
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "mois-secs-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Mois secs (SPEI-3 ≤ −1) à Bordeaux-Paulin",
+   "unit": "mois",
+   "path": "gironde/mois-secs-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "mois-secs",
+    "code": "Mois secs",
+    "label": "mois secs (SPEI-3 ≤ −1)",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 3
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "mois-secs-cap-ferret",
+   "scale": "gironde",
+   "title": "Mois secs (SPEI-3 ≤ −1) à Cap-Ferret",
+   "unit": "mois",
+   "path": "gironde/mois-secs-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "mois-secs",
+    "code": "Mois secs",
+    "label": "mois secs (SPEI-3 ≤ −1)",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 3
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "mois-secs-cazaux",
+   "scale": "gironde",
+   "title": "Mois secs (SPEI-3 ≤ −1) à Cazaux",
+   "unit": "mois",
+   "path": "gironde/mois-secs-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — demande en eau et sécheresse",
+   "variable": {
+    "id": "mois-secs",
+    "code": "Mois secs",
+    "label": "mois secs (SPEI-3 ≤ −1)",
+    "theme": "secheresse",
+    "theme_label": "Demande en eau et sécheresse",
+    "order": 3
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
    }
   }
  ]

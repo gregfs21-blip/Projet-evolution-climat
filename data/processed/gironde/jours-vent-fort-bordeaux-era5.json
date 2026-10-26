@@ -372,9 +372,9 @@
   "source_name": "ERA5 (ECMWF / Copernicus) via Open-Meteo",
   "source_url": "https://open-meteo.com/en/docs/historical-weather-api",
   "license": "CC BY 4.0 (Copernicus) ; Open-Meteo, usage non commercial",
-  "extracted_at": "2026-10-25T09:33:25Z",
+  "extracted_at": "2026-10-26T14:44:59Z",
   "script": "etl.indicators.atmosphere",
-  "etl_version": "0.1.0+6a3c53e",
+  "etl_version": "0.1.0+ddafd8c",
   "homogenized": false
  },
  "is_demo": false

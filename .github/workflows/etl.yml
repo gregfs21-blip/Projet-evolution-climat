@@ -56,6 +56,7 @@ jobs:
         run: |
           python -m etl.validation.p1
           python -m etl.validation.p2a
+          python -m etl.validation.p2b
 
       - name: Publication des résultats
         run: |
