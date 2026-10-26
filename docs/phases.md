@@ -251,6 +251,9 @@ Fixées en écrivant le code (`etl/indicators/pluie.py`, `etl/indicators/eau.py`
   homogénéisée que jusqu'en 2017, la normale 1991-2020 est toujours incomplète ; un indice rare n'a donc ni pente
   mise en avant ni écart entre normales : « non établi ».
 - **Mois secs (SPEI-3 ≤ −1)** : compte de mois, hors F9 ; tendance calculée normalement.
+- **Loi du SPEI** : log-logistique à 3 paramètres dans la forme de Hosking (logistique généralisée), ajustée par
+  L-moments non biaisés, comme le recommandent Beguería et al. (2014) ; la paramétrisation d'origine de
+  Vicente-Serrano (2010) dégénère pour des bilans peu asymétriques (constaté sur données synthétiques).
 - **SPEI** : calé et calculé sur les seuls mois homogénéisés (pluie et températures) ; un mois manquant interrompt
   les cumuls de 3 ou 12 mois (aucune valeur complétée).
 

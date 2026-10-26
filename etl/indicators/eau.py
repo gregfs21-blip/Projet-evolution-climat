@@ -5,8 +5,8 @@ Cap-Ferret et Cazaux.
 - ETP de Hargreaves (FAO-56, éq. 52) : 0,0023 × 0,408 × Ra × (TM + 17,8) × √(TX − TN) mm/jour, Ra (MJ m⁻² j⁻¹)
   du 15 du mois à la latitude du poste (FAO-56, éq. 21-25), multiplié par le nombre de jours du mois ;
 - bilan climatique annuel P − ETP ;
-- SPEI (Vicente-Serrano et al., 2010) : P − ETP cumulé sur 3 et 12 mois, loi log-logistique à 3 paramètres ajustée
-  par L-moments pour chaque mois calendaire sur la période de calage 1962-2017 ; indicateurs : SPEI-12 de décembre
+- SPEI (Vicente-Serrano et al., 2010) : P − ETP cumulé sur 3 et 12 mois, loi log-logistique à 3 paramètres dans la
+  forme de Hosking (logistique généralisée, Beguería et al., 2014), ajustée par L-moments pour chaque mois calendaire sur la période de calage 1962-2017 ; indicateurs : SPEI-12 de décembre
   et nombre de mois de l'année où SPEI-3 ≤ −1.
 Référence R6 (ETP) : ORACLE Nouvelle-Aquitaine 2020, p. 61, [+16 ; +30] mm/déc. sur 1962-2019.
 """
@@ -69,24 +69,33 @@ def etp_month(tn: float, tx: float, lat: float, year: int, month: int) -> float:
 
 
 def loglogistic_params(x: np.ndarray) -> tuple[float, float, float]:
-    """L-moments (Vicente-Serrano et al., 2010) : paramètres (α, β, γ) de la log-logistique à 3 paramètres."""
+    """Loi logistique généralisée (forme de Hosking de la log-logistique à 3 paramètres, recommandée par Beguería et
+    al., 2014, pour le SPEI) ajustée par L-moments non biaisés : (ξ, α, κ)."""
     x = np.sort(np.asarray(x, dtype=float))
     n = len(x)
-    f = (np.arange(1, n + 1) - 0.35) / n
-    w0, w1, w2 = (np.mean((1 - f) ** s * x) for s in (0, 1, 2))
-    beta = (2 * w1 - w0) / (6 * w1 - w0 - 6 * w2)
-    g = special.gamma(1 + 1 / beta) * special.gamma(1 - 1 / beta)
-    alpha = (w0 - 2 * w1) * beta / g
-    gamma = w0 - alpha * g
-    return float(alpha), float(beta), float(gamma)
+    i = np.arange(n)
+    b0 = x.mean()
+    b1 = np.sum(i / (n - 1) * x) / n
+    b2 = np.sum(i * (i - 1) / ((n - 1) * (n - 2)) * x) / n
+    l1, l2, l3 = b0, 2 * b1 - b0, 6 * b2 - 6 * b1 + b0
+    k = -l3 / l2
+    if abs(k) < 1e-6:
+        return float(l1), float(l2), 0.0
+    a = l2 * math.sin(k * math.pi) / (k * math.pi)
+    xi = l1 - a * (1 / k - math.pi / math.sin(k * math.pi))
+    return float(xi), float(a), float(k)
 
 
 def spei_value(x: float, params: tuple[float, float, float]) -> float:
-    alpha, beta, gamma = params
-    if x <= gamma:
-        p = 1e-6
+    xi, a, k = params
+    if k == 0:
+        y = (x - xi) / a
     else:
-        p = 1 / (1 + (alpha / (x - gamma)) ** beta)
+        arg = 1 - k * (x - xi) / a
+        if arg <= 0:                     # hors du support : queue extrême
+            return 4.0 if k > 0 else -4.0
+        y = -math.log(arg) / k
+    p = 1 / (1 + math.exp(-y))
     return float(stats.norm.ppf(min(max(p, 1e-6), 1 - 1e-6)))
 
 
@@ -219,8 +228,8 @@ def build(ctx: BuildContext, variable: str, poste: str, limitations: list[str] |
     name = st.name
     slug = T.station_config().get(poste, {}).get("slug") or S.slugify(name)
     note = ("ETP de Hargreaves (FAO-56, éq. 52) au pas mensuel, rayonnement extraterrestre du 15 du mois à la latitude "
-            "du poste." + (" SPEI : loi log-logistique ajustée par L-moments sur 1962-2017, mois par mois "
-                           "(Vicente-Serrano et al., 2010)." if variable in ("spei12", "mois-secs") else ""))
+            "du poste." + (" SPEI : loi log-logistique (forme logistique généralisée) ajustée par L-moments sur "
+                           "1962-2017, mois par mois (Vicente-Serrano et al., 2010 ; Beguería et al., 2014)." if variable in ("spei12", "mois-secs") else ""))
     return S.assemble(ctx, ind_id=f"{variable}-{slug}", scale="gironde", variable=variable,
                       place=vocab.station(slug, name), title=title.format(name=name), description=desc.format(name=name),
                       unit=unit, series=series, hom=hom, provenance=_prov(ctx), limitations=LIMITS + (limitations or []),
