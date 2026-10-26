@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "phase": "p2b",
+  "generated_at": "2026-10-26T12:05:03Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "indicators": [
+    "bilan-hydrique-bordeaux-paulin",
+    "bilan-hydrique-cap-ferret",
+    "bilan-hydrique-cazaux",
+    "etp-bordeaux-paulin",
+    "etp-cap-ferret",
+    "etp-cazaux",
+    "mois-secs-bordeaux-paulin",
+    "mois-secs-cap-ferret",
+    "mois-secs-cazaux",
+    "r10mm-belin-beliet",
+    "r10mm-bordeaux-paulin",
+    "r10mm-cap-ferret",
+    "r10mm-captieux",
+    "r10mm-cazaux",
+    "r10mm-gironde",
+    "r10mm-hourtin",
+    "r10mm-lacanau",
+    "r10mm-sauternes",
+    "r10mm-st-symphorien",
+    "r20mm-belin-beliet",
+    "r20mm-bordeaux-paulin",
+    "r20mm-cap-ferret",
+    "r20mm-captieux",
+    "r20mm-cazaux",
+    "r20mm-gironde",
+    "r20mm-hourtin",
+    "r20mm-lacanau",
+    "r20mm-sauternes",
+    "r20mm-st-symphorien",
+    "rx1day-belin-beliet",
+    "rx1day-bordeaux-paulin",
+    "rx1day-cap-ferret",
+    "rx1day-captieux",
+    "rx1day-cazaux",
+    "rx1day-gironde",
+    "rx1day-hourtin",
+    "rx1day-lacanau",
+    "rx1day-sauternes",
+    "rx1day-st-symphorien",
+    "rx5day-belin-beliet",
+    "rx5day-bordeaux-paulin",
+    "rx5day-cap-ferret",
+    "rx5day-captieux",
+    "rx5day-cazaux",
+    "rx5day-gironde",
+    "rx5day-hourtin",
+    "rx5day-lacanau",
+    "rx5day-sauternes",
+    "rx5day-st-symphorien",
+    "spei12-bordeaux-paulin",
+    "spei12-cap-ferret",
+    "spei12-cazaux"
+  ],
+  "checks": [
+    {
+      "name": "F1 exhaustivité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "9 postes de pluie retenus, 6 au composite 1961-2017 (hors composite : Hourtin, Lacanau, St-Symphorien) ; 3 postes ETP/SPEI ; 52 indicateurs attendus, tous publiés"
+    },
+    {
+      "name": "F2 complétude",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Appliquée par le code : quotidien ETCCDI, correction B′ sur mois complets seulement, années de 12 mois, cumuls SPEI interrompus par tout mois manquant."
+    },
+    {
+      "name": "F3 brut ≠ homogénéisé",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "52 indicateurs validés par le contrat : aucune tendance ni normale sur une année brute (règle C2)."
+    },
+    {
+      "name": "F4 validation externe (R6, ETP)",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "Attendu [+16 ; +30] mm/déc. sur 1962-2019 ; mesuré : Bordeaux-Paulin : 16.4036 mm/déc.; Cap-Ferret : 14.4787 mm/déc.; Cazaux : 16.6592 mm/déc.. Pluies intenses : pas de référence (R7 abandonnée), confiance au plus « moyenne »."
+    },
+    {
+      "name": "F5 cohérence du correctif",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "6924 mois corrigés ; écart maximal au cumul LSH : 0.000 mm (tolérance 0.5 mm)."
+    },
+    {
+      "name": "F6 cohérence inter-stations (r10mm)",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "Belin-Beliet −, Bordeaux-Paulin +, Cap-Ferret −, Captieux −, Cazaux −, Hourtin +, Lacanau +, Sauternes −, St-Symphorien −"
+    },
+    {
+      "name": "F6 cohérence inter-stations (etp)",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Bordeaux-Paulin +, Cap-Ferret +, Cazaux +"
+    },
+    {
+      "name": "F7 robustesse méthode (A et B′)",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "40 concordants sur 40 évaluables ; non concordants : aucun ; non évaluables : aucun."
+    },
+    {
+      "name": "F8 période ancienne (P2b)",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "ruptures établies : aucune (tendance alors limitée à la période postérieure)."
+    },
+    {
+      "name": "F8 diagnostic sur P2a (extrêmes de température)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "ruptures établies : aucune. Diagnostic seulement : ne modifie pas P2a."
+    },
+    {
+      "name": "F9 indices rares",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "1 indice(s) rare(s) : r20mm-cap-ferret."
+    },
+    {
+      "name": "F10 contrôle du SPEI",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Bordeaux-Paulin SPEI-3 : moyenne +0.003, écart-type 0.985 ; Bordeaux-Paulin SPEI-12 : moyenne +0.005, écart-type 0.986 ; Cap-Ferret SPEI-3 : moyenne +0.002, écart-type 0.988 ; Cap-Ferret SPEI-12 : moyenne +0.001, écart-type 0.987 ; Cazaux SPEI-3 : moyenne +0.003, écart-type 0.987 ; Cazaux SPEI-12 : moyenne +0.002, écart-type 0.987"
+    },
+    {
+      "name": "F11 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests, CI et contrat vérifiés par les workflows."
+    }
+  ]
+}

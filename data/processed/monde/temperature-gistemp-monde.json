@@ -535,9 +535,9 @@
   "source_name": "NASA GISS — GISTEMP v4, température globale terre-océan",
   "source_url": "https://data.giss.nasa.gov/gistemp/",
   "license": "Domaine public (NASA)",
-  "extracted_at": "2026-10-25T09:33:25Z",
+  "extracted_at": "2026-10-26T11:58:04Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6a3c53e",
+  "etl_version": "0.1.0+523eb71",
   "homogenized": true
  },
  "is_demo": false
