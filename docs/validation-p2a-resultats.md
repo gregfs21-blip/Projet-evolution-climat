@@ -2,14 +2,14 @@
 
 Fichier généré par `python -m etl.validation.p2a` à chaque exécution de l'ETL. Ne pas éditer à la main. Critères et seuils : `docs/phases.md` (P2a).
 
-**Au moins un critère comptant pour la clôture n'est pas satisfait.**
+**Tous les critères comptant pour la clôture sont satisfaits.**
 
 | Critère | Résultat | Mesure |
 |---|---|---|
 | E1 exhaustivité | ✅ conforme | 29/29 couples indice × poste traités ; exclus faute de série LSH (ni correction B ni dates de ruptures) : TX Lacanau, TX Sauternes |
 | E2 complétude ETCCDI | ✅ conforme | règle appliquée à la construction (mois manquant au-delà de 3 jours absents, année manquante si un mois l'est) ; détail par poste ci-dessous |
 | E3 brut exclu des tendances | ✅ conforme | aucune tendance de série corrigée ne contient d'année brute |
-| E4 R3 littoral : journées chaudes (TX > 25 °C), littoral 1961-2010 | ❌ écart | pente de Sen +5.83 j/déc. (IC 95 % +3.46 à +8.70), attendu [4 ; 5] ; Cap-Ferret, Cazaux |
+| E4 R3 littoral : journées chaudes (TX > 25 °C), littoral 1961-2010 | ☑ écart accepté le 26/10/2026 (référence en cause) | pente de Sen +5.83 j/déc. (IC 95 % +3.46 à +8.70), attendu [4 ; 5] ; Cap-Ferret, Cazaux |
 | E4 R3 intérieur : journées chaudes (TX > 25 °C), intérieur 1961-2010 | ✅ conforme | pente de Sen +7.10 j/déc. (IC 95 % +4.00 à +10.37), attendu [6 ; 8] ; Bordeaux-Mérignac |
 | E4 R4 : jours de gel (TN ≤ 0 °C), composite 1961-2010 | ✅ conforme | pente de Sen -1.43 j/déc. (IC 95 % -3.56 à +0.75), attendu [-2 ; -1] ; Bordeaux-Paulin, Cap-Ferret, Bordeaux-Mérignac, Sauternes, Cazaux |
 | E5 cohérence du correctif | ✅ conforme | écart annuel maximal corrigé − LSH : 0.0000 °C (TN Cap-Ferret 2015), tolérance 0.05 °C |

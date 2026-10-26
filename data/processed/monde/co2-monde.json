@@ -239,9 +239,9 @@
   "source_name": "NOAA GML — CO₂, moyenne globale annuelle (surface marine)",
   "source_url": "https://gml.noaa.gov/ccgg/trends/global.html",
   "license": "Domaine public (NOAA), citation demandée",
-  "extracted_at": "2026-10-26T12:06:45Z",
+  "extracted_at": "2026-10-26T14:44:59Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+b0d2429",
+  "etl_version": "0.1.0+ddafd8c",
   "homogenized": true
  },
  "is_demo": false

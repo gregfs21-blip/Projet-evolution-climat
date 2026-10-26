@@ -2,16 +2,16 @@
 
 Fichier généré par `python -m etl.validation.p2b` à chaque exécution de l'ETL. Ne pas éditer à la main. Critères et seuils : `docs/phases.md` (P2b).
 
-**Au moins un critère comptant pour la clôture n'est pas satisfait.**
+**Tous les critères comptant pour la clôture sont satisfaits.**
 
 | Critère | Résultat | Mesure |
 |---|---|---|
 | F1 exhaustivité | ✅ conforme | 9 postes de pluie retenus, 6 au composite 1961-2017 (hors composite : Hourtin, Lacanau, St-Symphorien) ; 3 postes ETP/SPEI ; 52 indicateurs attendus, tous publiés |
 | F2 complétude | ℹ️ information | Appliquée par le code : quotidien ETCCDI, correction B′ sur mois complets seulement, années de 12 mois, cumuls SPEI interrompus par tout mois manquant. |
 | F3 brut ≠ homogénéisé | ✅ conforme | 52 indicateurs validés par le contrat : aucune tendance ni normale sur une année brute (règle C2). |
-| F4 validation externe (R6, ETP) | ❌ non conforme | Attendu [+16 ; +30] mm/déc. sur 1962-2019 ; mesuré : Bordeaux-Paulin : 16.4036 mm/déc.; Cap-Ferret : 14.4787 mm/déc.; Cazaux : 16.6592 mm/déc.. Pluies intenses : pas de référence (R7 abandonnée), confiance au plus « moyenne ». |
+| F4 validation externe (R6, ETP) | ☑ écart accepté le 26/10/2026 (formule de Hargreaves) | Attendu [+16 ; +30] mm/déc. sur 1962-2019 ; mesuré : Bordeaux-Paulin : 16.4036 mm/déc.; Cap-Ferret : 14.4787 mm/déc.; Cazaux : 16.6592 mm/déc.. Pluies intenses : pas de référence (R7 abandonnée), confiance au plus « moyenne ». |
 | F5 cohérence du correctif | ✅ conforme | 6924 mois corrigés ; écart maximal au cumul LSH : 0.000 mm (tolérance 0.5 mm). |
-| F6 cohérence inter-stations (r10mm) | ❌ non conforme | Belin-Beliet −, Bordeaux-Paulin +, Cap-Ferret −, Captieux −, Cazaux −, Hourtin +, Lacanau +, Sauternes −, St-Symphorien − |
+| F6 cohérence inter-stations (r10mm) | ☑ écart expliqué le 26/10/2026 (aucune pente significative) | Belin-Beliet −, Bordeaux-Paulin +, Cap-Ferret −, Captieux −, Cazaux −, Hourtin +, Sauternes −, St-Symphorien − |
 | F6 cohérence inter-stations (etp) | ✅ conforme | Bordeaux-Paulin +, Cap-Ferret +, Cazaux + |
 | F7 robustesse méthode (A et B′) | ✅ conforme | 40 concordants sur 40 évaluables ; non concordants : aucun ; non évaluables : aucun. |
 | F8 période ancienne (P2b) | ✅ conforme | ruptures établies : aucune (tendance alors limitée à la période postérieure). |

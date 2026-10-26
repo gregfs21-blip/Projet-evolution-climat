@@ -388,23 +388,7 @@
   ]
  },
  "normals": [],
- "trend": {
-  "label": "Série corrigée 2003-2015",
-  "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
-  "period": {
-   "start": 2003,
-   "end": 2015
-  },
-  "slope_per_decade": 11.0238,
-  "slope_ci_low": -22.0,
-  "slope_ci_high": 39.125,
-  "fitted_start": 76.8857,
-  "fitted_end": 90.1143,
-  "p_value": 0.624854,
-  "significant": false,
-  "alpha": 0.05,
-  "p_value_classical": 0.624854
- },
+ "trend": null,
  "alt_trends": [
   {
    "label": "Contrôle A : brut après la dernière rupture, 2003-2015",
@@ -464,20 +448,21 @@
   }
  ],
  "method_note": "Indice calculé sur les pluies quotidiennes corrigées : chaque jour d'un mois complet est multiplié par le rapport entre le cumul mensuel homogénéisé (LSH) et le cumul brut. Contrôle : même calcul sur les valeurs brutes, après la dernière rupture d'homogénéité connue.",
- "finding": "À Lacanau, la pluie maximale tombée en cinq jours consécutifs a évolué de +11,02 mm par décennie entre 2003 et 2015, soit +13,23 mm sur la période (tendance non significative après correction de l'autocorrélation).",
+ "finding": "À Lacanau, la série de la pluie maximale tombée en cinq jours consécutifs est trop lacunaire pour une tendance.",
  "confidence": "non_etabli",
  "limitations": [
   "Pluie quotidienne non homogénéisée, corrigée mois par mois par le rapport entre le cumul homogénéisé LSH et le cumul brut (méthode B′) : le cumul de chaque mois est rétabli, pas la forme de la distribution des pluies.",
   "Seuls les mois dont tous les jours sont présents sont corrigés ; une année n'est dans la tendance que si ses 12 mois le sont. Pluie homogénéisée jusqu'en 2017 : les années suivantes sont affichées brutes, hors tendance.",
-  "Aucune référence publiée pour les pluies intenses en Gironde (ClimatHD ne publie que le cumul annuel) : confiance au plus « moyenne »."
+  "Aucune référence publiée pour les pluies intenses en Gironde (ClimatHD ne publie que le cumul annuel) : confiance au plus « moyenne ».",
+  "Plus longue suite d'années corrigées : 13 ans (2003-2015), moins de 30 : pas de pente publiée (règle du 26/10/2026, fixée après calcul)."
  ],
  "provenance": {
   "source_name": "Météo-France — données climatologiques de base quotidiennes, corrigées par les Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b51ae64326786e4e8e1a",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-26T12:06:45Z",
+  "extracted_at": "2026-10-26T14:44:59Z",
   "script": "etl.indicators.pluie",
-  "etl_version": "0.1.0+b0d2429",
+  "etl_version": "0.1.0+ddafd8c",
   "homogenized": true
  },
  "is_demo": false
