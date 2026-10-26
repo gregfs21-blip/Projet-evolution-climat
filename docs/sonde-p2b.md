@@ -1,6 +1,6 @@
 # Sonde P2b — disponibilité des données (généré)
 
-Généré par `python -m etl.probe.p2b` le 26/10/2026 11:51 UTC. Aucun indice calculé.
+Généré par `python -m etl.probe.p2b` le 26/10/2026 19:59 UTC. Aucun indice calculé.
 
 ## Pluie quotidienne et correction B′
 
