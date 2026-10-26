@@ -35,6 +35,7 @@ DEPARTMENT = "33"
 MIN_YEARS = 30                     # F1 : en dessous, poste exclu (justifié dans la validation)
 COMPOSITE_SPAN = Period(start=1961, end=2017)
 MIN_F8_YEARS = 15
+MIN_TREND_YEARS = 30               # décision de Grég du 26/10/2026, APRÈS calcul (Lacanau : 13 années consécutives)
 
 
 @dataclass(frozen=True)
@@ -248,7 +249,11 @@ def assemble(ctx: BuildContext, *, ind_id: str, idx: RainIndex, members: list[Ra
         lims.append(f"Contrôle de la période ancienne (F8) : {f8_result['detail']} ; tendance limitée à la période "
                     "postérieure.")
     run = X.longest_run(trend_years)
-    main = annual_trend(run, [series[y] for y in run], label=f"Série corrigée {run[0]}-{run[-1]}") if len(run) >= 10 else None
+    main = (annual_trend(run, [series[y] for y in run], label=f"Série corrigée {run[0]}-{run[-1]}")
+            if len(run) >= MIN_TREND_YEARS else None)
+    if main is None and run:
+        lims.append(f"Plus longue suite d'années corrigées : {len(run)} ans ({run[0]}-{run[-1]}), moins de "
+                    f"{MIN_TREND_YEARS} : pas de pente publiée (règle du 26/10/2026, fixée après calcul).")
     # Contrôle A : brut après la dernière rupture (de tous les membres), comparé à B′ sur les mêmes années.
     first = max((m.last_break_regime if m.last_break_regime is not None else min(m.status)) for m in members)
     end = max(hom) if hom else max(years)

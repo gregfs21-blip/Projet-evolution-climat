@@ -50,6 +50,9 @@ E5_TOLERANCE = 0.05     # °C
 ACCEPTED = {
     "E7 concordance des méthodes": "écart accepté le 23/10/2026",
     "E8 robustesse au code qualité 9": "écart accepté le 23/10/2026",
+    # Décision de Grég du 26/10/2026, APRÈS calcul : le contrôle F8 de P2b (diagnostic) ne trouve aucun défaut de
+    # correction à Cap-Ferret ni à Cazaux ; l'écart est attribué à la référence (seconde main, régionale, « côte » floue).
+    "E4 R3 littoral : journées chaudes (TX > 25 °C), littoral 1961-2010": "écart accepté le 26/10/2026 (référence en cause)",
 }
 P2A_VARIABLES = tuple(X.INDICES)
 OUT = ROOT / "docs" / "validation-p2a-resultats.md"
@@ -82,10 +85,10 @@ class Check:
 
 
 def external_validation_passed(raw_dir: Path = RAW_DIR) -> bool:
-    """E4. Faux tant que les références ne sont pas fixées."""
+    """E4, pour la règle de confiance. Un écart ACCEPTÉ ne compte pas : il clôt la phase, il ne relève pas la confiance."""
     if not REFERENCES:
         return False
-    return all(c.satisfied for c in _e4_cached(str(raw_dir)))
+    return all(c.passed for c in _e4_cached(str(raw_dir)))
 
 
 @lru_cache(maxsize=4)

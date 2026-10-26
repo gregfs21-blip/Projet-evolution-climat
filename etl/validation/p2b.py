@@ -27,6 +27,13 @@ OUT = ROOT / "docs" / "validation-p2b-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p2b.json"
 F5_TOLERANCE = 0.5        # mm
 
+# Écarts acceptés par Grég le 26/10/2026, APRÈS calcul (analyse : docs/validation-p2b.md). Un écart accepté compte
+# comme satisfait pour la clôture ; il ne relève pas la confiance des indicateurs concernés.
+ACCEPTED = {
+    "F4 validation externe (R6, ETP)": "écart accepté le 26/10/2026 (formule de Hargreaves)",
+    "F6 cohérence inter-stations (r10mm)": "écart expliqué le 26/10/2026 (aucune pente significative)",
+}
+
 
 @dataclass
 class Check:
@@ -35,11 +42,18 @@ class Check:
     satisfied: bool
     detail: str
 
+    def __post_init__(self):
+        self.passed = self.satisfied
+        if self.kind == "critère" and not self.passed and self.name in ACCEPTED:
+            self.satisfied = True
+
     @property
     def status(self) -> str:
         if self.kind != "critère":
             return "ℹ️ information"
-        return "✅ conforme" if self.satisfied else "❌ non conforme"
+        if self.passed:
+            return "✅ conforme"
+        return f"☑ {ACCEPTED[self.name]}" if self.name in ACCEPTED else "❌ non conforme"
 
 
 def load_indicators(out_dir: Path) -> list[Indicator]:

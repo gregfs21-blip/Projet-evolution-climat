@@ -7,7 +7,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
-| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a publiée, validation non close (E4 littoral) ; P2b en cours |
+| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
@@ -319,6 +319,17 @@ Fixées en écrivant le code (`etl/indicators/pluie.py`, `etl/indicators/eau.py`
 - **D-G** : référence R6 (ETP, [+16 ; +30] mm/déc., méthode différente assumée) ; R7 : consultation de ClimatHD
   par Grég, ou absence de référence.
 - **D-H** : critère F8, y compris en diagnostic sur P2a.
+
+### Décisions de Grég du 26/10/2026, APRÈS le premier calcul P2b
+
+Analyse : `docs/validation-p2b.md` et `docs/validation-p2a.md`.
+- **F4** (ETP de Cap-Ferret +14,5 mm/déc. pour [+16 ; +30]) : écart expliqué par la formule de Hargreaves, accepté.
+- **F6** (signes mélangés des jours ≥ 10 mm, aucune pente significative) : expliqué, accepté.
+- **P2a, E4 R3 littoral** : F8 ne trouve aucun défaut de correction ; écart attribué à la référence, accepté. Un
+  écart accepté clôt la phase mais ne relève pas la confiance (`external_validation_passed` exige une référence
+  réellement retrouvée).
+- **Règle nouvelle** : pas de pente pour un indice de pluie sur moins de 30 années consécutives corrigées (Lacanau).
+- P2a et P2b closes.
 
 ## Journal ergonomie (entre P1 et P2)
 
