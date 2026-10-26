@@ -1,6 +1,6 @@
 # Sonde Copernicus CDS — ERA5 niveaux de pression, moyennes mensuelles (généré)
 
-Généré par `python -m etl.probe.cds` le 26/10/2026 07:05 UTC. Aucun calcul : accès, délais et format constatés.
+Généré par `python -m etl.probe.cds` le 26/10/2026 09:07 UTC. Aucun calcul : accès, délais et format constatés.
 
 Jeu de données : `reanalysis-era5-pressure-levels-monthly-means`.
 
@@ -9,6 +9,8 @@ Clé présente dans l'environnement : **oui** (jamais affichée).
 ### 0. Travaux déjà soumis
 
 ```
+099ad076-6f8a-4146-bb3d-d2d42631e731 accepted créé 2026-10-26T07:05:32.931592 début None fin None
+3d621529-27a5-40d6-abff-945b68958c3b rejected créé 2026-10-26T07:05:31.705585 début None fin 2026-10-26T07:05:51.794875
 a1495af4-be1f-45e1-9dc1-cbe46880ddae rejected créé 2026-10-25T22:18:23.601726 début None fin 2026-10-25T22:18:36.631355
 dad5d85c-229f-4328-ba07-d521d5192dfb rejected créé 2026-10-25T22:15:27.161152 début None fin 2026-10-25T22:16:01.304708
 9df40ba6-dab8-4d70-a4e1-6ec34f933dd8 rejected créé 2026-10-25T21:58:21.967232 début None fin 2026-10-25T21:58:40.409205
@@ -39,14 +41,14 @@ dimensions : valid_time=1, pressure_level=3, latitude=3, longitude=3
 Résultat du travail 6bc350ea-8892-47fb-bc66-b6e779f28fd2 :
 non téléchargé : 78.6 Go (au-delà de 200 Mo, pas une requête de la sonde)
 0 ko, début b''
-lecture netCDF impossible : OSError [Errno -51] NetCDF: Unknown file format: '/tmp/tmpg6sb0qtj/6bc350ea-8892-47fb-bc66-b6e779f28fd2.nc'
+lecture netCDF impossible : OSError [Errno -51] NetCDF: Unknown file format: '/tmp/tmpvsqla9t2/6bc350ea-8892-47fb-bc66-b6e779f28fd2.nc'
 ```
 
 ### Soumission des requêtes utiles (sans attendre)
 
 ```
-bordeaux-1940-2025 : soumise, travail 3d621529-27a5-40d6-abff-945b68958c3b (accepted)
-atlantique-u250-1940-2025 : soumise, travail 099ad076-6f8a-4146-bb3d-d2d42631e731 (accepted)
+bordeaux-1940-2025 : soumise, travail b2cdd393-5e12-42df-bd0c-ecafde2be5ce (accepted)
+atlantique-u250-1940-2025 : déjà soumise
 ```
 
 Mode relevé : aucune requête bloquante (le CDS traite en plusieurs heures).
