@@ -163,7 +163,10 @@ MAX_PENDING = 4      # le CDS a rejeté la 5e requête en attente le 25/10/2026
 
 # Requêtes de test du 25/10/2026 (un mois, janvier 2024) restées en file : inutiles, elles occupent le quota de
 # requêtes en attente. Annulées (26/10/2026) pour laisser passer les requêtes utiles.
-OBSOLETE = ("14c71edd-e872-46c9-999b-41277d0bc5de", "55875211-dff8-4682-abca-59c589116bf2")
+OBSOLETE = ("14c71edd-e872-46c9-999b-41277d0bc5de", "55875211-dff8-4682-abca-59c589116bf2",
+            # Résultat de 78,6 Go du 25/10/2026 20:52 UTC : pas lancé par Grég (confirmé le 26/10), donc très
+            # probablement produit par la sonde (requête mal transmise par le client) ; jamais téléchargé, supprimé.
+            "6bc350ea-8892-47fb-bc66-b6e779f28fd2")
 
 
 def cancel_obsolete(md: list[str]) -> None:
