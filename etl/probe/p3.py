@@ -151,11 +151,40 @@ def psmsl(md):
                       + (f", {ok[0]}-{ok[-1]}" if ok else ""))
 
 
+def sonel_ids(md):
+    md += ["", "## 3b. SONEL : stations françaises et couverture"]
+    url = "https://erddap.ioc-sealevelmonitoring.org/erddap/tabledap/sonel_vlm_gnss_ulr7a.csv?stationid&distinct()"
+    st, data = get(url, timeout=120)
+    ids = [ln for ln in data.decode("utf-8", "replace").splitlines()[2:] if ln.endswith("fra")]
+    block(md, "Identifiants de stations (France)", url, st, [", ".join(ids)])
+    for sid in [i for i in ids if re.match(r"(?i)(ferr|arca|verd|roya|lroc|lrch|bayo|boca|boua|snaz|socb|sabl|aixi|bisc|brst|soul|cfer|capf)", i)]:
+        u = ("https://erddap.ioc-sealevelmonitoring.org/erddap/tabledap/sonel_vlm_gnss_ulr7a.csv?time,par&stationid=%22"
+             + sid + "%22")
+        st, data = get(u, timeout=120)
+        rows = data.decode("utf-8", "replace").splitlines()[2:]
+        md.append(f"- {sid} : {len(rows)} jours, {rows[0][:10] if rows else '—'} → {rows[-1][:10] if rows else '—'}")
+
+
+def cds_jobs(md):
+    md += ["", "## 5. Travaux CDS en cours"]
+    key = os.environ.get("CDSAPI_KEY", "")
+    st, data = get("https://cds.climate.copernicus.eu/api/retrieve/v1/jobs?limit=10", headers={"PRIVATE-TOKEN": key}, timeout=60)
+    try:
+        lines = [f"{j['jobID']} {j.get('processID')} {j['status']} créé {j.get('created')}" for j in json.loads(data)["jobs"]]
+    except Exception:  # noqa: BLE001
+        lines = [data[:500]]
+    block(md, "Travaux", "jobs", st, lines)
+
+
+STEPS = (sonel_ids, cds_jobs)   # 2e passage (27/10) : les étapes 1 à 4 ont été constatées au 1er passage
+OUT = ROOT / "docs" / "sonde-p3b.md"
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P3 — atmosphère et littoral Gironde (généré)", "",
           f"Généré par `python -m etl.probe.p3` le {now}. Aucun indicateur calculé."]
-    for step in (quot_other, sst, sonel, psmsl):
+    for step in STEPS:
         try:
             step(md)
         except Exception as exc:  # noqa: BLE001
