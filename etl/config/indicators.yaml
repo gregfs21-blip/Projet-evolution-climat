@@ -724,7 +724,6 @@ indicators:
       reference: *sst-ref
   - id: sst-gascogne-large-gironde
     scale: gironde
-    enabled: false    # activé quand le relevé Copernicus aura les deux boîtes
     # P3 (27/10/2026) : ERA5 single levels via Copernicus, en remplacement d'OISST (serveur ERDDAP injoignable).
     builder: etl.indicators.mer:build
     params:
@@ -734,7 +733,6 @@ indicators:
       description: Moyenne annuelle de la température de surface de la mer entre 44 et 46° N et entre 3 et 1° O, au large de la Gironde (réanalyse ERA5, Copernicus).
   - id: niveau-mer-large-gironde
     scale: gironde
-    enabled: false    # activé quand le relevé Copernicus aura l'altimétrie
     builder: etl.indicators.mer:build_alti
     params:
       label: le niveau moyen de la mer

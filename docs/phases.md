@@ -386,6 +386,13 @@ Analyse : `docs/validation-p2b.md` et `docs/validation-p2a.md`.
 un défaut grossier (rupture, dérive), mais ne constitue pas une validation indépendante. Il ne permet pas, à lui
 seul, la confiance « élevée ».
 
+### Relevés P3 (27/10/2026), contrôles avant activation, sans calcul de tendance
+
+- SST au large de la Gironde (ERA5) : 1940-2025, 63 mailles de mer chaque mois, moyennes annuelles 14,3 à 17,1 °C.
+- Altimétrie (C3S DT2024) : 1993-2025, 396 mois, 78 mailles chaque mois, moyennes annuelles −19 à + 132 mm. La
+  requête d'un seul tenant dépassait la limite de coût du CDS : relevé par tranches de 4 ans, réunies sans trou.
+- SST du golfe entier : encore en file chez Copernicus ; l'indicateur et la référence R8 attendent son relevé.
+
 ## Journal ergonomie (entre P1 et P2)
 
 - 23/10/2026 : refonte de l'affichage, sans changement de calcul ni de contrat des indicateurs (v1.1).
