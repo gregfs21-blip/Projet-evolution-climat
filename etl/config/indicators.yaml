@@ -740,7 +740,6 @@ indicators:
       description: Moyenne annuelle de l'anomalie du niveau de la mer mesurée par satellite entre 44 et 46,5° N et entre 3 et 1° O (produit Copernicus C3S, depuis 1993). Contrairement au marégraphe, elle ne dépend pas des mouvements du sol.
   - id: sst-golfe-gascogne
     scale: gironde
-    enabled: false    # activé quand le relevé Copernicus aura les deux boîtes
     builder: etl.indicators.mer:build
     params:
       box: sst-golfe-gascogne
