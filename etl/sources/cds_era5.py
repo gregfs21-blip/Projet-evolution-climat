@@ -21,6 +21,7 @@ import os
 import sys
 import tempfile
 import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -220,8 +221,11 @@ def _call(path: str, method: str = "GET", body: dict | None = None) -> dict:
                                  data=json.dumps(body).encode() if body is not None else None,
                                  headers={"PRIVATE-TOKEN": os.environ.get("CDSAPI_KEY", ""),
                                           "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read())
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return json.loads(r.read())
+    except urllib.error.HTTPError as exc:          # motif du refus (licence, quota…) dans le journal
+        raise RuntimeError(f"HTTP {exc.code} : {exc.read()[:400].decode('utf-8', 'replace')}") from exc
 
 
 def _same(a: dict, b: dict) -> bool:
@@ -266,39 +270,47 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
     m = meta(out_dir)
     ds_of = datasets()
     for name, req in requests().items():
-        dataset = ds_of.get(name, DATASET)
-        mine = [j for j in jobs if j["jobID"] in details and j.get("processID", dataset) == dataset
-                and _same(details[j["jobID"]], req)]
-        done = sorted((j for j in mine if j["status"] == "successful"), key=lambda j: j.get("finished") or "")
-        if done:
-            job = done[-1]
-            if m.get(name, {}).get("job") == job["jobID"]:
-                log.append(f"{name} : à jour (travail {job['jobID']})")
-                continue
-            with tempfile.TemporaryDirectory() as tmp:
-                path = Path(tmp) / "r.nc"
-                href = _call(f"jobs/{job['jobID']}/results")["asset"]["value"]["href"]
-                _download(href, path)
-                if name == "alti-gironde":
-                    rows = extract_alti(path)
-                else:
-                    arrays = read_nc(path)
-                    rows = (extract_point(arrays, *BORDEAUX) if name == "bordeaux"
-                            else extract_area_mean(arrays) if name in SST_BOXES else extract_zonal(arrays))
-            _write_csv(out_dir / f"{name}.csv", rows)
-            m[name] = {"job": job["jobID"], "finished": job.get("finished"), "rows": len(rows),
-                       "years": [req["year"][0], req["year"][-1]], "collected": datetime.now(timezone.utc).isoformat()}
-            log.append(f"{name} : relevé, {len(rows)} lignes (travail {job['jobID']})")
-        elif any(j["status"] in ("accepted", "running") for j in mine):
-            log.append(f"{name} : en file chez Copernicus")
-        elif len(pending) >= MAX_PENDING:
-            log.append(f"{name} : non soumise, {len(pending)} requêtes déjà en attente")
-        else:
-            job = _call(f"processes/{dataset}/execution", "POST", {"inputs": req})
-            pending.append(job)
-            log.append(f"{name} : soumise (travail {job.get('jobID')})")
+        try:
+            log.append(_one(name, req, ds_of.get(name, DATASET), jobs, details, pending, m, out_dir))
+        except Exception as exc:  # noqa: BLE001 — une requête en échec ne bloque pas les autres
+            msg = f"{name} : ÉCHEC {type(exc).__name__} {str(exc)[:400]}"
+            log.append(msg)
+            if os.environ.get("GITHUB_ACTIONS") == "true":
+                print(f"::error title=Copernicus {name}::{msg}", flush=True)
     (out_dir / "meta.json").write_text(json.dumps(m, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     return log
+
+
+def _one(name: str, req: dict, dataset: str, jobs: list, details: dict, pending: list, m: dict, out_dir: Path) -> str:
+    mine = [j for j in jobs if j["jobID"] in details and j.get("processID", dataset) == dataset
+            and _same(details[j["jobID"]], req)]
+    done = sorted((j for j in mine if j["status"] == "successful"), key=lambda j: j.get("finished") or "")
+    if done:
+        job = done[-1]
+        if m.get(name, {}).get("job") == job["jobID"]:
+            return f"{name} : à jour (travail {job['jobID']})"
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "r.nc"
+            href = _call(f"jobs/{job['jobID']}/results")["asset"]["value"]["href"]
+            _download(href, path)
+            if name == "alti-gironde":
+                rows = extract_alti(path)
+            else:
+                arrays = read_nc(path)
+                rows = (extract_point(arrays, *BORDEAUX) if name == "bordeaux"
+                        else extract_area_mean(arrays) if name in SST_BOXES else extract_zonal(arrays))
+        _write_csv(out_dir / f"{name}.csv", rows)
+        m[name] = {"job": job["jobID"], "finished": job.get("finished"), "rows": len(rows),
+                   "years": [req["year"][0], req["year"][-1]], "collected": datetime.now(timezone.utc).isoformat()}
+        return f"{name} : relevé, {len(rows)} lignes (travail {job['jobID']})"
+    elif any(j["status"] in ("accepted", "running") for j in mine):
+        return f"{name} : en file chez Copernicus"
+    elif len(pending) >= MAX_PENDING:
+        return f"{name} : non soumise, {len(pending)} requêtes déjà en attente"
+    else:
+        job = _call(f"processes/{dataset}/execution", "POST", {"inputs": req})
+        pending.append(job)
+        return f"{name} : soumise (travail {job.get('jobID')})"
 
 
 def main() -> int:
