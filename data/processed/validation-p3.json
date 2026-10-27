@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p3",
-  "generated_at": "2026-10-27T23:06:28Z",
+  "generated_at": "2026-10-27T23:16:13Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
@@ -10,15 +10,16 @@
     "niveau-mer-large-gironde",
     "pression-bordeaux-era5",
     "rafale-max-bordeaux-era5",
-    "sst-gascogne-large-gironde"
+    "sst-gascogne-large-gironde",
+    "sst-golfe-gascogne"
   ],
   "checks": [
     {
       "name": "H1 exhaustivité",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "6 indicateurs sur 7 ; manquants : sst-golfe-gascogne"
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "7 indicateurs sur 7"
     },
     {
       "name": "H2 complétude",
@@ -37,9 +38,9 @@
     {
       "name": "H4 validation externe (R8, SST du golfe)",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "attendu [+0,21 ; +0,31] °C/déc. sur 1982-2014 ; mesuré : —"
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "attendu [+0,21 ; +0,31] °C/déc. sur 1982-2014 ; mesuré : 0.2184"
     },
     {
       "name": "H5 contrôle croisé (pression)",
@@ -65,8 +66,8 @@
     {
       "name": "H7 plausibilité",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
+      "status": "✅ conforme",
+      "satisfied": true,
       "detail": "Bornes contrôlées à la construction (un dépassement empêche la publication)."
     },
     {

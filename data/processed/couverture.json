@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-27T23:04:19Z",
+ "generated_at": "2026-10-27T23:13:12Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -367,6 +367,11 @@
        "id": "sst-gascogne-large-gironde",
        "title": "Température de surface de la mer au large de la Gironde (ERA5)",
        "confidence": "moyenne"
+      },
+      {
+       "id": "sst-golfe-gascogne",
+       "title": "Température de surface du golfe de Gascogne (ERA5)",
+       "confidence": "elevee"
       }
      ]
     },

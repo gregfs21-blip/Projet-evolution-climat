@@ -380,9 +380,9 @@
   "source_name": "ECMWF / Copernicus — ERA5, moyennes mensuelles (single levels, Climate Data Store)",
   "source_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means",
   "license": "Licence d'utilisation des produits Copernicus (CC BY 4.0)",
-  "extracted_at": "2026-10-27T23:01:21Z",
+  "extracted_at": "2026-10-27T23:09:00Z",
   "script": "etl.indicators.mer",
-  "etl_version": "0.1.0+3a4fb58",
+  "etl_version": "0.1.0+00610d8",
   "homogenized": false
  },
  "is_demo": false
