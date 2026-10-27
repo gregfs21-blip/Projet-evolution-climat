@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-25T09:36:23Z",
+ "generated_at": "2026-10-27T06:36:23Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -403,6 +403,16 @@
        "id": "t500-bordeaux-merignac",
        "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)",
        "confidence": "faible"
+      },
+      {
+       "id": "t850-bordeaux-era5",
+       "title": "Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (réanalyse ERA5)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "t500-bordeaux-era5",
+       "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (réanalyse ERA5)",
+       "confidence": "moyenne"
       }
      ]
     },
@@ -640,10 +650,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "ERA5 vent à 250 hPa (compte Copernicus gratuit)",
+     "status": "publie",
+     "source": "ERA5 vent à 850 hPa, indice de Woollings (Copernicus CDS)",
      "note": "Littérature contradictoire : statut « signal non établi » attendu.",
-     "indicators": []
+     "indicators": [
+      {
+       "id": "jet-vitesse-monde",
+       "title": "Vitesse du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -653,10 +669,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "ERA5 vent à 250 hPa, latitude du maximum (Atlantique Nord)",
+     "status": "publie",
+     "source": "ERA5 vent à 850 hPa, latitude du maximum, indice de Woollings (Atlantique Nord, Copernicus CDS)",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "jet-latitude-monde",
+       "title": "Latitude du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -674,6 +696,11 @@
        "id": "z500-bordeaux-merignac",
        "title": "Géopotentiel 500 hPa au-dessus de Bordeaux (radiosondages bruts)",
        "confidence": "non_etabli"
+      },
+      {
+       "id": "z500-bordeaux-era5",
+       "title": "Géopotentiel 500 hPa au-dessus de Bordeaux (réanalyse ERA5)",
+       "confidence": "moyenne"
       }
      ]
     },

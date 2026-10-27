@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-25T09:36:23Z",
- "etl_version": "0.1.0+6a3c53e",
+ "generated_at": "2026-10-27T06:36:23Z",
+ "etl_version": "0.1.0+b66e30a",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -2185,6 +2185,121 @@
    "place": {
     "id": "france",
     "name": "France",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "t850-bordeaux-era5",
+   "scale": "gironde",
+   "title": "Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (réanalyse ERA5)",
+   "unit": "°C",
+   "path": "gironde/t850-bordeaux-era5.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Température en altitude",
+   "variable": {
+    "id": "t850",
+    "code": "T850",
+    "label": "température à 850 hPa (environ 1 500 m)",
+    "theme": "altitude",
+    "theme_label": "Température en altitude",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-era5",
+    "name": "Bordeaux (ERA5)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "t500-bordeaux-era5",
+   "scale": "gironde",
+   "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (réanalyse ERA5)",
+   "unit": "°C",
+   "path": "gironde/t500-bordeaux-era5.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Température en altitude",
+   "variable": {
+    "id": "t500",
+    "code": "T500",
+    "label": "température à 500 hPa (environ 5 500 m)",
+    "theme": "altitude",
+    "theme_label": "Température en altitude",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-era5",
+    "name": "Bordeaux (ERA5)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "z500-bordeaux-era5",
+   "scale": "gironde",
+   "title": "Géopotentiel 500 hPa au-dessus de Bordeaux (réanalyse ERA5)",
+   "unit": "m",
+   "path": "gironde/z500-bordeaux-era5.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Géopotentiel",
+   "variable": {
+    "id": "z500",
+    "code": "Z500",
+    "label": "altitude de la surface 500 hPa (géopotentiel)",
+    "theme": "geopotentiel",
+    "theme_label": "Géopotentiel",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-era5",
+    "name": "Bordeaux (ERA5)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "jet-vitesse-monde",
+   "scale": "monde",
+   "title": "Vitesse du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)",
+   "unit": "m/s",
+   "path": "monde/jet-vitesse-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Jet stream (Atlantique Nord, hiver)",
+   "variable": {
+    "id": "jet-vitesse",
+    "code": "Vitesse",
+    "label": "vitesse du jet stream en hiver (850 hPa)",
+    "theme": "jet-stream",
+    "theme_label": "Jet stream (Atlantique Nord, hiver)",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Atlantique Nord",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jet-latitude-monde",
+   "scale": "monde",
+   "title": "Latitude du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)",
+   "unit": "°N",
+   "path": "monde/jet-latitude-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Jet stream (Atlantique Nord, hiver)",
+   "variable": {
+    "id": "jet-latitude",
+    "code": "Latitude",
+    "label": "latitude du jet stream en hiver (850 hPa)",
+    "theme": "jet-stream",
+    "theme_label": "Jet stream (Atlantique Nord, hiver)",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Atlantique Nord",
     "kind": "composite"
    }
   }

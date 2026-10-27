@@ -242,9 +242,9 @@
   "source_name": "NSIDC — Sea Ice Index v4, banquise arctique en septembre",
   "source_url": "https://nsidc.org/data/g02135",
   "license": "Libre, citation demandée (NSIDC)",
-  "extracted_at": "2026-10-25T09:33:25Z",
+  "extracted_at": "2026-10-27T06:33:13Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+6a3c53e",
+  "etl_version": "0.1.0+b66e30a",
   "homogenized": true
  },
  "is_demo": false
