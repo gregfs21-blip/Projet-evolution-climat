@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "phase": "p3",
+  "generated_at": "2026-10-27T23:06:28Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "indicators": [
+    "humidite-bordeaux-era5",
+    "jours-vent-fort-bordeaux-era5",
+    "niveau-mer-large-gironde",
+    "pression-bordeaux-era5",
+    "rafale-max-bordeaux-era5",
+    "sst-gascogne-large-gironde"
+  ],
+  "checks": [
+    {
+      "name": "H1 exhaustivité",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "6 indicateurs sur 7 ; manquants : sst-golfe-gascogne"
+    },
+    {
+      "name": "H2 complétude",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Appliquée par le code : mois ETCCDI et années de 12 mois (stations), années complètes (ERA5, altimétrie)."
+    },
+    {
+      "name": "H3 brut ≠ homogénéisé",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Les mesures de station ne portent aucune tendance publiée ; elles servent au seul contrôle H5."
+    },
+    {
+      "name": "H4 validation externe (R8, SST du golfe)",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "attendu [+0,21 ; +0,31] °C/déc. sur 1982-2014 ; mesuré : —"
+    },
+    {
+      "name": "H5 contrôle croisé (pression)",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Bordeaux-Mérignac : 1971-2025 : écart moyen -0.35, pente +0.024/déc. (p = 0.419) : conforme ; Cazaux : 1950-1990 : écart moyen -0.77, pente +0.051/déc. (p = 0.439) : conforme"
+    },
+    {
+      "name": "H5 contrôle croisé (humidite)",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "Bordeaux-Mérignac : 1981-2025 : écart moyen -0.81, pente +0.637/déc. (p = 0.005) : NON conforme ; Cazaux : 15 années communes seulement"
+    },
+    {
+      "name": "H6 cohérence entre stations",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "pression : même comportement ; humidite : même comportement"
+    },
+    {
+      "name": "H7 plausibilité",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "Bornes contrôlées à la construction (un dépassement empêche la publication)."
+    },
+    {
+      "name": "Vent : ERA5 et mesure (information)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "corrélation interannuelle des jours de vent fort, ERA5 contre rafales mesurées à Mérignac (≥ 16 m/s, brutes) : r = 0.58 sur 75 ans"
+    },
+    {
+      "name": "H8 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests, CI et contrat vérifiés par les workflows."
+    }
+  ]
+}
