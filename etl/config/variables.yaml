@@ -23,6 +23,8 @@ themes:
   geopotentiel: Géopotentiel
   catastrophes: Catastrophes naturelles (arrêtés CatNat)
   jet-stream: Jet stream (Atlantique Nord, hiver)
+  pluies-intenses: Pluies intenses
+  secheresse: Demande en eau et sécheresse
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -72,3 +74,12 @@ variables:
 # --- ERA5 niveaux de pression (Copernicus CDS, 26/10/2026)
   jet-vitesse: {code: Vitesse, label: "vitesse du jet stream en hiver (850 hPa)", theme: jet-stream, order: 0}
   jet-latitude: {code: Latitude, label: "latitude du jet stream en hiver (850 hPa)", theme: jet-stream, order: 1}
+# --- P2b (critères validés le 26/10/2026)
+  r10mm: {code: RR ≥ 10, label: "jours de pluie ≥ 10 mm", theme: pluies-intenses, order: 0}
+  r20mm: {code: RR ≥ 20, label: "jours de pluie ≥ 20 mm", theme: pluies-intenses, order: 1}
+  rx1day: {code: RX1j, label: "pluie maximale en un jour", theme: pluies-intenses, order: 2}
+  rx5day: {code: RX5j, label: "pluie maximale en cinq jours", theme: pluies-intenses, order: 3}
+  etp: {code: ETP, label: "évapotranspiration potentielle (Hargreaves)", theme: secheresse, order: 0}
+  bilan-hydrique: {code: P − ETP, label: "bilan climatique pluie − ETP", theme: secheresse, order: 1}
+  spei12: {code: SPEI-12, label: "indice de sécheresse SPEI à 12 mois", theme: secheresse, order: 2}
+  mois-secs: {code: Mois secs, label: "mois secs (SPEI-3 ≤ −1)", theme: secheresse, order: 3}

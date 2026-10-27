@@ -7,7 +7,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 |---|---|---|---|
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
-| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul | P2a en cours |
+| P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
@@ -219,6 +219,117 @@ satisfaits, et indice non rare (E9).
 
 Pour le gel, une baisse traduit un réchauffement : la légende de l'échelle de couleur (bleu = baisse) devra
 le dire. Unité de tendance « jours/décennie » à ajouter à `web/lib/heat.ts` avec sa propre saturation.
+
+## P2b — Critères de clôture (proposés et validés le 26/10/2026, avant tout calcul)
+
+> **Décisions de Grég du 26/10/2026, avant tout calcul** : D-E périmètre et indices validés tels quels ; D-F
+> correction multiplicative B′ avec contrôle A validée ; D-G référence R6 (ETP) acceptée avec sa limite de méthode,
+> **R7 (pluies intenses) : Grég consulte ClimatHD** — aucun indice de pluie intense ne sera calculé avant que R7 soit
+> fixée (ou abandonnée) et commitée ; D-H critère F8 appliqué à P2b et, en diagnostic, à P2a.
+>
+> **R7 abandonnée (Grég, 26/10/2026, avant tout calcul)** : ClimatHD n'affiche pour la région que le cumul annuel
+> (captures de Sauternes, Pau-Uzein, Dax, Agen : pas d'indicateur de pluies fortes). Les indices de pluie intense
+> n'ont donc pas de référence externe : confiance au plus « moyenne ». Les captures recoupent les cumuls annuels
+> (Sauternes : moyenne glissante proche de 100 % de la normale sur 1959-2025), mais ces cumuls étant déjà calculés,
+> ce recoupement n'a pas valeur de validation en aveugle. Déjà publiés hors P2b (méthode « largeur d'abord », non recalculés) :
+> cumuls annuels de pluie (LSH RR, 9 postes et composite, référence « pas de tendance significative » fixée le
+> 23/10/2026) et insolation de Mérignac (LSH IN, 1931-2014, sans référence).
+
+### Précisions de mise en œuvre (26/10/2026, avant tout calcul d'indice)
+
+Fixées en écrivant le code (`etl/indicators/pluie.py`, `etl/indicators/eau.py`), avant toute exécution :
+- **B′ exige des mois complets** (tous les jours présents) : avec des jours absents, le rapport LSH ÷ brut
+  attribuerait la pluie des jours manquants aux jours présents et fausserait les maxima. C'est plus strict que la
+  règle ETCCDI de F2 ; une année complète au sens ETCCDI mais non entièrement corrigeable est affichée brute.
+- **F1** : un poste est retenu s'il a au moins 30 années corrigeables ; composite à réseau constant sur 1961-2017
+  (au moins 3 postes), sinon composite exclu avec motif. Les postes retenus sont lus dans une sonde de
+  disponibilité (`docs/sonde-p2b.md`), qui ne calcule aucun indice.
+- **F8** : écart du poste à la moyenne des autres postes retenus, années antérieures à sa dernière rupture LSH,
+  au moins 15 années ; rupture « établie » si significative aussi après retrait de la tendance ; sans rupture LSH,
+  « sans objet ».
+- **F9** ne s'applique qu'aux indices de jours (R10mm, R20mm), comme E9. Conséquence assumée : la pluie n'étant
+  homogénéisée que jusqu'en 2017, la normale 1991-2020 est toujours incomplète ; un indice rare n'a donc ni pente
+  mise en avant ni écart entre normales : « non établi ».
+- **Mois secs (SPEI-3 ≤ −1)** : compte de mois, hors F9 ; tendance calculée normalement.
+- **Loi du SPEI** : log-logistique à 3 paramètres dans la forme de Hosking (logistique généralisée), ajustée par
+  L-moments non biaisés, comme le recommandent Beguería et al. (2014) ; la paramétrisation d'origine de
+  Vicente-Serrano (2010) dégénère pour des bilans peu asymétriques (constaté sur données synthétiques).
+- **SPEI** : calé et calculé sur les seuls mois homogénéisés (pluie et températures) ; un mois manquant interrompt
+  les cumuls de 3 ou 12 mois (aucune valeur complétée).
+
+### Périmètre
+
+- **Pluies intenses** (indices ETCCDI, données quotidiennes) : jours de pluie ≥ 10 mm (R10mm), jours ≥ 20 mm
+  (R20mm), cumul maximal en 1 jour (RX1day) et en 5 jours consécutifs (RX5day). Postes : ceux des 9 séries LSH RR
+  qui ont aussi un quotidien RR couvrant leur période homogénéisée (attendus d'après `docs/sonde-p2.md` :
+  Bordeaux-Paulin, Lacanau, Cap-Ferret, Sauternes, Cazaux, Captieux ; Hourtin, Belin-Béliet et Saint-Symphorien
+  à vérifier, le quotidien semblant plus court ou porté par un autre numéro de poste) ; composite à réseau constant.
+- **Demande en eau et sécheresse** (données mensuelles LSH, toutes homogénéisées) : ETP de Hargreaves (TN, TX),
+  bilan climatique P − ETP, SPEI à 3 et 12 mois. Postes ayant TN, TX et RR homogénéisés : Bordeaux-Paulin,
+  Cap-Ferret, Cazaux, 1962-2017 (fin de l'homogénéisation RR).
+- **Contrôle de la correction sur la période ancienne** (dette de P2a) : appliqué aux nouveaux indices ET, à titre
+  de diagnostic, aux 5 indices de température de P2a (en particulier l'écart E4 littoral).
+
+### Méthodes proposées
+
+- **Correction du quotidien de pluie (méthode B′, multiplicative)** : chaque jour d'un mois est multiplié par
+  LSH homogénéisé ÷ cumul brut du mois. Un mois sans pluie brute mais avec un cumul LSH positif (ou l'inverse) n'est
+  pas corrigeable : il est compté manquant. Contrôle A : brut après la dernière rupture LSH RR du poste. Résultat
+  principal B′, publié seulement si A et B′ concordent (même règle que la méthode C de P2a).
+- **ETP de Hargreaves** (FAO-56, éq. 52) au pas mensuel : 0,0023 × Ra × (TM + 17,8) × √(TX − TN), Ra calculé
+  à partir de la latitude du poste et du jour médian du mois.
+- **SPEI** (Vicente-Serrano et al., 2010) : P − ETP cumulé sur 3 et 12 mois, loi log-logistique ajustée par
+  L-moments pour chaque mois calendaire sur 1962-2017. Indicateurs publiés : SPEI-12 de décembre (bilan de l'année)
+  et nombre de mois par an où SPEI-3 ≤ −1 (mois secs).
+
+### Références externes proposées (à fixer avant calcul)
+
+| # | Énoncé publié | Source | Contrôle proposé |
+|---|---|---|---|
+| R5 | Cumul annuel : tendances « pas statistiquement significatives », « pas de tendance marquée, à la hausse ou à la baisse » en Nouvelle-Aquitaine (séries homogénéisées Météo-France, 1959-2019) | ORACLE Nouvelle-Aquitaine 2020, Chambres d'agriculture, p. 47 | Seconde source concordante avec la référence déjà fixée le 23/10/2026 pour les cumuls ; **aucun nouveau contrôle** (les cumuls sont déjà calculés : ajouter une référence après coup ne serait plus « en aveugle ») |
+| R6 | ETP annuelle : + 24 mm par décennie en Gironde ; + 95 à + 183 mm en 60 ans selon les départements de Nouvelle-Aquitaine (chaîne SIM de Météo-France, 1959-2019) | ORACLE 2020, p. 61 | Pente de l'ETP de Hargreaves, 1962-2019, dans **[+16 ; +30] mm/déc.** (fourchette des départements). Limite : méthode différente (Hargreaves, température seule, contre Penman-Monteith dans SIM) |
+| R7 | Pluies intenses en Gironde | **Aucune source trouvée** | Proposition : Grég consulte ClimatHD (Nouvelle-Aquitaine, « précipitations ») comme pour R3/R4 ; à défaut, pas de référence et confiance au plus « moyenne » |
+
+### Critères proposés
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| F1 | Exhaustivité | Tous les postes du périmètre × tous les indices ; toute exclusion justifiée par écrit (ex. quotidien trop court) |
+| F2 | Complétude | Quotidien : règle ETCCDI de P2a (mois manquant au-delà de 3 jours absents) ; mensuel : une année exige ses 12 mois ; SPEI-12 exige 12 mois consécutifs. Aucune valeur complétée |
+| F3 | Brut ≠ homogénéisé | Années après 2017 (fin de l'homogénéisation RR) affichées brutes, exclues des tendances et normales (règle C2) |
+| F4 | Validation externe | R6 pour l'ETP ; R7 pour les pluies intenses si Grég la fixe ; sinon confiance au plus « moyenne » |
+| F5 | Cohérence du correctif | Après B′, la somme des jours corrigés reproduit le cumul mensuel LSH à 0,5 mm près pour chaque mois corrigé (contrôle automatique) |
+| F6 | Cohérence inter-stations | Même signe de tendance à tous les postes pour R10mm et pour l'ETP ; tout signe opposé expliqué |
+| F7 | Robustesse méthode | A et B′ : même signe et intervalles de confiance qui se recouvrent, pour chaque poste et chaque indice de pluie |
+| F8 | **Période ancienne (nouveau)** | Pour chaque poste et indice corrigé : test de Pettitt sur la série des écarts au composite des autres postes, avant la dernière rupture LSH. Aucune rupture établie (significative aussi après retrait de la tendance) ; sinon tendance limitée à la période postérieure et confiance au plus « moyenne ». Appliqué aussi, en diagnostic, aux indices de P2a |
+| F9 | Indices rares | Même règle que E9 (médiane 1961-1990 < 5 → écart entre normales, confiance au plus « moyenne ») ; concerne probablement R20mm sur certains postes |
+| F10 | Contrôle du SPEI | Sur 1962-2017, moyenne de chaque SPEI à ±0,05 et écart-type à ±0,1 de 0 et 1 (contrôle de l'ajustement) |
+| F11 | Technique | Tests et CI verts, contrat à jour, vocabulaire complété, pages déployées |
+
+**Règle de confiance proposée** : « élevée » seulement si Hamed-Rao significatif, référence externe satisfaite
+(F4), F7 et F8 satisfaits, et indice non rare (F9). Sans référence fixée : au plus « moyenne ».
+
+**Règle de clôture** : identique à P1 et P2a (critères satisfaits, ou chaque échec expliqué dans
+`docs/validation-p2b.md` et accepté par Grég).
+
+### Décisions demandées à Grég
+
+- **D-E** : périmètre et indices (R10mm, R20mm, RX1day, RX5day ; ETP, P − ETP, SPEI-3 et SPEI-12).
+- **D-F** : correction multiplicative B′ avec contrôle A (comme la méthode C de P2a).
+- **D-G** : référence R6 (ETP, [+16 ; +30] mm/déc., méthode différente assumée) ; R7 : consultation de ClimatHD
+  par Grég, ou absence de référence.
+- **D-H** : critère F8, y compris en diagnostic sur P2a.
+
+### Décisions de Grég du 26/10/2026, APRÈS le premier calcul P2b
+
+Analyse : `docs/validation-p2b.md` et `docs/validation-p2a.md`.
+- **F4** (ETP de Cap-Ferret +14,5 mm/déc. pour [+16 ; +30]) : écart expliqué par la formule de Hargreaves, accepté.
+- **F6** (signes mélangés des jours ≥ 10 mm, aucune pente significative) : expliqué, accepté.
+- **P2a, E4 R3 littoral** : F8 ne trouve aucun défaut de correction ; écart attribué à la référence, accepté. Un
+  écart accepté clôt la phase mais ne relève pas la confiance (`external_validation_passed` exige une référence
+  réellement retrouvée).
+- **Règle nouvelle** : pas de pente pour un indice de pluie sur moins de 30 années consécutives corrigées (Lacanau).
+- P2a et P2b closes.
 
 ## Journal ergonomie (entre P1 et P2)
 

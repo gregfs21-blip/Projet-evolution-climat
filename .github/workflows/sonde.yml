@@ -20,7 +20,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-24.04   # épinglé, comme l'ETL
-    timeout-minutes: 90
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -34,14 +34,9 @@ jobs:
           path: data/raw
           key: raw-${{ github.run_id }}
           restore-keys: raw-
-      - name: Sonde Copernicus CDS (ERA5 niveaux de pression)
-        env:
-          CDSAPI_URL: https://cds.climate.copernicus.eu/api
-          CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # secret du dépôt, jamais affiché
-        run: python -m etl.probe.cds
-        timeout-minutes: 75
+      - name: Sonde P2b (disponibilité des données, aucun indice)
+        run: python -m etl.probe.p2b
       - name: Publication du rapport
-        if: always()   # le rapport partiel est publié même si la sonde s'interrompt
         run: |
           git config user.name "etl-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

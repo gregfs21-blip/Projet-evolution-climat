@@ -965,3 +965,215 @@ indicators:
       limitations:
       - 'Une seule latitude pour tout l''hiver et tout le bassin : un jet dédoublé ou très incliné est mal résumé.'
       - 'Les tendances publiées du jet nord-atlantique divergent selon l''indice, le niveau et la période ; aucune référence n''est fixée.'
+  # --- P2b : pluies intenses (critères F1-F11 validés le 26/10/2026 avant tout calcul ; postes retenus par la
+  # sonde de disponibilité docs/sonde-p2b.md, qui ne calcule aucun indice).
+  - id: r10mm-gironde
+    scale: gironde
+    builder: etl.indicators.pluie:build_composite
+    params: {index: r10mm}
+  - id: r20mm-gironde
+    scale: gironde
+    builder: etl.indicators.pluie:build_composite
+    params: {index: r20mm}
+  - id: rx1day-gironde
+    scale: gironde
+    builder: etl.indicators.pluie:build_composite
+    params: {index: rx1day}
+  - id: rx5day-gironde
+    scale: gironde
+    builder: etl.indicators.pluie:build_composite
+    params: {index: rx5day}
+  - id: r10mm-belin-beliet
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33042001'}
+  - id: r10mm-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33063001'}
+  - id: r10mm-captieux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33095001'}
+  - id: r10mm-hourtin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33203001'}
+  - id: r10mm-lacanau
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33214002'}
+  - id: r10mm-cap-ferret
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33236002'}
+  - id: r10mm-st-symphorien
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33484001'}
+  - id: r10mm-sauternes
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33504001'}
+  - id: r10mm-cazaux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r10mm, poste: '33529001'}
+  - id: r20mm-belin-beliet
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33042001'}
+  - id: r20mm-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33063001'}
+  - id: r20mm-captieux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33095001'}
+  - id: r20mm-hourtin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33203001'}
+  - id: r20mm-lacanau
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33214002'}
+  - id: r20mm-cap-ferret
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33236002'}
+  - id: r20mm-st-symphorien
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33484001'}
+  - id: r20mm-sauternes
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33504001'}
+  - id: r20mm-cazaux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: r20mm, poste: '33529001'}
+  - id: rx1day-belin-beliet
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33042001'}
+  - id: rx1day-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33063001'}
+  - id: rx1day-captieux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33095001'}
+  - id: rx1day-hourtin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33203001'}
+  - id: rx1day-lacanau
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33214002'}
+  - id: rx1day-cap-ferret
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33236002'}
+  - id: rx1day-st-symphorien
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33484001'}
+  - id: rx1day-sauternes
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33504001'}
+  - id: rx1day-cazaux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx1day, poste: '33529001'}
+  - id: rx5day-belin-beliet
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33042001'}
+  - id: rx5day-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33063001'}
+  - id: rx5day-captieux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33095001'}
+  - id: rx5day-hourtin
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33203001'}
+  - id: rx5day-lacanau
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33214002'}
+  - id: rx5day-cap-ferret
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33236002'}
+  - id: rx5day-st-symphorien
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33484001'}
+  - id: rx5day-sauternes
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33504001'}
+  - id: rx5day-cazaux
+    scale: gironde
+    builder: etl.indicators.pluie:build_station
+    params: {index: rx5day, poste: '33529001'}
+
+  # --- P2b : demande en eau et sécheresse (LSH mensuel, Bordeaux-Paulin, Cap-Ferret, Cazaux)
+  - id: etp-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: etp, poste: '33063001'}
+  - id: etp-cap-ferret
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: etp, poste: '33236002'}
+  - id: etp-cazaux
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: etp, poste: '33529001'}
+  - id: bilan-hydrique-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: bilan-hydrique, poste: '33063001'}
+  - id: bilan-hydrique-cap-ferret
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: bilan-hydrique, poste: '33236002'}
+  - id: bilan-hydrique-cazaux
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: bilan-hydrique, poste: '33529001'}
+  - id: spei12-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: spei12, poste: '33063001'}
+  - id: spei12-cap-ferret
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: spei12, poste: '33236002'}
+  - id: spei12-cazaux
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: spei12, poste: '33529001'}
+  - id: mois-secs-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: mois-secs, poste: '33063001'}
+  - id: mois-secs-cap-ferret
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: mois-secs, poste: '33236002'}
+  - id: mois-secs-cazaux
+    scale: gironde
+    builder: etl.indicators.eau:build
+    params: {variable: mois-secs, poste: '33529001'}

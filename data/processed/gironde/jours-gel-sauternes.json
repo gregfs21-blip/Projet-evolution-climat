@@ -585,9 +585,9 @@
   "source_name": "Météo-France — données climatologiques de base quotidiennes, corrigées par les Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b51ae64326786e4e8e1a",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-27T06:33:13Z",
+  "extracted_at": "2026-10-26T14:44:59Z",
   "script": "etl.indicators.extremes",
-  "etl_version": "0.1.0+b66e30a",
+  "etl_version": "0.1.0+ddafd8c",
   "homogenized": true
  },
  "is_demo": false

@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-27T06:36:23Z",
+ "generated_at": "2026-10-26T14:49:16Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -403,16 +403,6 @@
        "id": "t500-bordeaux-merignac",
        "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (radiosondages bruts)",
        "confidence": "faible"
-      },
-      {
-       "id": "t850-bordeaux-era5",
-       "title": "Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (réanalyse ERA5)",
-       "confidence": "moyenne"
-      },
-      {
-       "id": "t500-bordeaux-era5",
-       "title": "Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (réanalyse ERA5)",
-       "confidence": "moyenne"
       }
      ]
     },
@@ -489,7 +479,7 @@
     {
      "scale": "gironde",
      "status": "publie",
-     "source": "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien",
+     "source": "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien corrigé (P2b)",
      "note": null,
      "indicators": [
       {
@@ -540,6 +530,206 @@
       {
        "id": "rr-cumul-cazaux",
        "title": "Précipitations annuelles à Cazaux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-gironde",
+       "title": "Jours de pluie ≥ 10 mm en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-gironde",
+       "title": "Jours de pluie ≥ 20 mm en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-gironde",
+       "title": "Pluie maximale en un jour en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-gironde",
+       "title": "Pluie maximale en cinq jours en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-belin-beliet",
+       "title": "Jours de pluie ≥ 10 mm à Belin-Beliet",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-bordeaux-paulin",
+       "title": "Jours de pluie ≥ 10 mm à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-captieux",
+       "title": "Jours de pluie ≥ 10 mm à Captieux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-hourtin",
+       "title": "Jours de pluie ≥ 10 mm à Hourtin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-lacanau",
+       "title": "Jours de pluie ≥ 10 mm à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-cap-ferret",
+       "title": "Jours de pluie ≥ 10 mm à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-st-symphorien",
+       "title": "Jours de pluie ≥ 10 mm à St-Symphorien",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-sauternes",
+       "title": "Jours de pluie ≥ 10 mm à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r10mm-cazaux",
+       "title": "Jours de pluie ≥ 10 mm à Cazaux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-belin-beliet",
+       "title": "Jours de pluie ≥ 20 mm à Belin-Beliet",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-bordeaux-paulin",
+       "title": "Jours de pluie ≥ 20 mm à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-captieux",
+       "title": "Jours de pluie ≥ 20 mm à Captieux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-hourtin",
+       "title": "Jours de pluie ≥ 20 mm à Hourtin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-lacanau",
+       "title": "Jours de pluie ≥ 20 mm à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-cap-ferret",
+       "title": "Jours de pluie ≥ 20 mm à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-st-symphorien",
+       "title": "Jours de pluie ≥ 20 mm à St-Symphorien",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-sauternes",
+       "title": "Jours de pluie ≥ 20 mm à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "r20mm-cazaux",
+       "title": "Jours de pluie ≥ 20 mm à Cazaux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-belin-beliet",
+       "title": "Pluie maximale en un jour à Belin-Beliet",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-bordeaux-paulin",
+       "title": "Pluie maximale en un jour à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-captieux",
+       "title": "Pluie maximale en un jour à Captieux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-hourtin",
+       "title": "Pluie maximale en un jour à Hourtin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-lacanau",
+       "title": "Pluie maximale en un jour à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-cap-ferret",
+       "title": "Pluie maximale en un jour à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-st-symphorien",
+       "title": "Pluie maximale en un jour à St-Symphorien",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-sauternes",
+       "title": "Pluie maximale en un jour à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx1day-cazaux",
+       "title": "Pluie maximale en un jour à Cazaux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-belin-beliet",
+       "title": "Pluie maximale en cinq jours à Belin-Beliet",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-bordeaux-paulin",
+       "title": "Pluie maximale en cinq jours à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-captieux",
+       "title": "Pluie maximale en cinq jours à Captieux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-hourtin",
+       "title": "Pluie maximale en cinq jours à Hourtin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-lacanau",
+       "title": "Pluie maximale en cinq jours à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-cap-ferret",
+       "title": "Pluie maximale en cinq jours à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-st-symphorien",
+       "title": "Pluie maximale en cinq jours à St-Symphorien",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-sauternes",
+       "title": "Pluie maximale en cinq jours à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "rx5day-cazaux",
+       "title": "Pluie maximale en cinq jours à Cazaux",
        "confidence": "non_etabli"
       }
      ]
@@ -650,16 +840,10 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "publie",
-     "source": "ERA5 vent à 850 hPa, indice de Woollings (Copernicus CDS)",
+     "status": "prevu",
+     "source": "ERA5 vent à 250 hPa (compte Copernicus gratuit)",
      "note": "Littérature contradictoire : statut « signal non établi » attendu.",
-     "indicators": [
-      {
-       "id": "jet-vitesse-monde",
-       "title": "Vitesse du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)",
-       "confidence": "non_etabli"
-      }
-     ]
+     "indicators": []
     }
    ]
   },
@@ -669,16 +853,10 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "publie",
-     "source": "ERA5 vent à 850 hPa, latitude du maximum, indice de Woollings (Atlantique Nord, Copernicus CDS)",
+     "status": "prevu",
+     "source": "ERA5 vent à 250 hPa, latitude du maximum (Atlantique Nord)",
      "note": null,
-     "indicators": [
-      {
-       "id": "jet-latitude-monde",
-       "title": "Latitude du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)",
-       "confidence": "non_etabli"
-      }
-     ]
+     "indicators": []
     }
    ]
   },
@@ -696,11 +874,6 @@
        "id": "z500-bordeaux-merignac",
        "title": "Géopotentiel 500 hPa au-dessus de Bordeaux (radiosondages bruts)",
        "confidence": "non_etabli"
-      },
-      {
-       "id": "z500-bordeaux-era5",
-       "title": "Géopotentiel 500 hPa au-dessus de Bordeaux (réanalyse ERA5)",
-       "confidence": "moyenne"
       }
      ]
     },
@@ -874,10 +1047,71 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
-     "source": "Dates de vendanges (Bordeaux), degrés-jours, gelées tardives, SPEI",
+     "status": "publie",
+     "source": "ETP, bilan pluie − ETP et SPEI (P2b, LSH) ; à venir : dates de vendanges, degrés-jours, gelées tardives",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "etp-bordeaux-paulin",
+       "title": "Évapotranspiration potentielle (Hargreaves) à Bordeaux-Paulin",
+       "confidence": "elevee"
+      },
+      {
+       "id": "etp-cap-ferret",
+       "title": "Évapotranspiration potentielle (Hargreaves) à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "etp-cazaux",
+       "title": "Évapotranspiration potentielle (Hargreaves) à Cazaux",
+       "confidence": "elevee"
+      },
+      {
+       "id": "bilan-hydrique-bordeaux-paulin",
+       "title": "Bilan climatique pluie − ETP à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "bilan-hydrique-cap-ferret",
+       "title": "Bilan climatique pluie − ETP à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "bilan-hydrique-cazaux",
+       "title": "Bilan climatique pluie − ETP à Cazaux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "spei12-bordeaux-paulin",
+       "title": "Indice de sécheresse SPEI-12 (bilan de l'année) à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "spei12-cap-ferret",
+       "title": "Indice de sécheresse SPEI-12 (bilan de l'année) à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "spei12-cazaux",
+       "title": "Indice de sécheresse SPEI-12 (bilan de l'année) à Cazaux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "mois-secs-bordeaux-paulin",
+       "title": "Mois secs (SPEI-3 ≤ −1) à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "mois-secs-cap-ferret",
+       "title": "Mois secs (SPEI-3 ≤ −1) à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "mois-secs-cazaux",
+       "title": "Mois secs (SPEI-3 ≤ −1) à Cazaux",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },

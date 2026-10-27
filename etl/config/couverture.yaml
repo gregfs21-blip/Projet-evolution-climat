@@ -50,7 +50,7 @@ parametres:
   - id: precipitations
     label: Précipitations (cumul et quantité)
     echelles:
-      gironde: {statut: prevu, variables: [rr-cumul], source: "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien"}
+      gironde: {statut: prevu, variables: [rr-cumul, r10mm, r20mm, rx1day, rx5day], source: "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien corrigé (P2b)"}
       france: {statut: prevu, source: "Météo-France LSH RR"}
 
   - id: ensoleillement
@@ -126,7 +126,7 @@ parametres:
   - id: agroclimat
     label: Indicateurs agroclimatiques
     echelles:
-      gironde: {statut: prevu, source: "Dates de vendanges (Bordeaux), degrés-jours, gelées tardives, SPEI"}
+      gironde: {statut: prevu, variables: [etp, bilan-hydrique, spei12, mois-secs], source: "ETP, bilan pluie − ETP et SPEI (P2b, LSH) ; à venir : dates de vendanges, degrés-jours, gelées tardives"}
 
   - id: sante-ecologie
     label: Indicateurs sanitaires et écologiques
