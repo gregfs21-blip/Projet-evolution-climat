@@ -61,11 +61,16 @@ SST_BOXES = {                       # N, O, S, E — fixées le 27/10/2026 (P3),
 ALTI = "satellite-sea-level-global"
 ALTI_BOX = [46.5, -3.0, 44.0, -1.0]   # au large de la Gironde, 0,25° (P3, 27/10/2026)
 ALTI_FIRST = 1993
+ALTI_CHUNK = 4                        # années par requête : 33 ans d'un coup dépassent la limite de coût du CDS (27/10/2026)
+
+
+def alti_names() -> list[str]:
+    return [f"alti-gironde-{y}" for y in range(ALTI_FIRST, last_year() + 1, ALTI_CHUNK)]
 
 
 def datasets() -> dict[str, str]:
     """Jeu de données CDS de chaque requête (par défaut : niveaux de pression)."""
-    return {**{name: SINGLE for name in SST_BOXES}, "alti-gironde": ALTI}
+    return {**{name: SINGLE for name in SST_BOXES}, **{name: ALTI for name in alti_names()}}
 
 
 def requests() -> dict[str, dict]:
@@ -73,9 +78,10 @@ def requests() -> dict[str, dict]:
     months = [f"{m:02d}" for m in range(1, 13)]
     sst = {name: {**BASE, "variable": ["sea_surface_temperature"], "year": years, "month": months, "area": box}
            for name, box in SST_BOXES.items()}
-    alti = {"variable": ["monthly_mean"], "year": [str(y) for y in range(ALTI_FIRST, last_year() + 1)],
-            "month": months, "version": ["vdt2024"], "area": ALTI_BOX}
-    return {**sst, "alti-gironde": alti,
+    alti = {name: {"variable": ["monthly_mean"],
+                   "year": [str(y) for y in range(int(name[-4:]), min(int(name[-4:]) + ALTI_CHUNK, last_year() + 1))],
+                   "month": months, "version": ["vdt2024"], "area": ALTI_BOX} for name in alti_names()}
+    return {**sst, **alti,
         "bordeaux": {**BASE, "variable": ["temperature", "geopotential", "u_component_of_wind"],
                      "pressure_level": ["250", "500", "850"], "year": years, "month": months,
                      "area": [45.0, -1.0, 44.5, -0.5]},
@@ -278,7 +284,21 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
             if os.environ.get("GITHUB_ACTIONS") == "true":
                 print(f"::error title=Copernicus {name}::{msg}", flush=True)
     (out_dir / "meta.json").write_text(json.dumps(m, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    merge_alti(out_dir)
     return log
+
+
+def merge_alti(out_dir: Path = OUT_DIR) -> None:
+    """Réunit les morceaux d'altimétrie relevés dans alti-gironde.csv (seulement si tous sont là : pas de trou)."""
+    parts = [out_dir / f"{n}.csv" for n in alti_names()]
+    if not all(p.exists() for p in parts):
+        return
+    rows = []
+    for p in parts:
+        with p.open(encoding="utf-8") as f:
+            rows += list(csv.DictReader(f))
+    rows = sorted({r["month"]: r for r in rows}.values(), key=lambda r: r["month"])
+    _write_csv(out_dir / "alti-gironde.csv", rows)
 
 
 def _one(name: str, req: dict, dataset: str, jobs: list, details: dict, pending: list, m: dict, out_dir: Path) -> str:
@@ -293,7 +313,7 @@ def _one(name: str, req: dict, dataset: str, jobs: list, details: dict, pending:
             path = Path(tmp) / "r.nc"
             href = _call(f"jobs/{job['jobID']}/results")["asset"]["value"]["href"]
             _download(href, path)
-            if name == "alti-gironde":
+            if name.startswith("alti-gironde"):
                 rows = extract_alti(path)
             else:
                 arrays = read_nc(path)
@@ -317,9 +337,16 @@ def main() -> int:
     if not os.environ.get("CDSAPI_KEY"):
         print("CDSAPI_KEY absente : rien à faire")
         return 1
-    for line in collect():
-        print(line)
-    return 0
+    # Plusieurs passages tant que des requêtes viennent d'être soumises ou attendent (l'altimétrie aboutit en
+    # quelques dizaines de secondes) ; au plus 20 minutes, sans jamais dépendre de ce délai.
+    t0 = time.time()
+    while True:
+        log = collect()
+        print("\n".join(log), flush=True)
+        busy = [x for x in log if "soumise (" in x or "en file" in x]
+        if not busy or time.time() - t0 > 20 * 60:
+            return 0
+        time.sleep(90)
 
 
 if __name__ == "__main__":
