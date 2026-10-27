@@ -476,3 +476,36 @@ inscrites dans le contrat (v1.5, champ `indicative`) et vérifiées par l'ETL et
 
 Recommandation contraire de Claude, consignée : garder C2 (radiosondages lacunaires 1989-1999, changements de sondes
 connus ; anémomètres jamais homogénéisés). Les bornes ci-dessus limitent le risque de lire ces pentes comme établies.
+
+## Copernicus CDS — ERA5 niveaux de pression (26/10/2026)
+
+- Accès : compte et licence de Grég (25/10/2026), clé dans le secret `CDSAPI_KEY` du dépôt. Sonde : `docs/sonde-cds.md`.
+- Constat : une requête attend **3 à 7 heures** en file avant un traitement de quelques secondes, et le CDS rejette
+  au-delà de trois requêtes en attente par utilisateur. Deux requêtes de test inutiles (janvier 2024) ont été annulées.
+- Conception retenue : workflow quotidien « Copernicus » qui relève les travaux aboutis, commite de petites séries
+  extraites (`data/sources/era5-pl/`) et soumet ce qui manque ; l'ETL ne lit que ces CSV (aucune attente).
+- Indicateurs prévus, choix fixés AVANT tout calcul (`etl/indicators/altitude.py`) : T850, T500 et Z500 au-dessus de
+  Bordeaux (maille ERA5 44,75° N ; 0,75° O, moyennes annuelles de 12 mois) ; vitesse et latitude du jet stream de
+  l'Atlantique Nord en hiver (DJF, vent zonal 250 hPa moyenné sur 60° O-0°, 20-70° N, maximum du profil, latitude
+  affinée par parabole). ERA5 traitée comme les autres séries ERA5 : confiance au plus « moyenne », sans référence.
+  Ils restent désactivés au registre tant que les séries n'ont pas été relevées.
+
+### Constat du 26/10/2026 sur le vent à 250 hPa (avant tout calcul de tendance du jet)
+
+Premier relevé (vent zonal 250 hPa, 60° O-0°, 20-70° N, 1940-2025). En lisant la seule distribution de l'indice
+(aucune pente calculée), le profil moyen d'hiver a **deux maxima** : le jet subtropical, au bord sud de la boîte
+(≈ 20° N, 25,6 m/s), et le jet des tempêtes (≈ 45° N, 24,9 m/s). L'indice fixé le 26/10 (maximum du profil) passe
+de l'un à l'autre : 36 hivers sur 85 au jet subtropical, dont 33 tronqués au bord de la boîte, surtout avant 1970.
+Une tendance calculée ainsi mesurerait ce basculement, pas l'évolution du jet. Les deux indicateurs du jet
+**restent désactivés** ; le changement d'indice est soumis à Grég. Requête préparée : vent zonal à 850 hPa,
+0-60° O, 15-75° N (indice de Woollings et al., 2010).
+
+**Décision de Grég du 26/10/2026** (après la distribution à 250 hPa, avant tout calcul de tendance) : indice de
+**Woollings et al. (2010)** — vent zonal à 850 hPa, 0-60° O, 15-75° N, profil moyen de l'hiver (DJF), vitesse et
+latitude du maximum (parabole). Limite assumée : moyennes mensuelles au lieu de valeurs quotidiennes filtrées, ce qui
+lisse les déplacements du jet au sein de l'hiver. La série à 250 hPa déjà relevée n'est pas utilisée.
+
+**27/10/2026** : séries relevées (Bordeaux 1940-2025, vent zonal à 850 hPa 1940-2025). Contrôles avant activation,
+sans calcul de tendance : valeurs annuelles dans les bornes plausibles (T850 4,4 à 8,4 °C, cohérent avec les
+radiosondages ; Z500 5 618 à 5 706 m) ; profil d'hiver à 850 hPa à un seul maximum (≈ 45-50° N), latitude du jet
+entre 34 et 59° N, jamais au bord de la boîte. Les cinq indicateurs sont activés.

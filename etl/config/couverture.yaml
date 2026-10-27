@@ -73,12 +73,12 @@ parametres:
   - id: jet-stream-puissance
     label: Puissance du jet stream
     echelles:
-      monde: {statut: prevu, source: "ERA5 vent à 250 hPa (compte Copernicus gratuit)", note: "Littérature contradictoire : statut « signal non établi » attendu."}
+      monde: {statut: prevu, variables: [jet-vitesse], source: "ERA5 vent à 850 hPa, indice de Woollings (Copernicus CDS)", note: "Littérature contradictoire : statut « signal non établi » attendu."}
 
   - id: jet-stream-trajectoire
     label: Trajectoire du jet stream
     echelles:
-      monde: {statut: prevu, source: "ERA5 vent à 250 hPa, latitude du maximum (Atlantique Nord)"}
+      monde: {statut: prevu, variables: [jet-latitude], source: "ERA5 vent à 850 hPa, latitude du maximum, indice de Woollings (Atlantique Nord, Copernicus CDS)"}
 
   - id: geopotentiel
     label: Géopotentiel

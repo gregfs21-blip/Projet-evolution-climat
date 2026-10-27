@@ -6,3 +6,6 @@ scipy>=1.11
 pymannkendall==1.4.3
 pytest>=8
 # Phase 2 : xclim (indices d'extrêmes, SPEI)
+# Copernicus Climate Data Store (ERA5 niveaux de pression) et lecture netCDF
+cdsapi>=0.7.4
+netCDF4>=1.7

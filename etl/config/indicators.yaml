@@ -917,6 +917,54 @@ indicators:
       title: Reconnaissances CatNat « sécheresse » en France (retrait-gonflement des argiles)
       description: Nombre de reconnaissances de l'état de catastrophe naturelle pour sécheresse (mouvements de terrain dus au retrait-gonflement des argiles), par année de début de l'événement, en France. Base GASPAR.
 
+  # --- ERA5 niveaux de pression (Copernicus CDS). Choix fixés le 26/10/2026 avant tout calcul (etl/indicators/altitude.py).
+  # Activés le 27/10/2026 : séries relevées par le workflow « Copernicus » (data/sources/era5-pl).
+  - id: t850-bordeaux-era5
+    scale: gironde
+    builder: etl.indicators.altitude:build_point
+    params:
+      variable: t850
+      label: la température à 850 hPa
+      title: Température à 850 hPa (environ 1 500 m) au-dessus de Bordeaux (réanalyse ERA5)
+      description: Moyenne annuelle de la température à 850 hPa dans la maille ERA5 de Bordeaux-Mérignac (moyennes mensuelles, Copernicus Climate Data Store).
+  - id: t500-bordeaux-era5
+    scale: gironde
+    builder: etl.indicators.altitude:build_point
+    params:
+      variable: t500
+      label: la température à 500 hPa
+      title: Température à 500 hPa (environ 5 500 m) au-dessus de Bordeaux (réanalyse ERA5)
+      description: Moyenne annuelle de la température à 500 hPa dans la maille ERA5 de Bordeaux-Mérignac (moyennes mensuelles, Copernicus Climate Data Store).
+  - id: z500-bordeaux-era5
+    scale: gironde
+    builder: etl.indicators.altitude:build_point
+    params:
+      variable: z500
+      label: l'altitude de la surface 500 hPa
+      title: Géopotentiel 500 hPa au-dessus de Bordeaux (réanalyse ERA5)
+      description: Moyenne annuelle de l'altitude géopotentielle de la surface 500 hPa dans la maille ERA5 de Bordeaux-Mérignac. Elle monte quand la colonne d'air se réchauffe ou qu'un anticyclone s'installe.
+  - id: jet-vitesse-monde
+    scale: monde
+    builder: etl.indicators.altitude:build_jet
+    params:
+      variable: jet-vitesse
+      label: la vitesse du jet stream en hiver
+      title: Vitesse du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)
+      description: Maximum, en latitude, du vent d'ouest moyen à 850 hPa (environ 1 500 m) entre 60° O et 0°, moyenné sur décembre, janvier et février (indice de Woollings et al., 2010). Réanalyse ERA5 (Copernicus).
+      limitations:
+      - 'Vent moyen de l''hiver : un jet très ondulant (blocages) peut donner un maximum moyen plus faible sans que le jet du jour soit moins fort.'
+      - 'Les tendances publiées du jet nord-atlantique divergent selon l''indice, le niveau et la période ; aucune référence n''est fixée.'
+  - id: jet-latitude-monde
+    scale: monde
+    builder: etl.indicators.altitude:build_jet
+    params:
+      variable: jet-latitude
+      label: la latitude du jet stream en hiver
+      title: Latitude du jet stream de l'Atlantique Nord en hiver (ERA5, 850 hPa)
+      description: Latitude du maximum du vent d'ouest moyen à 850 hPa entre 60° O et 0°, moyenné sur décembre, janvier et février (indice de Woollings et al., 2010). C'est la route des dépressions vers l'Europe. Réanalyse ERA5 (Copernicus).
+      limitations:
+      - 'Une seule latitude pour tout l''hiver et tout le bassin : un jet dédoublé ou très incliné est mal résumé.'
+      - 'Les tendances publiées du jet nord-atlantique divergent selon l''indice, le niveau et la période ; aucune référence n''est fixée.'
   # --- P2b : pluies intenses (critères F1-F11 validés le 26/10/2026 avant tout calcul ; postes retenus par la
   # sonde de disponibilité docs/sonde-p2b.md, qui ne calcule aucun indice).
   - id: r10mm-gironde
