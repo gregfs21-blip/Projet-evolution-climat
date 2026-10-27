@@ -331,6 +331,56 @@ Analyse : `docs/validation-p2b.md` et `docs/validation-p2a.md`.
 - **Règle nouvelle** : pas de pente pour un indice de pluie sur moins de 30 années consécutives corrigées (Lacanau).
 - P2a et P2b closes.
 
+## P3 — Critères (PROPOSITION du 27/10/2026, à valider par Grég avant tout calcul)
+
+> Statut : **proposition**. Sondes : `docs/sonde-p3.md`, `docs/sonde-p3b.md`. Déjà publiés hors P3 (« largeur
+> d'abord ») : pression, humidité, vent fort et rafale maximale ERA5 à Bordeaux ; rafales FXI (tendance indicative) ;
+> marégraphe d'Arcachon (2002-2024, lacunaire : aucune tendance calculable).
+
+### Constat des sondes
+
+- **Mesures de station** (quotidien Météo-France « autres paramètres », bruts) : pression au niveau de la mer
+  (PMERM) et humidité moyenne (UM) à Bordeaux-Mérignac et Cazaux sur 1950-2024 (75 ans), Cap-Ferret 1951-2019
+  (pression). Rien d'homogénéisé.
+- **Température de la mer** : le serveur ERDDAP de la NOAA est injoignable depuis GitHub. ERA5 « single levels »
+  (Copernicus) fournit la SST mensuelle depuis 1940 : la requête 44-46° N, 3-1° O a abouti en quelques minutes.
+- **Mouvements du sol** (GNSS, SONEL ULR7a) : Cap-Ferret 2005-2012 seulement, Royan 2007-2020, La Rochelle
+  2000-2020. Positions quotidiennes, pas de vitesses publiées dans ce flux.
+- **Marégraphes** : aucune série longue en Gironde (Arcachon 19 années, Le Verdon 6). Séries longues voisines :
+  Saint-Nazaire 1965-2024, Boucau 1969-2024, La Rochelle (1942-2023, lacunaire).
+
+### Périmètre proposé
+
+- **A. Pression et humidité** : les séries ERA5 de Bordeaux restent l'indicateur ; les mesures de Mérignac et
+  Cazaux servent de **contrôle croisé** (elles sont brutes, donc sans tendance propre, règle C2).
+- **B. Vent** : rafales ERA5 inchangées ; corrélation interannuelle avec le vent moyen mesuré (FFM) en information.
+- **C. Température de la mer** : SST ERA5, boîte côtière 44-46° N, 3-1° O (au large de la Gironde), 1940-2025.
+- **D. Niveau marin** : trois options, voir les décisions.
+
+### Références proposées
+
+| # | Énoncé | Source | Contrôle proposé |
+|---|---|---|---|
+| R8 | Golfe de Gascogne : + 0,26 °C par décennie depuis 1982 (bassin entier), réchauffement plus fort au printemps et en automne ; refroidissement hivernal le long de la côte sous l'influence des panaches de la Loire et de la Gironde (2002-2014) | Thèse de X. Costoya, université de Vigo, 2016 ; Costoya et al., Journal of Marine Systems, 2015 (1982-2014) | Pente de la SST ERA5 sur une boîte « golfe entier » (43,5-48° N, 10-1° O, requête à ajouter), 1982-2014, dans une fourchette à décider |
+| — | Pression, humidité | aucune référence publiée locale | confiance au plus « moyenne » |
+
+### Critères proposés
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| H1 | Exhaustivité | Tout le périmètre retenu ; exclusions justifiées |
+| H2 | Complétude | Station : année de 12 mois, mois ETCCDI (au plus 3 jours absents) ; ERA5 : années complètes |
+| H3 | Brut ≠ homogénéisé | Mesures de station sans tendance publiée (C2) ; elles ne servent qu'au contrôle H5 |
+| H4 | Validation externe | R8 pour la SST ; sinon confiance au plus « moyenne » |
+| H5 | **Contrôle croisé ERA5 − station** (pression, humidité) | Série annuelle des écarts ERA5 − Mérignac et ERA5 − Cazaux : pente non significative ET aucune rupture établie (Pettitt, aussi après retrait de tendance). Échec → confiance de l'indicateur ERA5 au plus « faible » |
+| H6 | Cohérence entre stations | Les écarts ERA5 − station ont le même comportement à Mérignac et Cazaux ; sinon expliqué |
+| H7 | Plausibilité | Valeurs annuelles dans des bornes fixées (pression 1005-1025 hPa, humidité 55-95 %, SST 10-20 °C) |
+| H8 | Technique | Tests, CI, contrat, pages |
+
+**Limite à assumer** : ERA5 assimile les pressions mesurées au sol, probablement celles de Mérignac. H5 détecte donc
+un défaut grossier (rupture, dérive), mais ne constitue pas une validation indépendante. Il ne permet pas, à lui
+seul, la confiance « élevée ».
+
 ## Journal ergonomie (entre P1 et P2)
 
 - 23/10/2026 : refonte de l'affichage, sans changement de calcul ni de contrat des indicateurs (v1.1).
