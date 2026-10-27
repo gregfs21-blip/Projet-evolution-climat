@@ -63,3 +63,36 @@ def build(ctx: BuildContext, box: str, title: str, description: str, label: str,
                                   "moyenne des 12 mois de l'année.",
                       reference=spec["reference"], baseline=None, group=f"Réanalyse ERA5 — {vocab.variable(spec['variable']).theme_label}",
                       where=spec["where"], label=label)
+
+
+# ---------------------------------------------------------------- niveau marin par altimétrie (P3, décision du 27/10/2026)
+
+ALTI_LIMITS = [
+    "Altimétrie satellite (produit C3S/DUACS, version DT2024) : niveau géocentrique, insensible à l'enfoncement du sol "
+    "contrairement aux marégraphes ; mais la précision se dégrade près des côtes, et la série ne commence qu'en 1993.",
+    "Anomalie par rapport à la référence du produit (1993-2012) ; aucune correction de l'ajustement isostatique "
+    "glaciaire (de l'ordre de 0,3 mm/an en moyenne mondiale, plus faible ici).",
+    "Aucune référence publiée chiffrée pour cette zone : confiance au plus « moyenne ».",
+]
+
+
+def build_alti(ctx: BuildContext, title: str, description: str, label: str) -> Indicator:
+    series = A.annual(cds.load_alti())
+    bad = {y: v for y, v in series.items() if not -250.0 <= v <= 250.0}
+    if bad or len(series) < 25:
+        raise ValueError(f"altimétrie : valeurs hors [−250 ; 250] mm ou série trop courte : {list(bad.items())[:3]}, {len(series)} ans")
+    n, w, s_, e = cds.ALTI_BOX
+    st = Station(id="alti-large-gironde", name=f"Large de la Gironde (altimétrie, {s_:g}-{n:g}° N, {-w:g}-{-e:g}° O)".replace(".", ","),
+                 latitude=(n + s_) / 2, longitude=(w + e) / 2, altitude=0.0)
+    prov = A._provenance(ctx).model_copy(update={
+        "source_name": "Copernicus (C3S) — niveau de la mer par altimétrie satellite, moyennes mensuelles (DT2024)",
+        "source_url": "https://cds.climate.copernicus.eu/datasets/satellite-sea-level-global",
+        "license": "CC BY 4.0 (Copernicus)", "script": "etl.indicators.mer"})
+    return S.assemble(ctx, ind_id="niveau-mer-large-gironde", scale="gironde", variable="niveau-mer",
+                      place=vocab.station("large-gironde", "Large de la Gironde (satellite)"), title=title,
+                      description=description, unit="mm", series=series, hom=set(series), provenance=prov,
+                      limitations=ALTI_LIMITS, stations=[st],
+                      method_note="Anomalie mensuelle du niveau de la mer (sla) moyennée sur la zone, pondérée par le "
+                                  "cosinus de la latitude, puis moyenne des 12 mois.",
+                      reference=None, baseline=None, group="Satellite — niveau de la mer", where="Au large de la Gironde",
+                      label=label)

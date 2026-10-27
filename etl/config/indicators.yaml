@@ -732,6 +732,14 @@ indicators:
       label: la température de surface de la mer
       title: Température de surface de la mer au large de la Gironde (ERA5)
       description: Moyenne annuelle de la température de surface de la mer entre 44 et 46° N et entre 3 et 1° O, au large de la Gironde (réanalyse ERA5, Copernicus).
+  - id: niveau-mer-large-gironde
+    scale: gironde
+    enabled: false    # activé quand le relevé Copernicus aura l'altimétrie
+    builder: etl.indicators.mer:build_alti
+    params:
+      label: le niveau moyen de la mer
+      title: Niveau de la mer au large de la Gironde (altimétrie satellite)
+      description: Moyenne annuelle de l'anomalie du niveau de la mer mesurée par satellite entre 44 et 46,5° N et entre 3 et 1° O (produit Copernicus C3S, depuis 1993). Contrairement au marégraphe, elle ne dépend pas des mouvements du sol.
   - id: sst-golfe-gascogne
     scale: gironde
     enabled: false    # activé quand le relevé Copernicus aura les deux boîtes

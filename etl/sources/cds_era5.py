@@ -22,7 +22,7 @@ import sys
 import tempfile
 import time
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
@@ -57,9 +57,14 @@ SST_BOXES = {                       # N, O, S, E — fixées le 27/10/2026 (P3),
 }
 
 
+ALTI = "satellite-sea-level-global"
+ALTI_BOX = [46.5, -3.0, 44.0, -1.0]   # au large de la Gironde, 0,25° (P3, 27/10/2026)
+ALTI_FIRST = 1993
+
+
 def datasets() -> dict[str, str]:
     """Jeu de données CDS de chaque requête (par défaut : niveaux de pression)."""
-    return {name: SINGLE for name in SST_BOXES}
+    return {**{name: SINGLE for name in SST_BOXES}, "alti-gironde": ALTI}
 
 
 def requests() -> dict[str, dict]:
@@ -67,7 +72,9 @@ def requests() -> dict[str, dict]:
     months = [f"{m:02d}" for m in range(1, 13)]
     sst = {name: {**BASE, "variable": ["sea_surface_temperature"], "year": years, "month": months, "area": box}
            for name, box in SST_BOXES.items()}
-    return {**sst,
+    alti = {"variable": ["monthly_mean"], "year": [str(y) for y in range(ALTI_FIRST, last_year() + 1)],
+            "month": months, "version": ["vdt2024"], "area": ALTI_BOX}
+    return {**sst, "alti-gironde": alti,
         "bordeaux": {**BASE, "variable": ["temperature", "geopotential", "u_component_of_wind"],
                      "pressure_level": ["250", "500", "850"], "year": years, "month": months,
                      "area": [45.0, -1.0, 44.5, -0.5]},
@@ -129,6 +136,36 @@ def read_nc(path: Path) -> dict[str, np.ndarray]:
             elif name in ("t", "z", "u", "sst"):
                 out[name] = np.ma.filled(np.ma.asarray(ds.variables[name][:], dtype=float), np.nan)
     return out
+
+
+def extract_alti(zip_path: Path) -> list[dict]:
+    """Archive zip d'un fichier netCDF par mois (format constaté le 27/10/2026) : anomalie du niveau de la mer
+    (sla, m) moyennée sur la zone, pondérée par cos(latitude), en mm."""
+    import zipfile
+    import netCDF4
+    rows = []
+    with zipfile.ZipFile(zip_path) as z, tempfile.TemporaryDirectory() as tmp:
+        for name in sorted(z.namelist()):
+            if not name.endswith(".nc"):
+                continue
+            path = Path(tmp) / "m.nc"
+            path.write_bytes(z.read(name))
+            with netCDF4.Dataset(path) as ds:
+                sla = np.ma.filled(np.ma.asarray(ds.variables["sla"][:], dtype=float), np.nan)[0]
+                lat = np.asarray(ds.variables["latitude"][:], dtype=float)
+                days = float(ds.variables["time"][0])
+            month = (datetime(1950, 1, 1) + timedelta(days=days)).strftime("%Y-%m")
+            w = np.cos(np.radians(lat))[:, None] * np.ones(sla.shape[1])
+            ok = np.isfinite(sla)
+            if ok.sum():
+                rows.append({"month": month, "sla_mm": round(float((sla[ok] * w[ok]).sum() / w[ok].sum()) * 1000, 2),
+                             "cells": int(ok.sum())})
+    return sorted(rows, key=lambda r: r["month"])
+
+
+def load_alti(out_dir: Path = OUT_DIR) -> dict[str, float]:
+    with (out_dir / "alti-gironde.csv").open(encoding="utf-8") as f:
+        return {r["month"]: float(r["sla_mm"]) for r in csv.DictReader(f)}
 
 
 def extract_area_mean(arrays: dict[str, np.ndarray], var: str = "sst") -> list[dict]:
@@ -242,9 +279,12 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
                 path = Path(tmp) / "r.nc"
                 href = _call(f"jobs/{job['jobID']}/results")["asset"]["value"]["href"]
                 _download(href, path)
-                arrays = read_nc(path)
-            rows = (extract_point(arrays, *BORDEAUX) if name == "bordeaux"
-                    else extract_area_mean(arrays) if name in SST_BOXES else extract_zonal(arrays))
+                if name == "alti-gironde":
+                    rows = extract_alti(path)
+                else:
+                    arrays = read_nc(path)
+                    rows = (extract_point(arrays, *BORDEAUX) if name == "bordeaux"
+                            else extract_area_mean(arrays) if name in SST_BOXES else extract_zonal(arrays))
             _write_csv(out_dir / f"{name}.csv", rows)
             m[name] = {"job": job["jobID"], "finished": job.get("finished"), "rows": len(rows),
                        "years": [req["year"][0], req["year"][-1]], "collected": datetime.now(timezone.utc).isoformat()}
