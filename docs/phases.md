@@ -8,7 +8,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
 | P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
-| P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
+| P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | en cours |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
@@ -331,9 +331,14 @@ Analyse : `docs/validation-p2b.md` et `docs/validation-p2a.md`.
 - **Règle nouvelle** : pas de pente pour un indice de pluie sur moins de 30 années consécutives corrigées (Lacanau).
 - P2a et P2b closes.
 
-## P3 — Critères (PROPOSITION du 27/10/2026, à valider par Grég avant tout calcul)
+## P3 — Critères (proposés et validés le 27/10/2026, avant tout calcul)
 
-> Statut : **proposition**. Sondes : `docs/sonde-p3.md`, `docs/sonde-p3b.md`. Déjà publiés hors P3 (« largeur
+> **Décisions de Grég du 27/10/2026, avant tout calcul** : H5 validé tel quel (échec → confiance au plus
+> « faible » ; succès insuffisant pour « élevée ») ; R8 fixée avec la fourchette **[+0,21 ; +0,31] °C/déc.**
+> (± 20 %, source sans incertitude publiée), contrôlée sur une boîte « golfe entier » 1982-2014 ; niveau marin :
+> **altimétrie satellite** (Copernicus, depuis 1993), après une sonde du jeu de données ; critères H1-H8 validés.
+>
+> Statut d'origine : proposition. Sondes : `docs/sonde-p3.md`, `docs/sonde-p3b.md`. Déjà publiés hors P3 (« largeur
 > d'abord ») : pression, humidité, vent fort et rafale maximale ERA5 à Bordeaux ; rafales FXI (tendance indicative) ;
 > marégraphe d'Arcachon (2002-2024, lacunaire : aucune tendance calculable).
 
