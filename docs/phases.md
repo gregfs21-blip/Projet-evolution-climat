@@ -393,3 +393,8 @@ Une tendance calculée ainsi mesurerait ce basculement, pas l'évolution du jet.
 **Woollings et al. (2010)** — vent zonal à 850 hPa, 0-60° O, 15-75° N, profil moyen de l'hiver (DJF), vitesse et
 latitude du maximum (parabole). Limite assumée : moyennes mensuelles au lieu de valeurs quotidiennes filtrées, ce qui
 lisse les déplacements du jet au sein de l'hiver. La série à 250 hPa déjà relevée n'est pas utilisée.
+
+**27/10/2026** : séries relevées (Bordeaux 1940-2025, vent zonal à 850 hPa 1940-2025). Contrôles avant activation,
+sans calcul de tendance : valeurs annuelles dans les bornes plausibles (T850 4,4 à 8,4 °C, cohérent avec les
+radiosondages ; Z500 5 618 à 5 706 m) ; profil d'hiver à 850 hPa à un seul maximum (≈ 45-50° N), latitude du jet
+entre 34 et 59° N, jamais au bord de la boîte. Les cinq indicateurs sont activés.

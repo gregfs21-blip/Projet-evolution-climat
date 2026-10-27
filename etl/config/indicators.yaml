@@ -918,10 +918,9 @@ indicators:
       description: Nombre de reconnaissances de l'état de catastrophe naturelle pour sécheresse (mouvements de terrain dus au retrait-gonflement des argiles), par année de début de l'événement, en France. Base GASPAR.
 
   # --- ERA5 niveaux de pression (Copernicus CDS). Choix fixés le 26/10/2026 avant tout calcul (etl/indicators/altitude.py).
-  # Désactivés tant que data/sources/era5-pl n'a pas été relevé par le workflow « Copernicus ».
+  # Activés le 27/10/2026 : séries relevées par le workflow « Copernicus » (data/sources/era5-pl).
   - id: t850-bordeaux-era5
     scale: gironde
-    enabled: false
     builder: etl.indicators.altitude:build_point
     params:
       variable: t850
@@ -930,7 +929,6 @@ indicators:
       description: Moyenne annuelle de la température à 850 hPa dans la maille ERA5 de Bordeaux-Mérignac (moyennes mensuelles, Copernicus Climate Data Store).
   - id: t500-bordeaux-era5
     scale: gironde
-    enabled: false
     builder: etl.indicators.altitude:build_point
     params:
       variable: t500
@@ -939,7 +937,6 @@ indicators:
       description: Moyenne annuelle de la température à 500 hPa dans la maille ERA5 de Bordeaux-Mérignac (moyennes mensuelles, Copernicus Climate Data Store).
   - id: z500-bordeaux-era5
     scale: gironde
-    enabled: false
     builder: etl.indicators.altitude:build_point
     params:
       variable: z500
@@ -948,7 +945,6 @@ indicators:
       description: Moyenne annuelle de l'altitude géopotentielle de la surface 500 hPa dans la maille ERA5 de Bordeaux-Mérignac. Elle monte quand la colonne d'air se réchauffe ou qu'un anticyclone s'installe.
   - id: jet-vitesse-monde
     scale: monde
-    enabled: false
     builder: etl.indicators.altitude:build_jet
     params:
       variable: jet-vitesse
@@ -960,7 +956,6 @@ indicators:
       - 'Les tendances publiées du jet nord-atlantique divergent selon l''indice, le niveau et la période ; aucune référence n''est fixée.'
   - id: jet-latitude-monde
     scale: monde
-    enabled: false
     builder: etl.indicators.altitude:build_jet
     params:
       variable: jet-latitude
