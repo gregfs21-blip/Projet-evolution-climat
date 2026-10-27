@@ -176,8 +176,63 @@ def cds_jobs(md):
     block(md, "Travaux", "jobs", st, lines)
 
 
-STEPS = (sonel_ids, cds_jobs)   # 2e passage (27/10) : les étapes 1 à 4 ont été constatées au 1er passage
-OUT = ROOT / "docs" / "sonde-p3b.md"
+def altimetry(md):
+    """CDS satellite-sea-level-global : soumission d'une petite requête mensuelle (un mois, boîte au large de la
+    Gironde), puis attente bornée du résultat pour lire son format et sa taille."""
+    import time
+    import zipfile
+    md += ["", "## 6. Altimétrie satellite (CDS satellite-sea-level-global)"]
+    key = os.environ.get("CDSAPI_KEY", "")
+    api = "https://cds.climate.copernicus.eu/api/retrieve/v1"
+    hdr = {"PRIVATE-TOKEN": key, "Content-Type": "application/json"}
+    for label, inputs in [
+        ("mensuel, janvier 2020, avec zone", {"variable": ["monthly_mean"], "year": ["2020"], "month": ["01"],
+                                              "version": ["vdt2024"], "area": [46.5, -3.0, 44.0, -1.0]}),
+    ]:
+        st, data = get(f"{api}/processes/satellite-sea-level-global/execution", headers=hdr,
+                       data=json.dumps({"inputs": inputs}).encode(), method="POST", timeout=60)
+        txt = data.decode("utf-8", "replace").replace(key or "§§", "***")
+        lines = [txt[:1200]]
+        try:
+            job = json.loads(data)["jobID"]
+            t0 = time.time()
+            while time.time() - t0 < 900:
+                time.sleep(30)
+                stj, dj = get(f"{api}/jobs/{job}", headers=hdr, timeout=60)
+                status = json.loads(dj).get("status")
+                if status in ("successful", "failed", "rejected", "dismissed"):
+                    break
+            lines.append(f"état après {time.time() - t0:.0f} s : {status}")
+            str_, dr = get(f"{api}/jobs/{job}/results", headers=hdr, timeout=60)
+            res = json.loads(dr)
+            if "asset" in res:
+                href = res["asset"]["value"]["href"]
+                size = res["asset"]["value"].get("file:size")
+                lines.append(f"résultat : {size} octets, {href.rsplit('/', 1)[-1]}")
+                stf, blob = get(href, headers={"PRIVATE-TOKEN": key}, timeout=300, limit=200_000_000)
+                if blob[:2] == b"PK":
+                    z = zipfile.ZipFile(io.BytesIO(blob))
+                    lines.append("archive : " + ", ".join(f"{i.filename} ({i.file_size} o)" for i in z.infolist()[:10]))
+                    blob = z.read(z.namelist()[0])
+                path = OUT.parent / "_alti.nc"
+                path.write_bytes(blob)
+                try:
+                    import netCDF4
+                    with netCDF4.Dataset(path) as ds:
+                        lines.append("dimensions : " + ", ".join(f"{k}={len(v)}" for k, v in ds.dimensions.items()))
+                        for name, var in ds.variables.items():
+                            lines.append(f"  {name} {var.dimensions} {var.shape} {getattr(var, 'units', '')} {getattr(var, 'long_name', '')}")
+                finally:
+                    path.unlink(missing_ok=True)
+            else:
+                lines.append(json.dumps(res)[:800])
+        except Exception as exc:  # noqa: BLE001
+            lines.append(f"{type(exc).__name__} {exc}")
+        block(md, label, "…/processes/satellite-sea-level-global/execution", st, lines)
+
+
+STEPS = (altimetry,)   # 3e passage (27/10) : altimétrie
+OUT = ROOT / "docs" / "sonde-p3c.md"
 
 
 def main() -> int:
