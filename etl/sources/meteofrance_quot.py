@@ -55,20 +55,21 @@ def _dir(raw_dir: Path) -> Path:
     return d
 
 
-def is_department_file(title: str, department: str) -> bool:
-    return f"departement_{department}_" in title and "RR-T-Vent" in title
+def is_department_file(title: str, department: str, kind: str = "RR-T-Vent") -> bool:
+    """`kind` : « RR-T-Vent » (pluie, températures, vent) ou « autres-parametres » (pression, humidité…)."""
+    return f"departement_{department}_" in title and kind in title
 
 
-def resources(department: str, raw_dir: Path) -> list[dict]:
-    """Fichiers « RR-T-Vent » du département : découverts par l'API, ou lus dans le cache hors ligne."""
-    index = _dir(raw_dir) / f"index-{department}.json"
+def resources(department: str, raw_dir: Path, kind: str = "RR-T-Vent") -> list[dict]:
+    """Fichiers du département (« RR-T-Vent » ou « autres-parametres ») : découverts par l'API, ou lus en cache."""
+    index = _dir(raw_dir) / (f"index-{department}.json" if kind == "RR-T-Vent" else f"index-{department}-{kind}.json")
     if not _offline():
         try:
             out, page = [], 1
             while True:
                 data = json.loads(_get(API.format(page=page), timeout=60))
                 items = data.get("data", [])
-                out += [{"title": r["title"], "url": r["url"]} for r in items if is_department_file(r.get("title", ""), department)]
+                out += [{"title": r["title"], "url": r["url"]} for r in items if is_department_file(r.get("title", ""), department, kind)]
                 if not data.get("next_page") or not items:
                     break
                 page += 1
@@ -109,10 +110,11 @@ def _rows(path: Path):
         yield from csv.reader(f, delimiter=";")
 
 
-def load(department: str, postes: set[str], variables: tuple[str, ...], raw_dir: Path) -> dict[str, dict[str, dict[str, Daily]]]:
+def load(department: str, postes: set[str], variables: tuple[str, ...], raw_dir: Path,
+         kind: str = "RR-T-Vent") -> dict[str, dict[str, dict[str, Daily]]]:
     """poste → variable → date ISO (AAAA-MM-JJ) → valeur et code qualité. Jours absents : clé absente."""
     out: dict[str, dict[str, dict[str, Daily]]] = {p: {v: {} for v in variables} for p in postes}
-    for res in resources(department, raw_dir):
+    for res in resources(department, raw_dir, kind):
         rows = _rows(fetch(res, raw_dir))
         header = [h.strip() for h in next(rows)]
         idx = {h: i for i, h in enumerate(header)}

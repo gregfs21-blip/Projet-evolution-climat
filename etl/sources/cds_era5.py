@@ -50,10 +50,24 @@ def last_year() -> int:
     return datetime.now(timezone.utc).year - 1
 
 
+SINGLE = "reanalysis-era5-single-levels-monthly-means"
+SST_BOXES = {                       # N, O, S, E — fixées le 27/10/2026 (P3), avant tout calcul
+    "sst-large-gironde": [46.0, -3.0, 44.0, -1.0],     # au large de la Gironde
+    "sst-golfe-gascogne": [48.0, -10.0, 43.5, -1.0],   # golfe entier, pour la référence R8
+}
+
+
+def datasets() -> dict[str, str]:
+    """Jeu de données CDS de chaque requête (par défaut : niveaux de pression)."""
+    return {name: SINGLE for name in SST_BOXES}
+
+
 def requests() -> dict[str, dict]:
     years = [str(y) for y in range(FIRST_YEAR, last_year() + 1)]
     months = [f"{m:02d}" for m in range(1, 13)]
-    return {
+    sst = {name: {**BASE, "variable": ["sea_surface_temperature"], "year": years, "month": months, "area": box}
+           for name, box in SST_BOXES.items()}
+    return {**sst,
         "bordeaux": {**BASE, "variable": ["temperature", "geopotential", "u_component_of_wind"],
                      "pressure_level": ["250", "500", "850"], "year": years, "month": months,
                      "area": [45.0, -1.0, 44.5, -0.5]},
@@ -105,10 +119,32 @@ def extract_zonal(arrays: dict[str, np.ndarray]) -> list[dict]:
 
 
 def read_nc(path: Path) -> dict[str, np.ndarray]:
+    """Valeurs masquées (terre pour la SST) rendues en NaN, jamais en valeur de remplissage."""
     import netCDF4
+    out = {}
     with netCDF4.Dataset(path) as ds:
-        return {name: np.asarray(ds.variables[name][:]) for name in ds.variables
-                if name in ("valid_time", "pressure_level", "latitude", "longitude", "t", "z", "u")}
+        for name in ds.variables:
+            if name in ("valid_time", "pressure_level", "latitude", "longitude"):
+                out[name] = np.asarray(ds.variables[name][:])
+            elif name in ("t", "z", "u", "sst"):
+                out[name] = np.ma.filled(np.ma.asarray(ds.variables[name][:], dtype=float), np.nan)
+    return out
+
+
+def extract_area_mean(arrays: dict[str, np.ndarray], var: str = "sst") -> list[dict]:
+    """Moyenne pondérée par cos(latitude) des mailles de mer, en °C ; une ligne par mois (mois sans maille : écarté)."""
+    x = np.asarray(arrays[var], dtype=float)
+    if x.ndim == 4:
+        x = x[:, 0]
+    w = np.cos(np.radians(np.asarray(arrays["latitude"], dtype=float)))[:, None] * np.ones(x.shape[2])
+    rows = []
+    for k, month in enumerate(months_of(arrays["valid_time"])):
+        ok = np.isfinite(x[k])
+        if ok.sum() == 0:
+            continue
+        rows.append({"month": month, "sst_c": round(float((x[k][ok] * w[ok]).sum() / w[ok].sum()) - 273.15, 3),
+                     "cells": int(ok.sum())})
+    return rows
 
 
 # ---------------------------------------------------------------- lecture des CSV commités (utilisée par l'ETL)
@@ -191,8 +227,11 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
                 details[j["jobID"]] = {}
     pending = [j for j in jobs if j.get("status") in ("accepted", "running")]
     m = meta(out_dir)
+    ds_of = datasets()
     for name, req in requests().items():
-        mine = [j for j in jobs if j["jobID"] in details and _same(details[j["jobID"]], req)]
+        dataset = ds_of.get(name, DATASET)
+        mine = [j for j in jobs if j["jobID"] in details and j.get("processID", dataset) == dataset
+                and _same(details[j["jobID"]], req)]
         done = sorted((j for j in mine if j["status"] == "successful"), key=lambda j: j.get("finished") or "")
         if done:
             job = done[-1]
@@ -204,7 +243,8 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
                 href = _call(f"jobs/{job['jobID']}/results")["asset"]["value"]["href"]
                 _download(href, path)
                 arrays = read_nc(path)
-            rows = extract_point(arrays, *BORDEAUX) if name == "bordeaux" else extract_zonal(arrays)
+            rows = (extract_point(arrays, *BORDEAUX) if name == "bordeaux"
+                    else extract_area_mean(arrays) if name in SST_BOXES else extract_zonal(arrays))
             _write_csv(out_dir / f"{name}.csv", rows)
             m[name] = {"job": job["jobID"], "finished": job.get("finished"), "rows": len(rows),
                        "years": [req["year"][0], req["year"][-1]], "collected": datetime.now(timezone.utc).isoformat()}
@@ -214,7 +254,7 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
         elif len(pending) >= MAX_PENDING:
             log.append(f"{name} : non soumise, {len(pending)} requêtes déjà en attente")
         else:
-            job = _call(f"processes/{DATASET}/execution", "POST", {"inputs": req})
+            job = _call(f"processes/{dataset}/execution", "POST", {"inputs": req})
             pending.append(job)
             log.append(f"{name} : soumise (travail {job.get('jobID')})")
     (out_dir / "meta.json").write_text(json.dumps(m, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -232,3 +272,9 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def load_sst(name: str, out_dir: Path = OUT_DIR) -> dict[str, float]:
+    """mois « AAAA-MM » → SST moyenne de la boîte (°C)."""
+    with (out_dir / f"{name}.csv").open(encoding="utf-8") as f:
+        return {r["month"]: float(r["sst_c"]) for r in csv.DictReader(f)}

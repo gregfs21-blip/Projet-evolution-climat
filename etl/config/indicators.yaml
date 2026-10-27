@@ -724,22 +724,23 @@ indicators:
       reference: *sst-ref
   - id: sst-gascogne-large-gironde
     scale: gironde
-    # Désactivé le 25/10/2026 : serveur ERDDAP de NOAA CoastWatch instable (délai dépassé, puis erreur 503).
-    enabled: false
-    builder: etl.indicators.serie:build
+    enabled: false    # activé quand le relevé Copernicus aura les deux boîtes
+    # P3 (27/10/2026) : ERA5 single levels via Copernicus, en remplacement d'OISST (serveur ERDDAP injoignable).
+    builder: etl.indicators.mer:build
     params:
-      source: oisst-gascogne
-      scale: gironde
-      variable: sst-gascogne
-      place: {id: large-gironde, name: Large de la Gironde}
-      station: {id: oisst-45n-2w, name: "Large de la Gironde (OISST, 45,1° N ; 1,9° O)", lat: 45.125, lon: -1.875, alt: 0}
-      where: Au large de la Gironde
+      box: sst-large-gironde
       label: la température de surface de la mer
-      title: Température de surface de la mer au large de la Gironde (OISST)
-      description: Moyenne annuelle de la température de surface de la mer dans la maille OISST v2.1 (0,25°) centrée à 45,1° N et 1,9° O, à une soixantaine de kilomètres de la côte girondine. Analyse quotidienne NOAA combinant satellites, bouées et navires.
-      limitations:
-      - 'Série depuis septembre 1981 (début des mesures satellitaires) : années complètes à partir de 1982 seulement.'
-      - 'Une maille de 25 km : la température près de la côte et dans l''estuaire peut évoluer différemment.'
+      title: Température de surface de la mer au large de la Gironde (ERA5)
+      description: Moyenne annuelle de la température de surface de la mer entre 44 et 46° N et entre 3 et 1° O, au large de la Gironde (réanalyse ERA5, Copernicus).
+  - id: sst-golfe-gascogne
+    scale: gironde
+    enabled: false    # activé quand le relevé Copernicus aura les deux boîtes
+    builder: etl.indicators.mer:build
+    params:
+      box: sst-golfe-gascogne
+      label: la température de surface de la mer
+      title: Température de surface du golfe de Gascogne (ERA5)
+      description: Moyenne annuelle de la température de surface de la mer sur le golfe de Gascogne (43,5-48° N, 10-1° O), réanalyse ERA5 (Copernicus). Porte la référence publiée de + 0,26 °C par décennie depuis 1982.
   # Ouragans de l'Atlantique Nord
   - id: ouragans-monde
     scale: monde

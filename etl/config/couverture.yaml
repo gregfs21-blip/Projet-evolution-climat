@@ -23,7 +23,7 @@ parametres:
   - id: temperature-mer
     label: Température de la mer
     echelles:
-      gironde: {statut: prevu, variables: [sst-gascogne], source: "NOAA OISST v2.1, maille au large de la Gironde (depuis 1982)", note: "Lecteur écrit, mais serveur ERDDAP instable le 25/10/2026 (délai dépassé, erreur 503) : indicateur suspendu."}
+      gironde: {statut: prevu, variables: [sst-gascogne, sst-golfe], source: "ERA5 (Copernicus), au large de la Gironde et golfe de Gascogne, depuis 1940"}
       monde: {statut: prevu, variables: [sst-noaa, sst-hadsst], source: "NOAAGlobalTemp (NOAA NCEI), HadSST 4.2 (Met Office)"}
 
   - id: temperature-altitude
