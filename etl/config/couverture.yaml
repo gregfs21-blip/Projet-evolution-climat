@@ -10,7 +10,7 @@ parametres:
   - id: catastrophes
     label: Catastrophes naturelles
     echelles:
-      gironde: {statut: prevu, variables: [catnat], source: "Base GASPAR (arrêtés CatNat), data.gouv.fr", note: "Compte des reconnaissances, pas des aléas : dépend des demandes des communes, de l'exposition et des règles de reconnaissance."}
+      gironde: {statut: prevu, variables: [catnat, catnat-inondation, catnat-secheresse, catnat-vagues], source: "Base GASPAR (arrêtés CatNat), data.gouv.fr", note: "Compte des reconnaissances, pas des aléas : dépend des demandes des communes, de l'exposition et des règles de reconnaissance."}
       france: {statut: prevu, variables: [catnat, catnat-secheresse], source: "Base GASPAR (arrêtés CatNat), data.gouv.fr"}
 
   - id: temperature-air
@@ -126,12 +126,17 @@ parametres:
   - id: agroclimat
     label: Indicateurs agroclimatiques
     echelles:
-      gironde: {statut: prevu, variables: [etp, bilan-hydrique, spei12, mois-secs], source: "ETP, bilan pluie − ETP et SPEI (P2b, LSH) ; à venir : dates de vendanges, degrés-jours, gelées tardives"}
+      gironde: {statut: prevu, variables: [etp, bilan-hydrique, spei12, mois-secs, huglin, fraicheur-nuits, gelees-tardives, vendanges], source: "ETP, bilan pluie − ETP et SPEI (P2b) ; indice de Huglin, fraîcheur des nuits, gelées tardives (P4, LSH et quotidien corrigé) ; dates de vendanges de Bordeaux 1800-2006 (Daux et al., 2012)"}
+
+  - id: incendie
+    label: Danger météorologique d'incendie
+    echelles:
+      gironde: {statut: prevu, variables: [fwi-ete, jours-fwi], source: "Indice forêt-météo (FWI) du CEMS/EFFIS calculé sur ERA5, Copernicus EWDS, depuis 1940", note: "Danger météorologique, pas les feux eux-mêmes : la base des feux observés (BDIFF) ne commence qu'en 2006."}
 
   - id: sante-ecologie
     label: Indicateurs sanitaires et écologiques
     echelles:
-      gironde: {statut: prevu, source: "Vagues de chaleur (seuils canicule), pollens, phénologie"}
+      gironde: {statut: prevu, variables: [canicule], source: "Jours de canicule à Mérignac, seuils de la Gironde (P4, quotidien corrigé)", note: "Pollens (RNSA) et phénologie : pas de série ouverte longue."}
 
   - id: puits-carbone
     label: Santé des puits de carbone

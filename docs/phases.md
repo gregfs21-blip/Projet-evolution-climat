@@ -461,6 +461,29 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 années 1980-1990, qui retarde la récolte) : sa tendance sous-estime l'effet du climat. Le FWI ERA5 hérite des limites
 de la réanalyse (pluie et humidité près du sol, cf. H5 en P3).
 
+### Choix de mise en œuvre fixés AVANT le premier calcul (28/10/2026, `etl/indicators/impacts.py`)
+
+- **Années** : une année de station est calculée si TN et TX sont complets (au plus 3 jours absents par mois) ; elle
+  n'entre dans les tendances, les normales et R9 que si TN et TX sont corrigés sur les 12 mois (comme en P2a).
+- **Huglin** : 5 stations disposant de TN et TX homogénéisés (Bordeaux-Paulin, Cap-Ferret, Bordeaux-Mérignac,
+  Cazaux, Villenave-d'Ornon) ; composite à réseau constant 1961-2022 (même règle que la P2a). R9 est contrôlée pour
+  chaque station et pour le composite (moyenne 2000-2019 − moyenne 1980-1999).
+- **Fraîcheur des nuits** et **gelées tardives** : les 7 stations disposant de TN homogénéisé ; fraîcheur sur la série
+  mensuelle LSH (TN de septembre).
+- **Canicule** : fenêtres de 3 jours consécutifs, tous présents, prises de mai à septembre ; un jour compte s'il
+  appartient à au moins une fenêtre au-dessus des deux seuils ; Mérignac seulement (station des seuils).
+- **Comptages rares** (médiane 1961-1990 < 5 jours) : règle E9 de la P2a (écart entre normales, Mann-Whitney).
+- **Vendanges** : colonne « Bor » telle que publiée, toutes les années ; série de plus de 80 ans, donc tendance mise
+  en avant sur les 50 dernières années (1957-2006, règle du 23/10/2026). I5 : années homogénéisées du Huglin
+  composite communes avec la série, au moins 30.
+- **CatNat par péril** : libellés contenant « inondation » (inondations et coulées de boue, remontées de nappe),
+  « sécheresse », « vagues » (chocs mécaniques des vagues) ; mêmes règles que la série tous périls (depuis 1982, deux
+  dernières années exclues) ; affichage seul.
+- **Confiance** : Huglin, règle des séries simples avec R9 (« élevée » si tendance significative et R9 retrouvée) ;
+  autres indicateurs sans référence, au plus « moyenne » ; vendanges, « non établi » si I5 échoue.
+- **FWI** : en attente de l'accès EWDS ; ses choix (mailles, saison complète) seront fixés après la sonde de format,
+  avant tout calcul.
+
 ### Décisions demandées à Grég
 
 - **D-I** : périmètre (A à D).

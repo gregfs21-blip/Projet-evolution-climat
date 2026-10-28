@@ -299,6 +299,37 @@ def parse_catnat(text: str, department: str | None = None, peril: str | None = N
     return out
 
 
+# --- Dates de vendanges : base européenne Daux et al. (2012), NOAA WDS Paleoclimatology (europe2012ghd.txt).
+# Format constaté par la sonde du 28/10/2026 (docs/sonde-p4b.md) : tableaux à largeur fixe, une ligne d'en-tête
+# « Year Als Auv … Bor … », valeurs en jours après le 31 août ALIGNÉES À DROITE sur la fin du code de colonne, case
+# vide = année absente.
+
+
+def parse_ghd(text: str, code: str = "Bor") -> dict[int, float]:
+    lines = text.splitlines()
+    out: dict[int, float] = {}
+    for i, ln in enumerate(lines):
+        if not (re.match(r"\s*[Yy]ear\s", ln) and re.search(rf"\b{re.escape(code)}\b", ln)):
+            continue
+        heads = [(m.group(0), m.start(), m.end()) for m in re.finditer(r"\S+", ln)]
+        k = next(j for j, h in enumerate(heads) if h[0] == code)
+        lo, hi = heads[k - 1][2], heads[k][2] + 1
+        started = False
+        for row in lines[i + 1:]:
+            m = re.match(r"\s*(\d{4})\b", row)
+            if not m:
+                if started:
+                    break
+                continue
+            started = True
+            if "\t" in row:
+                raise ValueError("dates de vendanges : tabulation inattendue, format changé")
+            cell = row[lo:hi].strip()
+            if cell:
+                out[int(m.group(1))] = float(cell)
+    return out
+
+
 PSMSL = "https://psmsl.org/data/obtaining/rlr.annual.data/{id}.rlrdata"
 PSMSL_PAGE = "https://psmsl.org/data/obtaining/stations/{id}.php"
 
@@ -311,7 +342,14 @@ SOURCES: dict[str, Source] = {s.id: s for s in [
              "Licence Ouverte 2.0 (Etalab)", "reconnaissances", partial(parse_catnat, department=dep, peril=per),
              cache="gaspar-catnat", timeout=600, member=r"catnat_gaspar.*\.csv$")
       for sid, dep, per in (("catnat-gironde", "33", None), ("catnat-france", None, None),
-                            ("catnat-secheresse-france", None, "cheresse"))],
+                            ("catnat-secheresse-france", None, "cheresse"),
+                            # P4, D-I (28/10/2026) : Gironde par péril, affichage seulement (critère I8)
+                            ("catnat-inondation-gironde", "33", "inondation"),
+                            ("catnat-secheresse-gironde", "33", "cheresse"),
+                            ("catnat-vagues-gironde", "33", "vagues"))],
+    Source("vendanges-bordeaux", "NOAA WDS Paleoclimatology — base européenne des dates de vendanges (Daux et al., 2012), Bordeaux",
+           "https://www.ncei.noaa.gov/pub/data/paleo/historical/europe/europe2012ghd.txt",
+           "https://www.ncei.noaa.gov/access/paleo-search/study/13194", "Domaine public (NOAA WDS)", "jours", parse_ghd),
     Source("sst-noaa", "NOAA NCEI — NOAAGlobalTemp, température de surface de l'océan mondial (Climate at a Glance)",
            f"https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/ocean/12/12/1850-{_LAST}/data.csv",
            "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series", "Domaine public (NOAA)", "°C", parse_cag),

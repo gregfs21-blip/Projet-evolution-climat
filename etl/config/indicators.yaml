@@ -1183,3 +1183,144 @@ indicators:
     scale: gironde
     builder: etl.indicators.eau:build
     params: {variable: mois-secs, poste: '33529001'}
+
+  # --- P4 : impacts Gironde (critères I1-I9 validés par Grég le 28/10/2026, avant calcul ; etl/indicators/impacts.py)
+  - id: huglin-gironde
+    scale: gironde
+    builder: etl.indicators.impacts:build_huglin
+    params: {}
+  - id: huglin-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.impacts:build_huglin
+    params: {station: bordeaux-paulin}
+  - id: huglin-cap-ferret
+    scale: gironde
+    builder: etl.indicators.impacts:build_huglin
+    params: {station: cap-ferret}
+  - id: huglin-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.impacts:build_huglin
+    params: {station: bordeaux-merignac}
+  - id: huglin-cazaux
+    scale: gironde
+    builder: etl.indicators.impacts:build_huglin
+    params: {station: cazaux}
+  - id: huglin-villenave-d-ornon
+    scale: gironde
+    builder: etl.indicators.impacts:build_huglin
+    params: {station: villenave-d-ornon}
+  - id: fraicheur-nuits-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.impacts:build_fraicheur
+    params: {station: bordeaux-paulin}
+  - id: fraicheur-nuits-lacanau
+    scale: gironde
+    builder: etl.indicators.impacts:build_fraicheur
+    params: {station: lacanau}
+  - id: fraicheur-nuits-cap-ferret
+    scale: gironde
+    builder: etl.indicators.impacts:build_fraicheur
+    params: {station: cap-ferret}
+  - id: fraicheur-nuits-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.impacts:build_fraicheur
+    params: {station: bordeaux-merignac}
+  - id: fraicheur-nuits-sauternes
+    scale: gironde
+    builder: etl.indicators.impacts:build_fraicheur
+    params: {station: sauternes}
+  - id: fraicheur-nuits-cazaux
+    scale: gironde
+    builder: etl.indicators.impacts:build_fraicheur
+    params: {station: cazaux}
+  - id: fraicheur-nuits-villenave-d-ornon
+    scale: gironde
+    builder: etl.indicators.impacts:build_fraicheur
+    params: {station: villenave-d-ornon}
+  - id: gelees-tardives-bordeaux-paulin
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: gelees-tardives, station: bordeaux-paulin}
+  - id: gelees-tardives-lacanau
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: gelees-tardives, station: lacanau}
+  - id: gelees-tardives-cap-ferret
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: gelees-tardives, station: cap-ferret}
+  - id: gelees-tardives-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: gelees-tardives, station: bordeaux-merignac}
+  - id: gelees-tardives-sauternes
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: gelees-tardives, station: sauternes}
+  - id: gelees-tardives-cazaux
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: gelees-tardives, station: cazaux}
+  - id: gelees-tardives-villenave-d-ornon
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: gelees-tardives, station: villenave-d-ornon}
+  - id: canicule-bordeaux-merignac
+    scale: gironde
+    builder: etl.indicators.impacts:build_count
+    params: {index: canicule, station: bordeaux-merignac}
+  - id: vendanges-bordeaux
+    scale: gironde
+    builder: etl.indicators.impacts:build_vendanges
+    params: {}
+  - id: catnat-inondation-gironde
+    scale: gironde
+    builder: etl.indicators.serie:build
+    params:
+      source: catnat-inondation-gironde
+      scale: gironde
+      variable: catnat-inondation
+      place: {id: gironde, name: Gironde}
+      where: En Gironde
+      label: le nombre de reconnaissances CatNat « inondation »
+      title: Reconnaissances CatNat « inondation » en Gironde
+      description: Nombre de reconnaissances de l'état de catastrophe naturelle (inondations et coulées de boue, et remontées de nappe) des communes de Gironde, par année de début de l'événement. Base GASPAR du ministère de la Transition écologique.
+      display_only: "série administrative, dominée par quelques événements et par les règles de reconnaissance : aucune tendance n'est calculée (critère I8 de la P4, fixé avant calcul)."
+      limitations:
+      - 'Compte administratif, pas une mesure de l''aléa : il dépend des demandes des communes, de l''exposition et des critères de reconnaissance, modifiés plusieurs fois.'
+      - 'Les deux dernières années d''événement sont exclues : les reconnaissances arrivent un à deux ans après (choix fixé avant calcul).'
+      - 'Série dominée par quelques événements ; son évolution reflète aussi les ouvrages, les plans de prévention et les pratiques de demande des communes.'
+  - id: catnat-secheresse-gironde
+    scale: gironde
+    builder: etl.indicators.serie:build
+    params:
+      source: catnat-secheresse-gironde
+      scale: gironde
+      variable: catnat-secheresse
+      place: {id: gironde, name: Gironde}
+      where: En Gironde
+      label: le nombre de reconnaissances CatNat « sécheresse »
+      title: Reconnaissances CatNat « sécheresse » en Gironde
+      description: Nombre de reconnaissances de l'état de catastrophe naturelle (sécheresse (mouvements de terrain dus au retrait-gonflement des argiles)) des communes de Gironde, par année de début de l'événement. Base GASPAR du ministère de la Transition écologique.
+      display_only: "série administrative, dominée par quelques événements et par les règles de reconnaissance : aucune tendance n'est calculée (critère I8 de la P4, fixé avant calcul)."
+      limitations:
+      - 'Compte administratif, pas une mesure de l''aléa : il dépend des demandes des communes, de l''exposition et des critères de reconnaissance, modifiés plusieurs fois.'
+      - 'Les deux dernières années d''événement sont exclues : les reconnaissances arrivent un à deux ans après (choix fixé avant calcul).'
+      - 'Critères de reconnaissance modifiés en 2000, 2018 et 2019 ; l''exposition croît avec les constructions sur argiles.'
+  - id: catnat-vagues-gironde
+    scale: gironde
+    builder: etl.indicators.serie:build
+    params:
+      source: catnat-vagues-gironde
+      scale: gironde
+      variable: catnat-vagues
+      place: {id: gironde, name: Gironde}
+      where: En Gironde
+      label: le nombre de reconnaissances CatNat « vagues »
+      title: Reconnaissances CatNat « chocs mécaniques des vagues » en Gironde
+      description: Nombre de reconnaissances de l'état de catastrophe naturelle (chocs mécaniques liés à l'action des vagues) des communes de Gironde, par année de début de l'événement. Base GASPAR du ministère de la Transition écologique.
+      display_only: "série administrative, dominée par quelques événements et par les règles de reconnaissance : aucune tendance n'est calculée (critère I8 de la P4, fixé avant calcul)."
+      limitations:
+      - 'Compte administratif, pas une mesure de l''aléa : il dépend des demandes des communes, de l''exposition et des critères de reconnaissance, modifiés plusieurs fois.'
+      - 'Les deux dernières années d''événement sont exclues : les reconnaissances arrivent un à deux ans après (choix fixé avant calcul).'
+      - 'Presque toutes les reconnaissances viennent de quelques tempêtes : aucune lecture d''évolution possible.'
