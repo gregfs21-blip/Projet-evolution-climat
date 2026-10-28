@@ -403,7 +403,11 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 
 ## P4 — Critères (proposition du 28/10/2026, avant tout calcul)
 
-> Statut : **proposition**, à valider par Grég. Sondes : `docs/sonde-p4.md`, `docs/sonde-p4b.md`. Déjà publié hors P4
+> **Décisions de Grég du 28/10/2026, avant tout calcul** : D-I périmètre A à D retenu en entier ; D-J R9 avec la
+> fourchette **[+102 ; +152] °C·j** (± 20 %, source sans incertitude publiée) ; D-K jours de danger = **FWI ≥ 21,3**
+> (classe EFFIS « très élevé ») ; D-L BDIFF **abandonné** (au mieux 20 ans, aucun accès automatique).
+>
+> Statut d'origine : proposition. Sondes : `docs/sonde-p4.md`, `docs/sonde-p4b.md`. Déjà publié hors P4
 > (« largeur d'abord ») : reconnaissances CatNat en Gironde, tous périls confondus.
 
 ### Constat des sondes
@@ -426,7 +430,7 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   K = 1,04 à 44-46° N) ; indice de fraîcheur des nuits (TN moyen de septembre, Tonietto) ; gelées tardives (jours
   TN ≤ 0 °C du 1er avril au 15 mai). Dates de vendanges de Bordeaux (Daux, 1800-2006), produit publié.
 - **B. Danger météo d'incendie** : FWI ERA5 (CEMS) moyen sur les mailles de la Gironde ; moyenne de juin à septembre
-  et nombre de jours au-dessus d'un seuil de classe EFFIS, à fixer.
+  et nombre de jours avec FWI ≥ 21,3 (classe EFFIS « très élevé », D-K).
 - **C. Canicule** (santé) : jours d'épisode caniculaire à Mérignac, moyennes sur 3 jours de TN ≥ 21 °C et de
   TX ≥ 35 °C (seuils préfectoraux de la Gironde), quotidien corrigé. Indice rare : règle E9.
 - **D. CatNat par péril** : affichage seulement (inondations, sécheresse, submersion), sans tendance ni normale.
@@ -435,7 +439,7 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 
 | # | Énoncé | Source | Contrôle proposé |
 |---|---|---|---|
-| R9 | Bordelais : indice de Huglin + 127 °C·j entre 1980-1999 et 2000-2019 (SAFRAN, points de grille du vignoble) | Ollat et al., Climatologie 18, 2021, doi:10.1051/climat/202118003 | Écart des moyennes 2000-2019 − 1980-1999 du Huglin de chaque station dans une fourchette à décider |
+| R9 | Bordelais : indice de Huglin + 127 °C·j entre 1980-1999 et 2000-2019 (SAFRAN, points de grille du vignoble) | Ollat et al., Climatologie 18, 2021, doi:10.1051/climat/202118003 | Écart des moyennes 2000-2019 − 1980-1999 du Huglin de chaque station dans **[+102 ; +152] °C·j** |
 | — | Saint-Émilion : début des vendanges vers le 26 septembre au XXe siècle, vers le 15 septembre depuis les années 2010 | ONERC (INRAE, Bordeaux Sciences Agro) | information seulement : autre vignoble, autre période que Daux |
 | — | FWI, canicule | aucune référence locale chiffrée | confiance au plus « moyenne » |
 
