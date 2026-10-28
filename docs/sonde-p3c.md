@@ -1,6 +1,6 @@
 # Sonde P3 — atmosphère et littoral Gironde (généré)
 
-Généré par `python -m etl.probe.p3` le 27/10/2026 21:10 UTC. Aucun indicateur calculé.
+Généré par `python -m etl.probe.p3` le 28/10/2026 18:05 UTC. Aucun indicateur calculé.
 
 ## 6. Altimétrie satellite (CDS satellite-sea-level-global)
 
@@ -9,8 +9,8 @@ Généré par `python -m etl.probe.p3` le 27/10/2026 21:10 UTC. Aucun indicateur
 `…/processes/satellite-sea-level-global/execution` → **201**
 
 ```
-{"processID":"satellite-sea-level-global","type":"process","jobID":"ad06a9d5-ea6d-46ff-a823-ab51fe8627d6","status":"accepted","created":"2026-10-27T21:10:11.327102","updated":"2026-10-27T21:10:11.327102","links":[{"href":"https://cds.climate.copernicus.eu/api/retrieve/v1/processes/satellite-sea-level-global/execution","rel":"self"},{"href":"https://cds.climate.copernicus.eu/api/retrieve/v1/jobs/ad
-état après 32 s : successful
+{"processID":"satellite-sea-level-global","type":"process","jobID":"1d274ab7-35bc-4bae-9ed5-3557f99ee23c","status":"successful","created":"2026-10-28T18:05:57.258800","updated":"2026-10-28T18:05:57.258800","links":[{"href":"https://cds.climate.copernicus.eu/api/retrieve/v1/processes/satellite-sea-level-global/execution","rel":"self"},{"href":"https://cds.climate.copernicus.eu/api/retrieve/v1/jobs/
+état après 31 s : successful
 résultat : 55904 octets, 54ce62ea219bd76db4855cd9e1dc4f24.zip
 archive : dt_global_twosat_phy_l4_202001_vDT2024-M01.area-subset.46.5.-1.0.44.0.-3.0.nc (55642 o)
 dimensions : time=1, nv=2, latitude=10, longitude=8
