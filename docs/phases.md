@@ -9,7 +9,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
 | P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
-| P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 proposés le 28/10/2026 | en cours |
+| P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | en cours |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | | à faire |
@@ -401,11 +401,11 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   (elle était déjà en « signal non établi »).
 - P3 close.
 
-## P4 — Critères (proposition du 28/10/2026, avant tout calcul)
+## P4 — Critères (proposés et validés le 28/10/2026, avant tout calcul)
 
 > **Décisions de Grég du 28/10/2026, avant tout calcul** : D-I périmètre A à D retenu en entier ; D-J R9 avec la
 > fourchette **[+102 ; +152] °C·j** (± 20 %, source sans incertitude publiée) ; D-K jours de danger = **FWI ≥ 21,3**
-> (classe EFFIS « très élevé ») ; D-L BDIFF **abandonné** (au mieux 20 ans, aucun accès automatique).
+> (classe EFFIS « très élevé ») ; D-L BDIFF **abandonné** (au mieux 20 ans, aucun accès automatique) ; **critères I1-I9 validés** (I5 à r ≤ −0,6).
 >
 > Statut d'origine : proposition. Sondes : `docs/sonde-p4.md`, `docs/sonde-p4b.md`. Déjà publié hors P4
 > (« largeur d'abord ») : reconnaissances CatNat en Gironde, tous périls confondus.
