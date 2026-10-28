@@ -63,7 +63,10 @@ def ghd(md):
     text = data.decode("latin-1", "replace")
     lines = text.splitlines()
     out = [f"{len(lines)} lignes"]
-    out += [ln for ln in lines if re.search(r"Bordeaux|Bor\b|Gaillac|days after|Missing|Part ", ln)][:25]
+    hdr_i = [i for i, ln in enumerate(lines) if re.match(r"\s*[Yy]ear\s", ln)]
+    out += ["lignes brutes (repr) :"] + [repr(lines[j][:260]) for i in hdr_i[:2] for j in (i, i + 1, i + 2)]
+    out += [repr(ln[:260]) for ln in lines if re.match(r"\s*(1976|2003|2006)\b", ln)][:6]
+    bad = 0
     # Tables à largeur fixe : ligne « Year Als … Bor … », valeurs alignées sous le code (cases vides = absentes).
     vals = {}
     for i, ln in enumerate(lines):
@@ -87,16 +90,15 @@ def ghd(md):
                 try:
                     vals[int(m.group(1))] = float(cell)
                 except ValueError:
-                    out.append(f"cellule illisible {m.group(1)} : {cell!r}")
+                    bad += 1
         if "\t" in lines[i + 1]:
             out.append("attention : tabulations dans les lignes de données")
+    out.append(f"cellules illisibles (lecture à largeur fixe) : {bad}")
     ys = sorted(vals)
     out.append(f"colonne Bor : {len(ys)} valeurs, {ys[:1]} à {ys[-1:]}")
     for d in range(1800, 2010, 10):
         out.append(f"{d}s : " + ", ".join(f"{y}:{vals[y]:g}" for y in ys if d <= y < d + 10))
     out.append(f"années manquantes 1900-2006 : {sorted(set(range(1900, 2007)) - set(ys))}")
-    raw = [ln for ln in lines if re.match(r"\s*(1976|1990|2003|2006)\b", ln)]
-    out += ["lignes brutes (repr) :"] + [repr(x[:220]) for x in raw[:8]]
     block(md, "Base Daux et al. 2012 (NOAA Paleo), colonne Bordeaux", url, st, out)
 
     for url in ("https://www.ecologie.gouv.fr/politiques-publiques/impacts-du-changement-climatique-agriculture-foret",
