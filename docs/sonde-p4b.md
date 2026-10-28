@@ -1,6 +1,6 @@
 # Sonde P4 — impacts Gironde (généré)
 
-Généré par `python -m etl.probe.p4` le 28/10/2026 18:17 UTC. Aucun indicateur calculé.
+Généré par `python -m etl.probe.p4` le 28/10/2026 18:19 UTC. Aucun indicateur calculé.
 
 ## 1. Dates de vendanges
 
@@ -12,85 +12,44 @@ Second passage : la première lecture découpait les lignes aux blancs et décal
 
 ```
 2118 lignes
-the number of days after 31 August. 
-Bordeaux                          45.18      -0.75
-Gaillac- South-West               43.9        1.9
-                Alsace              Auvergne          Auxerre-Avalon    Beaujolais and Maconn      Bordeaux             Burgundy            Champagne 1          Champagne 2      Gaillac- South-West
-Year              Als                  Auv                  Aux                  Bea                  Bor                  Bur                 Cha1                 Cha2                  Gai
+lignes brutes (repr) :
+'Year              Als                  Auv                  Aux                  Bea                  Bor                  Bur                 Cha1                 Cha2                  Gai'
+'1354                                                                                                                      15.3'
+'1355                                                                                                                      13.4'
+'Year            Germany         High Loire Valley      Ile de France            Jura               Languedoc        Low Loire Valley        Luxembourg          Maritime alps       Northern Italy'
+'1354              Ger                  HLV                  IdF                  Jur                  Lan                  LLV                  Lux                  Mar                  NIt'
+'1355'
+'1976             21.7                                                            6.0                 11.7                  8.8                                       1.0'
+'2003              8.0                                                                                -4.3                 -10.1                                     -4.0'
+'2006                                                                                                 16.1                 16.0                                      16.0'
+'1976                                                       28.0                 29.0                 24.9                 39.0'
+'2003                                                                                                 20.8                 34.4'
+'2006                                                                                                 20.4                 24.0'
 table ligne 137 : colonnes ['Year', 'Als', 'Auv', 'Aux', 'Bea', 'Bor', 'Bur', 'Cha1', 'Cha2', 'Gai'] ; Bor entre les caractères 84 et 123
-cellule illisible 1420 : '-'
-cellule illisible 1449 : '49.0                 4'
-cellule illisible 1451 : '45.0                 3'
-cellule illisible 1461 : '27.0                 1'
-cellule illisible 1465 : '59.0                 4'
-cellule illisible 1473 : '-'
-cellule illisible 1474 : '45.0                 3'
-cellule illisible 1476 : '36.0                 2'
-cellule illisible 1478 : '25.0                 1'
-cellule illisible 1482 : '41.0                 1'
-cellule illisible 1483 : '26.0                 1'
-cellule illisible 1484 : '14.0                 2'
-cellule illisible 1485 : '53.0                 4'
-cellule illisible 1532 : '27.0                 2'
-cellule illisible 1533 : '35.0                 3'
-cellule illisible 1534 : '24.0                 2'
-cellule illisible 1586 : '27.0                 3'
-cellule illisible 1587 : '32.0                 4'
-cellule illisible 1588 : '24.0                 2'
-cellule illisible 1591 : '33.5                 3'
-cellule illisible 1592 : '26.0                 3'
-cellule illisible 1593 : '33.5                 3'
-cellule illisible 1594 : '47.8                 3'
-cellule illisible 1595 : '29.5                 2'
-cellule illisible 1596 : '36.3                 3'
-cellule illisible 1597 : '41.5                 4'
-cellule illisible 1598 : '31.5                 2'
-cellule illisible 1599 : '20.5                 1'
-cellule illisible 1600 : '50.5                 4'
-cellule illisible 1601 : '35.5                 3'
-cellule illisible 1602 : '23.5                 2'
-cellule illisible 1603 : '20.8                 1'
-cellule illisible 1605 : '33.5                 2'
-cellule illisible 1606 : '45.5                 3'
-cellule illisible 1607 : '29.5                 2'
-cellule illisible 1608 : '41.5                 3'
-cellule illisible 1609 : '21.5                 2'
-cellule illisible 1610 : '27.3                 2'
-cellule illisible 1611 : '19.0                 1'
-cellule illisible 1612 : '32.0                 3'
-cellule illisible 1613 : '34.0                 2'
-cellule illisible 1615 : '27.5                 2'
-cellule illisible 1616 : '29.5                 1'
-cellule illisible 1617 : '24.5                 3'
-cellule illisible 1618 : '36.0                 3'
-cellule illisible 1620 : '38.0                 2'
-cellule illisible 1621 : '45.0                 4'
-cellule illisible 1623 : '25.0                 1'
-cellule illisible 1626 : '39.5                 2'
-cellule illisible 1629 : '30.0                 2'
-cellule illisible 1633 : '36.5                 3'
-cellule illisible 1640 : '34.5                 3'
-cellule illisible 1648 : '25.0                 3'
-cellule illisible 1653 : '25.5                 1'
-cellule illisible 1662 : '19.5                 2'
-cellule illisible 1663 : '28.5                 3'
-cellule illisible 1665 : '21.5                 1'
-cellule illisible 1666 : '12.8                 1'
-cellule illisible 1675 : '60.0                 4'
-cellule illisible 1691 : '21.0                 2'
-cellule illisible 1696 : '34.5                 1'
-cellule illisible 1697 : '19.5                 2'
-cellule illisible 1698 : '46.5                 3'
-cellule illisible 1699 : '25.5                 1'
-cellule illisible 1719 : '-'
-cellule illisible 1733 : '22.0                 2'
-cellule illisible 1735 : '42.0                 3'
-cellule illisible 1736 : '18.0                 2'
-cellule illisible 1737 : '15.0                 1'
-cellule illisible 1738 : '30.0                 3'
-cellule illisible 1741 : '14.0                 2'
-cellule illisible 1746 : '30.0                 2'
-cellule illisible 1747 : '26.0                 3'
+cellules illisibles (lecture à largeur fixe) : 325
+colonne Bor : 265 valeurs, [1354] à [1976]
+1800s : 
+1810s : 
+1820s : 1822:-5.8
+1830s : 
+1840s : 
+1850s : 
+1860s : 
+1870s : 
+1880s : 
+1890s : 
+1900s : 
+1910s : 1910:36.4, 1917:16.1
+1920s : 
+1930s : 
+1940s : 
+1950s : 
+1960s : 
+1970s : 1976:11.7
+1980s : 
+1990s : 
+2000s : 
+années manquantes 1900-2006 : [1900, 1901, 1902, 1903, 1904, 1905, 1906, 1907, 1908, 1909, 1911, 1912, 1913, 1914, 1915, 1916, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1977, 1978, 1979, 1980, 1
 ```
 
 ### ONERC, page « agriculture et forêt » (série Saint-Émilion)
