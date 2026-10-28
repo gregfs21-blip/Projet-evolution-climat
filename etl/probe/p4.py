@@ -67,7 +67,7 @@ def ghd(md):
     out += ["lignes brutes (repr) :"] + [repr(lines[j][:260]) for i in hdr_i[:2] for j in (i, i + 1, i + 2)]
     out += [repr(ln[:260]) for ln in lines if re.match(r"\s*(1976|2003|2006)\b", ln)][:6]
     bad = 0
-    # Tables à largeur fixe : ligne « Year Als … Bor … », valeurs alignées sous le code (cases vides = absentes).
+    # Tables à largeur fixe : ligne « Year Als … Bor … » ; valeurs alignées à droite sur la fin du code (vide = absent).
     vals = {}
     for i, ln in enumerate(lines):
         if not (re.match(r"\s*[Yy]ear\s", ln) and re.search(r"\bBor\b", ln)):
@@ -75,7 +75,7 @@ def ghd(md):
         heads = [(m.group(0), m.start(), m.end()) for m in re.finditer(r"\S+", ln)]
         k = next(j for j, h in enumerate(heads) if h[0] == "Bor")
         lo = heads[k - 1][2]
-        hi = heads[k + 1][1] if k + 1 < len(heads) else 10_000
+        hi = heads[k][2] + 1          # valeurs alignées à droite sur la fin du code de colonne
         out.append(f"table ligne {i} : colonnes {[h[0] for h in heads]} ; Bor entre les caractères {lo} et {hi}")
         n = 0
         for row in lines[i + 1:]:
