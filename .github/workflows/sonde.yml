@@ -34,10 +34,10 @@ jobs:
           path: data/raw
           key: raw-${{ github.run_id }}
           restore-keys: raw-
-      - name: Sonde P3 (atmosphère et littoral, aucun indicateur)
+      - name: Sonde P4 (impacts Gironde, aucun indicateur)
         env:
           CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # secret du dépôt, jamais affiché
-        run: python -m etl.probe.p3
+        run: python -m etl.probe.p4
       - name: Publication du rapport
         run: |
           git config user.name "etl-bot"
