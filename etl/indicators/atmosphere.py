@@ -26,6 +26,7 @@ from etl.schema import Indicator, Provenance, Station
 from etl.sources import igra
 from etl.sources import meteofrance_quot as quot
 from etl.sources import openmeteo_era5 as era5
+from etl.stats.trend import annual_trend
 
 LAST = datetime.now(timezone.utc).year - 1            # dernière année complète
 DEPARTMENT = "33"
@@ -101,12 +102,78 @@ def build_era5(ctx: BuildContext, variable: str, title: str, description: str, l
                       license=era5.LICENSE, extracted_at=ctx.extracted_at, script="etl.indicators.atmosphere",
                       etl_version=ctx.etl_version, homogenized=False)
     v = vocab.variable(variable)
-    return S.assemble(ctx, ind_id=f"{variable}-bordeaux-era5", scale="gironde", variable=variable,
-                      place=vocab.station("bordeaux-era5", "Bordeaux (ERA5)"), title=title, description=description,
-                      unit=unit, series=series, hom=set(series), provenance=prov,
-                      limitations=ERA5_LIMITS + (limitations or []), stations=[st], method_note=None,
-                      reference=reference, baseline=None, group=f"Réanalyse ERA5 — {v.theme_label}",
-                      where="À Bordeaux (réanalyse ERA5)", label=label)
+    lims = ERA5_LIMITS + (limitations or [])
+    controls = h5(variable, series, str(ctx.raw_dir)) if variable in H5_VARS else []
+    if controls:
+        lims.append("Contrôle croisé avec les mesures de station (critère H5, P3) : "
+                    + " ; ".join(f"{c['poste']} {c['detail']}" for c in controls)
+                    + ". ERA5 assimile les mesures au sol : ce contrôle détecte un défaut grossier, ce n'est pas une "
+                      "validation indépendante.")
+    ind = S.assemble(ctx, ind_id=f"{variable}-bordeaux-era5", scale="gironde", variable=variable,
+                     place=vocab.station("bordeaux-era5", "Bordeaux (ERA5)"), title=title, description=description,
+                     unit=unit, series=series, hom=set(series), provenance=prov,
+                     limitations=lims, stations=[st], method_note=None,
+                     reference=reference, baseline=None, group=f"Réanalyse ERA5 — {v.theme_label}",
+                     where="À Bordeaux (réanalyse ERA5)", label=label)
+    if controls and not all(c["ok"] for c in controls) and ind.confidence in ("elevee", "moyenne"):
+        ind = ind.model_copy(update={"confidence": "faible", "limitations": ind.limitations + [
+            "Contrôle H5 non conforme : confiance ramenée au plus « faible » (règle validée par Grég le 27/10/2026)."]})
+    return ind
+
+
+# ---------------------------------------------------------------- P3, critère H5 : contrôle croisé ERA5 − station
+
+H5_POSTES = {"33281001": "Bordeaux-Mérignac", "33529001": "Cazaux"}
+H5_VARS = {"pression": ("PMERM", (1005.0, 1025.0)), "humidite": ("UM", (55.0, 95.0))}
+
+
+@lru_cache(maxsize=2)
+def _station_other(raw_dir: str):
+    return quot.load(DEPARTMENT, set(H5_POSTES), ("PMERM", "UM"), Path(raw_dir), kind="autres-parametres")
+
+
+def station_annual(daily: dict[str, "quot.Daily"]) -> dict[int, float]:
+    """Moyenne des 12 moyennes mensuelles ; mois au plus 3 jours absents (ETCCDI), année de 12 mois."""
+    out = {}
+    for y in sorted({int(d[:4]) for d in daily}):
+        if y > LAST:
+            continue
+        months = []
+        for m in range(1, 13):
+            vals = [daily[d].value for d in days_of(y, m) if d in daily]
+            if len(vals) < len(days_of(y, m)) - MAX_MISSING_DAYS:
+                break
+            months.append(sum(vals) / len(vals))
+        if len(months) == 12:
+            out[y] = round(sum(months) / 12, 3)
+    return out
+
+
+def h5(variable: str, era5_series: dict[int, float], raw_dir: str) -> list[dict]:
+    """Par poste : pente de l'écart ERA5 − station (Sen, Hamed-Rao) et ruptures (Pettitt, avec et sans tendance).
+    Conforme si la pente n'est pas significative ET aucune rupture établie. Critère fixé le 27/10/2026 avant calcul."""
+    code, (lo, hi) = H5_VARS[variable]
+    out = []
+    for poste, name in H5_POSTES.items():
+        st = station_annual(_station_other(raw_dir)[poste][code])
+        bad = {y: v for y, v in st.items() if not lo <= v <= hi}
+        if bad:
+            raise ValueError(f"H5 {variable} {name} : valeurs annuelles hors bornes {list(bad.items())[:3]}")
+        years = S.longest_run([y for y in st if y in era5_series])
+        if len(years) < 20:
+            out.append({"poste": name, "ok": False, "detail": f"{len(years)} années communes seulement"})
+            continue
+        diff = {y: era5_series[y] - st[y] for y in years}
+        t = annual_trend(years, [diff[y] for y in years], label=f"Écart ERA5 − {name}")
+        br = S.detect_break(years, diff, [], "")
+        established = [b for b in br if b.detrended_p_value is not None and b.detrended_p_value < 0.05]
+        ok = not t.significant and not established
+        out.append({"poste": name, "ok": ok, "trend": t, "breaks": br,
+                    "detail": (f"{years[0]}-{years[-1]} : écart moyen {sum(diff.values()) / len(diff):+.2f}, pente "
+                               f"{t.slope_per_decade:+.3f}/déc. (p = {t.p_value:.3f})"
+                               + (f", rupture établie en {established[0].time}" if established else "")
+                               + (" : conforme" if ok else " : NON conforme"))})
+    return out
 
 
 # ---------------------------------------------------------------- rafales Météo-France (brutes)

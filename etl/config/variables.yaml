@@ -57,7 +57,8 @@ variables:
 # --- « largeur d'abord », lot 2 (25/10/2026)
   sst-noaa: {code: NOAA, label: température de surface de l'océan mondial (NOAAGlobalTemp), theme: temperature-mer, order: 0}
   sst-hadsst: {code: HadSST, label: température de surface de l'océan mondial (HadSST), theme: temperature-mer, order: 1}
-  sst-gascogne: {code: OISST, label: température de surface de la mer au large de la Gironde, theme: temperature-mer, order: 2}
+  sst-gascogne: {code: Gironde, label: température de surface de la mer au large de la Gironde, theme: temperature-mer, order: 2}
+  sst-golfe: {code: Golfe, label: température de surface du golfe de Gascogne, theme: temperature-mer, order: 3}
   ouragans: {code: Ouragans, label: nombre d'ouragans par saison, theme: ouragans, order: 0}
   ace: {code: ACE, label: énergie cumulée des cyclones (ACE), theme: ouragans, order: 1}
   jours-vent-fort: {code: Vent fort, label: "jours de vent fort (rafale ≥ 57,6 km/h)", theme: vent, order: 0}

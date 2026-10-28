@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-27T06:46:43Z",
- "etl_version": "0.1.0+33af475",
+ "generated_at": "2026-10-28T12:27:38Z",
+ "etl_version": "0.1.0+8ba3916",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -1841,6 +1841,75 @@
     "id": "monde",
     "name": "Monde",
     "kind": "composite"
+   }
+  },
+  {
+   "id": "sst-gascogne-large-gironde",
+   "scale": "gironde",
+   "title": "Température de surface de la mer au large de la Gironde (ERA5)",
+   "unit": "°C",
+   "path": "gironde/sst-gascogne-large-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Température de la mer",
+   "variable": {
+    "id": "sst-gascogne",
+    "code": "Gironde",
+    "label": "température de surface de la mer au large de la Gironde",
+    "theme": "temperature-mer",
+    "theme_label": "Température de la mer",
+    "order": 2
+   },
+   "place": {
+    "id": "large-gironde",
+    "name": "Large de la Gironde",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "niveau-mer-large-gironde",
+   "scale": "gironde",
+   "title": "Niveau de la mer au large de la Gironde (altimétrie satellite)",
+   "unit": "mm",
+   "path": "gironde/niveau-mer-large-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Satellite — niveau de la mer",
+   "variable": {
+    "id": "niveau-mer",
+    "code": "NM",
+    "label": "niveau marin moyen annuel",
+    "theme": "niveau-mer",
+    "theme_label": "Niveau de la mer",
+    "order": 0
+   },
+   "place": {
+    "id": "large-gironde",
+    "name": "Large de la Gironde (satellite)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "sst-golfe-gascogne",
+   "scale": "gironde",
+   "title": "Température de surface du golfe de Gascogne (ERA5)",
+   "unit": "°C",
+   "path": "gironde/sst-golfe-gascogne.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — Température de la mer",
+   "variable": {
+    "id": "sst-golfe",
+    "code": "Golfe",
+    "label": "température de surface du golfe de Gascogne",
+    "theme": "temperature-mer",
+    "theme_label": "Température de la mer",
+    "order": 3
+   },
+   "place": {
+    "id": "gascogne",
+    "name": "Golfe de Gascogne",
+    "kind": "station"
    }
   },
   {

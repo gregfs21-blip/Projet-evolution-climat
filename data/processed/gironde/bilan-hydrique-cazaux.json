@@ -312,9 +312,9 @@
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-27T06:44:05Z",
+  "extracted_at": "2026-10-28T12:23:38Z",
   "script": "etl.indicators.eau",
-  "etl_version": "0.1.0+33af475",
+  "etl_version": "0.1.0+8ba3916",
   "homogenized": true
  },
  "is_demo": false

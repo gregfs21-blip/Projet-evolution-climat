@@ -8,7 +8,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
 | P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
-| P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, marégraphe (PSMSL) | | à faire |
+| P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
@@ -330,6 +330,76 @@ Analyse : `docs/validation-p2b.md` et `docs/validation-p2a.md`.
   réellement retrouvée).
 - **Règle nouvelle** : pas de pente pour un indice de pluie sur moins de 30 années consécutives corrigées (Lacanau).
 - P2a et P2b closes.
+
+## P3 — Critères (proposés et validés le 27/10/2026, avant tout calcul)
+
+> **Décisions de Grég du 27/10/2026, avant tout calcul** : H5 validé tel quel (échec → confiance au plus
+> « faible » ; succès insuffisant pour « élevée ») ; R8 fixée avec la fourchette **[+0,21 ; +0,31] °C/déc.**
+> (± 20 %, source sans incertitude publiée), contrôlée sur une boîte « golfe entier » 1982-2014 ; niveau marin :
+> **altimétrie satellite** (Copernicus, depuis 1993), après une sonde du jeu de données ; critères H1-H8 validés.
+>
+> Statut d'origine : proposition. Sondes : `docs/sonde-p3.md`, `docs/sonde-p3b.md`. Déjà publiés hors P3 (« largeur
+> d'abord ») : pression, humidité, vent fort et rafale maximale ERA5 à Bordeaux ; rafales FXI (tendance indicative) ;
+> marégraphe d'Arcachon (2002-2024, lacunaire : aucune tendance calculable).
+
+### Constat des sondes
+
+- **Mesures de station** (quotidien Météo-France « autres paramètres », bruts) : pression au niveau de la mer
+  (PMERM) et humidité moyenne (UM) à Bordeaux-Mérignac et Cazaux sur 1950-2024 (75 ans), Cap-Ferret 1951-2019
+  (pression). Rien d'homogénéisé.
+- **Température de la mer** : le serveur ERDDAP de la NOAA est injoignable depuis GitHub. ERA5 « single levels »
+  (Copernicus) fournit la SST mensuelle depuis 1940 : la requête 44-46° N, 3-1° O a abouti en quelques minutes.
+- **Mouvements du sol** (GNSS, SONEL ULR7a) : Cap-Ferret 2005-2012 seulement, Royan 2007-2020, La Rochelle
+  2000-2020. Positions quotidiennes, pas de vitesses publiées dans ce flux.
+- **Marégraphes** : aucune série longue en Gironde (Arcachon 19 années, Le Verdon 6). Séries longues voisines :
+  Saint-Nazaire 1965-2024, Boucau 1969-2024, La Rochelle (1942-2023, lacunaire).
+
+### Périmètre proposé
+
+- **A. Pression et humidité** : les séries ERA5 de Bordeaux restent l'indicateur ; les mesures de Mérignac et
+  Cazaux servent de **contrôle croisé** (elles sont brutes, donc sans tendance propre, règle C2).
+- **B. Vent** : rafales ERA5 inchangées ; corrélation interannuelle avec le vent moyen mesuré (FFM) en information.
+- **C. Température de la mer** : SST ERA5, boîte côtière 44-46° N, 3-1° O (au large de la Gironde), 1940-2025.
+- **D. Niveau marin** : trois options, voir les décisions.
+
+### Références proposées
+
+| # | Énoncé | Source | Contrôle proposé |
+|---|---|---|---|
+| R8 | Golfe de Gascogne : + 0,26 °C par décennie depuis 1982 (bassin entier), réchauffement plus fort au printemps et en automne ; refroidissement hivernal le long de la côte sous l'influence des panaches de la Loire et de la Gironde (2002-2014) | Thèse de X. Costoya, université de Vigo, 2016 ; Costoya et al., Journal of Marine Systems, 2015 (1982-2014) | Pente de la SST ERA5 sur une boîte « golfe entier » (43,5-48° N, 10-1° O, requête à ajouter), 1982-2014, dans une fourchette à décider |
+| — | Pression, humidité | aucune référence publiée locale | confiance au plus « moyenne » |
+
+### Critères proposés
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| H1 | Exhaustivité | Tout le périmètre retenu ; exclusions justifiées |
+| H2 | Complétude | Station : année de 12 mois, mois ETCCDI (au plus 3 jours absents) ; ERA5 : années complètes |
+| H3 | Brut ≠ homogénéisé | Mesures de station sans tendance publiée (C2) ; elles ne servent qu'au contrôle H5 |
+| H4 | Validation externe | R8 pour la SST ; sinon confiance au plus « moyenne » |
+| H5 | **Contrôle croisé ERA5 − station** (pression, humidité) | Série annuelle des écarts ERA5 − Mérignac et ERA5 − Cazaux : pente non significative ET aucune rupture établie (Pettitt, aussi après retrait de tendance). Échec → confiance de l'indicateur ERA5 au plus « faible » |
+| H6 | Cohérence entre stations | Les écarts ERA5 − station ont le même comportement à Mérignac et Cazaux ; sinon expliqué |
+| H7 | Plausibilité | Valeurs annuelles dans des bornes fixées (pression 1005-1025 hPa, humidité 55-95 %, SST 10-20 °C) |
+| H8 | Technique | Tests, CI, contrat, pages |
+
+**Limite à assumer** : ERA5 assimile les pressions mesurées au sol, probablement celles de Mérignac. H5 détecte donc
+un défaut grossier (rupture, dérive), mais ne constitue pas une validation indépendante. Il ne permet pas, à lui
+seul, la confiance « élevée ».
+
+### Relevés P3 (27/10/2026), contrôles avant activation, sans calcul de tendance
+
+- SST au large de la Gironde (ERA5) : 1940-2025, 63 mailles de mer chaque mois, moyennes annuelles 14,3 à 17,1 °C.
+- Altimétrie (C3S DT2024) : 1993-2025, 396 mois, 78 mailles chaque mois, moyennes annuelles −19 à + 132 mm. La
+  requête d'un seul tenant dépassait la limite de coût du CDS : relevé par tranches de 4 ans, réunies sans trou.
+- SST du golfe entier : relevée le 27/10 au soir (1940-2025, mailles de mer constantes) ; activée le 28/10.
+
+### Décision de Grég du 28/10/2026, APRÈS calcul
+
+Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de justesse (+0,218 pour [+0,21 ; +0,31]).
+- **H5 humidité** (dérive de l'écart ERA5 − Mérignac, +0,64 point/déc., p = 0,005 ; Cazaux 15 ans communs) : cause
+  non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
+  (elle était déjà en « signal non établi »).
+- P3 close.
 
 ## Journal ergonomie (entre P1 et P2)
 

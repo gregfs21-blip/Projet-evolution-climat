@@ -55,20 +55,21 @@ def _dir(raw_dir: Path) -> Path:
     return d
 
 
-def is_department_file(title: str, department: str) -> bool:
-    return f"departement_{department}_" in title and "RR-T-Vent" in title
+def is_department_file(title: str, department: str, kind: str = "RR-T-Vent") -> bool:
+    """`kind` : « RR-T-Vent » (pluie, températures, vent) ou « autres-parametres » (pression, humidité…)."""
+    return f"departement_{department}_" in title and kind in title
 
 
-def resources(department: str, raw_dir: Path) -> list[dict]:
-    """Fichiers « RR-T-Vent » du département : découverts par l'API, ou lus dans le cache hors ligne."""
-    index = _dir(raw_dir) / f"index-{department}.json"
+def resources(department: str, raw_dir: Path, kind: str = "RR-T-Vent") -> list[dict]:
+    """Fichiers du département (« RR-T-Vent » ou « autres-parametres ») : découverts par l'API, ou lus en cache."""
+    index = _dir(raw_dir) / (f"index-{department}.json" if kind == "RR-T-Vent" else f"index-{department}-{kind}.json")
     if not _offline():
         try:
             out, page = [], 1
             while True:
                 data = json.loads(_get(API.format(page=page), timeout=60))
                 items = data.get("data", [])
-                out += [{"title": r["title"], "url": r["url"]} for r in items if is_department_file(r.get("title", ""), department)]
+                out += [{"title": r["title"], "url": r["url"]} for r in items if is_department_file(r.get("title", ""), department, kind)]
                 if not data.get("next_page") or not items:
                     break
                 page += 1
@@ -109,35 +110,80 @@ def _rows(path: Path):
         yield from csv.reader(f, delimiter=";")
 
 
-def load(department: str, postes: set[str], variables: tuple[str, ...], raw_dir: Path) -> dict[str, dict[str, dict[str, Daily]]]:
-    """poste → variable → date ISO (AAAA-MM-JJ) → valeur et code qualité. Jours absents : clé absente."""
+def _digest(path: Path) -> str:
+    import hashlib
+    h = hashlib.sha1()
+    with path.open("rb") as f:
+        while chunk := f.read(1 << 20):
+            h.update(chunk)
+    return h.hexdigest()[:16]
+
+
+def _parse(path: Path, title: str, postes: set[str], variables: tuple[str, ...]) -> dict[tuple[str, str], dict[str, Daily]]:
+    out: dict[tuple[str, str], dict[str, Daily]] = {(p, v): {} for p in postes for v in variables}
+    rows = _rows(path)
+    header = [h.strip() for h in next(rows)]
+    idx = {h: i for i, h in enumerate(header)}
+    missing = {"NUM_POSTE", "AAAAMMJJ", *variables} - idx.keys()
+    if missing:
+        raise ValueError(f"{title} : colonnes absentes {sorted(missing)}")
+    q = {v: idx.get(f"Q{v}") for v in variables}
+    for row in rows:
+        if len(row) < len(header):
+            continue
+        poste = row[idx["NUM_POSTE"]].strip()
+        if poste not in postes:
+            continue
+        d = row[idx["AAAAMMJJ"]].strip()
+        if len(d) != 8:
+            continue
+        day = f"{d[:4]}-{d[4:6]}-{d[6:]}"
+        for v in variables:
+            raw = row[idx[v]].strip()
+            if raw == "":
+                continue
+            series = out[(poste, v)]
+            if day in series:
+                raise ValueError(f"{title} : jour dupliqué {poste} {day} {v}")
+            series[day] = Daily(float(raw), row[q[v]].strip() if q[v] is not None else "")
+    return out
+
+
+def load(department: str, postes: set[str], variables: tuple[str, ...], raw_dir: Path,
+         kind: str = "RR-T-Vent") -> dict[str, dict[str, dict[str, Daily]]]:
+    """poste → variable → date ISO (AAAA-MM-JJ) → valeur et code qualité. Jours absents : clé absente.
+
+    Cache de lecture (27/10/2026) : chaque couple (poste, variable) lu dans un fichier est gardé dans
+    raw/quot/parsed/<empreinte du fichier>/ ; un fichier modifié change d'empreinte et est relu. Les validations,
+    lancées dans des processus séparés, ne relisent plus des fichiers de plusieurs centaines de Mo.
+    """
+    import pickle
     out: dict[str, dict[str, dict[str, Daily]]] = {p: {v: {} for v in variables} for p in postes}
-    for res in resources(department, raw_dir):
-        rows = _rows(fetch(res, raw_dir))
-        header = [h.strip() for h in next(rows)]
-        idx = {h: i for i, h in enumerate(header)}
-        missing = {"NUM_POSTE", "AAAAMMJJ", *variables} - idx.keys()
-        if missing:
-            raise ValueError(f"{res['title']} : colonnes absentes {sorted(missing)}")
-        q = {v: idx.get(f"Q{v}") for v in variables}
-        for row in rows:
-            if len(row) < len(header):
-                continue
-            poste = row[idx["NUM_POSTE"]].strip()
-            if poste not in out:
-                continue
-            d = row[idx["AAAAMMJJ"]].strip()
-            if len(d) != 8:
-                continue
-            day = f"{d[:4]}-{d[4:6]}-{d[6:]}"
-            for v in variables:
-                raw = row[idx[v]].strip()
-                if raw == "":
-                    continue
-                series = out[poste][v]
-                if day in series:
-                    raise ValueError(f"{res['title']} : jour dupliqué {poste} {day} {v}")
-                series[day] = Daily(float(raw), row[q[v]].strip() if q[v] is not None else "")
+    for res in resources(department, raw_dir, kind):
+        path = fetch(res, raw_dir)
+        cache = _dir(raw_dir) / "parsed" / f"{path.name}.{_digest(path)}"
+        need = {(p, v) for p in postes for v in variables}
+        have = {k for k in need if (cache / f"{k[0]}_{k[1]}.pkl").exists()}
+        if have == need:
+            parsed = {k: pickle.loads((cache / f"{k[0]}_{k[1]}.pkl").read_bytes()) for k in need}
+        else:
+            todo = need - have
+            parsed = _parse(path, res["title"], {p for p, _ in todo}, tuple(sorted({v for _, v in todo})))
+            cache.mkdir(parents=True, exist_ok=True)
+            for old in cache.parent.glob(f"{path.name}.*"):          # versions précédentes du même fichier
+                if old != cache:
+                    import shutil
+                    shutil.rmtree(old, ignore_errors=True)
+            for k, series in parsed.items():
+                (cache / f"{k[0]}_{k[1]}.pkl").write_bytes(pickle.dumps(series, protocol=pickle.HIGHEST_PROTOCOL))
+            parsed = {k: parsed[k] if k in parsed else pickle.loads((cache / f"{k[0]}_{k[1]}.pkl").read_bytes())
+                      for k in need}
+        for (p, v), series in parsed.items():
+            target = out[p][v]
+            dup = target.keys() & series.keys()
+            if dup:
+                raise ValueError(f"{res['title']} : jour dupliqué {p} {min(dup)} {v}")
+            target.update(series)
     return out
 
 

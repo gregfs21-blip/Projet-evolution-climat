@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-27T06:46:44Z",
+ "generated_at": "2026-10-28T12:27:38Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -359,10 +359,21 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
-     "source": "NOAA OISST v2.1, maille au large de la Gironde (depuis 1982)",
-     "note": "Lecteur écrit, mais serveur ERDDAP instable le 25/10/2026 (délai dépassé, erreur 503) : indicateur suspendu.",
-     "indicators": []
+     "status": "publie",
+     "source": "ERA5 (Copernicus), au large de la Gironde et golfe de Gascogne, depuis 1940",
+     "note": null,
+     "indicators": [
+      {
+       "id": "sst-gascogne-large-gironde",
+       "title": "Température de surface de la mer au large de la Gironde (ERA5)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "sst-golfe-gascogne",
+       "title": "Température de surface du golfe de Gascogne (ERA5)",
+       "confidence": "elevee"
+      }
+     ]
     },
     {
      "scale": "monde",
@@ -944,13 +955,18 @@
     {
      "scale": "gironde",
      "status": "publie",
-     "source": "Marégraphe PSMSL d'Arcachon-Eyrac",
+     "source": "Altimétrie satellite Copernicus (depuis 1993) ; marégraphe PSMSL d'Arcachon-Eyrac (2002-2024, lacunaire)",
      "note": "Niveau relatif : inclut les mouvements verticaux du sol. Le Verdon écarté : moins de 10 années valides au PSMSL (calcul du 23/10/2026).",
      "indicators": [
       {
        "id": "niveau-mer-arcachon-eyrac",
        "title": "Niveau marin à Arcachon-Eyrac",
        "confidence": "non_etabli"
+      },
+      {
+       "id": "niveau-mer-large-gironde",
+       "title": "Niveau de la mer au large de la Gironde (altimétrie satellite)",
+       "confidence": "moyenne"
       }
      ]
     },
