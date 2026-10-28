@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-27T23:13:12Z",
- "etl_version": "0.1.0+00610d8",
+ "generated_at": "2026-10-28T12:27:38Z",
+ "etl_version": "0.1.0+8ba3916",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",

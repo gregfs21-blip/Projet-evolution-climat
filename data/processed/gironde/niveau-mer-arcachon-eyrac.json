@@ -125,9 +125,9 @@
   "source_name": "PSMSL — marégraphe de Arcachon-Eyrac, moyennes annuelles RLR",
   "source_url": "https://psmsl.org/data/obtaining/stations/1918.php",
   "license": "Libre, citation demandée (PSMSL)",
-  "extracted_at": "2026-10-27T23:09:00Z",
+  "extracted_at": "2026-10-28T12:23:38Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+00610d8",
+  "etl_version": "0.1.0+8ba3916",
   "homogenized": true
  },
  "is_demo": false
