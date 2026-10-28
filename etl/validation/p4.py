@@ -85,8 +85,11 @@ def checks(inds: dict[str, Indicator], raw_dir: Path) -> list[Check]:
     same = len({s > 0 for s in signs.values()}) <= 1 and len(signs) == len(HUGLIN) - 1
     cs.append(Check("I6 cohérence entre stations (Huglin)", "critère", same,
                     " ; ".join(f"{k.removeprefix('huglin-')} {T.fr(v, 1)} °C·j/déc." for k, v in signs.items())))
-    cs.append(Check("I7 plausibilité", "critère", not missing,
-                    "Bornes contrôlées à la construction (un dépassement empêche la publication)."))
+    # Correctif du 28/10/2026 (après le premier calcul) : I7 dépendait aussi des indicateurs manquants, déjà comptés
+    # par I1 ; un indicateur publié a passé ses bornes, puisqu'un dépassement empêche sa construction.
+    cs.append(Check("I7 plausibilité", "critère", bool(inds),
+                    f"Bornes contrôlées à la construction pour les {len(inds)} indicateurs publiés (un dépassement "
+                    "empêche la publication)."))
     bad = [iid for iid in CATNAT if iid in inds and (inds[iid].trend is not None or inds[iid].normals)]
     cs.append(Check("I8 CatNat par péril sans tendance", "critère", not bad and all(i in inds for i in CATNAT),
                     "aucune tendance ni normale" if not bad else f"tendance ou normale publiée : {', '.join(bad)}"))
