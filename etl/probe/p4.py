@@ -56,36 +56,47 @@ def block(md, title, url, st, lines):
 
 def ghd(md):
     md += ["", "## 1. Dates de vendanges"]
+    if OUT.name != "sonde-p4.md":
+        md += ["", "Second passage : la première lecture découpait les lignes aux blancs et décalait les colonnes."]
     url = "https://www.ncei.noaa.gov/pub/data/paleo/historical/europe/europe2012ghd.txt"
     st, data = get(url, timeout=120)
     text = data.decode("latin-1", "replace")
     lines = text.splitlines()
     out = [f"{len(lines)} lignes"]
     out += [ln for ln in lines if re.search(r"Bordeaux|Bor\b|Gaillac|days after|Missing|Part ", ln)][:25]
-    # Tables : une ligne d'en-tête commençant par « Year » (ou « year ») suivie de codes à trois lettres.
+    # Tables à largeur fixe : ligne « Year Als … Bor … », valeurs alignées sous le code (cases vides = absentes).
+    vals = {}
     for i, ln in enumerate(lines):
-        if re.match(r"\s*[Yy]ear\s", ln) and "Bor" in ln.split():
-            head = ln.split()
-            col = head.index("Bor")
-            years = []
-            for row in lines[i + 1:]:
-                if not re.match(r"\s*\d{4}\b", row):
-                    if years:
-                        break
-                    continue
-                # colonnes séparées par tabulation dans le fichier d'origine
-                cells = row.split("\t") if "\t" in row else row.split()
-                if len(cells) > col and cells[col].strip() not in ("", "NaN"):
-                    try:
-                        years.append((int(cells[0]), float(cells[col])))
-                    except ValueError:
-                        pass
-            out.append(f"en-tête ligne {i} : {' '.join(head[:20])}")
-            out.append(f"colonne Bor : {len(years)} valeurs, {years[:3]} … {years[-5:]}")
-            recent = [y for y, _ in years if y >= 1950]
-            out.append(f"depuis 1950 : {len(recent)} années ; trous : "
-                       f"{sorted(set(range(1950, (recent or [1950])[-1] + 1)) - set(recent))[:30]}")
-            break
+        if not (re.match(r"\s*[Yy]ear\s", ln) and re.search(r"\bBor\b", ln)):
+            continue
+        heads = [(m.group(0), m.start(), m.end()) for m in re.finditer(r"\S+", ln)]
+        k = next(j for j, h in enumerate(heads) if h[0] == "Bor")
+        lo = heads[k - 1][2]
+        hi = heads[k + 1][1] if k + 1 < len(heads) else 10_000
+        out.append(f"table ligne {i} : colonnes {[h[0] for h in heads]} ; Bor entre les caractères {lo} et {hi}")
+        n = 0
+        for row in lines[i + 1:]:
+            m = re.match(r"\s*(\d{4})\b", row)
+            if not m:
+                if n:
+                    break
+                continue
+            n += 1
+            cell = row.replace("\t", "    ")[lo:hi].strip()
+            if cell and cell.lower() != "nan":
+                try:
+                    vals[int(m.group(1))] = float(cell)
+                except ValueError:
+                    out.append(f"cellule illisible {m.group(1)} : {cell!r}")
+        if "\t" in lines[i + 1]:
+            out.append("attention : tabulations dans les lignes de données")
+    ys = sorted(vals)
+    out.append(f"colonne Bor : {len(ys)} valeurs, {ys[:1]} à {ys[-1:]}")
+    for d in range(1800, 2010, 10):
+        out.append(f"{d}s : " + ", ".join(f"{y}:{vals[y]:g}" for y in ys if d <= y < d + 10))
+    out.append(f"années manquantes 1900-2006 : {sorted(set(range(1900, 2007)) - set(ys))}")
+    raw = [ln for ln in lines if re.match(r"\s*(1976|1990|2003|2006)\b", ln)]
+    out += ["lignes brutes (repr) :"] + [repr(x[:220]) for x in raw[:8]]
     block(md, "Base Daux et al. 2012 (NOAA Paleo), colonne Bordeaux", url, st, out)
 
     for url in ("https://www.ecologie.gouv.fr/politiques-publiques/impacts-du-changement-climatique-agriculture-foret",
@@ -293,7 +304,8 @@ def catnat(md):
     block(md, "Archive GASPAR", url, st, out)
 
 
-STEPS = (ghd, fire, bdiff, catnat)
+STEPS = (ghd,)   # 2e passage (28/10) : lecture à largeur fixe de la colonne Bordeaux
+OUT = ROOT / "docs" / "sonde-p4b.md"
 
 
 def main() -> int:
