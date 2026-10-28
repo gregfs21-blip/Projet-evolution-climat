@@ -9,7 +9,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
 | P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
-| P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
+| P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 proposés le 28/10/2026 | en cours |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | | à faire |
@@ -400,6 +400,70 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P4 — Critères (proposition du 28/10/2026, avant tout calcul)
+
+> Statut : **proposition**, à valider par Grég. Sondes : `docs/sonde-p4.md`, `docs/sonde-p4b.md`. Déjà publié hors P4
+> (« largeur d'abord ») : reconnaissances CatNat en Gironde, tous périls confondus.
+
+### Constat des sondes
+
+- **Dates de vendanges** : la série « Bordeaux » de la base européenne Daux et al. 2012 (NOAA Paleo) est complète de
+  1800 à 2006, en jours après le 31 août ; elle s'arrête en 2006. La série Saint-Émilion de l'ONERC (INRAE, Bordeaux
+  Sciences Agro, 1892-2025) n'est publiée qu'en image : aucune donnée téléchargeable.
+- **Danger météorologique d'incendie** : indices du système canadien (dont l'IFM/FWI) calculés par le CEMS sur ERA5,
+  quotidiens, 0,25°, depuis 1940 (Copernicus EWDS, `cems-fire-historical-v1`, version 4.1, données consolidées).
+  Requête refusée : **les conditions d'utilisation de l'EWDS ne sont pas encore acceptées** sur le compte.
+- **Feux observés (BDIFF)** : portail seulement (pas de fichier sur data.gouv.fr), depuis 2006 ; injoignable depuis
+  GitHub (chaîne de certificats incomplète côté serveur). 20 ans au mieux : pas de tendance possible.
+- **CatNat par péril** (GASPAR, Gironde, 7 676 reconnaissances) : séries dominées par le droit et par des événements
+  isolés (tempête de 1982 seulement, « chocs des vagues » de 1999, « mouvements de terrain » de 1999). Les tempêtes
+  sortent du régime CatNat en 1990. Aucune lecture climatique possible par péril.
+
+### Périmètre proposé
+
+- **A. Viticulture** (stations LSH, quotidien corrigé de la P2a, méthode C) : indice de Huglin (1er avril-30 septembre,
+  K = 1,04 à 44-46° N) ; indice de fraîcheur des nuits (TN moyen de septembre, Tonietto) ; gelées tardives (jours
+  TN ≤ 0 °C du 1er avril au 15 mai). Dates de vendanges de Bordeaux (Daux, 1800-2006), produit publié.
+- **B. Danger météo d'incendie** : FWI ERA5 (CEMS) moyen sur les mailles de la Gironde ; moyenne de juin à septembre
+  et nombre de jours au-dessus d'un seuil de classe EFFIS, à fixer.
+- **C. Canicule** (santé) : jours d'épisode caniculaire à Mérignac, moyennes sur 3 jours de TN ≥ 21 °C et de
+  TX ≥ 35 °C (seuils préfectoraux de la Gironde), quotidien corrigé. Indice rare : règle E9.
+- **D. CatNat par péril** : affichage seulement (inondations, sécheresse, submersion), sans tendance ni normale.
+
+### Références proposées
+
+| # | Énoncé | Source | Contrôle proposé |
+|---|---|---|---|
+| R9 | Bordelais : indice de Huglin + 127 °C·j entre 1980-1999 et 2000-2019 (SAFRAN, points de grille du vignoble) | Ollat et al., Climatologie 18, 2021, doi:10.1051/climat/202118003 | Écart des moyennes 2000-2019 − 1980-1999 du Huglin de chaque station dans une fourchette à décider |
+| — | Saint-Émilion : début des vendanges vers le 26 septembre au XXe siècle, vers le 15 septembre depuis les années 2010 | ONERC (INRAE, Bordeaux Sciences Agro) | information seulement : autre vignoble, autre période que Daux |
+| — | FWI, canicule | aucune référence locale chiffrée | confiance au plus « moyenne » |
+
+### Critères proposés
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| I1 | Exhaustivité | Tout le périmètre retenu ; exclusions justifiées |
+| I2 | Complétude | Stations : règle ETCCDI de la P2a (mois à 3 jours absents au plus) sur la saison concernée ; ERA5 : saisons complètes |
+| I3 | Brut ≠ homogénéisé | Indices de station sur les seules années corrigées (C2) |
+| I4 | Validation externe | R9 pour le Huglin ; sinon confiance au plus « moyenne » |
+| I5 | **Cohérence physique (nouveau)** | Corrélation interannuelle entre la date de vendange Daux et le Huglin du composite, sur la période commune : r ≤ −0,6. Échec → la série des vendanges reste « signal non établi » |
+| I6 | Cohérence entre stations | Même signe de tendance du Huglin à toutes les stations ; sinon expliqué |
+| I7 | Plausibilité | Huglin 1 200-2 800 °C·j ; date de vendange −30 à + 60 j ; FWI moyen estival 0-60 |
+| I8 | CatNat par péril | Aucune tendance ni normale publiée ; avertissement d'exposition et de règles affiché |
+| I9 | Technique | Tests, CI, contrat, pages |
+
+**Limites à assumer** : la date de vendange dépend aussi des pratiques (recherche d'une maturité plus poussée depuis les
+années 1980-1990, qui retarde la récolte) : sa tendance sous-estime l'effet du climat. Le FWI ERA5 hérite des limites
+de la réanalyse (pluie et humidité près du sol, cf. H5 en P3).
+
+### Décisions demandées à Grég
+
+- **D-I** : périmètre (A à D).
+- **D-J** : fourchette de R9.
+- **D-K** : seuil de jours du FWI.
+- **D-L** : feux observés (BDIFF) : export manuel par Grég depuis le portail, ou abandon.
+- **Action** : accepter les conditions d'utilisation de l'EWDS (Copernicus), puis nouvelle sonde du FWI.
 
 ## Journal ergonomie (entre P1 et P2)
 
