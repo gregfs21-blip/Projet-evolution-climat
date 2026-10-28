@@ -340,7 +340,9 @@ def build_vendanges(ctx: BuildContext) -> Indicator:
                                  "base européenne des dates de vendanges (Daux et al., 2012). Une vendange précoce "
                                  "signale une saison chaude.",
                      unit="jours", series=series, hom=set(series), provenance=prov, limitations=VENDANGES_LIMITS[:2],
-                     stations=[], method_note="Série publiée, reprise sans modification.", reference=None, baseline=None,
+                     stations=[Station(id="ghd-bordeaux", name="Bordelais (Daux et al., 2012)", latitude=45.18,
+                                       longitude=-0.75, altitude=0.0)],   # coordonnées données par le fichier
+                     method_note="Série publiée, reprise sans modification.", reference=None, baseline=None,
                      group="Synthèse Gironde — viticulture", where="Dans le Bordelais",
                      label="la date de début des vendanges (jours après le 31 août)")
     hug, hom, _members, _ex = huglin_composite(ctx.raw_dir)
