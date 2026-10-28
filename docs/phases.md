@@ -8,7 +8,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P0 | Socle : arborescence, schéma, ETL, site, CI, workflow mensuel | Un indicateur factice traverse la chaîne jusqu'au site déployé | **close le 22/10/2026** |
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
 | P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
-| P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | en cours |
+| P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | | à faire |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
@@ -392,6 +392,14 @@ seul, la confiance « élevée ».
 - Altimétrie (C3S DT2024) : 1993-2025, 396 mois, 78 mailles chaque mois, moyennes annuelles −19 à + 132 mm. La
   requête d'un seul tenant dépassait la limite de coût du CDS : relevé par tranches de 4 ans, réunies sans trou.
 - SST du golfe entier : relevée le 27/10 au soir (1940-2025, mailles de mer constantes) ; activée le 28/10.
+
+### Décision de Grég du 28/10/2026, APRÈS calcul
+
+Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de justesse (+0,218 pour [+0,21 ; +0,31]).
+- **H5 humidité** (dérive de l'écart ERA5 − Mérignac, +0,64 point/déc., p = 0,005 ; Cazaux 15 ans communs) : cause
+  non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
+  (elle était déjà en « signal non établi »).
+- P3 close.
 
 ## Journal ergonomie (entre P1 et P2)
 

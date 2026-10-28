@@ -21,7 +21,11 @@ SCOPE = {"pression-bordeaux-era5", "humidite-bordeaux-era5", "sst-gascogne-large
          "niveau-mer-large-gironde", "jours-vent-fort-bordeaux-era5", "rafale-max-bordeaux-era5"}
 OUT = ROOT / "docs" / "validation-p3-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p3.json"
-ACCEPTED: dict[str, str] = {}
+# Décision de Grég du 28/10/2026, APRÈS calcul (analyse : docs/validation-p3.md). L'écart clôt la phase ; la règle H5
+# s'applique quand même (confiance de l'humidité ERA5 au plus « faible »).
+ACCEPTED: dict[str, str] = {
+    "H5 contrôle croisé (humidite)": "écart accepté le 28/10/2026 (dérive de l'écart à Mérignac, cause non tranchée)",
+}
 
 
 @dataclass
