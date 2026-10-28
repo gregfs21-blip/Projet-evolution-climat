@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-28T12:27:38Z",
+ "generated_at": "2026-10-28T21:59:34Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -15,6 +15,21 @@
       {
        "id": "catnat-gironde",
        "title": "Reconnaissances de catastrophe naturelle en Gironde (arrêtés CatNat)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "catnat-inondation-gironde",
+       "title": "Reconnaissances CatNat « inondation » en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "catnat-secheresse-gironde",
+       "title": "Reconnaissances CatNat « sécheresse » en Gironde",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "catnat-vagues-gironde",
+       "title": "Reconnaissances CatNat « chocs mécaniques des vagues » en Gironde",
        "confidence": "non_etabli"
       }
      ]
@@ -1091,7 +1106,7 @@
     {
      "scale": "gironde",
      "status": "publie",
-     "source": "ETP, bilan pluie − ETP et SPEI (P2b, LSH) ; à venir : dates de vendanges, degrés-jours, gelées tardives",
+     "source": "ETP, bilan pluie − ETP et SPEI (P2b) ; indice de Huglin, fraîcheur des nuits, gelées tardives (P4, LSH et quotidien corrigé) ; dates de vendanges de Bordeaux 1800-2006 (Daux et al., 2012)",
      "note": null,
      "indicators": [
       {
@@ -1153,8 +1168,126 @@
        "id": "mois-secs-cazaux",
        "title": "Mois secs (SPEI-3 ≤ −1) à Cazaux",
        "confidence": "moyenne"
+      },
+      {
+       "id": "huglin-gironde",
+       "title": "Indice de Huglin en Gironde",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "huglin-bordeaux-paulin",
+       "title": "Indice de Huglin à Bordeaux-Paulin",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "huglin-cap-ferret",
+       "title": "Indice de Huglin à Cap-Ferret",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "huglin-bordeaux-merignac",
+       "title": "Indice de Huglin à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "huglin-cazaux",
+       "title": "Indice de Huglin à Cazaux",
+       "confidence": "elevee"
+      },
+      {
+       "id": "huglin-villenave-d-ornon",
+       "title": "Indice de Huglin à Villenave-d'Ornon",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "fraicheur-nuits-bordeaux-paulin",
+       "title": "Fraîcheur des nuits de septembre à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "fraicheur-nuits-lacanau",
+       "title": "Fraîcheur des nuits de septembre à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "fraicheur-nuits-cap-ferret",
+       "title": "Fraîcheur des nuits de septembre à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "fraicheur-nuits-bordeaux-merignac",
+       "title": "Fraîcheur des nuits de septembre à Bordeaux-Mérignac",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "fraicheur-nuits-sauternes",
+       "title": "Fraîcheur des nuits de septembre à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "fraicheur-nuits-cazaux",
+       "title": "Fraîcheur des nuits de septembre à Cazaux",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "fraicheur-nuits-villenave-d-ornon",
+       "title": "Fraîcheur des nuits de septembre à Villenave-d'Ornon",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "gelees-tardives-bordeaux-paulin",
+       "title": "Gelées tardives à Bordeaux-Paulin",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "gelees-tardives-lacanau",
+       "title": "Gelées tardives à Lacanau",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "gelees-tardives-cap-ferret",
+       "title": "Gelées tardives à Cap-Ferret",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "gelees-tardives-bordeaux-merignac",
+       "title": "Gelées tardives à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "gelees-tardives-sauternes",
+       "title": "Gelées tardives à Sauternes",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "gelees-tardives-cazaux",
+       "title": "Gelées tardives à Cazaux",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "gelees-tardives-villenave-d-ornon",
+       "title": "Gelées tardives à Villenave-d'Ornon",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "vendanges-bordeaux",
+       "title": "Date de début des vendanges dans le Bordelais",
+       "confidence": "moyenne"
       }
      ]
+    }
+   ]
+  },
+  {
+   "id": "incendie",
+   "label": "Danger météorologique d'incendie",
+   "cells": [
+    {
+     "scale": "gironde",
+     "status": "prevu",
+     "source": "Indice forêt-météo (FWI) du CEMS/EFFIS calculé sur ERA5, Copernicus EWDS, depuis 1940",
+     "note": "Danger météorologique, pas les feux eux-mêmes : la base des feux observés (BDIFF) ne commence qu'en 2006.",
+     "indicators": []
     }
    ]
   },
@@ -1164,10 +1297,16 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "prevu",
-     "source": "Vagues de chaleur (seuils canicule), pollens, phénologie",
-     "note": null,
-     "indicators": []
+     "status": "publie",
+     "source": "Jours de canicule à Mérignac, seuils de la Gironde (P4, quotidien corrigé)",
+     "note": "Pollens (RNSA) et phénologie : pas de série ouverte longue.",
+     "indicators": [
+      {
+       "id": "canicule-bordeaux-merignac",
+       "title": "Jours de canicule à Bordeaux-Mérignac",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
