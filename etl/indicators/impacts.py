@@ -335,7 +335,7 @@ def build_vendanges(ctx: BuildContext) -> Indicator:
     prov = Provenance(source_name=src.name, source_url=src.page, license=src.license, extracted_at=ctx.extracted_at,
                       script="etl.indicators.impacts", etl_version=ctx.etl_version, homogenized=True)
     ind = S.assemble(ctx, ind_id="vendanges-bordeaux", scale="gironde", variable="vendanges",
-                     place=vocab.composite("bordelais", "Bordelais"), title="Date de début des vendanges dans le Bordelais",
+                     place=vocab.station("bordelais", "Bordelais (série composite)"), title="Date de début des vendanges dans le Bordelais",
                      description="Date de début des vendanges, en jours après le 31 août (0 = 31 août, 15 = 15 septembre), "
                                  "base européenne des dates de vendanges (Daux et al., 2012). Une vendange précoce "
                                  "signale une saison chaude.",
