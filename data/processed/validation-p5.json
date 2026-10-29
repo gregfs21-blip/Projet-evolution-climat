@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p5",
-  "generated_at": "2026-10-29T21:48:57Z",
+  "generated_at": "2026-10-29T21:58:50Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
@@ -23,7 +23,7 @@
       "kind": "info",
       "status": "ℹ️ information",
       "satisfied": true,
-      "detail": "Appliquée par le code : années de 12 mois homogénéisés, réseau constant 1959-2021 (températures) et 1961-2020 (pluie)."
+      "detail": "Appliquée par le code : années de 12 mois homogénéisés, réseau constant 1959-2021 (températures) et 1961-2014 (pluie)."
     },
     {
       "name": "J3 brut ≠ homogénéisé",

@@ -7,7 +7,7 @@ Fichier généré par `python -m etl.validation.p5` à chaque exécution de l'ET
 | Critère | Résultat | Mesure |
 |---|---|---|
 | J1 exhaustivité | ✅ conforme | 4 indicateurs sur 4 |
-| J2 complétude | ℹ️ information | Appliquée par le code : années de 12 mois homogénéisés, réseau constant 1959-2021 (températures) et 1961-2020 (pluie). |
+| J2 complétude | ℹ️ information | Appliquée par le code : années de 12 mois homogénéisés, réseau constant 1959-2021 (températures) et 1961-2014 (pluie). |
 | J3 brut ≠ homogénéisé | ✅ conforme | Tendances, normales et R10 sur les seules années où toutes les stations sont homogénéisées. |
 | J4 validation externe (R10, TM) | ✅ conforme | attendu [+0,2 ; +0,4] °C/déc. sur 1959-2021 ; mesuré : +0,344 |
 | J5 cohérence spatiale (contrôle interne) | ✅ conforme | 220 pentes positives sur 220 (100,0 %) ; médiane +0,34 °C/déc. |
