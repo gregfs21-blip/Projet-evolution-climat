@@ -450,7 +450,7 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 | J4 | Validation externe | R10 pour le composite TM ; sinon confiance au plus « moyenne » |
 | J5 | Cohérence spatiale | Au moins 95 % des stations de la carte avec une pente TM positive ; toute pente négative expliquée |
 | J6 | Robustesse de la pondération | Pente du composite TM pondéré par département et pente de la moyenne simple des stations : écart ≤ 0,05 °C/déc. |
-| J7 | Plausibilité | TM annuel de station entre −10 et + 20 °C ; cumul de pluie entre 300 et 3 000 mm (plancher abaissé à 100 mm le 29/10/2026, après calcul) |
+| J7 | Plausibilité | TM annuel de station entre −10 et + 20 °C ; cumul de pluie entre 300 et 3 000 mm (bornes portées à 100 et 5 000 mm le 29/10/2026, après calcul) |
 | J8 | Technique | Tests, CI, contrat, pages |
 
 ### Choix de mise en œuvre fixés AVANT le premier calcul (29/10/2026, `etl/indicators/france.py`)
@@ -472,6 +472,8 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 - **J7, pluie** : le plancher de 300 mm bloquait la publication (poste 13001009, Bouches-du-Rhône : 252 mm en 1967,
   299 mm en 1989, années sèches crédibles). Le seuil sert à détecter une erreur d'unité ; **plancher abaissé à
   100 mm** par Grég. Décision postérieure au calcul, tracée comme telle ; les températures avaient passé leurs bornes.
+- **J7, pluie (bis)** : le plafond de 3 000 mm bloquait ensuite (poste 48036001, Lozère : 3 273 mm en 1996, année
+  d'épisodes méditerranéens crédible). **Plafond relevé à 5 000 mm** par Grég, même motif, après calcul.
 
 ### Décisions demandées à Grég
 
