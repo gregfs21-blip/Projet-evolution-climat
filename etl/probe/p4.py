@@ -306,8 +306,26 @@ def catnat(md):
     block(md, "Archive GASPAR", url, st, out)
 
 
-STEPS = (fire,)   # 4e passage (29/10) : FWI, conditions EWDS acceptées par Grég
-OUT = ROOT / "docs" / "sonde-p4c.md"
+def ewds_jobs(md):
+    """Diagnostic du collecteur : travaux EWDS du compte, état et requête enregistrée (identifiants)."""
+    md += ["", "## 5. Travaux EWDS du compte (diagnostic du collecteur)"]
+    hdr = {"PRIVATE-TOKEN": KEY}
+    st, data = get(f"{EWDS}/jobs?limit=20", headers=hdr, timeout=60)
+    out = []
+    try:
+        for j in json.loads(data).get("jobs", []):
+            _, dj = get(f"{EWDS}/jobs/{j['jobID']}?request=true", headers=hdr, timeout=60)
+            ids = json.loads(dj).get("metadata", {}).get("request", {}).get("ids", {})
+            out.append(f"{j.get('created', '')[:19]} {j.get('status')} {j.get('processID')} "
+                       f"année {ids.get('year', ['?'])[:1]}…{ids.get('year', ['?'])[-1:]} mois {ids.get('month')} "
+                       f"zone {ids.get('area')} clés {sorted(ids)}")
+    except Exception as exc:  # noqa: BLE001
+        out.append(f"{type(exc).__name__} {exc} {data[:300]!r}")
+    block(md, "Liste des travaux", f"{EWDS}/jobs", st, out)
+
+
+STEPS = (ewds_jobs,)   # 5e passage (29/10) : diagnostic du collecteur EWDS
+OUT = ROOT / "docs" / "sonde-p4d.md"
 
 
 def main() -> int:
