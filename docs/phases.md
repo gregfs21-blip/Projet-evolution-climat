@@ -474,6 +474,10 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   100 mm** par Grég. Décision postérieure au calcul, tracée comme telle ; les températures avaient passé leurs bornes.
 - **J7, pluie (bis)** : le plafond de 3 000 mm bloquait ensuite (poste 48036001, Lozère : 3 273 mm en 1996, année
   d'épisodes méditerranéens crédible). **Plafond relevé à 5 000 mm** par Grég, même motif, après calcul.
+- **Réseau de la pluie** : sur 1961-2020, 300 stations mais **31 départements seulement**, surtout au sud (la pluie
+  n'est pas homogénéisée jusqu'à la même année partout). Composite non représentatif de la France ; **réseau ramené à
+  1961-2014** par Grég, après calcul (tendance non significative dans les deux cas : la décision ne dépend pas du
+  résultat).
 
 ### Décisions demandées à Grég
 

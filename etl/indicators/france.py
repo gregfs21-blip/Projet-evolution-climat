@@ -4,7 +4,7 @@ Séries mensuelles homogénéisées LSH de toute la métropole (`meteofrance_lsh
 - Températures : réseau constant des postes dont TN et TX sont homogénéisés sur les 12 mois de chaque année
   1959-2021 (D-N) ; anomalie annuelle de chaque station par rapport à 1961-1990 ; moyenne des stations de chaque
   département, puis moyenne des départements (D-O). TM = (TN + TX) / 2 au pas mensuel. Référence R10 sur TM.
-- Pluie : réseau constant RR 1961-2020, cumul annuel (mm), même pondération par département.
+- Pluie : réseau constant RR 1961-2014 (1961-2020 jusqu'au premier calcul), cumul annuel (mm), même pondération.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from etl.sources import meteofrance_lsh as lsh
 from etl.stats.trend import annual_trend
 
 T_SPAN = (1959, 2021)
-RR_SPAN = (1961, 2020)
+RR_SPAN = (1961, 2014)   # 1961-2020 → 1961-2014 : décision de Grég du 29/10/2026 APRÈS calcul (31 départements seulement)
 BASE = (1961, 1990)
 PLAUSIBLE_TM = (-10.0, 20.0)
 PLAUSIBLE_RR = (100.0, 5000.0)   # [300 ; 3000] → [100 ; 5000] : décisions de Grég du 29/10/2026 APRÈS le premier calcul
@@ -199,8 +199,9 @@ def build_rain(ctx: BuildContext) -> Indicator:
                       description=f"Cumul annuel moyen des précipitations de la France métropolitaine, d'après {len(per)} "
                                   "séries homogénéisées de Météo-France.",
                       unit="mm", series=series, hom=hom, provenance=_prov(ctx),
-                      limitations=LIMITS[1:] + ["Pluie homogénéisée jusqu'en 2014-2021 selon les stations : le réseau "
-                                                "constant s'arrête en 2020.",
+                      limitations=LIMITS[1:] + ["Pluie homogénéisée jusqu'en 2014-2021 selon les régions : le réseau "
+                                                "constant s'arrête en 2014 pour couvrir tout le territoire (sur "
+                                                "1961-2020, il ne comptait que 31 départements, surtout au sud).",
                                                 "Aucune référence publiée n'a été fixée : confiance au plus « moyenne »."],
                       stations=[rr[p].station for p in per], method_note=note, reference=None, baseline=None,
                       group="Synthèse France — précipitations", where="En France métropolitaine",

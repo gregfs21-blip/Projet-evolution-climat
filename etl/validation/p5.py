@@ -58,7 +58,7 @@ def checks(inds: dict[str, Indicator], raw_dir: Path) -> list[Check]:
     cs.append(Check("J1 exhaustivité", "critère", not missing,
                     f"{len(inds)} indicateurs sur {len(SCOPE)}" + (f" ; manquants : {', '.join(missing)}" if missing else "")))
     cs.append(Check("J2 complétude", "info", True, "Appliquée par le code : années de 12 mois homogénéisés, réseau "
-                                                   "constant 1959-2021 (températures) et 1961-2020 (pluie)."))
+                                                   "constant 1959-2021 (températures) et 1961-2014 (pluie)."))
     cs.append(Check("J3 brut ≠ homogénéisé", "critère", True,
                     "Tendances, normales et R10 sur les seules années où toutes les stations sont homogénéisées."))
     r = inds["tm-france"].reference_check if "tm-france" in inds else None
