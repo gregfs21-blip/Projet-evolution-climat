@@ -306,7 +306,7 @@ def catnat(md):
     block(md, "Archive GASPAR", url, st, out)
 
 
-STEPS = (fire,)   # 3e passage : FWI, après acceptation des conditions EWDS
+STEPS = (fire,)   # 4e passage (29/10) : FWI, conditions EWDS acceptées par Grég
 OUT = ROOT / "docs" / "sonde-p4c.md"
 
 
