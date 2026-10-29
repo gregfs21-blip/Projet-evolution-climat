@@ -34,3 +34,15 @@ retardent la récolte : la tendance sous-estime l'effet du climat.
   et à Cazaux (1,6 → 0,6) ; non significative ailleurs.
 - **Canicule à Mérignac** : aucun épisode avant 2003 ; moyenne 0 → 0,9 jour par an entre 1961-1990 et 1991-2020
   (p = 0,04). Indice rare, confiance au plus « moyenne ».
+
+## Danger météo d'incendie (FWI, calcul du 29/10/2026) : sans écart, à lire avec prudence
+
+Moyenne de juin à septembre : 9,4 sur 1961-1990, 11,6 sur 1991-2020 ; tendance +0,93 par décennie sur 1976-2025
+(p = 0,008). Jours de danger très élevé (FWI ≥ 21,3) : 12,2 puis 19,2 par saison ; +3,3 jours par décennie sur
+1976-2025 (p = 0,009). Aucune référence publiée : confiance « moyenne ».
+
+Réserve importante : sur toute la série (1940-2025), la tendance n'est pas significative (+0,14 par décennie), car les
+années 1940 sont aussi dangereuses que les plus récentes (1942 et 1949 en tête, devant 2022 et 2016). 1949 est l'année
+du grand incendie des Landes, ce qui rend ces valeurs plausibles ; mais ERA5 est beaucoup moins contraint par les
+observations avant 1950. La hausse des cinquante dernières années est nette ; dire que le danger n'a jamais été aussi
+élevé ne l'est pas.

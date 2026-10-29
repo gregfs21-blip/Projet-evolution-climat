@@ -9,7 +9,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P1 | Températures Gironde : LSH TX/TN Mérignac + stations longues, anomalies 1961-1990 et 1991-2020, tendances Hamed-Rao, ruptures | Critères C1-C9 ci-dessous (C4 → C4bis) | **close le 23/10/2026** |
 | P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
-| P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | en cours |
+| P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | **close le 29/10/2026** (écart I4 accepté) |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | | à faire |
@@ -498,6 +498,9 @@ Analyse : `docs/validation-p4.md`. Hors feu de forêt (en attente de l'accès EW
   stations, pour [+102 ; +152] ; Villenave-d'Ornon non mesurable (homogénéisée jusqu'en 2001). **Écart accepté** : il
   clôt le critère, il ne relève aucune confiance.
 - **Correctif de présentation** : I7 comptait aussi les indicateurs manquants, déjà comptés par I1 ; corrigé.
+- **FWI** (29/10/2026) : 86 saisons complètes relevées ; I1 satisfait ; tous les critères comptant pour la clôture
+  sont satisfaits (I4 par écart accepté). Réserve : sur 1940-2025, pas de tendance significative (années 1940 aussi
+  élevées que les récentes) ; hausse significative sur 1976-2025. **P4 close.**
 
 ### Décisions demandées à Grég
 
