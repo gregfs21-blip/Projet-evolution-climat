@@ -10,6 +10,7 @@ on:
   push:
     paths:
       - "etl/sources/cds_era5.py"
+      - "etl/sources/ewds_fire.py"
       - ".github/workflows/copernicus.yml"
 
 permissions:
@@ -22,7 +23,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -36,6 +37,10 @@ jobs:
           CDSAPI_URL: https://cds.climate.copernicus.eu/api
           CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # secret du dépôt, jamais affiché
         run: python -m etl.sources.cds_era5
+      - name: Relevé et soumission, indice forêt-météo (Early Warning Data Store, P4)
+        env:
+          CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # même compte ECMWF, jamais affiché
+        run: python -m etl.sources.ewds_fire
       - name: Publication des séries extraites
         run: |
           git config user.name "etl-bot"

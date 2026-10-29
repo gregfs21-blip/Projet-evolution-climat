@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-28T12:27:38Z",
- "etl_version": "0.1.0+8ba3916",
+ "generated_at": "2026-10-29T18:43:53Z",
+ "etl_version": "0.1.0+0bc5c6e",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -3566,6 +3566,627 @@
     "id": "cazaux",
     "name": "Cazaux",
     "kind": "station"
+   }
+  },
+  {
+   "id": "huglin-gironde",
+   "scale": "gironde",
+   "title": "Indice de Huglin en Gironde",
+   "unit": "°C·j",
+   "path": "gironde/huglin-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde — viticulture",
+   "variable": {
+    "id": "huglin",
+    "code": "Huglin",
+    "label": "indice de Huglin (chaleur utile à la vigne, avril-septembre)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "huglin-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Indice de Huglin à Bordeaux-Paulin",
+   "unit": "°C·j",
+   "path": "gironde/huglin-bordeaux-paulin.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "huglin",
+    "code": "Huglin",
+    "label": "indice de Huglin (chaleur utile à la vigne, avril-septembre)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "huglin-cap-ferret",
+   "scale": "gironde",
+   "title": "Indice de Huglin à Cap-Ferret",
+   "unit": "°C·j",
+   "path": "gironde/huglin-cap-ferret.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "huglin",
+    "code": "Huglin",
+    "label": "indice de Huglin (chaleur utile à la vigne, avril-septembre)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 0
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "huglin-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Indice de Huglin à Bordeaux-Mérignac",
+   "unit": "°C·j",
+   "path": "gironde/huglin-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "huglin",
+    "code": "Huglin",
+    "label": "indice de Huglin (chaleur utile à la vigne, avril-septembre)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "huglin-cazaux",
+   "scale": "gironde",
+   "title": "Indice de Huglin à Cazaux",
+   "unit": "°C·j",
+   "path": "gironde/huglin-cazaux.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "huglin",
+    "code": "Huglin",
+    "label": "indice de Huglin (chaleur utile à la vigne, avril-septembre)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 0
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "huglin-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Indice de Huglin à Villenave-d'Ornon",
+   "unit": "°C·j",
+   "path": "gironde/huglin-villenave-d-ornon.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "huglin",
+    "code": "Huglin",
+    "label": "indice de Huglin (chaleur utile à la vigne, avril-septembre)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 0
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "fraicheur-nuits-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Fraîcheur des nuits de septembre à Bordeaux-Paulin",
+   "unit": "°C",
+   "path": "gironde/fraicheur-nuits-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "fraicheur-nuits",
+    "code": "Nuits sept.",
+    "label": "température minimale moyenne de septembre (fraîcheur des nuits)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "fraicheur-nuits-lacanau",
+   "scale": "gironde",
+   "title": "Fraîcheur des nuits de septembre à Lacanau",
+   "unit": "°C",
+   "path": "gironde/fraicheur-nuits-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "fraicheur-nuits",
+    "code": "Nuits sept.",
+    "label": "température minimale moyenne de septembre (fraîcheur des nuits)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 1
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "fraicheur-nuits-cap-ferret",
+   "scale": "gironde",
+   "title": "Fraîcheur des nuits de septembre à Cap-Ferret",
+   "unit": "°C",
+   "path": "gironde/fraicheur-nuits-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "fraicheur-nuits",
+    "code": "Nuits sept.",
+    "label": "température minimale moyenne de septembre (fraîcheur des nuits)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 1
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "fraicheur-nuits-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Fraîcheur des nuits de septembre à Bordeaux-Mérignac",
+   "unit": "°C",
+   "path": "gironde/fraicheur-nuits-bordeaux-merignac.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "fraicheur-nuits",
+    "code": "Nuits sept.",
+    "label": "température minimale moyenne de septembre (fraîcheur des nuits)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 1
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "fraicheur-nuits-sauternes",
+   "scale": "gironde",
+   "title": "Fraîcheur des nuits de septembre à Sauternes",
+   "unit": "°C",
+   "path": "gironde/fraicheur-nuits-sauternes.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "fraicheur-nuits",
+    "code": "Nuits sept.",
+    "label": "température minimale moyenne de septembre (fraîcheur des nuits)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 1
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "fraicheur-nuits-cazaux",
+   "scale": "gironde",
+   "title": "Fraîcheur des nuits de septembre à Cazaux",
+   "unit": "°C",
+   "path": "gironde/fraicheur-nuits-cazaux.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "fraicheur-nuits",
+    "code": "Nuits sept.",
+    "label": "température minimale moyenne de septembre (fraîcheur des nuits)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 1
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "fraicheur-nuits-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Fraîcheur des nuits de septembre à Villenave-d'Ornon",
+   "unit": "°C",
+   "path": "gironde/fraicheur-nuits-villenave-d-ornon.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "fraicheur-nuits",
+    "code": "Nuits sept.",
+    "label": "température minimale moyenne de septembre (fraîcheur des nuits)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 1
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "gelees-tardives-bordeaux-paulin",
+   "scale": "gironde",
+   "title": "Gelées tardives à Bordeaux-Paulin",
+   "unit": "jours",
+   "path": "gironde/gelees-tardives-bordeaux-paulin.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "gelees-tardives",
+    "code": "Gel tardif",
+    "label": "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-paulin",
+    "name": "Bordeaux-Paulin",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "gelees-tardives-lacanau",
+   "scale": "gironde",
+   "title": "Gelées tardives à Lacanau",
+   "unit": "jours",
+   "path": "gironde/gelees-tardives-lacanau.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "gelees-tardives",
+    "code": "Gel tardif",
+    "label": "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 2
+   },
+   "place": {
+    "id": "lacanau",
+    "name": "Lacanau",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "gelees-tardives-cap-ferret",
+   "scale": "gironde",
+   "title": "Gelées tardives à Cap-Ferret",
+   "unit": "jours",
+   "path": "gironde/gelees-tardives-cap-ferret.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "gelees-tardives",
+    "code": "Gel tardif",
+    "label": "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 2
+   },
+   "place": {
+    "id": "cap-ferret",
+    "name": "Cap-Ferret",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "gelees-tardives-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Gelées tardives à Bordeaux-Mérignac",
+   "unit": "jours",
+   "path": "gironde/gelees-tardives-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "gelees-tardives",
+    "code": "Gel tardif",
+    "label": "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 2
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "gelees-tardives-sauternes",
+   "scale": "gironde",
+   "title": "Gelées tardives à Sauternes",
+   "unit": "jours",
+   "path": "gironde/gelees-tardives-sauternes.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "gelees-tardives",
+    "code": "Gel tardif",
+    "label": "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 2
+   },
+   "place": {
+    "id": "sauternes",
+    "name": "Sauternes",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "gelees-tardives-cazaux",
+   "scale": "gironde",
+   "title": "Gelées tardives à Cazaux",
+   "unit": "jours",
+   "path": "gironde/gelees-tardives-cazaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "gelees-tardives",
+    "code": "Gel tardif",
+    "label": "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 2
+   },
+   "place": {
+    "id": "cazaux",
+    "name": "Cazaux",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "gelees-tardives-villenave-d-ornon",
+   "scale": "gironde",
+   "title": "Gelées tardives à Villenave-d'Ornon",
+   "unit": "jours",
+   "path": "gironde/gelees-tardives-villenave-d-ornon.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Stations — viticulture",
+   "variable": {
+    "id": "gelees-tardives",
+    "code": "Gel tardif",
+    "label": "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 2
+   },
+   "place": {
+    "id": "villenave-d-ornon",
+    "name": "Villenave-d'Ornon",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "canicule-bordeaux-merignac",
+   "scale": "gironde",
+   "title": "Jours de canicule à Bordeaux-Mérignac",
+   "unit": "jours",
+   "path": "gironde/canicule-bordeaux-merignac.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Stations — santé",
+   "variable": {
+    "id": "canicule",
+    "code": "Canicule",
+    "label": "jours de canicule (seuils de la Gironde, 21 °C et 35 °C sur 3 jours)",
+    "theme": "sante",
+    "theme_label": "Santé (chaleur)",
+    "order": 0
+   },
+   "place": {
+    "id": "bordeaux-merignac",
+    "name": "Bordeaux-Mérignac",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "vendanges-bordeaux",
+   "scale": "gironde",
+   "title": "Date de début des vendanges dans le Bordelais",
+   "unit": "jours",
+   "path": "gironde/vendanges-bordeaux.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse Gironde — viticulture",
+   "variable": {
+    "id": "vendanges",
+    "code": "Vendanges",
+    "label": "date de début des vendanges (jours après le 31 août)",
+    "theme": "viticulture",
+    "theme_label": "Viticulture",
+    "order": 3
+   },
+   "place": {
+    "id": "bordelais",
+    "name": "Bordelais (série composite)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "catnat-inondation-gironde",
+   "scale": "gironde",
+   "title": "Reconnaissances CatNat « inondation » en Gironde",
+   "unit": "reconnaissances",
+   "path": "gironde/catnat-inondation-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Catastrophes naturelles (arrêtés CatNat)",
+   "variable": {
+    "id": "catnat-inondation",
+    "code": "Inondation",
+    "label": "reconnaissances CatNat « inondation »",
+    "theme": "catastrophes",
+    "theme_label": "Catastrophes naturelles (arrêtés CatNat)",
+    "order": 2
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "catnat-secheresse-gironde",
+   "scale": "gironde",
+   "title": "Reconnaissances CatNat « sécheresse » en Gironde",
+   "unit": "reconnaissances",
+   "path": "gironde/catnat-secheresse-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Catastrophes naturelles (arrêtés CatNat)",
+   "variable": {
+    "id": "catnat-secheresse",
+    "code": "Sécheresse",
+    "label": "reconnaissances CatNat « sécheresse »",
+    "theme": "catastrophes",
+    "theme_label": "Catastrophes naturelles (arrêtés CatNat)",
+    "order": 1
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "catnat-vagues-gironde",
+   "scale": "gironde",
+   "title": "Reconnaissances CatNat « chocs mécaniques des vagues » en Gironde",
+   "unit": "reconnaissances",
+   "path": "gironde/catnat-vagues-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Catastrophes naturelles (arrêtés CatNat)",
+   "variable": {
+    "id": "catnat-vagues",
+    "code": "Vagues",
+    "label": "reconnaissances CatNat « chocs mécaniques des vagues »",
+    "theme": "catastrophes",
+    "theme_label": "Catastrophes naturelles (arrêtés CatNat)",
+    "order": 3
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "fwi-ete-gironde",
+   "scale": "gironde",
+   "title": "Danger météo d'incendie en été (FWI) en Gironde",
+   "unit": "FWI",
+   "path": "gironde/fwi-ete-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — danger météo d'incendie",
+   "variable": {
+    "id": "fwi-ete",
+    "code": "FWI été",
+    "label": "indice forêt-météo moyen de juin à septembre (FWI)",
+    "theme": "incendie",
+    "theme_label": "Danger météo d'incendie",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-fwi-gironde",
+   "scale": "gironde",
+   "title": "Jours de danger météo d'incendie très élevé en Gironde",
+   "unit": "jours",
+   "path": "gironde/jours-fwi-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — danger météo d'incendie",
+   "variable": {
+    "id": "jours-fwi",
+    "code": "FWI ≥ 21,3",
+    "label": "jours de danger météo d'incendie très élevé (FWI ≥ 21,3)",
+    "theme": "incendie",
+    "theme_label": "Danger météo d'incendie",
+    "order": 1
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
    }
   }
  ]

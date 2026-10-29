@@ -159,18 +159,26 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
              unit: str, series: dict[int, float], hom: set[int], provenance: Provenance, limitations: list[str],
              stations: list[Station], method_note: str | None, reference: dict | None, baseline: list[int] | str | None,
              group: str, where: str, label: str, raw_reason: str | None = None,
-             common_window: Period | None = None, indicative: bool = False) -> Indicator:
+             common_window: Period | None = None, indicative: bool = False,
+             display_only: str | None = None) -> Indicator:
     """`raw_reason` : série brute, non homogénéisée (règle C2) — publiée sans tendance ni normale, raison donnée.
 
     `indicative` : série brute avec tendance INDICATIVE (exception à C2, décision de Grég du 25/10/2026, prise après
     avoir vu les séries brutes) — toutes les années complètes entrent dans la tendance, points marqués « bruts »,
     aucune normale, aucune référence, confiance « faible » si Hamed-Rao significatif, « non établi » sinon.
+
+    `display_only` : série exploitable telle que publiée mais SANS lecture climatique (critère I8 de la P4, CatNat par
+    péril) — ni tendance, ni normale, ni référence ; la raison est affichée.
     """
-    if raw_reason and indicative:
-        raise ValueError("raw_reason et indicative sont exclusifs")
+    if sum(map(bool, (raw_reason, indicative, display_only))) > 1:
+        raise ValueError("raw_reason, indicative et display_only sont exclusifs")
+    quality_hom = set() if indicative else set(hom)
     if raw_reason:
         hom = set()
-    quality_hom = set() if indicative else hom
+        quality_hom = set()
+    if display_only:
+        hom = set()
+        reference = None
     if indicative:
         hom = set(series)
         reference = None
@@ -224,6 +232,8 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
                     "d'emplacement peut à lui seul créer la pente affichée ; confiance au plus « faible ».")
     elif raw_reason:
         lims.append("Série brute, non homogénéisée : aucune tendance ni normale n'est calculée (règle C2 du projet).")
+    elif display_only:
+        lims.append(f"Affichage seulement, sans tendance ni normale : {display_only}")
     elif check is None:
         lims.append("Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne ».")
     elif not check.satisfied:
@@ -237,7 +247,7 @@ def assemble(ctx: BuildContext, *, ind_id: str, scale: str, variable: str, place
         series=Series(time=[str(y) for y in years], value=[round(series[y], 4) for y in years],
                       quality=["homogenized" if y in quality_hom else "raw" for y in years]),
         normals=normals, trend=main, alt_trends=alts, reference_check=check, breakpoints=breaks, stations=stations, method_note=method_note,
-        finding=(f"{where}, {label} : {raw_reason}" if raw_reason
+        finding=(f"{where}, {label} : {raw_reason or display_only}" if (raw_reason or display_only)
                  else _finding(where, label, unit, main, ref_period)
                  + (" Tendance indicative : série brute, non homogénéisée." if indicative else "")),
         confidence=("faible" if main and main.significant else "non_etabli") if indicative else confidence(main, check),
@@ -255,7 +265,8 @@ def _place(scale: str, place: dict) -> Place:
 
 def build(ctx: BuildContext, source: str, scale: str, variable: str, place: dict, title: str, description: str, label: str,
           where: str, limitations: list[str], reference: dict | None = None, baseline: list[int] | str | None = None,
-          station: dict | None = None, start: int | None = None, group: str | None = None) -> Indicator:
+          station: dict | None = None, start: int | None = None, group: str | None = None,
+          display_only: str | None = None) -> Indicator:
     """Série publiée par un organisme (NOAA, NASA, Met Office, NSIDC, PSMSL…)."""
     src = G.SOURCES[source]
     series = G.load(source, ctx.raw_dir)
@@ -275,7 +286,7 @@ def build(ctx: BuildContext, source: str, scale: str, variable: str, place: dict
     return assemble(ctx, ind_id=f"{variable}-{pl.id}", scale=scale, variable=variable, place=pl, title=title,
                     description=description, unit=src.unit, series=series, hom=hom, provenance=prov, limitations=lims,
                     stations=stations, method_note=None, reference=reference, baseline=baseline,
-                    group=group or v.theme_label, where=where, label=label)
+                    group=group or v.theme_label, where=where, label=label, display_only=display_only)
 
 
 # --- séries LSH sommées sur l'année (précipitations, insolation)

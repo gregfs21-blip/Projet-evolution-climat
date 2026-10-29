@@ -25,6 +25,9 @@ themes:
   jet-stream: Jet stream (Atlantique Nord, hiver)
   pluies-intenses: Pluies intenses
   secheresse: Demande en eau et sécheresse
+  viticulture: Viticulture
+  sante: Santé (chaleur)
+  incendie: Danger météo d'incendie
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -84,3 +87,13 @@ variables:
   bilan-hydrique: {code: P − ETP, label: "bilan climatique pluie − ETP", theme: secheresse, order: 1}
   spei12: {code: SPEI-12, label: "indice de sécheresse SPEI à 12 mois", theme: secheresse, order: 2}
   mois-secs: {code: Mois secs, label: "mois secs (SPEI-3 ≤ −1)", theme: secheresse, order: 3}
+# --- P4 (critères I1-I9 validés le 28/10/2026)
+  huglin: {code: Huglin, label: "indice de Huglin (chaleur utile à la vigne, avril-septembre)", theme: viticulture, order: 0}
+  fraicheur-nuits: {code: Nuits sept., label: "température minimale moyenne de septembre (fraîcheur des nuits)", theme: viticulture, order: 1}
+  gelees-tardives: {code: Gel tardif, label: "jours de gelée tardive (TN ≤ 0 °C, 1er avril-15 mai)", theme: viticulture, order: 2}
+  vendanges: {code: Vendanges, label: "date de début des vendanges (jours après le 31 août)", theme: viticulture, order: 3}
+  canicule: {code: Canicule, label: "jours de canicule (seuils de la Gironde, 21 °C et 35 °C sur 3 jours)", theme: sante, order: 0}
+  catnat-inondation: {code: Inondation, label: reconnaissances CatNat « inondation », theme: catastrophes, order: 2}
+  catnat-vagues: {code: Vagues, label: reconnaissances CatNat « chocs mécaniques des vagues », theme: catastrophes, order: 3}
+  fwi-ete: {code: FWI été, label: "indice forêt-météo moyen de juin à septembre (FWI)", theme: incendie, order: 0}
+  jours-fwi: {code: "FWI ≥ 21,3", label: "jours de danger météo d'incendie très élevé (FWI ≥ 21,3)", theme: incendie, order: 1}
