@@ -484,6 +484,14 @@ de la réanalyse (pluie et humidité près du sol, cf. H5 en P3).
 - **FWI** : en attente de l'accès EWDS ; ses choix (mailles, saison complète) seront fixés après la sonde de format,
   avant tout calcul.
 
+### Premier calcul (28/10/2026) et décision de Grég APRÈS calcul
+
+Analyse : `docs/validation-p4.md`. Hors feu de forêt (en attente de l'accès EWDS) : I3, I5, I6, I8 conformes.
+- **I4, R9 non retrouvée** : + 158 °C·j pour le composite, + 148 (Cazaux, seule dans la fourchette) à + 165 selon les
+  stations, pour [+102 ; +152] ; Villenave-d'Ornon non mesurable (homogénéisée jusqu'en 2001). **Écart accepté** : il
+  clôt le critère, il ne relève aucune confiance.
+- **Correctif de présentation** : I7 comptait aussi les indicateurs manquants, déjà comptés par I1 ; corrigé.
+
 ### Décisions demandées à Grég
 
 - **D-I** : périmètre (A à D).

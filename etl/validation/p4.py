@@ -25,7 +25,11 @@ SCOPE = set(HUGLIN + [f"fraicheur-nuits-{s}" for s in TN_STATIONS] + [f"gelees-t
             + ["canicule-bordeaux-merignac", "vendanges-bordeaux"] + CATNAT + FWI)
 OUT = ROOT / "docs" / "validation-p4-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p4.json"
-ACCEPTED: dict[str, str] = {}
+# Décision de Grég du 28/10/2026, APRÈS calcul (analyse : docs/validation-p4.md). L'écart clôt le critère ; il ne
+# relève aucune confiance (le Huglin reste « moyenne », sauf Cazaux où R9 est réellement retrouvée).
+ACCEPTED: dict[str, str] = {
+    "I4 validation externe (R9, Huglin)": "écart accepté le 28/10/2026 (stations contre grille SAFRAN du vignoble)",
+}
 
 
 @dataclass
