@@ -24,7 +24,8 @@ T_SPAN = (1959, 2021)
 RR_SPAN = (1961, 2020)
 BASE = (1961, 1990)
 PLAUSIBLE_TM = (-10.0, 20.0)
-PLAUSIBLE_RR = (300.0, 3000.0)
+PLAUSIBLE_RR = (100.0, 3000.0)   # plancher 300 → 100 : décision de Grég du 29/10/2026 APRÈS le premier calcul
+                                 # (252 mm en 1967 à 13001009, année sèche crédible en Provence)
 R10 = {
     "kind": "slope", "period": [1959, 2021], "range": [0.2, 0.4], "unit": "°C/déc.", "fixed_on": "2026-10-29",
     "statement": ("France métropolitaine, séries homogénéisées : environ + 0,3 °C par décennie sur 1959-2021, entre "
