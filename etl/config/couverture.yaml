@@ -17,7 +17,7 @@ parametres:
     label: Température de l'air (continent)
     echelles:
       gironde: {variables: [tn, tm, tx, jours-tx25, jours-tx30, jours-tx35, nuits-tn20, jours-gel], source: "Météo-France LSH et quotidien"}
-      france: {statut: prevu, source: "Météo-France LSH (indicateur thermique national)"}
+      france: {statut: prevu, variables: [tn, tm, tx], source: "Météo-France LSH, réseau constant de stations homogénéisées 1959-2021", note: "Pas d'indicateur depuis 1900 : les séries homogénéisées ouvertes commencent en 1953-1959."}
       monde: {statut: prevu, variables: [temperature-hadcrut5, temperature-gistemp, temperature-berkeley], source: "NASA GISTEMP, HadCRUT5, Berkeley Earth"}
 
   - id: temperature-mer
@@ -51,7 +51,7 @@ parametres:
     label: Précipitations (cumul et quantité)
     echelles:
       gironde: {statut: prevu, variables: [rr-cumul, r10mm, r20mm, rx1day, rx5day], source: "Météo-France LSH RR (9 stations, homogénéisé jusqu'en 2017), quotidien corrigé (P2b)"}
-      france: {statut: prevu, source: "Météo-France LSH RR"}
+      france: {statut: prevu, variables: [rr-cumul], source: "Météo-France LSH RR, réseau constant 1961-2020"}
 
   - id: ensoleillement
     label: Ensoleillement

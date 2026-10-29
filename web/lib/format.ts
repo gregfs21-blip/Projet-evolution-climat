@@ -13,10 +13,10 @@ export const SCALE_LABELS: Record<Scale, { name: string; blurb: string; phase: s
   },
   france: {
     name: "France",
-    blurb: "Indicateur thermique national et tendances station par station.",
+    blurb: "Températures et pluie de la France métropolitaine, séries homogénéisées depuis 1959.",
     phase: "phase 5",
     phaseCode: "P5",
-    validations: [],
+    validations: ["p5"],
   },
   monde: {
     name: "Monde",
