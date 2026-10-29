@@ -67,5 +67,20 @@ class TestGhd(unittest.TestCase):
         self.assertEqual(G.parse_ghd(GHD, "Bur"), {1354: 15.3, 1976: 8.8, 2003: -10.1, 2006: 16.0})
 
 
+class TestFwiExtraction(unittest.TestCase):
+    def test_west_column_dropped_and_weighted_mean(self):
+        import numpy as np
+        from etl.sources import ewds_fire as E
+        lat = np.array([45.0, 44.5])
+        lon = np.array([358.7, 359.0, 0.2])          # −1,3 (écartée), −1,0, +0,2
+        f = np.array([[[99.0, 10.0, 20.0], [99.0, 30.0, np.nan]]])
+        rows = E.extract_daily({"valid_time": np.array([1656633600]), "latitude": lat, "longitude": lon, "fwinx": f})
+        w1, w2 = np.cos(np.radians(45.0)), np.cos(np.radians(44.5))
+        expect = (10 * w1 + 20 * w1 + 30 * w2) / (2 * w1 + w2)
+        self.assertEqual(rows[0]["day"], "2022-07-01")
+        self.assertEqual(rows[0]["cells"], 3)
+        self.assertAlmostEqual(rows[0]["fwi"], round(expect, 3))
+
+
 if __name__ == "__main__":
     unittest.main()

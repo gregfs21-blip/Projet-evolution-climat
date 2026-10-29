@@ -417,7 +417,8 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   Sciences Agro, 1892-2025) n'est publiée qu'en image : aucune donnée téléchargeable.
 - **Danger météorologique d'incendie** : indices du système canadien (dont l'IFM/FWI) calculés par le CEMS sur ERA5,
   quotidiens, 0,25°, depuis 1940 (Copernicus EWDS, `cems-fire-historical-v1`, version 4.1, données consolidées).
-  Requête refusée : **les conditions d'utilisation de l'EWDS ne sont pas encore acceptées** sur le compte.
+  Requête d'abord refusée (conditions d'utilisation de l'EWDS), acceptées par Grég le 29/10/2026 ; la requête de juillet
+  2022 aboutit en moins de 3 minutes (`docs/sonde-p4c.md`).
 - **Feux observés (BDIFF)** : portail seulement (pas de fichier sur data.gouv.fr), depuis 2006 ; injoignable depuis
   GitHub (chaîne de certificats incomplète côté serveur). 20 ans au mieux : pas de tendance possible.
 - **CatNat par péril** (GASPAR, Gironde, 7 676 reconnaissances) : séries dominées par le droit et par des événements
@@ -481,8 +482,14 @@ de la réanalyse (pluie et humidité près du sol, cf. H5 en P3).
   dernières années exclues) ; affichage seul.
 - **Confiance** : Huglin, règle des séries simples avec R9 (« élevée » si tendance significative et R9 retrouvée) ;
   autres indicateurs sans référence, au plus « moyenne » ; vendanges, « non établi » si I5 échoue.
-- **FWI** : en attente de l'accès EWDS ; ses choix (mailles, saison complète) seront fixés après la sonde de format,
-  avant tout calcul.
+- **FWI** (fixé le 29/10/2026 après la sonde de format `docs/sonde-p4c.md`, avant tout calcul ; `etl/sources/ewds_fire.py`) :
+  CEMS `cems-fire-historical-v1`, réanalyse, données consolidées, version 4.1, 0,25° ; boîte 44,2-45,6° N,
+  1,3° O-0,4° E, colonne la plus à l'ouest écartée (en mer) : 36 mailles ; moyenne quotidienne pondérée par le cosinus
+  de la latitude ; saison juin-septembre, une année n'est retenue que si ses 122 jours existent. `fwi-ete` = moyenne de
+  la saison ; `jours-fwi` = jours où la moyenne de la boîte atteint 21,3 (D-K). Produit de réanalyse publié : toutes
+  les années complètes entrent dans la tendance (règle ERA5 du lot 2) ; série de plus de 80 ans, tendance mise en
+  avant sur les 50 dernières années. Aucune référence : confiance au plus « moyenne » ; `jours-fwi` suit la règle
+  E9 s'il est rare.
 
 ### Premier calcul (28/10/2026) et décision de Grég APRÈS calcul
 
