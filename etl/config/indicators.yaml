@@ -1324,3 +1324,12 @@ indicators:
       - 'Compte administratif, pas une mesure de l''aléa : il dépend des demandes des communes, de l''exposition et des critères de reconnaissance, modifiés plusieurs fois.'
       - 'Les deux dernières années d''événement sont exclues : les reconnaissances arrivent un à deux ans après (choix fixé avant calcul).'
       - 'Presque toutes les reconnaissances viennent de quelques tempêtes : aucune lecture d''évolution possible.'
+  # FWI (CEMS sur ERA5), relevé par le workflow « Copernicus » le 29/10/2026 ; choix fixés le même jour avant calcul
+  - id: fwi-ete-gironde
+    scale: gironde
+    builder: etl.indicators.impacts:build_fwi
+    params: {variable: fwi-ete}
+  - id: jours-fwi-gironde
+    scale: gironde
+    builder: etl.indicators.impacts:build_fwi
+    params: {variable: jours-fwi}
