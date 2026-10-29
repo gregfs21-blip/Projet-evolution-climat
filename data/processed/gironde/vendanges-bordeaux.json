@@ -1097,9 +1097,9 @@
   "source_name": "NOAA WDS Paleoclimatology — base européenne des dates de vendanges (Daux et al., 2012), Bordeaux",
   "source_url": "https://www.ncei.noaa.gov/access/paleo-search/study/13194",
   "license": "Domaine public (NOAA WDS)",
-  "extracted_at": "2026-10-28T21:58:35Z",
+  "extracted_at": "2026-10-29T18:42:59Z",
   "script": "etl.indicators.impacts",
-  "etl_version": "0.1.0+b7d324d",
+  "etl_version": "0.1.0+0bc5c6e",
   "homogenized": true
  },
  "is_demo": false

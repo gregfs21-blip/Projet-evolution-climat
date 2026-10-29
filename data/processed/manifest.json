@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-28T21:59:34Z",
- "etl_version": "0.1.0+b7d324d",
+ "generated_at": "2026-10-29T18:43:53Z",
+ "etl_version": "0.1.0+0bc5c6e",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -4136,6 +4136,52 @@
     "theme": "catastrophes",
     "theme_label": "Catastrophes naturelles (arrêtés CatNat)",
     "order": 3
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "fwi-ete-gironde",
+   "scale": "gironde",
+   "title": "Danger météo d'incendie en été (FWI) en Gironde",
+   "unit": "FWI",
+   "path": "gironde/fwi-ete-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — danger météo d'incendie",
+   "variable": {
+    "id": "fwi-ete",
+    "code": "FWI été",
+    "label": "indice forêt-météo moyen de juin à septembre (FWI)",
+    "theme": "incendie",
+    "theme_label": "Danger météo d'incendie",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde",
+    "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-fwi-gironde",
+   "scale": "gironde",
+   "title": "Jours de danger météo d'incendie très élevé en Gironde",
+   "unit": "jours",
+   "path": "gironde/jours-fwi-gironde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Réanalyse ERA5 — danger météo d'incendie",
+   "variable": {
+    "id": "jours-fwi",
+    "code": "FWI ≥ 21,3",
+    "label": "jours de danger météo d'incendie très élevé (FWI ≥ 21,3)",
+    "theme": "incendie",
+    "theme_label": "Danger météo d'incendie",
+    "order": 1
    },
    "place": {
     "id": "gironde",

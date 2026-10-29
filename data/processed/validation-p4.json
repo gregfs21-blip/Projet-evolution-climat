@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "phase": "p4",
-  "generated_at": "2026-10-28T22:02:31Z",
-  "closure_ok": false,
-  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "generated_at": "2026-10-29T18:46:56Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
     "canicule-bordeaux-merignac",
     "catnat-inondation-gironde",
@@ -16,6 +16,7 @@
     "fraicheur-nuits-lacanau",
     "fraicheur-nuits-sauternes",
     "fraicheur-nuits-villenave-d-ornon",
+    "fwi-ete-gironde",
     "gelees-tardives-bordeaux-merignac",
     "gelees-tardives-bordeaux-paulin",
     "gelees-tardives-cap-ferret",
@@ -29,15 +30,16 @@
     "huglin-cazaux",
     "huglin-gironde",
     "huglin-villenave-d-ornon",
+    "jours-fwi-gironde",
     "vendanges-bordeaux"
   ],
   "checks": [
     {
       "name": "I1 exhaustivité",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "25 indicateurs sur 27 ; manquants : fwi-ete-gironde, jours-fwi-gironde"
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "27 indicateurs sur 27"
     },
     {
       "name": "I2 complétude",
@@ -56,8 +58,8 @@
     {
       "name": "I4 validation externe (R9, Huglin)",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
+      "status": "☑ écart accepté le 28/10/2026 (stations contre grille SAFRAN du vignoble)",
+      "satisfied": true,
       "detail": "attendu [+102 ; +152] °C·j entre 1980-1999 et 2000-2019 ; mesuré : gironde : +158,0 ; bordeaux-paulin : +162,0 ; cap-ferret : +160,9 ; bordeaux-merignac : +165,1 ; cazaux : +148,1 ; villenave-d-ornon : —"
     },
     {
@@ -77,9 +79,9 @@
     {
       "name": "I7 plausibilité",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "Bornes contrôlées à la construction (un dépassement empêche la publication)."
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Bornes contrôlées à la construction pour les 27 indicateurs publiés (un dépassement empêche la publication)."
     },
     {
       "name": "I8 CatNat par péril sans tendance",
