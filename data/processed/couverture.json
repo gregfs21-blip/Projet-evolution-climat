@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-29T18:43:53Z",
+ "generated_at": "2026-10-29T21:45:59Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -338,10 +338,26 @@
     },
     {
      "scale": "france",
-     "status": "prevu",
-     "source": "Météo-France LSH (indicateur thermique national)",
-     "note": null,
-     "indicators": []
+     "status": "publie",
+     "source": "Météo-France LSH, réseau constant de stations homogénéisées 1959-2021",
+     "note": "Pas d'indicateur depuis 1900 : les séries homogénéisées ouvertes commencent en 1953-1959.",
+     "indicators": [
+      {
+       "id": "tn-france",
+       "title": "Température minimale annuelle de la France (écart à 1961-1990)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "tm-france",
+       "title": "Température moyenne annuelle de la France (écart à 1961-1990)",
+       "confidence": "elevee"
+      },
+      {
+       "id": "tx-france",
+       "title": "Température maximale annuelle de la France (écart à 1961-1990)",
+       "confidence": "moyenne"
+      }
+     ]
     },
     {
      "scale": "monde",
@@ -772,10 +788,16 @@
     },
     {
      "scale": "france",
-     "status": "prevu",
-     "source": "Météo-France LSH RR",
+     "status": "publie",
+     "source": "Météo-France LSH RR, réseau constant 1961-2020",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "rr-cumul-france",
+       "title": "Cumul annuel de pluie en France",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },

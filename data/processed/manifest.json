@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-29T18:43:53Z",
- "etl_version": "0.1.0+0bc5c6e",
+ "generated_at": "2026-10-29T21:45:59Z",
+ "etl_version": "0.1.0+eb3b45d",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -4186,6 +4186,98 @@
    "place": {
     "id": "gironde",
     "name": "Gironde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "tn-france",
+   "scale": "france",
+   "title": "Température minimale annuelle de la France (écart à 1961-1990)",
+   "unit": "°C",
+   "path": "france/tn-france.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse France — températures",
+   "variable": {
+    "id": "tn",
+    "code": "TN",
+    "label": "températures minimales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 0
+   },
+   "place": {
+    "id": "france",
+    "name": "France",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "tm-france",
+   "scale": "france",
+   "title": "Température moyenne annuelle de la France (écart à 1961-1990)",
+   "unit": "°C",
+   "path": "france/tm-france.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Synthèse France — températures",
+   "variable": {
+    "id": "tm",
+    "code": "TM",
+    "label": "températures moyennes",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 1
+   },
+   "place": {
+    "id": "france",
+    "name": "France",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "tx-france",
+   "scale": "france",
+   "title": "Température maximale annuelle de la France (écart à 1961-1990)",
+   "unit": "°C",
+   "path": "france/tx-france.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse France — températures",
+   "variable": {
+    "id": "tx",
+    "code": "TX",
+    "label": "températures maximales",
+    "theme": "temperature",
+    "theme_label": "Températures annuelles",
+    "order": 2
+   },
+   "place": {
+    "id": "france",
+    "name": "France",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "rr-cumul-france",
+   "scale": "france",
+   "title": "Cumul annuel de pluie en France",
+   "unit": "mm",
+   "path": "france/rr-cumul-france.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse France — précipitations",
+   "variable": {
+    "id": "rr-cumul",
+    "code": "RR",
+    "label": "précipitations annuelles",
+    "theme": "precipitations",
+    "theme_label": "Précipitations",
+    "order": 0
+   },
+   "place": {
+    "id": "france",
+    "name": "France",
     "kind": "composite"
    }
   }

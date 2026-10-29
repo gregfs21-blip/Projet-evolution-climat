@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "phase": "p5",
+  "generated_at": "2026-10-29T21:48:57Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "indicators": [
+    "rr-cumul-france",
+    "tm-france",
+    "tn-france",
+    "tx-france"
+  ],
+  "checks": [
+    {
+      "name": "J1 exhaustivité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "4 indicateurs sur 4"
+    },
+    {
+      "name": "J2 complétude",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Appliquée par le code : années de 12 mois homogénéisés, réseau constant 1959-2021 (températures) et 1961-2020 (pluie)."
+    },
+    {
+      "name": "J3 brut ≠ homogénéisé",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Tendances, normales et R10 sur les seules années où toutes les stations sont homogénéisées."
+    },
+    {
+      "name": "J4 validation externe (R10, TM)",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "attendu [+0,2 ; +0,4] °C/déc. sur 1959-2021 ; mesuré : +0,344"
+    },
+    {
+      "name": "J5 cohérence spatiale (contrôle interne)",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "220 pentes positives sur 220 (100,0 %) ; médiane +0,34 °C/déc."
+    },
+    {
+      "name": "J6 robustesse de la pondération",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "pondéré par département +0,344 ; moyenne simple +0,348 °C/déc. ; écart admis 0,05"
+    },
+    {
+      "name": "J7 plausibilité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Bornes contrôlées à la construction pour les 4 indicateurs publiés (un dépassement empêche la publication)."
+    },
+    {
+      "name": "J8 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests, CI et contrat vérifiés par les workflows."
+    }
+  ]
+}
