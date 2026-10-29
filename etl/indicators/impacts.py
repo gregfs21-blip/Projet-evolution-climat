@@ -366,3 +366,68 @@ def i5(raw_dir: Path) -> tuple[float | None, list[int]]:
     hug, hom, _m, _e = huglin_composite(raw_dir)
     return correlation(series, {y: hug[y] for y in hom})
 
+
+
+# ---------------------------------------------------------------- danger météo d'incendie (FWI, CEMS sur ERA5)
+
+
+FWI_THRESHOLD = 21.3          # classe EFFIS « très élevé » (D-K, 28/10/2026)
+FWI_LIMITS = [
+    "Indice calculé par le CEMS à partir de la réanalyse ERA5, pas mesuré : il hérite de ses limites, en particulier "
+    "sur la pluie et l'humidité près du sol (voir le contrôle H5 de la P3), et des changements du système "
+    "d'observation (satellites depuis 1979).",
+    "Danger météorologique, pas les feux : la végétation, les départs de feu et la lutte n'y entrent pas.",
+    "Moyenne de 36 mailles de 0,25° couvrant la Gironde et ses bords (Landes, Charente-Maritime, Dordogne, "
+    "Lot-et-Garonne) ; la colonne la plus à l'ouest, en mer, est écartée.",
+    "Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne ».",
+]
+
+
+def fwi_seasons(daily: dict[str, float]) -> tuple[dict[int, float], dict[int, float]]:
+    """Moyenne de juin à septembre et jours ≥ seuil, pour les années dont les 122 jours existent."""
+    mean, days = {}, {}
+    for y in sorted({int(d[:4]) for d in daily}):
+        vals = [daily.get(d) for m in range(6, 10) for d in X.days_of(y, m)]
+        if len(vals) == 122 and all(v is not None for v in vals):
+            mean[y] = round(sum(vals) / 122, 2)
+            days[y] = float(sum(v >= FWI_THRESHOLD for v in vals))
+    return mean, days
+
+
+def build_fwi(ctx: BuildContext, variable: str) -> Indicator:
+    from etl.sources import ewds_fire as E
+    mean, days = fwi_seasons(E.load())
+    series = mean if variable == "fwi-ete" else days
+    lo, hi = (0.0, 60.0) if variable == "fwi-ete" else (0.0, 122.0)
+    bad = {y: v for y, v in series.items() if not lo <= v <= hi}
+    if bad or len(series) < 30:
+        raise ValueError(f"{variable} : valeurs hors [{lo} ; {hi}] (I7) ou série trop courte : {list(bad.items())[:3]}")
+    n, w, s_, e = E.AREA
+    st = Station(id="era5-fwi-gironde", name="Gironde (CEMS sur ERA5, 36 mailles, 44,2-45,45° N, 1,05° O-0,2° E)",
+                 latitude=(n + s_) / 2, longitude=(w + e) / 2, altitude=0.0)
+    prov = Provenance(source_name=E.SOURCE_NAME, source_url=E.PAGE, license=E.LICENSE, extracted_at=ctx.extracted_at,
+                      script="etl.indicators.impacts", etl_version=ctx.etl_version, homogenized=False)
+    if variable == "fwi-ete":
+        return S.assemble(ctx, ind_id="fwi-ete-gironde", scale="gironde", variable="fwi-ete",
+                          place=vocab.composite("gironde", "Gironde"), title="Danger météo d'incendie en été (FWI) en Gironde",
+                          description="Moyenne de juin à septembre de l'indice forêt-météo (FWI, système canadien) calculé "
+                                      "chaque jour par Copernicus sur la réanalyse ERA5. Il combine température, humidité, "
+                                      "vent et pluie des jours et semaines précédents.",
+                          unit="FWI", series=series, hom=set(series), provenance=prov, limitations=FWI_LIMITS,
+                          stations=[st], method_note="Moyenne quotidienne des mailles pondérée par le cosinus de la "
+                          "latitude, puis moyenne des 122 jours de juin à septembre.", reference=None, baseline=None,
+                          group="Réanalyse ERA5 — danger météo d'incendie", where="En Gironde",
+                          label="l'indice forêt-météo moyen de l'été")
+    hom = set(series)
+    if not X.is_rare(series, hom):
+        return S.assemble(ctx, ind_id="jours-fwi-gironde", scale="gironde", variable="jours-fwi",
+                          place=vocab.composite("gironde", "Gironde"),
+                          title="Jours de danger météo d'incendie très élevé en Gironde",
+                          description="Nombre de jours de juin à septembre où l'indice forêt-météo moyen de la Gironde "
+                                      "atteint 21,3, seuil de la classe « très élevé » du système européen EFFIS.",
+                          unit="jours", series=series, hom=hom, provenance=prov, limitations=FWI_LIMITS, stations=[st],
+                          method_note="Comptage des jours de juin à septembre où la moyenne quotidienne de la boîte "
+                                      "atteint 21,3.", reference=None, baseline=None,
+                          group="Réanalyse ERA5 — danger météo d'incendie", where="En Gironde",
+                          label="le nombre de jours de danger très élevé")
+    raise ValueError("jours-fwi rare (médiane 1961-1990 < 5) : règle E9 à appliquer, constructeur à compléter")

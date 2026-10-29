@@ -82,5 +82,19 @@ class TestFwiExtraction(unittest.TestCase):
         self.assertAlmostEqual(rows[0]["fwi"], round(expect, 3))
 
 
+class TestFwiSeasons(unittest.TestCase):
+    def test_complete_seasons_only(self):
+        d = {}
+        for y, v in ((2000, 25.0), (2001, 10.0)):
+            for m in range(6, 10):
+                for day in X.days_of(y, m):
+                    d[day] = v
+        d["2000-06-01"] = 21.3                       # au seuil : compté
+        del d["2001-07-01"]                          # saison incomplète : écartée
+        mean, days = I.fwi_seasons(d)
+        self.assertEqual(set(mean), {2000})
+        self.assertEqual(days[2000], 122.0)
+
+
 if __name__ == "__main__":
     unittest.main()
