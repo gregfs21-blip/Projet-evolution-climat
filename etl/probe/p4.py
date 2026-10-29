@@ -306,8 +306,8 @@ def catnat(md):
     block(md, "Archive GASPAR", url, st, out)
 
 
-STEPS = (ghd,)   # 2e passage (28/10) : lecture à largeur fixe de la colonne Bordeaux
-OUT = ROOT / "docs" / "sonde-p4b.md"
+STEPS = (fire,)   # 3e passage : FWI, après acceptation des conditions EWDS
+OUT = ROOT / "docs" / "sonde-p4c.md"
 
 
 def main() -> int:
