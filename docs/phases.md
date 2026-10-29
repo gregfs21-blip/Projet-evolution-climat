@@ -403,7 +403,11 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 
 ## P5 — Critères (proposition du 29/10/2026, avant tout calcul)
 
-> Statut : **proposition**, à valider par Grég. Sonde : `docs/sonde-p5.md` (inventaire seulement, aucune valeur de
+> **Décisions de Grég du 29/10/2026, avant tout calcul** : D-M périmètre **A et C** (températures et pluie de la
+> France ; carte des tendances B écartée ; D hors P5) ; D-N réseau constant **1959-2021** ; D-O pondération **par
+> département** ; D-P R10 avec la fourchette publiée **[+0,2 ; +0,4] °C/déc.**
+>
+> Statut d'origine : proposition. Sonde : `docs/sonde-p5.md` (inventaire seulement, aucune valeur de
 > température lue). Déjà publiés pour la France hors P5 : CatNat (tous périls, sécheresse), marégraphe de Brest.
 
 ### Constat de la sonde
