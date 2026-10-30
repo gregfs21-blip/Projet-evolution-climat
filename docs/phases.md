@@ -419,6 +419,20 @@ Décisions de Grég : **tendance 1959-2021** en °C par décennie ; **TN, TM, TX
   critère de clôture (P5 close). Contrôle publié en information : moyenne des pentes départementales comparée à la
   pente France.
 
+### Carte départementale de la pluie (demande de Grég du 30/10/2026, choix fixés AVANT calcul)
+
+Décisions de Grég : tendance en **% par décennie** (relative à la moyenne 1961-1990 du département) ; **année et
+quatre saisons** avec sélecteur. Choix de mise en œuvre (`etl/carte.py`) :
+
+- **Réseau** : celui de la pluie France de la P5 (RR homogénéisé sur les 12 mois de chaque année 1961-2014).
+- **Saisons** : hiver = décembre de l'année précédente à février (hivers 1962-2014), printemps = mars-mai, été =
+  juin-août, automne = septembre-novembre ; année = janvier-décembre (1961-2014). Cumul de chaque station.
+- **Département** : moyenne des cumuls de ses stations ; pente de Sen (mm/déc.) divisée par la moyenne 1961-1990 du
+  département, × 100 ; significativité : Mann-Kendall corrigé Hamed-Rao sur la série en mm.
+- **France** (repère sous la carte) : moyenne des départements, même calcul.
+- **Couleurs** : échelle fixe **± 10 % par décennie**, bleu = plus de pluie, brun = moins ; pâle si non significatif ;
+  gris sans station. Même contours que la carte des températures.
+
 ## P5 — Critères (proposés et validés le 29/10/2026, avant tout calcul)
 
 > **Décisions de Grég du 29/10/2026, avant tout calcul** : D-M périmètre **A et C** (températures et pluie de la
