@@ -366,3 +366,58 @@ class Coverage(_Strict):
     schema_version: Literal["1.0"] = COVERAGE_SCHEMA_VERSION
     generated_at: datetime
     parameters: list[CoverageParameter] = Field(min_length=1)
+
+
+# ---------------------------------------------------------------- Carte départementale des tendances (P5 bis)
+# data/processed/carte-departements.json : une pente par département et par variable, et les contours à dessiner.
+# Le site colore les contours avec son échelle fixe (web/lib/heat.ts) ; il ne recalcule rien.
+
+DEPARTMENT_MAP_SCHEMA_VERSION = "1.0"
+
+
+class DepartmentValue(_Strict):
+    code: str = Field(pattern=r"^[0-9]{2}$", description="Deux premiers chiffres du poste ; Corse = '20'")
+    n_stations: int = Field(ge=1)
+    slope_per_decade: float
+    slope_ci_low: float | None = None
+    slope_ci_high: float | None = None
+    p_value: float = Field(ge=0, le=1)
+    significant: bool
+
+
+class DepartmentMapVariable(_Strict):
+    id: str = Field(pattern=SLUG)
+    code: str = Field(min_length=1)
+    label: str = Field(min_length=1)
+    national_slope_per_decade: float = Field(description="Pente du composite France de la P5, même période")
+    departments: list[DepartmentValue] = Field(min_length=1)
+
+
+class DepartmentShape(_Strict):
+    code: str = Field(pattern=r"^(?:[0-9]{2}|2A|2B)$", description="Code INSEE du département")
+    name: str = Field(min_length=1)
+    value_code: str = Field(pattern=r"^[0-9]{2}$", description="Code de la valeur à afficher (2A, 2B → '20')")
+    geometry: dict = Field(description="Géométrie GeoJSON (Polygon ou MultiPolygon), WGS 84")
+
+
+class DepartmentMap(_Strict):
+    schema_version: Literal["1.0"] = DEPARTMENT_MAP_SCHEMA_VERSION
+    generated_at: datetime
+    title: str = Field(min_length=1)
+    unit: str = Field(min_length=1)
+    period: Period
+    method_note: str = Field(min_length=1)
+    limitations: list[str] = Field(min_length=1)
+    provenance: Provenance
+    geometry_source: str = Field(min_length=1)
+    variables: list[DepartmentMapVariable] = Field(min_length=1)
+    shapes: list[DepartmentShape] = Field(min_length=90)
+
+    @model_validator(mode="after")
+    def _coherent(self) -> "DepartmentMap":
+        codes = {s.value_code for s in self.shapes}
+        for v in self.variables:
+            unknown = {d.code for d in v.departments} - codes
+            if unknown:
+                raise ValueError(f"carte : départements sans contour {sorted(unknown)}")
+        return self

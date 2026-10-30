@@ -10,7 +10,9 @@ import {
   manifestSchema,
   validationReportSchema,
   coverageSchema,
+  departmentMapSchema,
   type Coverage,
+  type DepartmentMap,
   type Indicator,
   type Manifest,
   type Scale,
@@ -80,4 +82,10 @@ export function getValidation(phase: string): ValidationReport | undefined {
 export function getCoverage(): Coverage | undefined {
   if (!existsSync(join(DATA_DIR, "couverture.json"))) return undefined;
   return load("couverture.json", coverageSchema);
+}
+
+/** Carte départementale des tendances (P5 bis). Absente = rien n'est affiché. */
+export function getDepartmentMap(): DepartmentMap | undefined {
+  if (!existsSync(join(DATA_DIR, "carte-departements.json"))) return undefined;
+  return load("carte-departements.json", departmentMapSchema);
 }

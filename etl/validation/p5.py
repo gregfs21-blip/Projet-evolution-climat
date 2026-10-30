@@ -89,6 +89,17 @@ def checks(inds: dict[str, Indicator], raw_dir: Path) -> list[Check]:
     cs.append(Check("J7 plausibilité", "critère", bool(inds),
                     f"Bornes contrôlées à la construction pour les {len(inds)} indicateurs publiés (un dépassement "
                     "empêche la publication)."))
+    carte = PROCESSED_DIR / "carte-departements.json"
+    if carte.exists():
+        from etl.schema import DepartmentMap
+        m = DepartmentMap.model_validate_json(carte.read_text(encoding="utf-8"))
+        parts = []
+        for v in m.variables:
+            mean = sum(d.slope_per_decade for d in v.departments) / len(v.departments)
+            sig = sum(d.significant for d in v.departments)
+            parts.append(f"{v.code} : moyenne des {len(v.departments)} départements {T.fr(mean, 3)}, France "
+                         f"{T.fr(v.national_slope_per_decade, 3)} °C/déc., {sig} significatives")
+        cs.append(Check("Carte départementale (information)", "info", True, " ; ".join(parts)))
     cs.append(Check("J8 technique", "info", True, "Tests, CI et contrat vérifiés par les workflows."))
     return cs
 

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p5",
-  "generated_at": "2026-10-29T21:58:50Z",
+  "generated_at": "2026-10-30T21:11:03Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
@@ -59,6 +59,13 @@
       "status": "✅ conforme",
       "satisfied": true,
       "detail": "Bornes contrôlées à la construction pour les 4 indicateurs publiés (un dépassement empêche la publication)."
+    },
+    {
+      "name": "Carte départementale (information)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "TN : moyenne des 88 départements +0,285, France +0,290 °C/déc., 88 significatives ; TM : moyenne des 88 départements +0,342, France +0,344 °C/déc., 88 significatives ; TX : moyenne des 88 départements +0,392, France +0,394 °C/déc., 88 significatives"
     },
     {
       "name": "J8 technique",
