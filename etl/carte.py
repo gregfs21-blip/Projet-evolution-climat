@@ -22,6 +22,7 @@ GEO_URL = "https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/2025
 GEO_SOURCE = ("Contours administratifs Etalab 2025 (dérivés d'Admin Express, IGN), généralisés à 1 000 m, "
               "Licence Ouverte 2.0")
 OUT = PROCESSED_DIR / "carte-departements.json"
+OUT_RR = PROCESSED_DIR / "carte-departements-pluie.json"
 VARS = (("TN", "tn", "TN", "températures minimales"), ("TM", "tm", "TM", "température moyenne"),
         ("TX", "tx", "TX", "températures maximales"))
 
@@ -105,12 +106,107 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> DepartmentM
     )
 
 
+# ---------------------------------------------------------------- pluie (choix fixés le 30/10/2026 avant calcul)
+
+SEASONS = (("annee", "Année", "cumul annuel", (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)),
+           ("hiver", "Hiver", "cumul de décembre à février", (12, 1, 2)),
+           ("printemps", "Printemps", "cumul de mars à mai", (3, 4, 5)),
+           ("ete", "Été", "cumul de juin à août", (6, 7, 8)),
+           ("automne", "Automne", "cumul de septembre à novembre", (9, 10, 11)))
+
+
+def season_total(values: dict, hom: dict, year: int, months: tuple[int, ...]) -> float | None:
+    """Cumul de la saison ; décembre de l'hiver pris l'année précédente. Tous les mois présents et homogénéisés."""
+    keys = [(year - 1, m) if (m == 12 and len(months) == 3) else (year, m) for m in months]
+    if all(k in values and hom.get(k) for k in keys):
+        return sum(values[k] for k in keys)
+    return None
+
+
+def rain_department_series(raw_dir: Path) -> dict[str, dict[str, dict[int, float]]]:
+    """Saison → département → année → moyenne des cumuls des stations du réseau (années 1961-2014 complètes)."""
+    rr = F._all("RR", str(raw_dir))
+    network = F.rr_network(str(raw_dir))
+    out: dict[str, dict[str, dict[int, float]]] = {}
+    for sid, _label, _what, months in SEASONS:
+        first = F.RR_SPAN[0] + (1 if sid == "hiver" else 0)
+        years = range(first, F.RR_SPAN[1] + 1)
+        by_dep: dict[str, list[dict[int, float]]] = {}
+        for p in network:
+            s = rr[p]
+            tot = {y: season_total(s.values, s.homogenized, y, months) for y in years}
+            if any(v is None for v in tot.values()):
+                raise ValueError(f"pluie {p} {sid} : saison incomplète dans le réseau constant")
+            by_dep.setdefault(F.department(p), []).append(tot)
+        out[sid] = {d: {y: sum(m[y] for m in ms) / len(ms) for y in years} for d, ms in by_dep.items()}
+    return out
+
+
+def relative_trend(series: dict[int, float]) -> tuple[float, float | None, float | None, float, bool]:
+    ys = sorted(series)
+    t = annual_trend(ys, [series[y] for y in ys])
+    base = [series[y] for y in ys if 1961 <= y <= 1990]
+    m = sum(base) / len(base)
+    rel = lambda x: None if x is None else round(100 * x / m, 3)  # noqa: E731
+    return rel(t.slope_per_decade), rel(t.slope_ci_low), rel(t.slope_ci_high), t.p_value, t.significant
+
+
+def build_rain(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> DepartmentMap:
+    ctx = make_context(raw_dir)
+    deps = rain_department_series(raw_dir)
+    rr = F._all("RR", str(raw_dir))
+    network = F.rr_network(str(raw_dir))
+    n_by_dep: dict[str, int] = {}
+    for p in network:
+        n_by_dep[F.department(p)] = n_by_dep.get(F.department(p), 0) + 1
+    variables = []
+    for sid, label, what, _months in SEASONS:
+        values = []
+        for d, series in sorted(deps[sid].items()):
+            slope, lo, hi, p_value, sig = relative_trend(series)
+            values.append(DepartmentValue(code=d, n_stations=n_by_dep[d], slope_per_decade=slope, slope_ci_low=lo,
+                                          slope_ci_high=hi, p_value=round(p_value, 6), significant=sig))
+        years = sorted(next(iter(deps[sid].values())))
+        france = {y: sum(s[y] for s in deps[sid].values()) / len(deps[sid]) for y in years}
+        variables.append(DepartmentMapVariable(id=sid, code=label, label=what,
+                                               national_slope_per_decade=relative_trend(france)[0],
+                                               departments=values))
+    del rr
+    return DepartmentMap(
+        generated_at=datetime.now(timezone.utc).replace(microsecond=0),
+        title="Tendance de la pluie par département, 1961-2014",
+        unit="%", period=Period(start=F.RR_SPAN[0], end=F.RR_SPAN[1]),
+        method_note=(f"Réseau constant de la pluie de la P5 ({len(network)} stations homogénéisées sur 1961-2014). "
+                     "Cumul saisonnier ou annuel de chaque station, moyenne par département ; pente de Sen rapportée à "
+                     "la moyenne 1961-1990 du département (% par décennie) ; test de Mann-Kendall corrigé de "
+                     "l'autocorrélation (Hamed et Rao). Hiver : décembre à février (1962-2014)."),
+        limitations=[
+            "La pluie n'est homogénéisée partout que jusqu'en 2014 : les dix dernières années manquent.",
+            "La pluie varie beaucoup d'une année à l'autre : une pente non significative (teinte pâle) ne permet de "
+            "conclure ni à une hausse ni à une baisse.",
+            # Ajouté le 30/10/2026 après le premier calcul (mise en garde de lecture, sans effet sur les valeurs).
+            "Tests multiples : au seuil de 5 %, environ 5 départements sur 95 sortent « significatifs » par le seul "
+            "hasard, pour chaque carte. Quelques départements significatifs isolés ne prouvent pas une tendance.",
+            "Un département à une ou deux stations est représenté par elles seules ; le relief rend la pluie très "
+            "locale.",
+            "Aucune référence publiée par département : ces pentes ne portent pas de niveau de confiance « élevée ».",
+        ],
+        provenance=Provenance(source_name=lsh.SOURCE_NAME, source_url=lsh.DATASET_URL, license=lsh.LICENSE,
+                              extracted_at=ctx.extracted_at, script="etl.carte", etl_version=ctx.etl_version,
+                              homogenized=True),
+        geometry_source=GEO_SOURCE, variables=variables, shapes=shapes(fetch_geo(raw_dir)),
+    )
+
+
 def main() -> int:
     m = build()
     OUT.write_text(m.model_dump_json() + "\n", encoding="utf-8")
     covered = {d.code for d in m.variables[0].departments}
     print(f"→ {OUT.name} : {len(covered)} départements colorés sur {len({s.value_code for s in m.shapes})}, "
           f"{OUT.stat().st_size / 1e3:.0f} ko")
+    r = build_rain()
+    OUT_RR.write_text(r.model_dump_json() + "\n", encoding="utf-8")
+    print(f"→ {OUT_RR.name} : {len(r.variables[0].departments)} départements colorés")
     return 0
 
 

@@ -13,7 +13,12 @@ const HEAT_MAX: Record<string, number> = {
   "°C": 0.5,
   // P2a, nombres de jours : ±5 jours par décennie (choix d'affichage, ordre de grandeur des journées estivales).
   jours: 5,
+  // Pluie, carte départementale (P5 bis, fixé avant calcul le 30/10/2026) : ± 10 % par décennie.
+  "%": 10,
 };
+
+// Unités dont la hausse se lit en bleu (plus d'eau) et la baisse en brun (moins d'eau).
+const WET_UNITS = new Set(["%"]);
 
 export function heatMax(unit: string): number | null {
   return HEAT_MAX[unit] ?? null;
@@ -30,6 +35,11 @@ const COLD: [number, RGB][] = [
   [0, NEUTRAL],
   [0.5, [128, 170, 212]],
   [1, [35, 85, 150]],
+];
+const DRY: [number, RGB][] = [
+  [0, NEUTRAL],
+  [0.5, [205, 170, 110]],
+  [1, [130, 82, 30]],
 ];
 
 function interp(stops: [number, RGB][], k: number): RGB {
@@ -49,7 +59,8 @@ export function heatColor(slope: number, unit: string): { bg: string; fg: string
   const max = heatMax(unit);
   if (max === null) return { bg: "var(--hover)", fg: "var(--ink)" };
   const k = Math.min(1, Math.abs(slope) / max);
-  const [r, g, b] = interp(slope >= 0 ? WARM : COLD, k);
+  const wet = WET_UNITS.has(unit);
+  const [r, g, b] = interp(slope >= 0 ? (wet ? COLD : WARM) : wet ? DRY : COLD, k);
   return { bg: `rgb(${r} ${g} ${b})`, fg: k > 0.6 ? "#ffffff" : "#1b1e22" };
 }
 

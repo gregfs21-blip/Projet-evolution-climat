@@ -38,5 +38,22 @@ class TestCarte(unittest.TestCase):
         self.assertEqual(out[0].geometry["coordinates"][0][0], [0.123, 45.0])
 
 
+class TestRainMap(unittest.TestCase):
+    def test_winter_takes_previous_december(self):
+        from etl import carte as C
+        vals = {(2000, 12): 10.0, (2001, 1): 20.0, (2001, 2): 30.0, (2001, 12): 99.0}
+        hom = {k: True for k in vals}
+        self.assertEqual(C.season_total(vals, hom, 2001, (12, 1, 2)), 60.0)
+        hom[(2001, 1)] = False
+        self.assertIsNone(C.season_total(vals, hom, 2001, (12, 1, 2)))
+
+    def test_relative_trend_percent_of_1961_1990_mean(self):
+        from etl import carte as C
+        series = {y: 100.0 + (y - 1961) for y in range(1961, 2015)}     # +10 mm/déc., moyenne 1961-1990 = 114,5
+        slope, _lo, _hi, _p, sig = C.relative_trend(series)
+        self.assertAlmostEqual(slope, round(1000 / 114.5, 3), places=2)
+        self.assertTrue(sig)
+
+
 if __name__ == "__main__":
     unittest.main()

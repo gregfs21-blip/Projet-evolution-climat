@@ -84,8 +84,8 @@ export function getCoverage(): Coverage | undefined {
   return load("couverture.json", coverageSchema);
 }
 
-/** Carte départementale des tendances (P5 bis). Absente = rien n'est affiché. */
-export function getDepartmentMap(): DepartmentMap | undefined {
-  if (!existsSync(join(DATA_DIR, "carte-departements.json"))) return undefined;
-  return load("carte-departements.json", departmentMapSchema);
+/** Cartes départementales des tendances (P5 bis). Absente = rien n'est affiché. */
+export function getDepartmentMap(name = "carte-departements"): DepartmentMap | undefined {
+  if (!existsSync(join(DATA_DIR, `${name}.json`))) return undefined;
+  return load(`${name}.json`, departmentMapSchema);
 }
