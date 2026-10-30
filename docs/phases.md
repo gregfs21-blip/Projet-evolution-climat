@@ -10,7 +10,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P2 | Extrêmes et eau Gironde. **P2a** : extrêmes de température ; **P2b** : pluie, insolation, SPEI | P2a : critères E1-E10 fixés le 23/10/2026, références E4 fixées le même jour avant calcul ; P2b : critères F1-F11 validés le 26/10/2026 (R7 en attente de ClimatHD) | P2a close (écarts E4 littoral, E7, E8 acceptés) ; P2b close (F4, F6 acceptés) |
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | **close le 29/10/2026** (écart I4 accepté) |
-| P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | | à faire |
+| P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | | à faire |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | | à faire |
@@ -400,6 +400,92 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P5 — Critères (proposés et validés le 29/10/2026, avant tout calcul)
+
+> **Décisions de Grég du 29/10/2026, avant tout calcul** : D-M périmètre **A et C** (températures et pluie de la
+> France ; carte des tendances B écartée ; D hors P5) ; D-N réseau constant **1959-2021** ; D-O pondération **par
+> département** ; D-P R10 avec la fourchette publiée **[+0,2 ; +0,4] °C/déc.** ; **critères J1-J8 validés**, J5
+> calculé en contrôle interne (pentes par station jamais publiées, la carte étant écartée).
+>
+> Statut d'origine : proposition. Sonde : `docs/sonde-p5.md` (inventaire seulement, aucune valeur de
+> température lue). Déjà publiés pour la France hors P5 : CatNat (tous périls, sécheresse), marégraphe de Brest.
+
+### Constat de la sonde
+
+- **Les LSH ne commencent qu'en 1953-1959** pour presque toutes les séries : l'indicateur thermique national depuis
+  1900 de Météo-France (30 stations, séries anciennes) **ne peut pas être reproduit** avec ce produit.
+- **Températures** : 294 séries TN, 321 TX, 255 postes avec les deux ; homogénéisées jusqu'en 2022 ou 2023 pour la
+  plupart. Réseau constant TN et TX : 220 stations sur 1959-2021, 226 sur 1961-2022.
+- **Pluie** : 1 279 séries, homogénéisées jusqu'en 2014-2021 ; réseau constant 300 stations sur 1961-2020.
+- **Insolation** : 27 séries, toutes arrêtées en 2014.
+- Défaut de la sonde : les postes des départements 01 à 09 sont comptés sous un mauvais numéro (zéro initial absent) ;
+  la liste « départements sans série » est fausse pour eux, les comptages de stations sont justes.
+
+### Périmètre proposé
+
+- **A. Températures de la France** : composites TN, TM, TX à réseau constant, en **anomalies** par rapport à 1961-1990
+  (les stations de montagne ne pèsent pas sur le niveau) ; années dont les 12 mois sont homogénéisés pour toutes les
+  stations du réseau.
+- **B. Carte des tendances** : une tendance TM par station du réseau constant (indicateurs de station, échelle France).
+- **C. Pluie de la France** : composite du cumul annuel, réseau constant 1961-2020.
+- **D. Extension des P2-P4** (extrêmes quotidiens, Huglin, canicule) : demande le quotidien des 96 départements
+  (plusieurs Go) ; proposée **hors P5**, à traiter à part.
+
+### Références proposées
+
+| # | Énoncé | Source | Contrôle proposé |
+|---|---|---|---|
+| R10 | Température moyenne annuelle, séries homogénéisées de métropole, 1959-2021 : environ + 0,3 °C par décennie, entre + 0,2 et + 0,4 selon les séries | ONERC / Météo-France, indicateur « température de l'air en France métropolitaine » | Pente du composite TM sur 1959-2021 dans **[+0,2 ; +0,4] °C/déc.** (fourchette publiée) |
+| — | + 1,9 °C en 2015-2024 par rapport à 1961-1990 (indicateur thermique national) | ONERC / Météo-France | non contrôlable : LSH homogénéisées jusqu'en 2022 ; information |
+| — | Pluie annuelle nationale | aucune tendance publiée | confiance au plus « moyenne » |
+
+### Critères proposés
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| J1 | Exhaustivité | Tout le périmètre retenu ; exclusions justifiées |
+| J2 | Complétude | Année de station = 12 mois homogénéisés ; réseau constant sur toute la période du composite |
+| J3 | Brut ≠ homogénéisé | Aucune année non homogénéisée dans tendances, normales, références (C2) |
+| J4 | Validation externe | R10 pour le composite TM ; sinon confiance au plus « moyenne » |
+| J5 | Cohérence spatiale | Au moins 95 % des stations de la carte avec une pente TM positive ; toute pente négative expliquée |
+| J6 | Robustesse de la pondération | Pente du composite TM pondéré par département et pente de la moyenne simple des stations : écart ≤ 0,05 °C/déc. |
+| J7 | Plausibilité | TM annuel de station entre −10 et + 20 °C ; cumul de pluie entre 300 et 3 000 mm (bornes portées à 100 et 5 000 mm le 29/10/2026, après calcul) |
+| J8 | Technique | Tests, CI, contrat, pages |
+
+### Choix de mise en œuvre fixés AVANT le premier calcul (29/10/2026, `etl/indicators/france.py`)
+
+- **Réseau des températures** : postes dont TN et TX sont homogénéisés sur les 12 mois de chaque année 1959-2021 ; le
+  même réseau sert à TN, TM et TX ; TM = (TN + TX) / 2 au pas mensuel.
+- **Anomalie de station** : moyenne annuelle des 12 mois, moins sa moyenne 1961-1990.
+- **Département** : deux premiers chiffres du numéro de poste sur 8 chiffres (zéro initial rétabli ; Corse = « 20 »).
+  Moyenne des anomalies des stations du département, puis moyenne des départements.
+- **Années publiées** : celles où toutes les stations du réseau ont leurs 12 mois ; homogénéisées (tendance, normales,
+  R10) si toutes le sont. Série de 63 ans : tendance sur toute la période homogénéisée.
+- **Pluie** : postes dont RR est homogénéisé sur les 12 mois de chaque année 1961-2020 ; cumul annuel en mm, moyenne
+  par département puis moyenne des départements (pas d'anomalie : réseau constant).
+- **J5** : pente de Sen de l'anomalie TM de chaque station du réseau sur 1959-2021. **J6** : même composite TM sans
+  pondération (moyenne simple des stations), pente sur 1959-2021.
+
+### Décision de Grég APRÈS le premier calcul (29/10/2026)
+
+- **J7, pluie** : le plancher de 300 mm bloquait la publication (poste 13001009, Bouches-du-Rhône : 252 mm en 1967,
+  299 mm en 1989, années sèches crédibles). Le seuil sert à détecter une erreur d'unité ; **plancher abaissé à
+  100 mm** par Grég. Décision postérieure au calcul, tracée comme telle ; les températures avaient passé leurs bornes.
+- **J7, pluie (bis)** : le plafond de 3 000 mm bloquait ensuite (poste 48036001, Lozère : 3 273 mm en 1996, année
+  d'épisodes méditerranéens crédible). **Plafond relevé à 5 000 mm** par Grég, même motif, après calcul.
+- **Réseau de la pluie** : sur 1961-2020, 300 stations mais **31 départements seulement**, surtout au sud (la pluie
+  n'est pas homogénéisée jusqu'à la même année partout). Composite non représentatif de la France ; **réseau ramené à
+  1961-2014** par Grég, après calcul (tendance non significative dans les deux cas : la décision ne dépend pas du
+  résultat).
+
+### Décisions demandées à Grég
+
+- **D-M** : périmètre (A à C ; D hors P5).
+- **D-N** : réseau constant du composite : 1959-2021 (220 stations, période exacte de R10) ou 1961-2022.
+- **D-O** : pondération : moyenne des départements (chaque département pèse autant, proche d'une moyenne par surface)
+  ou moyenne simple des stations.
+- **D-P** : R10 avec sa fourchette publiée [+0,2 ; +0,4].
 
 ## P4 — Critères (proposés et validés le 28/10/2026, avant tout calcul)
 

@@ -26,7 +26,7 @@ l'analyse des écarts est dans `docs/validation-p1.md`. Critères et seuils : `d
 | C5 TN | ✅ conforme | médiane +0.343 ; 0 station(s) à plus de 0.1 de la médiane |
 | C5 TX | ✅ conforme | médiane +0.429 ; 0 station(s) à plus de 0.1 de la médiane |
 | C5 TM | ✅ conforme | médiane +0.384 ; 0 station(s) à plus de 0.1 de la médiane |
-| C6 | ✅ conforme | 20 rupture(s) détectée(s), 4 marquée(s) artefact possible, 0 encore significative(s) après retrait de la tendance |
+| C6 | ✅ conforme | 23 rupture(s) détectée(s), 7 marquée(s) artefact possible, 0 encore significative(s) après retrait de la tendance |
 | C7 | ✅ conforme | 0 série(s) dont la conclusion change avec la correction |
 | C8 | ✅ conforme | métadonnées Météo-France complètes |
 
@@ -76,6 +76,9 @@ l'analyse des écarts est dans `docs/validation-p1.md`. Critères et seuils : `d
 | tm-annuelle-bordeaux-merignac | 1988 | 0.0000 | 0.553 | **oui** | écart des moyennes +1,32 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,55) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
 | tm-annuelle-cazaux | 1988 | 0.0000 | 0.601 | **oui** | écart des moyennes +1,27 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,60) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
 | tm-annuelle-villenave-d-ornon | 1988 | 0.0000 | 0.569 | non | écart des moyennes +1,29 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,57) : la rupture traduit la tendance elle-même, pas un saut brusque |
+| tn-france | 1988 | 0.0000 | 0.946 | **oui** | écart des moyennes +1,04 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,95) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
+| tm-france | 1988 | 0.0000 | 0.777 | **oui** | écart des moyennes +1,20 °C avant/après 1988 ; après retrait de la tendance, plus aucune rupture significative (p = 0,78) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
+| tx-france | 1989 | 0.0000 | 0.915 | **oui** | écart des moyennes +1,37 °C avant/après 1989 ; après retrait de la tendance, plus aucune rupture significative (p = 0,91) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique |
 
 ### C7 — Significativité : Mann-Kendall classique vs Hamed-Rao (période homogénéisée)
 
@@ -101,3 +104,6 @@ l'analyse des écarts est dans `docs/validation-p1.md`. Critères et seuils : `d
 | tm-annuelle-bordeaux-merignac | +0.335 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tm-annuelle-cazaux | +0.318 | 0.00e+00 | 0.00e+00 | non | elevee |
 | tm-annuelle-villenave-d-ornon | +0.320 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tn-france | +0.290 | 0.00e+00 | 0.00e+00 | non | moyenne |
+| tm-france | +0.344 | 0.00e+00 | 0.00e+00 | non | elevee |
+| tx-france | +0.394 | 0.00e+00 | 0.00e+00 | non | moyenne |

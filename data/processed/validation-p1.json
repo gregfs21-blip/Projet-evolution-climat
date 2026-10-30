@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p1",
-  "generated_at": "2026-10-29T18:44:09Z",
+  "generated_at": "2026-10-29T21:55:24Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits (écarts acceptés compris).",
   "indicators": [
@@ -24,7 +24,10 @@
     "tm-annuelle-cap-ferret",
     "tm-annuelle-bordeaux-merignac",
     "tm-annuelle-cazaux",
-    "tm-annuelle-villenave-d-ornon"
+    "tm-annuelle-villenave-d-ornon",
+    "tn-france",
+    "tm-france",
+    "tx-france"
   ],
   "checks": [
     {
@@ -165,7 +168,7 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "20 rupture(s) détectée(s), 4 marquée(s) artefact possible, 0 encore significative(s) après retrait de la tendance"
+      "detail": "23 rupture(s) détectée(s), 7 marquée(s) artefact possible, 0 encore significative(s) après retrait de la tendance"
     },
     {
       "name": "C7",

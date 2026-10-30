@@ -1,0 +1,4503 @@
+{
+ "schema_version": "1.5",
+ "id": "tx-france",
+ "scale": "france",
+ "group": "Synthèse France — températures",
+ "variable": {
+  "id": "tx",
+  "code": "TX",
+  "label": "températures maximales",
+  "theme": "temperature",
+  "theme_label": "Températures annuelles",
+  "order": 2
+ },
+ "place": {
+  "id": "france",
+  "name": "France",
+  "kind": "composite"
+ },
+ "title": "Température maximale annuelle de la France (écart à 1961-1990)",
+ "unit": "°C",
+ "description": "Écart annuel de la températures maximales de la France métropolitaine à sa moyenne 1961-1990, d'après 220 séries homogénéisées de Météo-France.",
+ "frequency": "annual",
+ "is_anomaly": true,
+ "reference_period": {
+  "start": 1961,
+  "end": 1990
+ },
+ "series": {
+  "time": [
+   "1959",
+   "1960",
+   "1961",
+   "1962",
+   "1963",
+   "1964",
+   "1965",
+   "1966",
+   "1967",
+   "1968",
+   "1969",
+   "1970",
+   "1971",
+   "1972",
+   "1973",
+   "1974",
+   "1975",
+   "1976",
+   "1977",
+   "1978",
+   "1979",
+   "1980",
+   "1981",
+   "1982",
+   "1983",
+   "1984",
+   "1985",
+   "1986",
+   "1987",
+   "1988",
+   "1989",
+   "1990",
+   "1991",
+   "1992",
+   "1993",
+   "1994",
+   "1995",
+   "1996",
+   "1997",
+   "1998",
+   "1999",
+   "2000",
+   "2001",
+   "2002",
+   "2003",
+   "2004",
+   "2005",
+   "2006",
+   "2007",
+   "2008",
+   "2009",
+   "2010",
+   "2011",
+   "2012",
+   "2013",
+   "2014",
+   "2015",
+   "2016",
+   "2017",
+   "2018",
+   "2019",
+   "2020",
+   "2021"
+  ],
+  "value": [
+   1.2696,
+   -0.0452,
+   1.1484,
+   -0.6127,
+   -1.2441,
+   0.0428,
+   -0.6925,
+   0.1029,
+   0.2148,
+   -0.3527,
+   -0.2901,
+   -0.2288,
+   0.0471,
+   -0.5267,
+   -0.0717,
+   -0.111,
+   -0.1125,
+   0.6128,
+   -0.1547,
+   -0.5131,
+   -0.4689,
+   -0.8093,
+   -0.1133,
+   0.8078,
+   0.612,
+   -0.2076,
+   -0.2412,
+   -0.204,
+   -0.417,
+   0.5218,
+   1.7266,
+   1.5348,
+   0.2686,
+   0.5131,
+   0.1596,
+   1.314,
+   1.1156,
+   0.0007,
+   1.6974,
+   0.8414,
+   1.1031,
+   1.2597,
+   0.8506,
+   1.3557,
+   2.1715,
+   0.855,
+   0.9853,
+   1.5987,
+   1.2424,
+   0.8138,
+   1.4732,
+   0.0706,
+   2.2787,
+   1.1536,
+   0.4262,
+   2.0683,
+   2.0834,
+   1.4373,
+   1.8954,
+   2.3237,
+   2.2729,
+   2.7574,
+   1.3068
+  ],
+  "quality": [
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized",
+   "homogenized"
+  ]
+ },
+ "normals": [],
+ "trend": {
+  "label": "1959-2021",
+  "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
+  "period": {
+   "start": 1959,
+   "end": 2021
+  },
+  "slope_per_decade": 0.3944,
+  "slope_ci_low": 0.2989,
+  "slope_ci_high": 0.4898,
+  "fitted_start": -0.6105,
+  "fitted_end": 1.8345,
+  "p_value": 0.0,
+  "significant": true,
+  "alpha": 0.05,
+  "p_value_classical": 0.0
+ },
+ "alt_trends": [],
+ "headline": "trend",
+ "normals_comparison": null,
+ "reference_check": null,
+ "indicative": false,
+ "breakpoints": [
+  {
+   "time": "1989",
+   "method": "Pettitt (1979)",
+   "p_value": 0.0,
+   "possible_artifact": true,
+   "detrended_p_value": 0.914608,
+   "note": "écart des moyennes +1,37 °C avant/après 1989 ; après retrait de la tendance, plus aucune rupture significative (p = 0,91) : la rupture traduit la tendance elle-même, pas un saut brusque ; coïncide avec une rupture d'homogénéité corrigée par Météo-France : non interprétable comme climatique"
+  }
+ ],
+ "stations": [
+  {
+   "id": "10057001",
+   "name": "Bouy-Sur-Orvin",
+   "latitude": 48.44,
+   "longitude": 3.505,
+   "altitude": 102.0,
+   "series_id": "MTN210057001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1975-12",
+    "1985-12",
+    "1989-12",
+    "1993-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "10323001",
+   "name": "Romilly",
+   "latitude": 48.503,
+   "longitude": 3.75,
+   "altitude": 77.0,
+   "series_id": "MTN110323001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1984-06",
+    "1990-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "1089001",
+   "name": "Amberieu",
+   "latitude": 45.977,
+   "longitude": 5.329,
+   "altitude": 250.0,
+   "series_id": "MTN201089001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1986-12",
+    "1993-11",
+    "2018-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "11012001",
+   "name": "Argeliers",
+   "latitude": 43.308,
+   "longitude": 2.912,
+   "altitude": 31.0,
+   "series_id": "MTN211012001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.22,
+   "homogenization_breaks": [
+    "1956-12",
+    "1968-12",
+    "1980-12",
+    "2008-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "11069001",
+   "name": "Carcassonne",
+   "latitude": 43.215,
+   "longitude": 2.296,
+   "altitude": 128.0,
+   "series_id": "MTN311069001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1956-12",
+    "2009-03"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "11076001",
+   "name": "Castelnaudary",
+   "latitude": 43.305,
+   "longitude": 1.949,
+   "altitude": 160.0,
+   "series_id": "MTN211076001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1963-12",
+    "1977-12",
+    "1981-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "12253001",
+   "name": "Salles Curan",
+   "latitude": 44.152,
+   "longitude": 2.866,
+   "altitude": 959.0,
+   "series_id": "MTN212253001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1969-10",
+    "1980-06",
+    "1982-12",
+    "1992-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "13001009",
+   "name": "Aix En Provence",
+   "latitude": 43.53,
+   "longitude": 5.425,
+   "altitude": 173.0,
+   "series_id": "MTN313001009",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1960-12",
+    "1974-12",
+    "2001-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "13047001",
+   "name": "Istres",
+   "latitude": 43.523,
+   "longitude": 4.928,
+   "altitude": 23.0,
+   "series_id": "MTN313047001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1970-10",
+    "1998-12",
+    "2007-11",
+    "2022-04"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "13054001",
+   "name": "Marignane",
+   "latitude": 43.438,
+   "longitude": 5.216,
+   "altitude": 9.0,
+   "series_id": "MTN313054001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1960-11",
+    "1982-12",
+    "1988-12",
+    "2010-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "13103001",
+   "name": "Salon De Provence",
+   "latitude": 43.613,
+   "longitude": 5.108,
+   "altitude": 58.0,
+   "series_id": "MTN213103001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1970-03",
+    "1980-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "14137001",
+   "name": "Caen-Carpiquet",
+   "latitude": 49.18,
+   "longitude": -0.456,
+   "altitude": 67.0,
+   "series_id": "MTN314137001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1972-06",
+    "1977-12",
+    "1986-09",
+    "2004-02"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "14578001",
+   "name": "St Gatien Des B",
+   "latitude": 49.365,
+   "longitude": 0.167,
+   "altitude": 139.0,
+   "series_id": "MTN214578001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1961-07",
+    "1972-07",
+    "1977-12",
+    "1990-12",
+    "1992-12",
+    "2000-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "16089001",
+   "name": "Cognac",
+   "latitude": 45.665,
+   "longitude": -0.316,
+   "altitude": 30.0,
+   "series_id": "MTN316089001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1967-12",
+    "1989-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "16113001",
+   "name": "La Couronne",
+   "latitude": 45.628,
+   "longitude": 0.1,
+   "altitude": 58.0,
+   "series_id": "MTN316113001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1958-12",
+    "1960-12",
+    "1965-12",
+    "2001-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "16279001",
+   "name": "Rioux Martin",
+   "latitude": 45.262,
+   "longitude": 0.003,
+   "altitude": 81.0,
+   "series_id": "MTN116279001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1968-12",
+    "1971-12",
+    "1975-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "17243002",
+   "name": "Montlieu_Sapc",
+   "latitude": 45.22,
+   "longitude": -0.292,
+   "altitude": 89.0,
+   "series_id": "MTN117243002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1961-01",
+    "1970-12",
+    "1998-12",
+    "2015-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "17300009",
+   "name": "La Rochelle-Ile De Re",
+   "latitude": 46.178,
+   "longitude": -1.193,
+   "altitude": 20.0,
+   "series_id": "MTN017300009",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1954-02",
+    "1999-12",
+    "2009-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "17323001",
+   "name": "Chassiron",
+   "latitude": 46.047,
+   "longitude": -1.412,
+   "altitude": 11.0,
+   "series_id": "MTN317323001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1973-12",
+    "1983-12",
+    "2006-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "17339002",
+   "name": "St Germain De Lusignan",
+   "latitude": 45.458,
+   "longitude": -0.41,
+   "altitude": 71.0,
+   "series_id": "MTN117339002",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1983-12",
+    "1989-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "17415003",
+   "name": "Saintes",
+   "latitude": 45.761,
+   "longitude": -0.652,
+   "altitude": 38.0,
+   "series_id": "MTN217415003",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1963-12",
+    "1969-12",
+    "2004-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "18033001",
+   "name": "Bourges",
+   "latitude": 47.059,
+   "longitude": 2.36,
+   "altitude": 161.0,
+   "series_id": "MTN418033001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1961-12",
+    "1967-05",
+    "2014-12",
+    "2017-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "18092001",
+   "name": "Avord",
+   "latitude": 47.052,
+   "longitude": 2.642,
+   "altitude": 175.0,
+   "series_id": "MTN218092001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1996-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "18223003",
+   "name": "St-Martin-D'A.",
+   "latitude": 47.201,
+   "longitude": 2.417,
+   "altitude": 172.0,
+   "series_id": "MTN118223003",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.23,
+   "homogenization_breaks": [
+    "1965-12",
+    "1991-05",
+    "2009-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "19275001",
+   "name": "Ussel-Lamartine",
+   "latitude": 45.559,
+   "longitude": 2.321,
+   "altitude": 654.0,
+   "series_id": "MTN219275001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1981-12",
+    "1988-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "20004002",
+   "name": "Ajaccio",
+   "latitude": 41.918,
+   "longitude": 8.793,
+   "altitude": 5.0,
+   "series_id": "MTN220004002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1964-11",
+    "1982-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "20041001",
+   "name": "Cap Pertusato",
+   "latitude": 41.375,
+   "longitude": 9.178,
+   "altitude": 107.0,
+   "series_id": "MTN220041001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1989-12",
+    "1994-12",
+    "1999-12",
+    "2002-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "21154001",
+   "name": "Chatillon/Seine",
+   "latitude": 47.849,
+   "longitude": 4.581,
+   "altitude": 262.0,
+   "series_id": "MTN421154001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1967-08",
+    "1973-12",
+    "1987-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "21473001",
+   "name": "Dijon-Longvic",
+   "latitude": 47.268,
+   "longitude": 5.088,
+   "altitude": 219.0,
+   "series_id": "MTN321473001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1971-12",
+    "1982-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "21590001",
+   "name": "Savigny Les Bea",
+   "latitude": 47.056,
+   "longitude": 4.837,
+   "altitude": 246.0,
+   "series_id": "MTN121590001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1961-12",
+    "1982-12",
+    "2011-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "22016001",
+   "name": "Ile-De-Brehat",
+   "latitude": 48.855,
+   "longitude": -3.005,
+   "altitude": 25.0,
+   "series_id": "MTN222016001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1952-12",
+    "1956-12",
+    "1964-12",
+    "1970-01"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "22168001",
+   "name": "Ploumanac'H",
+   "latitude": 48.826,
+   "longitude": -3.473,
+   "altitude": 55.0,
+   "series_id": "MTN222168001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1989-12",
+    "1997-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "22266001",
+   "name": "Rostrenen",
+   "latitude": 48.227,
+   "longitude": -3.295,
+   "altitude": 236.0,
+   "series_id": "MTN122266001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1960-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "22282001",
+   "name": "Saint-Cast-Le-G",
+   "latitude": 48.645,
+   "longitude": -2.247,
+   "altitude": 35.0,
+   "series_id": "MTN222282001",
+   "homogenized_period": {
+    "start": 1952,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1974-12",
+    "1978-12",
+    "1986-12",
+    "2003-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "23067001",
+   "name": "La Courtine",
+   "latitude": 45.703,
+   "longitude": 2.264,
+   "altitude": 772.0,
+   "series_id": "MTN223067001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1952-12",
+    "1978-12",
+    "1985-03",
+    "2010-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "2320001",
+   "name": "St Quentin",
+   "latitude": 49.818,
+   "longitude": 3.206,
+   "altitude": 98.0,
+   "series_id": "MTN202320001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1967-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "24037005",
+   "name": "Bergerac",
+   "latitude": 44.823,
+   "longitude": 0.524,
+   "altitude": 49.0,
+   "series_id": "MTN124037005",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1960-06",
+    "1969-12",
+    "1971-12",
+    "1981-03",
+    "1997-12",
+    "2010-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "25021001",
+   "name": "Arc-Et-Senans",
+   "latitude": 47.032,
+   "longitude": 5.782,
+   "altitude": 235.0,
+   "series_id": "MTN225021001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1962-12",
+    "1993-12",
+    "2016-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "25056001",
+   "name": "Besancon",
+   "latitude": 47.249,
+   "longitude": 5.989,
+   "altitude": 307.0,
+   "series_id": "MTN325056001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "25462001",
+   "name": "Pontarlier",
+   "latitude": 46.927,
+   "longitude": 6.32,
+   "altitude": 808.0,
+   "series_id": "MTN125462001",
+   "homogenized_period": {
+    "start": 1952,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.25,
+   "homogenization_breaks": [
+    "1962-07",
+    "1979-09",
+    "1981-11",
+    "1984-04",
+    "2005-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "25512001",
+   "name": "Le Russey",
+   "latitude": 47.162,
+   "longitude": 6.738,
+   "altitude": 891.0,
+   "series_id": "MTN025512001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.26,
+   "homogenization_breaks": [
+    "1994-10",
+    "2008-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "26168001",
+   "name": "Lus L Croix Hte",
+   "latitude": 44.673,
+   "longitude": 5.711,
+   "altitude": 1059.0,
+   "series_id": "MTN226168001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1957-12",
+    "1980-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "26198001",
+   "name": "Montelimar",
+   "latitude": 44.581,
+   "longitude": 4.733,
+   "altitude": 73.0,
+   "series_id": "MTN326198001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1985-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "26307001",
+   "name": "St-Jean-En-Roya",
+   "latitude": 45.009,
+   "longitude": 5.293,
+   "altitude": 308.0,
+   "series_id": "MTN226307001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1962-12",
+    "1967-12",
+    "1978-08",
+    "1998-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "26330001",
+   "name": "St-Sorlin-En-Va",
+   "latitude": 45.271,
+   "longitude": 4.93,
+   "altitude": 237.0,
+   "series_id": "MTN226330001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1963-12",
+    "1990-12",
+    "2019-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "27306001",
+   "name": "Guichainville",
+   "latitude": 48.977,
+   "longitude": 1.182,
+   "altitude": 147.0,
+   "series_id": "MTN227306001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1962-12",
+    "1988-12",
+    "1998-12",
+    "2006-12",
+    "2020-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "28070001",
+   "name": "Chartres",
+   "latitude": 48.461,
+   "longitude": 1.501,
+   "altitude": 155.0,
+   "series_id": "MTN328070001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "2011-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "28195001",
+   "name": "Houx",
+   "latitude": 48.566,
+   "longitude": 1.621,
+   "altitude": 107.0,
+   "series_id": "MTN228195001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1968-06",
+    "2002-12",
+    "2005-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "28198001",
+   "name": "Chateaudun",
+   "latitude": 48.061,
+   "longitude": 1.376,
+   "altitude": 126.0,
+   "series_id": "MTN228198001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1976-12",
+    "1979-12",
+    "2009-02",
+    "2020-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "28322001",
+   "name": "Rueil",
+   "latitude": 48.712,
+   "longitude": 0.959,
+   "altitude": 157.0,
+   "series_id": "MTN028322001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.22,
+   "homogenization_breaks": [
+    "1962-09",
+    "1969-12",
+    "1975-04",
+    "1988-12",
+    "2006-12",
+    "2016-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "28363001",
+   "name": "Sainville",
+   "latitude": 48.404,
+   "longitude": 1.903,
+   "altitude": 149.0,
+   "series_id": "MTN128363001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1966-12",
+    "1980-02",
+    "1984-12",
+    "1990-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "29022001",
+   "name": "Camaret",
+   "latitude": 48.274,
+   "longitude": -4.606,
+   "altitude": 40.0,
+   "series_id": "MTN129022001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1974-12",
+    "1998-12",
+    "2007-12",
+    "2017-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "29075001",
+   "name": "Brest-Guipavas",
+   "latitude": 48.454,
+   "longitude": -4.391,
+   "altitude": 92.0,
+   "series_id": "MTN229075001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1976-10",
+    "1998-07",
+    "2016-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "29082001",
+   "name": "Batz",
+   "latitude": 48.746,
+   "longitude": -4.012,
+   "altitude": 32.0,
+   "series_id": "MTN329082001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1982-12",
+    "1986-12",
+    "1989-12",
+    "2002-12",
+    "2012-12",
+    "2018-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "29120001",
+   "name": "Lanveoc",
+   "latitude": 48.279,
+   "longitude": -4.439,
+   "altitude": 81.0,
+   "series_id": "MTN229120001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1965-12",
+    "1969-12",
+    "2005-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "29155005",
+   "name": "Ouessant-Stiff",
+   "latitude": 48.473,
+   "longitude": -5.057,
+   "altitude": 64.0,
+   "series_id": "MTN229155005",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1980-12",
+    "1995-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "29168001",
+   "name": "Pte Du Raz",
+   "latitude": 48.039,
+   "longitude": -4.732,
+   "altitude": 67.0,
+   "series_id": "MTN129168001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1956-12",
+    "1979-12",
+    "1984-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "30189001",
+   "name": "Nimes-Courbessac",
+   "latitude": 43.857,
+   "longitude": 4.406,
+   "altitude": 59.0,
+   "series_id": "MTN330189001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1995-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "30202002",
+   "name": "Pont St Esprit",
+   "latitude": 44.248,
+   "longitude": 4.627,
+   "altitude": 79.0,
+   "series_id": "MTN030202002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1965-12",
+    "1968-04",
+    "1984-12",
+    "1987-12",
+    "2019-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "30269006",
+   "name": "St Jean Du Gard",
+   "latitude": 44.111,
+   "longitude": 3.872,
+   "altitude": 196.0,
+   "series_id": "MTN230269006",
+   "homogenized_period": {
+    "start": 1957,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1959-12",
+    "1983-12",
+    "1995-02",
+    "2009-04"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "30305001",
+   "name": "Salindres",
+   "latitude": 44.175,
+   "longitude": 4.153,
+   "altitude": 191.0,
+   "series_id": "MTN230305001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1960-12",
+    "1969-12",
+    "1978-04",
+    "1988-12",
+    "1995-12",
+    "2021-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "30339001",
+   "name": "Mont Aigoual",
+   "latitude": 44.121,
+   "longitude": 3.582,
+   "altitude": 1567.0,
+   "series_id": "MTN230339001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.24,
+   "homogenization_breaks": [
+    "2010-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "3059001",
+   "name": "Chareil-Cintrat_Sapc",
+   "latitude": 46.276,
+   "longitude": 3.226,
+   "altitude": 286.0,
+   "series_id": "MTN203059001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1983-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "3060001",
+   "name": "Vichy-Charmeil",
+   "latitude": 46.167,
+   "longitude": 3.399,
+   "altitude": 249.0,
+   "series_id": "MTN303060001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1956-06",
+    "1985-07",
+    "1988-12",
+    "1991-12",
+    "1994-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "31069001",
+   "name": "Toulouse-Blagnac",
+   "latitude": 43.621,
+   "longitude": 1.379,
+   "altitude": 151.0,
+   "series_id": "MTN331069001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1962-07",
+    "1968-09",
+    "1972-04",
+    "1991-10",
+    "2001-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "31157001",
+   "name": "Toulouse-Francazal",
+   "latitude": 43.54,
+   "longitude": 1.373,
+   "altitude": 164.0,
+   "series_id": "MTN231157001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.11,
+   "homogenization_breaks": [
+    "1987-12",
+    "2012-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "31403002",
+   "name": "Ondes",
+   "latitude": 43.778,
+   "longitude": 1.321,
+   "altitude": 109.0,
+   "series_id": "MTN231403002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1966-09",
+    "1984-04",
+    "1988-12",
+    "2005-01"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "3180001",
+   "name": "Montbeugny",
+   "latitude": 46.536,
+   "longitude": 3.423,
+   "altitude": 275.0,
+   "series_id": "MTN003180001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1971-05",
+    "2002-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "32013005",
+   "name": "Auch",
+   "latitude": 43.689,
+   "longitude": 0.601,
+   "altitude": 122.0,
+   "series_id": "MTN332013005",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1961-12",
+    "1971-09",
+    "1980-12",
+    "1984-12",
+    "1988-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "3204001",
+   "name": "Paray-Sous-Briailles",
+   "latitude": 46.284,
+   "longitude": 3.338,
+   "altitude": 250.0,
+   "series_id": "MTN203204001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1966-09",
+    "1973-12",
+    "1995-12",
+    "1997-12",
+    "2002-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "33236002",
+   "name": "Cap-Ferret",
+   "latitude": 44.631,
+   "longitude": -1.252,
+   "altitude": 8.0,
+   "series_id": "MTN233236002",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1976-06",
+    "1994-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "33281001",
+   "name": "Bordeaux-Merignac",
+   "latitude": 44.831,
+   "longitude": -0.691,
+   "altitude": 47.0,
+   "series_id": "MTN233281001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1966-12",
+    "1974-12",
+    "1984-10",
+    "1987-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "33529001",
+   "name": "Cazaux",
+   "latitude": 44.535,
+   "longitude": -1.132,
+   "altitude": 23.0,
+   "series_id": "MTN233529001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1955-12",
+    "1963-04",
+    "1998-12",
+    "2008-01"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "33550001",
+   "name": "Villenave D'Ornon-Inrae",
+   "latitude": 44.79,
+   "longitude": -0.577,
+   "altitude": 25.0,
+   "series_id": "MTN233550001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1967-12",
+    "1991-12",
+    "2007-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "34154001",
+   "name": "Montpellier-Aeroport",
+   "latitude": 43.576,
+   "longitude": 3.965,
+   "altitude": 1.0,
+   "series_id": "MTN334154001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1952-12",
+    "1962-12",
+    "1974-12",
+    "1989-12",
+    "2018-01"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "34301002",
+   "name": "Sete",
+   "latitude": 43.397,
+   "longitude": 3.692,
+   "altitude": 75.0,
+   "series_id": "MTN334301002",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1970-06",
+    "1980-12",
+    "1992-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "35228001",
+   "name": "Dinard",
+   "latitude": 48.585,
+   "longitude": -2.076,
+   "altitude": 65.0,
+   "series_id": "MTN235228001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1953-12",
+    "1959-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "35281001",
+   "name": "Rennes-St Jacques",
+   "latitude": 48.069,
+   "longitude": -1.734,
+   "altitude": 36.0,
+   "series_id": "MTN335281001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1967-12",
+    "1989-12",
+    "1998-12",
+    "2003-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "36063001",
+   "name": "Chateauroux  Deols",
+   "latitude": 46.87,
+   "longitude": 1.741,
+   "altitude": 158.0,
+   "series_id": "MTN236063001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1960-12",
+    "1968-12",
+    "1986-12",
+    "1990-12",
+    "2009-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "37003001",
+   "name": "Amboise",
+   "latitude": 47.394,
+   "longitude": 0.977,
+   "altitude": 119.0,
+   "series_id": "MTN037003001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1962-12",
+    "1983-08",
+    "2009-12",
+    "2013-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "37179001",
+   "name": "Tours",
+   "latitude": 47.445,
+   "longitude": 0.727,
+   "altitude": 108.0,
+   "series_id": "MTN237179001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1959-10",
+    "1978-12",
+    "1981-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "38242001",
+   "name": "Monestier",
+   "latitude": 44.922,
+   "longitude": 5.638,
+   "altitude": 806.0,
+   "series_id": "MTN238242001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1964-12",
+    "2004-12",
+    "2013-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "38299001",
+   "name": "Pellafol-Chaneaux",
+   "latitude": 44.784,
+   "longitude": 5.906,
+   "altitude": 947.0,
+   "series_id": "MTN238299001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1963-12",
+    "1973-12",
+    "1989-12",
+    "2008-04",
+    "2018-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "38349001",
+   "name": "Sablons",
+   "latitude": 45.33,
+   "longitude": 4.769,
+   "altitude": 136.0,
+   "series_id": "MTN038349001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1986-12",
+    "1994-04",
+    "2018-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "38384001",
+   "name": "Grenoble-St Geoirs",
+   "latitude": 45.364,
+   "longitude": 5.313,
+   "altitude": 384.0,
+   "series_id": "MTN038384001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1963-12",
+    "1982-12",
+    "2001-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "38442001",
+   "name": "Grande-Chartreuse",
+   "latitude": 45.363,
+   "longitude": 5.792,
+   "altitude": 945.0,
+   "series_id": "MTN238442001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1995-12",
+    "2012-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "38548001",
+   "name": "Villard-De-Lans",
+   "latitude": 45.079,
+   "longitude": 5.561,
+   "altitude": 1027.0,
+   "series_id": "MTN238548001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1980-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "40088001",
+   "name": "Dax",
+   "latitude": 43.69,
+   "longitude": -1.07,
+   "altitude": 31.0,
+   "series_id": "MTN240088001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1977-07",
+    "1984-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "40192001",
+   "name": "Mont-De-Marsan",
+   "latitude": 43.91,
+   "longitude": -0.5,
+   "altitude": 59.0,
+   "series_id": "MTN240192001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "2002-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "40272002",
+   "name": "St M Hinx Stna-Inrae",
+   "latitude": 43.571,
+   "longitude": -1.299,
+   "altitude": 37.0,
+   "series_id": "MTN140272002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1962-12",
+    "1964-12",
+    "1966-12",
+    "2008-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "40304001",
+   "name": "Soorts-Hossegor",
+   "latitude": 43.67,
+   "longitude": -1.426,
+   "altitude": 10.0,
+   "series_id": "MTN240304001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1978-12",
+    "1995-12",
+    "1999-12",
+    "2013-11",
+    "2019-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "4049001",
+   "name": "St Auban",
+   "latitude": 44.062,
+   "longitude": 5.99,
+   "altitude": 458.0,
+   "series_id": "MTN204049001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1976-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "41097001",
+   "name": "Romorantin",
+   "latitude": 47.32,
+   "longitude": 1.688,
+   "altitude": 83.0,
+   "series_id": "MTN241097001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1971-03",
+    "1988-12",
+    "1990-12",
+    "2001-08",
+    "2014-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "42094003",
+   "name": "Feurs",
+   "latitude": 45.739,
+   "longitude": 4.234,
+   "altitude": 347.0,
+   "series_id": "MTN042094003",
+   "homogenized_period": {
+    "start": 1954,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1962-12",
+    "1992-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "43046001",
+   "name": "Le Puy-Chadrac",
+   "latitude": 45.055,
+   "longitude": 3.895,
+   "altitude": 714.0,
+   "series_id": "MTN343046001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1976-12",
+    "1981-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "43234005",
+   "name": "Saugues-Sa",
+   "latitude": 44.966,
+   "longitude": 3.54,
+   "altitude": 945.0,
+   "series_id": "MTN043234005",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.22,
+   "homogenization_breaks": [
+    "1976-04"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "44020001",
+   "name": "Nantes-Bouguenais",
+   "latitude": 47.15,
+   "longitude": -1.609,
+   "altitude": 26.0,
+   "series_id": "MTN344020001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1958-12",
+    "1980-12",
+    "1991-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "44110002",
+   "name": "Nort-Sur-Erdre",
+   "latitude": 47.425,
+   "longitude": -1.514,
+   "altitude": 13.0,
+   "series_id": "MTN144110002",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1963-12",
+    "1970-04",
+    "1989-11",
+    "1995-12",
+    "2004-04"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "45055001",
+   "name": "Orleans",
+   "latitude": 47.991,
+   "longitude": 1.778,
+   "altitude": 123.0,
+   "series_id": "MTN245055001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1954-12",
+    "1968-03",
+    "1979-12",
+    "1989-12",
+    "2000-10",
+    "2009-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "45270002",
+   "name": "St-Benoit/Loire",
+   "latitude": 47.808,
+   "longitude": 2.306,
+   "altitude": 112.0,
+   "series_id": "MTN045270002",
+   "homogenized_period": {
+    "start": 1958,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1970-10",
+    "1973-12",
+    "1991-12",
+    "1999-12",
+    "2005-04",
+    "2009-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "46127001",
+   "name": "Gourdon",
+   "latitude": 44.745,
+   "longitude": 1.397,
+   "altitude": 260.0,
+   "series_id": "MTN246127001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1972-01",
+    "1975-12",
+    "1995-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "47091001",
+   "name": "Agen-La Garenne",
+   "latitude": 44.172,
+   "longitude": 0.595,
+   "altitude": 58.0,
+   "series_id": "MTN247091001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1961-12",
+    "1971-12",
+    "1984-02",
+    "1999-09",
+    "2005-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "49020001",
+   "name": "Beaucouze",
+   "latitude": 47.479,
+   "longitude": -0.614,
+   "altitude": 50.0,
+   "series_id": "MTN249020001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.1,
+   "homogenization_breaks": [
+    "1958-12",
+    "1977-12",
+    "1987-12",
+    "1998-12",
+    "2009-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "49027001",
+   "name": "Begrolles",
+   "latitude": 47.152,
+   "longitude": -0.938,
+   "altitude": 100.0,
+   "series_id": "MTN149027001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1960-12",
+    "1983-12",
+    "1985-07",
+    "2008-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "49281001",
+   "name": "St Georges Gard",
+   "latitude": 47.151,
+   "longitude": -0.74,
+   "altitude": 203.0,
+   "series_id": "MTN249281001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1955-12",
+    "2008-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "49328001",
+   "name": "Saumur",
+   "latitude": 47.252,
+   "longitude": -0.074,
+   "altitude": 69.0,
+   "series_id": "MTN249328001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1958-08",
+    "1963-12",
+    "2004-12",
+    "2019-06"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "50020001",
+   "name": "Pte De La Hague",
+   "latitude": 49.725,
+   "longitude": -1.94,
+   "altitude": 6.0,
+   "series_id": "MTN450020001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1967-11",
+    "1970-12",
+    "1975-12",
+    "1995-01"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "5046001",
+   "name": "Embrun",
+   "latitude": 44.571,
+   "longitude": 6.509,
+   "altitude": 873.0,
+   "series_id": "MTN205046001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.24,
+   "homogenization_breaks": [
+    "1968-03"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "5098001",
+   "name": "Les Orres",
+   "latitude": 44.509,
+   "longitude": 6.559,
+   "altitude": 1457.0,
+   "series_id": "MTN205098001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.24,
+   "homogenization_breaks": [
+    "1975-12",
+    "1996-12",
+    "2005-12",
+    "2013-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "51153001",
+   "name": "Chouilly",
+   "latitude": 49.018,
+   "longitude": 3.982,
+   "altitude": 172.0,
+   "series_id": "MTN051153001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1969-12",
+    "1976-12",
+    "1991-12",
+    "1997-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "51449002",
+   "name": "Reims-Prunay",
+   "latitude": 49.21,
+   "longitude": 4.155,
+   "altitude": 95.0,
+   "series_id": "MTN051449002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1972-12",
+    "1981-12",
+    "1988-03",
+    "2012-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "5157001",
+   "name": "St Veran",
+   "latitude": 44.7,
+   "longitude": 6.869,
+   "altitude": 2035.0,
+   "series_id": "MTN205157001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.26,
+   "homogenization_breaks": [
+    "1962-11",
+    "1981-12",
+    "1995-12",
+    "2006-12",
+    "2014-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "5183001",
+   "name": "Villar St Pancrace",
+   "latitude": 44.88,
+   "longitude": 6.64,
+   "altitude": 1310.0,
+   "series_id": "MTN205183001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.22,
+   "homogenization_breaks": [
+    "1961-12",
+    "1965-12",
+    "2003-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "52145001",
+   "name": "Coublanc",
+   "latitude": 47.692,
+   "longitude": 5.46,
+   "altitude": 258.0,
+   "series_id": "MTN252145001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1974-12",
+    "1984-08",
+    "1987-12",
+    "1994-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "52197003",
+   "name": "Fayl-Billot_Sapc",
+   "latitude": 47.784,
+   "longitude": 5.615,
+   "altitude": 347.0,
+   "series_id": "MTN252197003",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1968-04",
+    "1981-09",
+    "1987-12",
+    "1992-12",
+    "1999-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "52269001",
+   "name": "Langres",
+   "latitude": 47.844,
+   "longitude": 5.338,
+   "altitude": 466.0,
+   "series_id": "MTN352269001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1990-12",
+    "1996-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "52448001",
+   "name": "St-Dizier",
+   "latitude": 48.631,
+   "longitude": 4.904,
+   "altitude": 139.0,
+   "series_id": "MTN252448001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1986-12",
+    "1989-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "52469001",
+   "name": "Chaumont-Semoutiers",
+   "latitude": 48.092,
+   "longitude": 5.046,
+   "altitude": 294.0,
+   "series_id": "MTN152469001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1962-12",
+    "1969-12",
+    "2007-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "53097001",
+   "name": "Evron",
+   "latitude": 48.168,
+   "longitude": -0.388,
+   "altitude": 107.0,
+   "series_id": "MTN253097001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1979-12",
+    "2004-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "53147001",
+   "name": "Mayenne",
+   "latitude": 48.311,
+   "longitude": -0.64,
+   "altitude": 138.0,
+   "series_id": "MTN153147001",
+   "homogenized_period": {
+    "start": 1958,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1979-12",
+    "1991-12",
+    "2019-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "53185001",
+   "name": "Pre-En-Pail_Sapc",
+   "latitude": 48.452,
+   "longitude": -0.183,
+   "altitude": 277.0,
+   "series_id": "MTN253185001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1959-02",
+    "1991-12",
+    "2005-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "54040001",
+   "name": "Badonviller",
+   "latitude": 48.498,
+   "longitude": 6.896,
+   "altitude": 336.0,
+   "series_id": "MTN254040001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1960-12",
+    "1971-03",
+    "1992-12",
+    "2018-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "54405001",
+   "name": "Nancy-Ochey",
+   "latitude": 48.581,
+   "longitude": 5.96,
+   "altitude": 336.0,
+   "series_id": "MTN254405001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1961-12",
+    "1976-12",
+    "1984-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "54526001",
+   "name": "Nancy-Essey",
+   "latitude": 48.688,
+   "longitude": 6.222,
+   "altitude": 212.0,
+   "series_id": "MTN354526001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1991-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "56009001",
+   "name": "Belle Ile-Le Talut",
+   "latitude": 47.294,
+   "longitude": -3.218,
+   "altitude": 34.0,
+   "series_id": "MTN256009001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1968-05",
+    "1986-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "56069001",
+   "name": "Ile De Groix",
+   "latitude": 47.652,
+   "longitude": -3.502,
+   "altitude": 41.0,
+   "series_id": "MTN356069001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1973-12",
+    "1978-12",
+    "1980-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "56165003",
+   "name": "Ploermel",
+   "latitude": 47.951,
+   "longitude": -2.398,
+   "altitude": 65.0,
+   "series_id": "MTN156165003",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1960-12",
+    "1964-07",
+    "1971-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "56185001",
+   "name": "Lorient-Lann Bihoue",
+   "latitude": 47.763,
+   "longitude": -3.436,
+   "altitude": 45.0,
+   "series_id": "MTN256185001",
+   "homogenized_period": {
+    "start": 1952,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1959-07",
+    "1970-04",
+    "1978-12",
+    "2008-02"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "57039001",
+   "name": "Metz-Frescaty",
+   "latitude": 49.07,
+   "longitude": 6.125,
+   "altitude": 192.0,
+   "series_id": "MTN357039001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "2010-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "57168001",
+   "name": "Phalsbourg_Sapc",
+   "latitude": 48.767,
+   "longitude": 7.306,
+   "altitude": 377.0,
+   "series_id": "MTN357168001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1961-12",
+    "1986-12",
+    "2015-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "58160001",
+   "name": "Nevers-Marzy",
+   "latitude": 46.998,
+   "longitude": 3.113,
+   "altitude": 175.0,
+   "series_id": "MTN358160001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1960-12",
+    "1969-12",
+    "1987-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "59183001",
+   "name": "Dunkerque",
+   "latitude": 51.056,
+   "longitude": 2.34,
+   "altitude": 11.0,
+   "series_id": "MTN459183001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1963-12",
+    "1968-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "59343001",
+   "name": "Lille-Lesquin",
+   "latitude": 50.57,
+   "longitude": 3.098,
+   "altitude": 47.0,
+   "series_id": "MTN459343001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1963-06",
+    "1969-12",
+    "1984-12",
+    "2008-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "60107001",
+   "name": "Breuil-Le-Vert",
+   "latitude": 49.365,
+   "longitude": 2.433,
+   "altitude": 57.0,
+   "series_id": "MTN060107001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1978-12",
+    "2003-12",
+    "2017-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "6029001",
+   "name": "Cannes",
+   "latitude": 43.557,
+   "longitude": 6.951,
+   "altitude": 2.0,
+   "series_id": "MTN206029001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1975-12",
+    "1978-12",
+    "1992-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "60639001",
+   "name": "Beauvais-Tille",
+   "latitude": 49.447,
+   "longitude": 2.127,
+   "altitude": 89.0,
+   "series_id": "MTN460639001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1962-10",
+    "1977-12",
+    "2004-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "6088001",
+   "name": "Nice",
+   "latitude": 43.649,
+   "longitude": 7.209,
+   "altitude": 2.0,
+   "series_id": "MTN206088001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1972-12",
+    "1989-12",
+    "2006-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "61001001",
+   "name": "Alencon",
+   "latitude": 48.446,
+   "longitude": 0.11,
+   "altitude": 143.0,
+   "series_id": "MTN261001001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1961-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "62160001",
+   "name": "Boulogne-Sem",
+   "latitude": 50.733,
+   "longitude": 1.6,
+   "altitude": 73.0,
+   "series_id": "MTN462160001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1961-12",
+    "1966-12",
+    "1982-12",
+    "1988-12",
+    "1990-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "62298001",
+   "name": "Cambrai-Epinoy",
+   "latitude": 50.226,
+   "longitude": 3.164,
+   "altitude": 76.0,
+   "series_id": "MTN262298001",
+   "homogenized_period": {
+    "start": 1954,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "2016-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "62826001",
+   "name": "Le-Touquet",
+   "latitude": 50.515,
+   "longitude": 1.623,
+   "altitude": 5.0,
+   "series_id": "MTN262826001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1970-03"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "63003004",
+   "name": "Ambert",
+   "latitude": 45.517,
+   "longitude": 3.743,
+   "altitude": 555.0,
+   "series_id": "MTN063003004",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.25,
+   "homogenization_breaks": [
+    "1957-12",
+    "1975-01",
+    "1988-12",
+    "1990-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "63113001",
+   "name": "Clermont-Fd",
+   "latitude": 45.787,
+   "longitude": 3.149,
+   "altitude": 331.0,
+   "series_id": "MTN363113001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1954-12",
+    "1973-12",
+    "1989-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "63236002",
+   "name": "Le Mont-Dore Bg",
+   "latitude": 45.575,
+   "longitude": 2.807,
+   "altitude": 1050.0,
+   "series_id": "MTN263236002",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.26,
+   "homogenization_breaks": [
+    "1968-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "63426001",
+   "name": "Tauves",
+   "latitude": 45.545,
+   "longitude": 2.596,
+   "altitude": 851.0,
+   "series_id": "MTN163426001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1969-12",
+    "1978-01",
+    "2000-06"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "64024001",
+   "name": "Biarritz-Pays-Basque",
+   "latitude": 43.469,
+   "longitude": -1.534,
+   "altitude": 71.0,
+   "series_id": "MTN364024001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1960-01",
+    "1972-12",
+    "1987-12",
+    "1992-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "64189001",
+   "name": "Socoa",
+   "latitude": 43.395,
+   "longitude": -1.687,
+   "altitude": 21.0,
+   "series_id": "MTN264189001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1984-12",
+    "1988-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "64549001",
+   "name": "Pau-Uzein",
+   "latitude": 43.385,
+   "longitude": -0.416,
+   "altitude": 183.0,
+   "series_id": "MTN364549001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1968-12",
+    "1978-12",
+    "1985-11",
+    "1991-12",
+    "2000-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "65344001",
+   "name": "Tarbes-Lourdes-Pyrenees",
+   "latitude": 43.188,
+   "longitude": 0.0,
+   "altitude": 360.0,
+   "series_id": "MTN265344001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1959-12",
+    "1972-12",
+    "1999-12",
+    "2002-12",
+    "2013-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "66136001",
+   "name": "Perpignan",
+   "latitude": 42.737,
+   "longitude": 2.873,
+   "altitude": 42.0,
+   "series_id": "MTN366136001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1956-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "66148001",
+   "name": "Cap Bear",
+   "latitude": 42.516,
+   "longitude": 3.134,
+   "altitude": 72.0,
+   "series_id": "MTN266148001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1967-09",
+    "1973-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "67124001",
+   "name": "Strasbourg-Entzheim",
+   "latitude": 48.55,
+   "longitude": 7.64,
+   "altitude": 150.0,
+   "series_id": "MTN367124001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1960-02"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "67482001",
+   "name": "Strasbourg - Botanique",
+   "latitude": 48.582,
+   "longitude": 7.769,
+   "altitude": 139.0,
+   "series_id": "MTN367482001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1961-12",
+    "1990-07",
+    "2003-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "67498001",
+   "name": "Uhrwiller_Sapc",
+   "latitude": 48.884,
+   "longitude": 7.582,
+   "altitude": 217.0,
+   "series_id": "MTN167498001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1967-03",
+    "1980-12",
+    "1994-12",
+    "2003-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "68205001",
+   "name": "Colmar-Meyenheim",
+   "latitude": 47.929,
+   "longitude": 7.408,
+   "altitude": 207.0,
+   "series_id": "MTN168205001",
+   "homogenized_period": {
+    "start": 1957,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1972-02",
+    "1980-12",
+    "1985-12",
+    "1995-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "68224006",
+   "name": "Mulhouse",
+   "latitude": 47.75,
+   "longitude": 7.289,
+   "altitude": 245.0,
+   "series_id": "MTN268224006",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1969-12",
+    "1975-12",
+    "1986-10",
+    "1994-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "68297001",
+   "name": "Bale-Mulhouse",
+   "latitude": 47.614,
+   "longitude": 7.51,
+   "altitude": 263.0,
+   "series_id": "MTN268297001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1962-12",
+    "1971-12",
+    "1998-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "69029001",
+   "name": "Lyon-Bron",
+   "latitude": 45.721,
+   "longitude": 4.949,
+   "altitude": 202.0,
+   "series_id": "MTN369029001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1981-12",
+    "1985-12",
+    "1996-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "69141001",
+   "name": "Mornant",
+   "latitude": 45.615,
+   "longitude": 4.674,
+   "altitude": 343.0,
+   "series_id": "MTN369141001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1967-12",
+    "1977-03",
+    "1995-01",
+    "2006-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "69196001",
+   "name": "St-Didier-Beauj",
+   "latitude": 46.164,
+   "longitude": 4.566,
+   "altitude": 345.0,
+   "series_id": "MTN269196001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1959-12",
+    "1978-12",
+    "1983-12",
+    "2005-12",
+    "2014-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "69204002",
+   "name": "St-Genis-Laval",
+   "latitude": 45.695,
+   "longitude": 4.782,
+   "altitude": 290.0,
+   "series_id": "MTN369204002",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1955-12",
+    "1965-12",
+    "1974-12",
+    "2007-12",
+    "2013-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "70006001",
+   "name": "Aillevillers",
+   "latitude": 47.915,
+   "longitude": 6.338,
+   "altitude": 275.0,
+   "series_id": "MTN270006001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1968-08",
+    "1976-12",
+    "1984-04",
+    "1991-05",
+    "2014-12",
+    "2018-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "7019005",
+   "name": "Aubenas Sa",
+   "latitude": 44.602,
+   "longitude": 4.41,
+   "altitude": 176.0,
+   "series_id": "MTN207019005",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1969-05",
+    "1976-12",
+    "1981-12",
+    "1999-12",
+    "2020-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "70473001",
+   "name": "Luxeuil",
+   "latitude": 47.787,
+   "longitude": 6.364,
+   "altitude": 271.0,
+   "series_id": "MTN270473001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1970-12",
+    "1976-12",
+    "1989-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "7064001",
+   "name": "Cheylard Sa",
+   "latitude": 44.915,
+   "longitude": 4.438,
+   "altitude": 418.0,
+   "series_id": "MTN207064001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1967-10",
+    "1978-12",
+    "1994-01",
+    "2018-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "71105001",
+   "name": "Macon",
+   "latitude": 46.295,
+   "longitude": 4.794,
+   "altitude": 219.0,
+   "series_id": "MTN271105001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [
+    "1953-12",
+    "2009-08"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "7128001",
+   "name": "Lalouvesc",
+   "latitude": 45.118,
+   "longitude": 4.535,
+   "altitude": 1090.0,
+   "series_id": "MTN207128001",
+   "homogenized_period": {
+    "start": 1957,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1960-12",
+    "1963-12",
+    "2001-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "71320001",
+   "name": "Mt-St-Vincent",
+   "latitude": 46.628,
+   "longitude": 4.477,
+   "altitude": 601.0,
+   "series_id": "MTN271320001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.27,
+   "homogenization_breaks": [
+    "1978-12",
+    "2018-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "7144001",
+   "name": "Loubaresse",
+   "latitude": 44.6,
+   "longitude": 4.049,
+   "altitude": 1220.0,
+   "series_id": "MTN207144001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1961-12",
+    "1984-12",
+    "1988-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "71491001",
+   "name": "St Yan",
+   "latitude": 46.408,
+   "longitude": 4.017,
+   "altitude": 242.0,
+   "series_id": "MTN171491001",
+   "homogenized_period": {
+    "start": 1954,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1967-11",
+    "2015-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "72093001",
+   "name": "Cormes",
+   "latitude": 48.18,
+   "longitude": 0.71,
+   "altitude": 122.0,
+   "series_id": "MTN172093001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1965-10",
+    "1985-12",
+    "2000-12",
+    "2011-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "72181001",
+   "name": "Le Mans",
+   "latitude": 47.946,
+   "longitude": 0.194,
+   "altitude": 51.0,
+   "series_id": "MTN372181001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1962-12",
+    "1967-12",
+    "1970-01",
+    "1980-12",
+    "1997-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "73026001",
+   "name": "Avrieux",
+   "latitude": 45.214,
+   "longitude": 6.717,
+   "altitude": 1104.0,
+   "series_id": "MTN273026001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1970-12",
+    "1981-12",
+    "1993-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "73034002",
+   "name": "Beaufort-Sur-Doron",
+   "latitude": 45.691,
+   "longitude": 6.569,
+   "altitude": 1036.0,
+   "series_id": "MTN273034002",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1977-12",
+    "1988-12",
+    "1990-12",
+    "1995-12",
+    "2002-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "73054001",
+   "name": "Bourg St Maurice",
+   "latitude": 45.613,
+   "longitude": 6.763,
+   "altitude": 865.0,
+   "series_id": "MTN273054001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1952-09",
+    "1959-12",
+    "1972-05",
+    "1995-04",
+    "2006-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "73064001",
+   "name": "Challes Les Eaux",
+   "latitude": 45.565,
+   "longitude": 5.97,
+   "altitude": 298.0,
+   "series_id": "MTN173064001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1976-12",
+    "1982-12",
+    "1988-12",
+    "1996-12",
+    "2004-05",
+    "2017-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "74087001",
+   "name": "Contamine-Sur- Arve",
+   "latitude": 46.129,
+   "longitude": 6.34,
+   "altitude": 452.0,
+   "series_id": "MTN174087001",
+   "homogenized_period": {
+    "start": 1958,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.21,
+   "homogenization_breaks": [
+    "1972-12",
+    "2019-04"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "74093001",
+   "name": "Cran-Gevrier",
+   "latitude": 45.911,
+   "longitude": 6.108,
+   "altitude": 426.0,
+   "series_id": "MTN374093001",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1976-12",
+    "1980-12",
+    "1994-12",
+    "1998-12",
+    "2017-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "74280001",
+   "name": "Thones",
+   "latitude": 45.878,
+   "longitude": 6.323,
+   "altitude": 630.0,
+   "series_id": "MTN274280001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1981-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "74281001",
+   "name": "Thonon-Inrae",
+   "latitude": 46.367,
+   "longitude": 6.455,
+   "altitude": 376.0,
+   "series_id": "MTN274281001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1984-12",
+    "1988-12",
+    "2002-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "75114001",
+   "name": "Paris-Montsouris",
+   "latitude": 48.822,
+   "longitude": 2.338,
+   "altitude": 75.0,
+   "series_id": "MTN475114001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1958-12",
+    "1969-12",
+    "1981-07",
+    "2001-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "76116001",
+   "name": "Rouen-Boos",
+   "latitude": 49.39,
+   "longitude": 1.178,
+   "altitude": 156.0,
+   "series_id": "MTN176116001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1961-12",
+    "1968-02",
+    "1987-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "76217001",
+   "name": "Dieppe",
+   "latitude": 49.933,
+   "longitude": 1.09,
+   "altitude": 40.0,
+   "series_id": "MTN276217001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1967-07",
+    "1983-12",
+    "1991-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "76259001",
+   "name": "Fecamp",
+   "latitude": 49.767,
+   "longitude": 0.369,
+   "altitude": 104.0,
+   "series_id": "MTN276259001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.22,
+   "homogenization_breaks": [
+    "1980-12",
+    "2020-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "76552001",
+   "name": "Cap-De-La-Heve",
+   "latitude": 49.509,
+   "longitude": 0.071,
+   "altitude": 100.0,
+   "series_id": "MTN476552001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1967-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "77211001",
+   "name": "Nangis",
+   "latitude": 48.595,
+   "longitude": 3.008,
+   "altitude": 128.0,
+   "series_id": "MTN077211001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1965-08",
+    "1982-10",
+    "1991-12",
+    "1999-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "77306001",
+   "name": "Melun",
+   "latitude": 48.61,
+   "longitude": 2.68,
+   "altitude": 91.0,
+   "series_id": "MTN277306001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1960-12",
+    "1967-08",
+    "1997-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "77333003",
+   "name": "Nemours",
+   "latitude": 48.27,
+   "longitude": 2.715,
+   "altitude": 73.0,
+   "series_id": "MTN177333003",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1963-12",
+    "1972-12",
+    "1986-07"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "78621001",
+   "name": "Trappes",
+   "latitude": 48.774,
+   "longitude": 2.01,
+   "altitude": 167.0,
+   "series_id": "MTN378621001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.11,
+   "homogenization_breaks": [
+    "1958-12",
+    "1964-12",
+    "1969-12",
+    "1988-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "78640001",
+   "name": "Villacoublay",
+   "latitude": 48.773,
+   "longitude": 2.204,
+   "altitude": 174.0,
+   "series_id": "MTN378640001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1980-12",
+    "1988-12",
+    "2010-03",
+    "2018-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "79191005",
+   "name": "Niort",
+   "latitude": 46.316,
+   "longitude": -0.4,
+   "altitude": 57.0,
+   "series_id": "MTN279191005",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.11,
+   "homogenization_breaks": [
+    "1985-12",
+    "2017-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "79220002",
+   "name": "Prin-Deyrancon_Sapc",
+   "latitude": 46.231,
+   "longitude": -0.669,
+   "altitude": 8.0,
+   "series_id": "MTN079220002",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1958-12",
+    "1967-12",
+    "1973-12",
+    "1989-12",
+    "2016-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "80001001",
+   "name": "Abbeville",
+   "latitude": 50.136,
+   "longitude": 1.834,
+   "altitude": 69.0,
+   "series_id": "MTN380001001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "80379002",
+   "name": "Amiens-Glisy",
+   "latitude": 49.872,
+   "longitude": 2.383,
+   "altitude": 60.0,
+   "series_id": "MTN180379002",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1958-12",
+    "1965-11",
+    "1997-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "81081002",
+   "name": "Dourgne",
+   "latitude": 43.491,
+   "longitude": 2.14,
+   "altitude": 234.0,
+   "series_id": "MTN081081002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1964-07",
+    "1972-12",
+    "1977-12",
+    "1989-03",
+    "1995-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "82121002",
+   "name": "Montauban",
+   "latitude": 44.028,
+   "longitude": 1.377,
+   "altitude": 106.0,
+   "series_id": "MTN282121002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1960-12",
+    "1976-12",
+    "2010-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "8239001",
+   "name": "Juniville",
+   "latitude": 49.397,
+   "longitude": 4.372,
+   "altitude": 90.0,
+   "series_id": "MTN208239001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1970-12",
+    "1982-12",
+    "1994-12",
+    "2018-10"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "83031001",
+   "name": "Le Luc",
+   "latitude": 43.383,
+   "longitude": 6.386,
+   "altitude": 80.0,
+   "series_id": "MTN283031001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1972-03"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "83061001",
+   "name": "Frejus",
+   "latitude": 43.424,
+   "longitude": 6.738,
+   "altitude": 7.0,
+   "series_id": "MTN283061001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1960-12",
+    "1995-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "83069001",
+   "name": "Hyeres",
+   "latitude": 43.101,
+   "longitude": 6.147,
+   "altitude": 2.0,
+   "series_id": "MTN283069001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1962-12",
+    "1979-12",
+    "1989-04",
+    "2009-03"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "83145001",
+   "name": "Varages",
+   "latitude": 43.594,
+   "longitude": 5.963,
+   "altitude": 348.0,
+   "series_id": "MTN183145001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1986-12",
+    "2009-12",
+    "2018-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "84003002",
+   "name": "Apt-Viton",
+   "latitude": 43.881,
+   "longitude": 5.414,
+   "altitude": 242.0,
+   "series_id": "MTN284003002",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.22,
+   "homogenization_breaks": [
+    "1972-12",
+    "1988-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "84007005",
+   "name": "Avignon",
+   "latitude": 43.911,
+   "longitude": 4.903,
+   "altitude": 34.0,
+   "series_id": "MTN084007005",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.2,
+   "homogenization_breaks": [
+    "1963-12",
+    "1969-12",
+    "1971-12",
+    "1987-05",
+    "2012-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "84087001",
+   "name": "Orange",
+   "latitude": 44.145,
+   "longitude": 4.861,
+   "altitude": 57.0,
+   "series_id": "MTN384087001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2023
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1975-12",
+    "1988-12",
+    "2009-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "85113001",
+   "name": "L Ile D Yeu",
+   "latitude": 46.694,
+   "longitude": -2.33,
+   "altitude": 32.0,
+   "series_id": "MTN285113001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.15,
+   "homogenization_breaks": [],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "85216001",
+   "name": "Sainte Gemme La Plaine_Sapc",
+   "latitude": 46.44,
+   "longitude": -1.121,
+   "altitude": 3.0,
+   "series_id": "MTN285216001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.17,
+   "homogenization_breaks": [
+    "1965-12",
+    "1985-12",
+    "1989-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "86027001",
+   "name": "Poitiers-Biard",
+   "latitude": 46.594,
+   "longitude": 0.314,
+   "altitude": 125.0,
+   "series_id": "MTN386027001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1979-12",
+    "2007-09"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "86177001",
+   "name": "Neuville De Poi",
+   "latitude": 46.695,
+   "longitude": 0.247,
+   "altitude": 110.0,
+   "series_id": "MTN186177001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2021
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1958-03",
+    "1961-12",
+    "1973-12",
+    "1986-12",
+    "2004-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "87113001",
+   "name": "Le Palais Sur Vienne",
+   "latitude": 45.878,
+   "longitude": 1.343,
+   "altitude": 286.0,
+   "series_id": "MTN287113001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.22,
+   "homogenization_breaks": [
+    "1953-12",
+    "1961-12",
+    "1976-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "89295001",
+   "name": "Auxerre-Perrigny",
+   "latitude": 47.825,
+   "longitude": 3.55,
+   "altitude": 152.0,
+   "series_id": "MTN189295001",
+   "homogenized_period": {
+    "start": 1951,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1984-10",
+    "1994-05",
+    "2013-03"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "89387002",
+   "name": "Sens",
+   "latitude": 48.168,
+   "longitude": 3.289,
+   "altitude": 70.0,
+   "series_id": "MTN189387002",
+   "homogenized_period": {
+    "start": 1956,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1959-12",
+    "1963-12",
+    "1967-12",
+    "1985-12",
+    "1993-11",
+    "2002-03"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "90035001",
+   "name": "Dorans",
+   "latitude": 47.592,
+   "longitude": 6.837,
+   "altitude": 401.0,
+   "series_id": "MTN190035001",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.18,
+   "homogenization_breaks": [
+    "1972-01"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "9023002",
+   "name": "Ascou Lavail",
+   "latitude": 42.724,
+   "longitude": 1.895,
+   "altitude": 1100.0,
+   "series_id": "MTN209023002",
+   "homogenized_period": {
+    "start": 1959,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.19,
+   "homogenization_breaks": [
+    "1965-10",
+    "1988-12",
+    "2006-04",
+    "2012-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "91027002",
+   "name": "Orly",
+   "latitude": 48.718,
+   "longitude": 2.397,
+   "altitude": 86.0,
+   "series_id": "MTN291027002",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1972-02",
+    "1988-12",
+    "1996-12",
+    "2019-05"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "91103001",
+   "name": "Bretigny_Sapc",
+   "latitude": 48.601,
+   "longitude": 2.326,
+   "altitude": 78.0,
+   "series_id": "MTN291103001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1976-12",
+    "1986-12",
+    "2017-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "91184001",
+   "name": "Courdimanche",
+   "latitude": 48.422,
+   "longitude": 2.374,
+   "altitude": 71.0,
+   "series_id": "MTN091184001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.14,
+   "homogenization_breaks": [
+    "1956-12",
+    "1964-12",
+    "1981-10",
+    "1999-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "9289001",
+   "name": "St Girons",
+   "latitude": 43.005,
+   "longitude": 1.107,
+   "altitude": 414.0,
+   "series_id": "MTN209289001",
+   "homogenized_period": {
+    "start": 1955,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.16,
+   "homogenization_breaks": [
+    "1988-12",
+    "2007-11"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "94068001",
+   "name": "St-Maur",
+   "latitude": 48.809,
+   "longitude": 2.492,
+   "altitude": 48.0,
+   "series_id": "MTN394068001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1963-12",
+    "1976-10",
+    "1983-12",
+    "1987-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "95078001",
+   "name": "Pontoise - Aero",
+   "latitude": 49.09,
+   "longitude": 2.029,
+   "altitude": 87.0,
+   "series_id": "MTN295078001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.13,
+   "homogenization_breaks": [
+    "1993-12"
+   ],
+   "file_produced": "13/03/2025"
+  },
+  {
+   "id": "95088001",
+   "name": "Le Bourget",
+   "latitude": 48.967,
+   "longitude": 2.428,
+   "altitude": 49.0,
+   "series_id": "MTN395088001",
+   "homogenized_period": {
+    "start": 1953,
+    "end": 2022
+   },
+   "min_detectable_amplitude": 0.12,
+   "homogenization_breaks": [
+    "1958-12",
+    "1984-12",
+    "1993-01",
+    "1995-08",
+    "2003-12"
+   ],
+   "file_produced": "13/03/2025"
+  }
+ ],
+ "method_note": "Réseau constant de 220 stations dans 88 départements (TN et TX homogénéisés chaque année 1959-2021). Anomalie annuelle de chaque station par rapport à 1961-1990, moyenne par département, puis moyenne des départements.",
+ "finding": "En France métropolitaine, l'écart de températures maximales a évolué de +0,39 °C par décennie entre 1959 et 2021, soit +2,45 °C sur la période (tendance significative, corrigée de l'autocorrélation).",
+ "confidence": "moyenne",
+ "limitations": [
+  "Séries homogénéisées par Météo-France (LSH), qui ne commencent pour la plupart qu'en 1953-1959 : l'évolution depuis 1900 publiée par Météo-France (indicateur thermique national, séries anciennes) n'est pas reproduite ici.",
+  "Réseau constant : seules les stations complètes et homogénéisées sur toute la période entrent dans la moyenne ; les années hors de cette période ne sont affichées que si toutes les stations ont une valeur.",
+  "Moyenne des départements, chacun pesant autant (proche d'une moyenne par surface) ; les départements sans station au réseau n'y figurent pas.",
+  "Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne »."
+ ],
+ "provenance": {
+  "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
+  "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
+  "license": "Licence Ouverte 2.0 (Etalab)",
+  "extracted_at": "2026-10-29T21:45:50Z",
+  "script": "etl.indicators.france",
+  "etl_version": "0.1.0+eb3b45d",
+  "homogenized": true
+ },
+ "is_demo": false
+}

@@ -1333,3 +1333,21 @@ indicators:
     scale: gironde
     builder: etl.indicators.impacts:build_fwi
     params: {variable: jours-fwi}
+
+  # --- P5 : France (critères J1-J8 validés par Grég le 29/10/2026, avant calcul ; etl/indicators/france.py)
+  - id: tn-france
+    scale: france
+    builder: etl.indicators.france:build_temperature
+    params: {var: TN}
+  - id: tm-france
+    scale: france
+    builder: etl.indicators.france:build_temperature
+    params: {var: TM}
+  - id: tx-france
+    scale: france
+    builder: etl.indicators.france:build_temperature
+    params: {var: TX}
+  - id: rr-cumul-france
+    scale: france
+    builder: etl.indicators.france:build_rain
+    params: {}
