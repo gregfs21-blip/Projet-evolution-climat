@@ -1,6 +1,6 @@
 # Sonde P5 — Longues Séries Homogénéisées de la métropole (généré)
 
-Généré par `python -m etl.probe.p5` le 29/10/2026 19:58 UTC. Inventaire seulement : aucune valeur de température ni tendance n'est calculée.
+Généré par `python -m etl.probe.p5` le 30/10/2026 20:57 UTC. Inventaire seulement : aucune valeur de température ni tendance n'est calculée.
 
 ## TN
 
