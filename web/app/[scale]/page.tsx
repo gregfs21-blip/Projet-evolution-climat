@@ -44,7 +44,9 @@ export default async function ScalePage({ params }: { params: Params }) {
   const ths = themes(scale);
   const others = nonMembers(scale);
   const reports = label.validations.flatMap((p) => getValidation(p) ?? []);
-  const depMap = scale === "france" ? getDepartmentMap() : undefined;
+  const depMaps = scale === "france"
+    ? [getDepartmentMap("carte-departements"), getDepartmentMap("carte-departements-pluie")].filter((m) => m !== undefined)
+    : [];
 
   return (
     <div className="space-y-12">
@@ -53,8 +55,8 @@ export default async function ScalePage({ params }: { params: Params }) {
         <p className="text-sm text-[var(--muted)]">{label.blurb}</p>
       </header>
 
-      {depMap && (
-        <section className="space-y-3">
+      {depMaps.map((depMap) => (
+        <section key={depMap.title} className="space-y-3">
           <h2 className="text-xl font-semibold">{depMap.title}</h2>
           <DepartmentsMap data={depMap} />
           <ul className="list-disc space-y-1 pl-5 text-sm text-[var(--muted)]">
@@ -63,7 +65,7 @@ export default async function ScalePage({ params }: { params: Params }) {
             ))}
           </ul>
         </section>
-      )}
+      ))}
 
       {ths.map((t) => (
         <ThemeSection key={t.id} scale={scale} scaleName={label.name} theme={t} heading={ths.length > 1} />

@@ -17,9 +17,12 @@ const fmt = (v: number) => v.toLocaleString("fr-FR", { signDisplay: "always", ma
 
 export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
   const [variable, setVariable] = useState<string>(data.variables.find((v) => v.id === "tm")?.id ?? data.variables[0]!.id);
+  const unitLabel = data.unit === "%" ? "% par décennie" : `${data.unit} par décennie`;
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const [ready, setReady] = useState(false);
+  const variableRef = useRef(variable);
+  variableRef.current = variable;
 
   // Une entité par contour ; propriétés pré-calculées pour chaque variable (couleur, pente, significativité).
   const geojson = useMemo(() => {
@@ -68,7 +71,7 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
           const f = e.features?.[0];
           if (!f) return;
           map.getCanvas().style.cursor = "default";
-          const v = (map.getContainer().dataset.variable ?? "tm") as string;
+          const v = (map.getContainer().dataset.variable ?? variableRef.current) as string;
           popup
             .setLngLat(e.lngLat)
             .setHTML(`<strong>${f.properties.name}</strong><br/>${f.properties[`text_${v}`]}`)
@@ -110,7 +113,7 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
       <figcaption className="space-y-2 text-xs text-[var(--muted)]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span>
-            Tendance {current.code} {data.period.start}-{data.period.end}, en {data.unit} par décennie, par département ;
+            Tendance {current.code} {data.period.start}-{data.period.end}, en {unitLabel}, par département ;
             France : {fmt(current.national_slope_per_decade)}. Pâle : non significatif ({current.departments.length - nSig}{" "}
             sur {current.departments.length}). Gris : aucune station au réseau.
           </span>

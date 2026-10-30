@@ -54,12 +54,11 @@ def validate(out_dir: Path = PROCESSED_DIR) -> list[str]:
         except Exception as exc:  # noqa: BLE001
             errors.append(f"couverture.json invalide : {exc}")
 
-    carte = out_dir / "carte-departements.json"
-    if carte.exists():
+    for carte in sorted(out_dir.glob("carte-departements*.json")):
         try:
             DepartmentMap.model_validate_json(carte.read_text(encoding="utf-8"))
         except Exception as exc:  # noqa: BLE001
-            errors.append(f"carte-departements.json invalide : {exc}")
+            errors.append(f"{carte.name} invalide : {exc}")
 
     # Rapports de validation de phase (validation-p1.json…) : hors manifeste, mais contrôlés aussi.
     for path in sorted(out_dir.glob("validation-*.json")):
