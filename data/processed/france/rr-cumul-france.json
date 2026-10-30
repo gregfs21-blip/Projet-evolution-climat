@@ -21926,9 +21926,9 @@
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-29T21:55:01Z",
+  "extracted_at": "2026-10-30T21:32:02Z",
   "script": "etl.indicators.france",
-  "etl_version": "0.1.0+767b61c",
+  "etl_version": "0.1.0+9f7703d",
   "homogenized": true
  },
  "is_demo": false
