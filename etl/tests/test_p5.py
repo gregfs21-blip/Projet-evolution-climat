@@ -27,5 +27,16 @@ class TestComposite(unittest.TestCase):
         self.assertEqual(set(s), {2000})
 
 
+class TestCarte(unittest.TestCase):
+    def test_shapes_metropole_and_corsica(self):
+        from etl import carte as C
+        sq = {"type": "Polygon", "coordinates": [[[0.12345, 45.0], [1.0, 45.0], [1.0, 46.0], [0.12345, 45.0]]]}
+        geo = {"features": [{"properties": {"code": c, "nom": c}, "geometry": sq} for c in ("33", "2A", "2B", "971")]}
+        out = C.shapes(geo)
+        self.assertEqual([s.code for s in out], ["2A", "2B", "33"])
+        self.assertEqual({s.value_code for s in out}, {"20", "33"})
+        self.assertEqual(out[0].geometry["coordinates"][0][0], [0.123, 45.0])
+
+
 if __name__ == "__main__":
     unittest.main()

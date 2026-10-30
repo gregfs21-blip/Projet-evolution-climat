@@ -50,6 +50,8 @@ jobs:
           else
             python -m etl.pipeline
           fi
+      - name: Carte départementale (P5 bis)
+        run: python -m etl.carte
       - run: python -m pytest etl/tests -q
       - run: python -m etl.validate
       - name: Validation de phase (critères docs/phases.md)

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import DepartmentsMap from "@/components/DepartmentsMap";
 import IndicatorList from "@/components/IndicatorList";
 import ThemeSection from "@/components/ThemeSection";
 import ValidationBox from "@/components/ValidationBox";
-import { getValidation, listIndicators } from "@/lib/data";
+import { getDepartmentMap, getValidation, listIndicators } from "@/lib/data";
 import { nonMembers, themes } from "@/lib/family";
 import { SCALE_LABELS } from "@/lib/format";
 import { SCALES, scaleSchema } from "@/lib/schema";
@@ -43,6 +44,7 @@ export default async function ScalePage({ params }: { params: Params }) {
   const ths = themes(scale);
   const others = nonMembers(scale);
   const reports = label.validations.flatMap((p) => getValidation(p) ?? []);
+  const depMap = scale === "france" ? getDepartmentMap() : undefined;
 
   return (
     <div className="space-y-12">
@@ -50,6 +52,18 @@ export default async function ScalePage({ params }: { params: Params }) {
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{label.name}</h1>
         <p className="text-sm text-[var(--muted)]">{label.blurb}</p>
       </header>
+
+      {depMap && (
+        <section className="space-y-3">
+          <h2 className="text-xl font-semibold">{depMap.title}</h2>
+          <DepartmentsMap data={depMap} />
+          <ul className="list-disc space-y-1 pl-5 text-sm text-[var(--muted)]">
+            {depMap.limitations.map((l) => (
+              <li key={l}>{l}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {ths.map((t) => (
         <ThemeSection key={t.id} scale={scale} scaleName={label.name} theme={t} heading={ths.length > 1} />

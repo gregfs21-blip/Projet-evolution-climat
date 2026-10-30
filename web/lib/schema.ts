@@ -272,3 +272,54 @@ export const coverageSchema = z.strictObject({
   ),
 });
 export type Coverage = z.infer<typeof coverageSchema>;
+
+// ---------------------------------------------------------------- Carte départementale (P5 bis)
+// Miroir de DepartmentMap (etl/schema.py).
+const departmentValueSchema = z.strictObject({
+  code: z.string().regex(/^[0-9]{2}$/),
+  n_stations: z.number().int().min(1),
+  slope_per_decade: z.number(),
+  slope_ci_low: z.number().nullable(),
+  slope_ci_high: z.number().nullable(),
+  p_value: z.number().min(0).max(1),
+  significant: z.boolean(),
+});
+
+export const departmentMapSchema = z
+  .strictObject({
+    schema_version: z.literal("1.0"),
+    generated_at: isoDate,
+    title: z.string().min(1),
+    unit: z.string().min(1),
+    period: periodSchema,
+    method_note: z.string().min(1),
+    limitations: z.array(z.string()).min(1),
+    provenance: provenanceSchema,
+    geometry_source: z.string().min(1),
+    variables: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(SLUG),
+          code: z.string().min(1),
+          label: z.string().min(1),
+          national_slope_per_decade: z.number(),
+          departments: z.array(departmentValueSchema).min(1),
+        }),
+      )
+      .min(1),
+    shapes: z
+      .array(
+        z.strictObject({
+          code: z.string().regex(/^(?:[0-9]{2}|2A|2B)$/),
+          name: z.string().min(1),
+          value_code: z.string().regex(/^[0-9]{2}$/),
+          geometry: z.strictObject({ type: z.enum(["Polygon", "MultiPolygon"]), coordinates: z.array(z.any()) }),
+        }),
+      )
+      .min(90),
+  })
+  .refine((m) => {
+    const codes = new Set(m.shapes.map((s) => s.value_code));
+    return m.variables.every((v) => v.departments.every((d) => codes.has(d.code)));
+  }, "carte : département sans contour");
+export type DepartmentMap = z.infer<typeof departmentMapSchema>;
