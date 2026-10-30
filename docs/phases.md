@@ -432,6 +432,10 @@ quatre saisons** avec sélecteur. Choix de mise en œuvre (`etl/carte.py`) :
 - **France** (repère sous la carte) : moyenne des départements, même calcul.
 - **Couleurs** : échelle fixe **± 10 % par décennie**, bleu = plus de pluie, brun = moins ; pâle si non significatif ;
   gris sans station. Même contours que la carte des températures.
+- **Premier calcul (30/10/2026)** : 95 départements ; pentes significatives : 4 (année), 4 (hiver), 0 (printemps),
+  6 (été), 1 (automne), soit 15 sur 475 tests, **moins que les ~24 attendus par le seul hasard** au seuil de 5 %.
+  Aucune tendance départementale robuste de la pluie sur 1961-2014. Mise en garde « tests multiples » ajoutée aux
+  limites après ce calcul (lecture seulement, aucune valeur modifiée).
 
 ## P5 — Critères (proposés et validés le 29/10/2026, avant tout calcul)
 

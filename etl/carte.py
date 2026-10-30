@@ -184,6 +184,9 @@ def build_rain(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Depart
             "La pluie n'est homogénéisée partout que jusqu'en 2014 : les dix dernières années manquent.",
             "La pluie varie beaucoup d'une année à l'autre : une pente non significative (teinte pâle) ne permet de "
             "conclure ni à une hausse ni à une baisse.",
+            # Ajouté le 30/10/2026 après le premier calcul (mise en garde de lecture, sans effet sur les valeurs).
+            "Tests multiples : au seuil de 5 %, environ 5 départements sur 95 sortent « significatifs » par le seul "
+            "hasard, pour chaque carte. Quelques départements significatifs isolés ne prouvent pas une tendance.",
             "Un département à une ou deux stations est représenté par elles seules ; le relief rend la pluie très "
             "locale.",
             "Aucune référence publiée par département : ces pentes ne portent pas de niveau de confiance « élevée ».",
