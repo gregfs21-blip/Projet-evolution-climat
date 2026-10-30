@@ -401,6 +401,24 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   (elle était déjà en « signal non établi »).
 - P3 close.
 
+## P5 bis — Carte départementale des tendances (demande de Grég du 30/10/2026, choix fixés AVANT calcul)
+
+Grég a vu les résultats nationaux de la P5 ; les tendances départementales n'ont jamais été calculées ni affichées.
+Décisions de Grég : **tendance 1959-2021** en °C par décennie ; **TN, TM, TX** avec sélecteur. Choix de mise en
+œuvre (`etl/carte.py`) :
+
+- **Données** : les anomalies de station de la P5 (réseau constant 220 stations, 1959-2021) ; série d'un département =
+  moyenne des anomalies de ses stations ; pente de Sen et test de Mann-Kendall corrigé Hamed-Rao, comme partout.
+- **Département** : deux premiers chiffres du poste (zéro rétabli) ; la Corse (« 20 ») colore 2A et 2B à l'identique.
+  Département sans station au réseau : **gris, aucune valeur** (rien n'est interpolé). Le nombre de stations est affiché.
+- **Couleurs** : échelle absolue et fixe du site (± 0,5 °C/déc., `web/lib/heat.ts`) ; tendance non significative
+  (p ≥ 0,05) en **teinte pâle**.
+- **Contours** : contours administratifs Etalab (dérivés d'Admin Express, IGN), millésime 2025, généralisés à
+  1 000 m, Licence Ouverte (`docs/sonde-p5b.md`) ; métropole seulement.
+- **Aucune référence par département** : la carte ne porte pas de niveau de confiance « élevée » ; pas de nouveau
+  critère de clôture (P5 close). Contrôle publié en information : moyenne des pentes départementales comparée à la
+  pente France.
+
 ## P5 — Critères (proposés et validés le 29/10/2026, avant tout calcul)
 
 > **Décisions de Grég du 29/10/2026, avant tout calcul** : D-M périmètre **A et C** (températures et pluie de la
