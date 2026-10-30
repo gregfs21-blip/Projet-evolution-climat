@@ -13,4 +13,5 @@ Fichier généré par `python -m etl.validation.p5` à chaque exécution de l'ET
 | J5 cohérence spatiale (contrôle interne) | ✅ conforme | 220 pentes positives sur 220 (100,0 %) ; médiane +0,34 °C/déc. |
 | J6 robustesse de la pondération | ✅ conforme | pondéré par département +0,344 ; moyenne simple +0,348 °C/déc. ; écart admis 0,05 |
 | J7 plausibilité | ✅ conforme | Bornes contrôlées à la construction pour les 4 indicateurs publiés (un dépassement empêche la publication). |
+| Carte départementale (information) | ℹ️ information | TN : moyenne des 88 départements +0,285, France +0,290 °C/déc., 88 significatives ; TM : moyenne des 88 départements +0,342, France +0,344 °C/déc., 88 significatives ; TX : moyenne des 88 départements +0,392, France +0,394 °C/déc., 88 significatives |
 | J8 technique | ℹ️ information | Tests, CI et contrat vérifiés par les workflows. |
