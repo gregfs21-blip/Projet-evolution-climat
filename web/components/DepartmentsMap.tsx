@@ -22,6 +22,8 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
   const mapRef = useRef<import("maplibre-gl").Map | null>(null);
   const [ready, setReady] = useState(false);
   const variableRef = useRef(variable);
+  const pinnedRef = useRef<import("maplibre-gl").Popup | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
   variableRef.current = variable;
 
   // Une entité par contour ; propriétés pré-calculées pour chaque variable (couleur, pente, significativité).
@@ -66,18 +68,34 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
         map.addSource("deps", { type: "geojson", data: geojson as any });
         map.addLayer({ id: "deps-fill", type: "fill", source: "deps", paint: { "fill-color": "#ccc", "fill-opacity": 0.5 } });
         map.addLayer({ id: "deps-line", type: "line", source: "deps", paint: { "line-color": "#ffffff", "line-width": 0.7 } });
-        const popup = new Popup({ closeButton: false, closeOnClick: false });
+        // Survol (souris) : info-bulle éphémère. Clic ou toucher (tablette, téléphone) : département retenu, affiché
+        // sous la carte et dans une info-bulle qui reste ouverte. Le texte suit la variable choisie.
+        const hover = new Popup({ closeButton: false, closeOnClick: false, className: "dep-popup" });
+        const html = (f: { properties: Record<string, unknown> }) => {
+          const v = (map.getContainer().dataset.variable ?? variableRef.current) as string;
+          return `<strong>${f.properties.name}</strong><br/>${f.properties[`text_${v}`]}`;
+        };
         map.on("mousemove", "deps-fill", (e) => {
           const f = e.features?.[0];
           if (!f) return;
-          map.getCanvas().style.cursor = "default";
-          const v = (map.getContainer().dataset.variable ?? variableRef.current) as string;
-          popup
-            .setLngLat(e.lngLat)
-            .setHTML(`<strong>${f.properties.name}</strong><br/>${f.properties[`text_${v}`]}`)
-            .addTo(map);
+          map.getCanvas().style.cursor = "pointer";
+          hover.setLngLat(e.lngLat).setHTML(html(f)).addTo(map);
         });
-        map.on("mouseleave", "deps-fill", () => popup.remove());
+        map.on("mouseleave", "deps-fill", () => {
+          map.getCanvas().style.cursor = "";
+          hover.remove();
+        });
+        map.on("click", "deps-fill", (e) => {
+          const f = e.features?.[0];
+          if (!f) return;
+          hover.remove();
+          pinnedRef.current?.remove();
+          pinnedRef.current = new Popup({ closeButton: true, closeOnClick: true, className: "dep-popup" })
+            .setLngLat(e.lngLat)
+            .setHTML(html(f))
+            .addTo(map);
+          setSelected(String(f.properties.code));
+        });
         mapRef.current = map;
         setReady(true);
       });
@@ -93,11 +111,14 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
     const map = mapRef.current;
     if (!ready || !map) return;
     map.getContainer().dataset.variable = variable;
+    pinnedRef.current?.remove();
     map.setPaintProperty("deps-fill", "fill-color", ["get", `color_${variable}`]);
     map.setPaintProperty("deps-fill", "fill-opacity", ["get", `opacity_${variable}`]);
   }, [ready, variable]);
 
   const current = data.variables.find((v) => v.id === variable)!;
+  const shape = selected ? data.shapes.find((s) => s.code === selected) : undefined;
+  const dep = shape ? current.departments.find((d) => d.code === shape.value_code) : undefined;
   const nSig = current.departments.filter((d) => d.significant).length;
   return (
     <figure className="space-y-2">
@@ -110,6 +131,31 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
         />
       </div>
       <div ref={ref} className="h-[460px] w-full overflow-hidden rounded-md border border-[var(--rule)] sm:h-[560px]" />
+      <p className="min-h-[1.5rem] text-sm" aria-live="polite">
+        {shape ? (
+          <>
+            <strong>{shape.name}</strong> ({current.code}) :{" "}
+            {dep ? (
+              <>
+                {fmt(dep.slope_per_decade)} {unitLabel}
+                {dep.slope_ci_low != null && dep.slope_ci_high != null && (
+                  <span className="text-[var(--muted)]">
+                    {" "}
+                    (intervalle {fmt(dep.slope_ci_low)} à {fmt(dep.slope_ci_high)})
+                  </span>
+                )}
+                {" · "}
+                {dep.significant ? "significatif" : "non significatif"} (p = {dep.p_value.toLocaleString("fr-FR", { maximumFractionDigits: 3 })}) ·{" "}
+                {dep.n_stations} station{dep.n_stations > 1 ? "s" : ""}
+              </>
+            ) : (
+              "aucune station au réseau"
+            )}
+          </>
+        ) : (
+          <span className="text-[var(--muted)]">Touchez ou cliquez un département pour afficher sa valeur.</span>
+        )}
+      </p>
       <figcaption className="space-y-2 text-xs text-[var(--muted)]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span>
