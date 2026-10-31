@@ -39,5 +39,16 @@ class TestParsers(unittest.TestCase):
         self.assertEqual(G.parse_rss(rss), {2000: 0.1})
 
 
+class TestGlobalMeans(unittest.TestCase):
+    def test_cos_lat_weighting(self):
+        import numpy as np
+        from etl.sources import ads_aod as A
+        arrays = {"valid_time": np.array([1577836800]), "latitude": np.array([0.0, 60.0]), "longitude": np.array([0.0, 1.0]),
+                  "aod550": np.array([[[0.2, 0.2], [0.1, np.nan]]])}
+        rows = A.global_means(arrays)
+        self.assertEqual(rows[0]["month"], "2020-01")
+        self.assertAlmostEqual(rows[0]["aod550"], round((0.2 * 2 + 0.1 * 0.5) / 2.5, 5))
+
+
 if __name__ == "__main__":
     unittest.main()

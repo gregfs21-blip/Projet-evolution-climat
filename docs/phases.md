@@ -471,6 +471,20 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 - **Troposphère** : UAH 6.1 colonne « Globe », RSS 4.0 « Global » ; moyenne des 12 mois ; anomalies telles que
   publiées (références de période différentes : comparer les pentes, pas les niveaux). K5 : HadCRUT5 annuel.
 
+### F et G : accès et choix fixés AVANT le premier calcul (31/10/2026)
+
+Sondes : `docs/sonde-p6c.md` (CAMS : requête de janvier 2020 aboutie en 31 s, variable `aod550`, grille 0,75°),
+`docs/sonde-p6d.md` (CERES : OPeNDAP refusé depuis GitHub ; fichier EBAF-TOA Ed4.2.1 de 900 Mo accessible par le
+catalogue CMR avec le jeton Earthdata). **Décision de Grég : aucune référence pour F et G** (confiance au plus
+« moyenne ») ; Loeb et al. 2021 (+0,50 ± 0,47 W/m² par décennie, mi-2005 à mi-2019) calculé sur les mêmes données
+CERES : affiché en information seulement.
+
+- **F, déséquilibre énergétique** (`etl/sources/ceres.py`) : CERES EBAF-TOA Edition 4.2.1, variable du flux net
+  global moyen au sommet de l'atmosphère, toutes conditions de ciel (`gtoa_net_all_mon`, W/m²) ; moyenne des 12 mois
+  (années complètes 2001-2025). Fichier retéléchargé seulement quand le granule change.
+- **G, aérosols** (`etl/sources/ads_aod.py`) : CAMS EAC4 mensuel, épaisseur optique totale à 550 nm (`aod550`),
+  moyenne mondiale pondérée par le cosinus de la latitude, puis moyenne des 12 mois (2003-2025).
+
 ### Décisions demandées à Grég
 
 - **D-Q** : périmètre (A à G).

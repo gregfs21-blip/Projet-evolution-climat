@@ -11,6 +11,8 @@ on:
     paths:
       - "etl/sources/cds_era5.py"
       - "etl/sources/ewds_fire.py"
+      - "etl/sources/ads_aod.py"
+      - "etl/sources/ceres.py"
       - ".github/workflows/copernicus.yml"
 
 permissions:
@@ -23,7 +25,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -41,11 +43,19 @@ jobs:
         env:
           CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # même compte ECMWF, jamais affiché
         run: python -m etl.sources.ewds_fire
+      - name: Relevé et soumission, aérosols CAMS (Atmosphere Data Store, P6)
+        env:
+          CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}
+        run: python -m etl.sources.ads_aod
+      - name: Relevé CERES EBAF (NASA Earthdata, P6)
+        env:
+          EARTHDATA_TOKEN: ${{ secrets.EARTHDATA_TOKEN }}   # jeton NASA Earthdata, jamais affiché
+        run: python -m etl.sources.ceres
       - name: Publication des séries extraites
         run: |
           git config user.name "etl-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/sources/era5-pl
+          git add data/sources/era5-pl data/sources/ceres
           if git diff --cached --quiet; then
             echo "Aucun changement."
           else
