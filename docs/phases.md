@@ -12,7 +12,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | **close le 29/10/2026** (écart I4 accepté) |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | **close le 31/10/2026** |
-| P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | | à faire |
+| P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | critères L1-L5 proposés le 31/10/2026 | en cours |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | | à faire |
 
 ## Journal P0
@@ -400,6 +400,57 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P7 — Critères (proposition du 31/10/2026, avant tout calcul)
+
+> Statut : **proposition**, à valider par Grég. Sonde : `docs/sonde-p7.md`. Déjà publiés hors P7 : jet stream
+> (vitesse et latitude, ERA5, « signal non établi »), géopotentiel 500 hPa au-dessus de Bordeaux (ERA5 et
+> radiosondages).
+
+### Constat de la sonde
+
+- **Z500 quotidien** (ERA5, statistiques quotidiennes) : disponible depuis 1940 ; un mois sur 30-85° N, 60° O-60° E
+  à 2,5° traité en 6 minutes. Les 86 ans demandent des requêtes annuelles relevées sur plusieurs jours.
+- **Foudre** : la densité d'éclairs du modèle **n'existe pas** dans les moyennes mensuelles ERA5 (requête rejetée) ;
+  seule l'énergie potentielle de convection (CAPE) y figure. Aucune série ouverte d'impacts de foudre.
+
+### Périmètre proposé
+
+- **A. Blocages euro-atlantiques** : indice de Tibaldi et Molteni (1990) sur le Z500 quotidien ; jours bloqués par
+  hiver (décembre-février) et par été (juin-août), secteur 30° O-30° E.
+- **B. Z500 moyen Atlantique-Europe** (35-70° N, 30° O-30° E), moyenne annuelle, mêmes données.
+- **C. Indicateur indirect d'orages en Gironde** : CAPE moyenne de juin à août (ERA5 mensuel). Faible : la CAPE dit
+  l'instabilité possible, pas les orages ni les éclairs.
+
+### Méthode proposée pour A (fixée avant calcul)
+
+Z en mètres géopotentiels (z / 9,80665). Pour chaque longitude et chaque décalage Δ ∈ {−5° ; 0 ; +5°} :
+φN = 80° + Δ, φ0 = 60° + Δ, φS = 40° + Δ ; GHGS = (Z(φ0) − Z(φS)) / (φ0 − φS), GHGN = (Z(φN) − Z(φ0)) / (φN − φ0).
+Longitude bloquée si GHGS > 0 et GHGN < −10 m par degré, pour au moins un Δ. Jour bloqué dans le secteur si au moins
+3 longitudes contiguës (7,5°) y sont bloquées ; épisode = au moins 5 jours bloqués consécutifs ; indicateur = jours
+appartenant à un épisode, par saison.
+
+### Références et confiance
+
+Aucune référence chiffrée : la littérature ne retient pas de tendance robuste observée des blocages (Woollings et
+al., 2018). Proposition : comme annoncé pour la P7, **confiance plafonnée à « signal non établi »** pour A et C
+(exploratoires) ; B suit la règle ERA5 (au plus « moyenne »).
+
+### Critères proposés
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| L1 | Exhaustivité | Tout le périmètre retenu |
+| L2 | Complétude | Saison retenue si tous ses jours (A) ou ses 3 mois (C) existent ; année complète (B) |
+| L3 | Plausibilité climatologique | Hiver : la fréquence moyenne de blocage 1981-2010 est plus forte que l'été, et comprise entre 5 et 40 % des jours (repère des climatologies publiées) |
+| L4 | Robustesse | Mêmes conclusions de signe avec un secteur décalé (20° O-40° E), en information |
+| L5 | Technique | Tests, CI, contrat, pages |
+
+### Décisions demandées à Grég
+
+- **D-T** : périmètre (A à C).
+- **D-U** : méthode de A telle que décrite.
+- **D-V** : plafond « signal non établi » pour A et C.
 
 ## P6 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 
