@@ -109,6 +109,75 @@ def ads(md: list[str]) -> None:
         md += ["", "### soumission minimale (AOD 550 nm, janvier 2020)", "", f"→ **{st}**", "", "```", txt, "```"]
 
 
+def ceres(md: list[str]) -> None:
+    """CERES EBAF (NASA LaRC) par OPeNDAP, avec le jeton Earthdata : liste des fichiers, puis variable du flux net
+    global au sommet de l'atmosphère (lecture ASCII d'une seule variable, quelques centaines de valeurs)."""
+    import re
+    tok = os.environ.get("EARTHDATA_TOKEN", "")
+    md += ["", "## Déséquilibre énergétique (CERES EBAF, OPeNDAP avec jeton Earthdata)", "",
+           f"jeton présent : {'oui' if tok else 'NON'}"]
+    hdr = {"Authorization": f"Bearer {tok}"} if tok else {}
+    for ed in ("Edition4.2.1", "Edition4.2"):
+        base = f"https://opendap.larc.nasa.gov/opendap/CERES/EBAF/{ed}/"
+        st, data, _ = get(base + "contents.html", headers=hdr)
+        html = data.decode("utf-8", "replace")
+        files = sorted(set(re.findall(r"(CERES_EBAF[^\"<>]*?\.nc)", html)))
+        md += ["", f"### `{base}contents.html` → **{st}**", "", "```", f"{len(files)} fichiers : {files[:10]}",
+               html[:300].replace(tok or "§§", "***") if not files else "", "```"]
+        if not files:
+            continue
+        f = files[-1]
+        for suffix in (".dds", ".ascii?gtoa_net_all_mon[0:1:5],time[0:1:5]"):
+            st, data, _ = get(base + f + suffix, headers=hdr)
+            md += ["", f"### `{f}{suffix}` → **{st}**", "", "```",
+                   *data.decode("utf-8", "replace").replace(tok or "§§", "***").splitlines()[:40], "```"]
+        break
+
+
+def ads_result(md: list[str]) -> None:
+    """CAMS EAC4 mensuel : soumission minimale et lecture du résultat (variables, dimensions)."""
+    import time
+    md += ["", "## Aérosols (CAMS EAC4 mensuel, Atmosphere Data Store)"]
+    api = "https://ads.atmosphere.copernicus.eu/api/retrieve/v1"
+    hdr = {"PRIVATE-TOKEN": KEY, "Content-Type": "application/json"}
+    body = {"inputs": {"variable": ["total_aerosol_optical_depth_550nm"], "year": ["2020"], "month": ["01"],
+                       "product_type": ["monthly_mean"], "data_format": "netcdf_zip"}}
+    st, data, _ = get(f"{api}/processes/cams-global-reanalysis-eac4-monthly/execution", headers=hdr,
+                      data=json.dumps(body).encode(), method="POST")
+    lines = [data.decode("utf-8", "replace").replace(KEY or "§§", "***")[:600]]
+    try:
+        job = json.loads(data)["jobID"]
+        t0, status = time.time(), None
+        while time.time() - t0 < 1200:
+            time.sleep(30)
+            _, dj, _ = get(f"{api}/jobs/{job}", headers=hdr)
+            status = json.loads(dj).get("status")
+            if status in ("successful", "failed", "rejected", "dismissed"):
+                break
+        lines.append(f"état après {time.time() - t0:.0f} s : {status}")
+        _, dr, _ = get(f"{api}/jobs/{job}/results", headers=hdr)
+        res = json.loads(dr)
+        href = res["asset"]["value"]["href"]
+        _, blob, _ = get(href, headers={"PRIVATE-TOKEN": KEY}, limit=300_000_000)
+        if blob[:2] == b"PK":
+            z = zipfile.ZipFile(io.BytesIO(blob))
+            lines.append("archive : " + ", ".join(f"{i.filename} ({i.file_size} o)" for i in z.infolist()))
+            blob = z.read(z.namelist()[0])
+        path = OUT.parent / "_aod.nc"
+        path.write_bytes(blob)
+        try:
+            import netCDF4
+            with netCDF4.Dataset(path) as ds:
+                lines.append("dimensions : " + ", ".join(f"{k}={len(v)}" for k, v in ds.dimensions.items()))
+                for name, var in ds.variables.items():
+                    lines.append(f"  {name} {var.dimensions} {var.shape} {getattr(var, 'units', '')} {getattr(var, 'long_name', '')}")
+        finally:
+            path.unlink(missing_ok=True)
+    except Exception as exc:  # noqa: BLE001
+        lines.append(f"{type(exc).__name__} {exc}")
+    md += ["", f"→ **{st}**", "", "```", *lines, "```"]
+
+
 CANDIDATES_2 = {
     "Puits de carbone : fichiers CSV openclimatedata (Global Carbon Budget 2025)": [
         "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-ocean-sink-gcb.csv",
@@ -117,14 +186,25 @@ CANDIDATES_2 = {
         "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-land-use-change-emissions-gcb.csv",
     ],
 }
-PASS = 2      # 2e passage (31/10/2026) : en-têtes des CSV du Global Carbon Budget
+PASS = 3      # 3e passage (31/10/2026) : accès CERES (jeton Earthdata) et CAMS (conditions ADS acceptées)
 
 
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P6 — sources mondiales (généré)", "", f"Généré par `python -m etl.probe.p6` le {now}. Aucun indicateur calculé."]
+    global OUT
+    if PASS == 3:
+        OUT = ROOT / "docs" / "sonde-p6c.md"
+        md[0] = "# Sonde P6 — accès CERES et CAMS (généré)"
+        for step in (ceres, ads_result):
+            try:
+                step(md)
+            except Exception as exc:  # noqa: BLE001
+                md += ["", f"**{step.__name__} : échec — {type(exc).__name__} {exc}**"]
+            OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+        print(f"→ {OUT.relative_to(ROOT)}")
+        return 0
     if PASS == 2:
-        global OUT
         OUT = ROOT / "docs" / "sonde-p6b.md"
     for title, urls in (CANDIDATES_2 if PASS == 2 else CANDIDATES).items():
         md += ["", f"## {title}"]

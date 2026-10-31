@@ -37,6 +37,7 @@ jobs:
       - name: Sonde P6 (sources mondiales, aucun indicateur)
         env:
           CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # secret du dépôt, jamais affiché
+          EARTHDATA_TOKEN: ${{ secrets.EARTHDATA_TOKEN }}   # jeton NASA Earthdata (P6), jamais affiché
         run: python -m etl.probe.p6
       - name: Publication du rapport
         run: |
