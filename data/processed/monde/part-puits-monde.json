@@ -281,9 +281,9 @@
   "source_name": "Global Carbon Project — Global Carbon Budget 2025 (copie CSV openclimatedata)",
   "source_url": "https://globalcarbonbudget.org/datahub/",
   "license": "CC BY 4.0",
-  "extracted_at": "2026-10-31T20:57:35Z",
+  "extracted_at": "2026-10-31T21:11:52Z",
   "script": "etl.indicators.monde",
-  "etl_version": "0.1.0+49cc0e8",
+  "etl_version": "0.1.0+d5cffca",
   "homogenized": true
  },
  "is_demo": false

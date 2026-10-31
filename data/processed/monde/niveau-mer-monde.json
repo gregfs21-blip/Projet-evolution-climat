@@ -187,9 +187,9 @@
   "source_name": "NOAA NESDIS STAR — niveau moyen mondial de la mer par altimétrie (TOPEX/Jason/Sentinel-6)",
   "source_url": "https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/LSA_SLR_timeseries_global.php",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-10-31T20:57:35Z",
+  "extracted_at": "2026-10-31T21:11:52Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+49cc0e8",
+  "etl_version": "0.1.0+d5cffca",
   "homogenized": true
  },
  "is_demo": false

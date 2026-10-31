@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-31T20:57:38Z",
+ "generated_at": "2026-10-31T21:11:56Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -1124,10 +1124,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "CAMS (Copernicus), MERRA-2",
-     "note": "Séries de réanalyse, pas d'observation directe longue.",
-     "indicators": []
+     "status": "publie",
+     "source": "CAMS EAC4 (Copernicus), épaisseur optique à 550 nm, depuis 2003",
+     "note": "Réanalyse, pas d'observation directe longue.",
+     "indicators": [
+      {
+       "id": "aerosols-monde",
+       "title": "Épaisseur optique des aérosols (CAMS)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -1137,10 +1143,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "NASA CERES EBAF (compte Earthdata gratuit)",
+     "status": "publie",
+     "source": "NASA CERES EBAF-TOA Edition 4.2.1, depuis 2001",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "desequilibre-energetique-monde",
+       "title": "Déséquilibre énergétique de la Terre (CERES)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },

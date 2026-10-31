@@ -224,9 +224,9 @@
   "source_name": "NASA Ozone Watch — surface du trou d'ozone antarctique (TOMS, OMI, OMPS)",
   "source_url": "https://ozonewatch.gsfc.nasa.gov/statistics/annual_data.html",
   "license": "Domaine public (NASA)",
-  "extracted_at": "2026-10-31T20:57:35Z",
+  "extracted_at": "2026-10-31T21:11:52Z",
   "script": "etl.indicators.monde",
-  "etl_version": "0.1.0+49cc0e8",
+  "etl_version": "0.1.0+d5cffca",
   "homogenized": true
  },
  "is_demo": false

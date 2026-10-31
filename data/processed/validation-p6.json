@@ -1,10 +1,12 @@
 {
   "schema_version": "1.0",
   "phase": "p6",
-  "generated_at": "2026-10-31T21:00:44Z",
+  "generated_at": "2026-10-31T21:15:11Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
+    "aerosols-monde",
+    "desequilibre-energetique-monde",
     "niveau-mer-monde",
     "part-puits-monde",
     "ph-ocean-hot",
@@ -20,7 +22,7 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "8 indicateurs sur 8"
+      "detail": "10 indicateurs sur 10"
     },
     {
       "name": "K2 complétude",
@@ -58,11 +60,18 @@
       "detail": "UAH +0,148 ; RSS +0,229 °C/déc. (1979-2025) ; écart +0,081"
     },
     {
+      "name": "Déséquilibre énergétique et Loeb et al. 2021 (information)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "pente 2006-2018 des moyennes annuelles : +0,44 W/m² par décennie ; Loeb et al. 2021 : + 0,50 ± 0,47 sur mi-2005 à mi-2019 (mêmes données CERES, contrôle de lecture, pas une validation)"
+    },
+    {
       "name": "K7 plausibilité",
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "Bornes contrôlées à la construction pour les 8 indicateurs publiés."
+      "detail": "Bornes contrôlées à la construction pour les 10 indicateurs publiés."
     },
     {
       "name": "K8 technique",

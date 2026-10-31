@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-31T20:57:38Z",
- "etl_version": "0.1.0+49cc0e8",
+ "generated_at": "2026-10-31T21:11:56Z",
+ "etl_version": "0.1.0+d5cffca",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -4458,6 +4458,52 @@
     "theme": "altitude",
     "theme_label": "Température en altitude",
     "order": 3
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "desequilibre-energetique-monde",
+   "scale": "monde",
+   "title": "Déséquilibre énergétique de la Terre (CERES)",
+   "unit": "W/m²",
+   "path": "monde/desequilibre-energetique-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse monde — bilan énergétique",
+   "variable": {
+    "id": "desequilibre-energetique",
+    "code": "EEI",
+    "label": "déséquilibre énergétique de la Terre",
+    "theme": "bilan-energetique",
+    "theme_label": "Bilan énergétique de la Terre",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "aerosols-monde",
+   "scale": "monde",
+   "title": "Épaisseur optique des aérosols (CAMS)",
+   "unit": "sans unité",
+   "path": "monde/aerosols-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Synthèse monde — aérosols",
+   "variable": {
+    "id": "aerosols",
+    "code": "AOD",
+    "label": "épaisseur optique des aérosols à 550 nm",
+    "theme": "aerosols",
+    "theme_label": "Aérosols",
+    "order": 0
    },
    "place": {
     "id": "monde",

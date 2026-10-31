@@ -217,9 +217,9 @@
   "source_name": "University of Hawaii — Hawaii Ocean Time-series (HOT), système CO₂ de surface, station ALOHA",
   "source_url": "https://hahana.soest.hawaii.edu/hot/hotco2/hotco2.html",
   "license": "Libre, citation demandée (Dore et al., 2009)",
-  "extracted_at": "2026-10-31T20:57:35Z",
+  "extracted_at": "2026-10-31T21:11:52Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+49cc0e8",
+  "etl_version": "0.1.0+d5cffca",
   "homogenized": true
  },
  "is_demo": false

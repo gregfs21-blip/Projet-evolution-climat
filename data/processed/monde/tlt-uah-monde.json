@@ -227,9 +227,9 @@
   "source_name": "University of Alabama in Huntsville — UAH 6.1, température de la basse troposphère (satellites)",
   "source_url": "https://www.nsstc.uah.edu/climate/",
   "license": "Libre (UAH)",
-  "extracted_at": "2026-10-31T20:57:35Z",
+  "extracted_at": "2026-10-31T21:11:52Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+49cc0e8",
+  "etl_version": "0.1.0+d5cffca",
   "homogenized": true
  },
  "is_demo": false
