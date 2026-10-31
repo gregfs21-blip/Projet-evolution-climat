@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "phase": "p6",
+  "generated_at": "2026-10-31T21:00:44Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "indicators": [
+    "niveau-mer-monde",
+    "part-puits-monde",
+    "ph-ocean-hot",
+    "puits-ocean-monde",
+    "puits-terres-monde",
+    "tlt-rss-monde",
+    "tlt-uah-monde",
+    "trou-ozone-monde"
+  ],
+  "checks": [
+    {
+      "name": "K1 exhaustivité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "8 indicateurs sur 8"
+    },
+    {
+      "name": "K2 complétude",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Appliquée par les lecteurs : 12 mois (niveau marin, troposphère), au moins 6 campagnes par an (pH)."
+    },
+    {
+      "name": "K3 produits publiés",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Séries reprises sans modification, unités contrôlées ; aucune série brute de station."
+    },
+    {
+      "name": "K4 validation externe (R11, R12)",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "niveau-mer-monde : mesuré +3,5409 mm/an, attendu [+3,2000 ; +4,2000] ; ph-ocean-hot : mesuré -0,0019 pH/an, attendu [-0,0023 ; -0,0015]"
+    },
+    {
+      "name": "K5 contrôle croisé surface / troposphère",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "HadCRUT5 / UAH : r = 0,940 sur 47 ans ; HadCRUT5 / RSS : r = 0,984 sur 47 ans ; seuil 0,8"
+    },
+    {
+      "name": "K6 cohérence UAH / RSS",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "UAH +0,148 ; RSS +0,229 °C/déc. (1979-2025) ; écart +0,081"
+    },
+    {
+      "name": "K7 plausibilité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Bornes contrôlées à la construction pour les 8 indicateurs publiés."
+    },
+    {
+      "name": "K8 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests, CI et contrat vérifiés par les workflows."
+    }
+  ]
+}

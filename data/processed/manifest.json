@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-10-30T21:36:49Z",
- "etl_version": "0.1.0+5c4360f",
+ "generated_at": "2026-10-31T20:57:38Z",
+ "etl_version": "0.1.0+49cc0e8",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -4278,6 +4278,190 @@
    "place": {
     "id": "france",
     "name": "France",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "niveau-mer-monde",
+   "scale": "monde",
+   "title": "Niveau moyen mondial de la mer (altimétrie satellitaire)",
+   "unit": "mm",
+   "path": "monde/niveau-mer-monde.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Niveau de la mer",
+   "variable": {
+    "id": "niveau-mer",
+    "code": "NM",
+    "label": "niveau marin moyen annuel",
+    "theme": "niveau-mer",
+    "theme_label": "Niveau de la mer",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "ph-ocean-hot",
+   "scale": "monde",
+   "title": "pH de surface de l'océan à la station ALOHA (Hawaï)",
+   "unit": "pH",
+   "path": "monde/ph-ocean-hot.json",
+   "confidence": "elevee",
+   "is_demo": false,
+   "group": "Acidification de l'océan",
+   "variable": {
+    "id": "ph-ocean",
+    "code": "pH",
+    "label": "pH de surface de l'océan",
+    "theme": "acidification",
+    "theme_label": "Acidification de l'océan",
+    "order": 0
+   },
+   "place": {
+    "id": "hot",
+    "name": "Station ALOHA (Hawaï)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "trou-ozone-monde",
+   "scale": "monde",
+   "title": "Surface du trou d'ozone antarctique",
+   "unit": "millions de km²",
+   "path": "monde/trou-ozone-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse monde — ozone",
+   "variable": {
+    "id": "trou-ozone",
+    "code": "Trou d'ozone",
+    "label": "surface du trou d'ozone antarctique",
+    "theme": "ozone",
+    "theme_label": "Couche d'ozone",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "puits-ocean-monde",
+   "scale": "monde",
+   "title": "Puits de carbone océanique (Global Carbon Budget)",
+   "unit": "GtC/an",
+   "path": "monde/puits-ocean-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Puits de carbone",
+   "variable": {
+    "id": "puits-ocean",
+    "code": "Océan",
+    "label": "puits de carbone océanique",
+    "theme": "puits-carbone",
+    "theme_label": "Puits de carbone",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "puits-terres-monde",
+   "scale": "monde",
+   "title": "Puits de carbone terrestre (Global Carbon Budget)",
+   "unit": "GtC/an",
+   "path": "monde/puits-terres-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Puits de carbone",
+   "variable": {
+    "id": "puits-terres",
+    "code": "Terres",
+    "label": "puits de carbone terrestre",
+    "theme": "puits-carbone",
+    "theme_label": "Puits de carbone",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "part-puits-monde",
+   "scale": "monde",
+   "title": "Part des émissions de CO₂ absorbée par l'océan et les terres",
+   "unit": "%",
+   "path": "monde/part-puits-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Synthèse monde — puits de carbone",
+   "variable": {
+    "id": "part-puits",
+    "code": "Part puits",
+    "label": "part des émissions absorbée par les puits",
+    "theme": "puits-carbone",
+    "theme_label": "Puits de carbone",
+    "order": 2
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "tlt-uah-monde",
+   "scale": "monde",
+   "title": "Température de la basse troposphère — UAH 6.1 (satellites)",
+   "unit": "°C",
+   "path": "monde/tlt-uah-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Température en altitude",
+   "variable": {
+    "id": "tlt-uah",
+    "code": "TLT UAH",
+    "label": "température de la basse troposphère (UAH)",
+    "theme": "altitude",
+    "theme_label": "Température en altitude",
+    "order": 2
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "tlt-rss-monde",
+   "scale": "monde",
+   "title": "Température de la basse troposphère — RSS 4.0 (satellites)",
+   "unit": "°C",
+   "path": "monde/tlt-rss-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Température en altitude",
+   "variable": {
+    "id": "tlt-rss",
+    "code": "TLT RSS",
+    "label": "température de la basse troposphère (RSS)",
+    "theme": "altitude",
+    "theme_label": "Température en altitude",
+    "order": 3
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
     "kind": "composite"
    }
   }
