@@ -178,6 +178,42 @@ def ads_result(md: list[str]) -> None:
     md += ["", f"→ **{st}**", "", "```", *lines, "```"]
 
 
+def ceres_cmr(md: list[str]) -> None:
+    """CERES EBAF par le catalogue CMR de la NASA : collections, granules, liens de téléchargement (ASDC), taille ;
+    essai d'accès avec le jeton Earthdata (en-tête seulement, puis premier mégaoctet)."""
+    tok = os.environ.get("EARTHDATA_TOKEN", "")
+    hdr = {"Authorization": f"Bearer {tok}"} if tok else {}
+    md += ["", "## CERES EBAF par le catalogue CMR (NASA)"]
+    st, data, _ = get("https://cmr.earthdata.nasa.gov/search/collections.json?keyword=CERES%20EBAF&page_size=20")
+    links = []
+    try:
+        cols = json.loads(data)["feed"]["entry"]
+        lines = [f"{c.get('short_name')} | {c.get('version_id')} | {c.get('id')} | {c.get('time_start', '')[:10]}-{(c.get('time_end') or '')[:10]}"
+                 for c in cols]
+    except Exception as exc:  # noqa: BLE001
+        cols, lines = [], [f"{type(exc).__name__} {data[:300]!r}"]
+    md += ["", f"### collections → **{st}**", "", "```", *lines, "```"]
+    for c in cols:
+        if "TOA" not in (c.get("short_name") or "") or "EBAF" not in (c.get("short_name") or ""):
+            continue
+        st, data, _ = get(f"https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id={c['id']}&page_size=5&sort_key=-start_date")
+        try:
+            gr = json.loads(data)["feed"]["entry"]
+            lines = []
+            for g in gr:
+                for lk in g.get("links", []):
+                    if lk.get("href", "").startswith("http") and "data#" in lk.get("rel", ""):
+                        links.append(lk["href"])
+                        lines.append(f"{g.get('title')} | {g.get('granule_size')} Mo | {lk['href']}")
+        except Exception as exc:  # noqa: BLE001
+            lines = [f"{type(exc).__name__} {data[:300]!r}"]
+        md += ["", f"### granules {c.get('short_name')} {c.get('version_id')} → **{st}**", "", "```", *lines[:10], "```"]
+    for href in links[:2]:
+        st, data, _ = get(href, headers={**hdr, "Range": "bytes=0-1000000"}, limit=1_100_000)
+        md += ["", f"### accès `{href}` (premier Mo, jeton) → **{st}**", "", "```",
+               f"{len(data)} octets ; début {data[:8]!r}", "```"]
+
+
 CANDIDATES_2 = {
     "Puits de carbone : fichiers CSV openclimatedata (Global Carbon Budget 2025)": [
         "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-ocean-sink-gcb.csv",
@@ -186,17 +222,17 @@ CANDIDATES_2 = {
         "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-land-use-change-emissions-gcb.csv",
     ],
 }
-PASS = 3      # 3e passage (31/10/2026) : accès CERES (jeton Earthdata) et CAMS (conditions ADS acceptées)
+PASS = 4      # 4e passage (31/10/2026) : CERES par le catalogue CMR (OPeNDAP refusé depuis GitHub)
 
 
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P6 — sources mondiales (généré)", "", f"Généré par `python -m etl.probe.p6` le {now}. Aucun indicateur calculé."]
     global OUT
-    if PASS == 3:
-        OUT = ROOT / "docs" / "sonde-p6c.md"
+    if PASS in (3, 4):
+        OUT = ROOT / "docs" / ("sonde-p6c.md" if PASS == 3 else "sonde-p6d.md")
         md[0] = "# Sonde P6 — accès CERES et CAMS (généré)"
-        for step in (ceres, ads_result):
+        for step in ((ceres, ads_result) if PASS == 3 else (ceres_cmr,)):
             try:
                 step(md)
             except Exception as exc:  # noqa: BLE001
