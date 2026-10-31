@@ -11,7 +11,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | **close le 29/10/2026** (écart I4 accepté) |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
-| P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | | à faire |
+| P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 proposés le 31/10/2026 | en cours |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | | à faire |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | | à faire |
 
@@ -400,6 +400,65 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P6 — Critères (proposition du 31/10/2026, avant tout calcul)
+
+> Statut : **proposition**, à valider par Grég. Sonde : `docs/sonde-p6.md`. Déjà publiés pour le monde hors P6
+> (« largeur d'abord ») : températures de surface (HadCRUT5, GISTEMP, Berkeley), SST (NOAA, HadSST), CO₂, CH₄, N₂O,
+> chaleur de l'océan 0-700 et 0-2000 m, banquise, ONI, ouragans et ACE, jet stream (ERA5).
+
+### Constat de la sonde
+
+- **Niveau marin mondial** : NOAA STAR (TOPEX/Jason/Sentinel-6, annuel retiré, **sans correction isostatique**,
+  1992-2025, tendance du fichier 3,11 mm/an) ; Université du Colorado (correction isostatique appliquée, s'arrête en
+  2023) ; CSIRO (s'arrête en 2015).
+- **Acidification** : station HOT (Hawaï), 355 campagnes 1988-2024, pH in situ calculé et mesuré.
+- **Ozone** : NASA Ozone Watch, surface moyenne du trou (7 sept.-13 oct.) et ozone minimal, 1979-2025 (1995 absent).
+- **Puits de carbone** : Global Carbon Budget 2025 (puits océanique et terrestre, 1959-2024, GtC/an), en CSV via
+  openclimatedata (le site officiel renvoie 404, ICOS demande l'acceptation d'une licence dans un navigateur).
+- **Troposphère** : satellites UAH 6.1 et RSS 4.0, anomalies mensuelles globales 1979-2026.
+- **Déséquilibre énergétique (CERES)** : **accès refusé sans compte NASA Earthdata** (gratuit).
+- **Aérosols (CAMS EAC4, 2003-2025)** : **conditions de l'Atmosphere Data Store non acceptées** sur le compte.
+
+### Périmètre proposé
+
+- **A. Niveau marin mondial** (altimétrie).
+- **B. Acidification** : pH de surface à HOT, moyenne annuelle des campagnes.
+- **C. Ozone** : surface du trou d'ozone antarctique (affichée en deux périodes : 1979-2000 creusement, depuis 2000
+  début de résorption attendue).
+- **D. Puits de carbone** : puits océanique, puits terrestre, et part des émissions absorbée par les deux.
+- **E. Troposphère** : UAH et RSS, moyenne annuelle ; contrôle croisé avec la surface.
+- **F. Déséquilibre énergétique** (CERES, 2000-) : seulement si Grég crée un compte Earthdata.
+- **G. Aérosols** (CAMS, 2003-) : seulement si Grég accepte les conditions de l'ADS.
+
+### Références proposées
+
+| # | Énoncé | Source | Contrôle proposé |
+|---|---|---|---|
+| R11 | Niveau marin mondial : + 3,7 [3,2 à 4,2] mm/an sur 2006-2018 | GIEC AR6, GT1, résumé A.1.7 | Pente annuelle 2006-2018 dans **[3,2 ; 4,2] mm/an** ; limite : NOAA STAR sans correction isostatique (− 0,2 à − 0,5 mm/an) |
+| R12 | Station ALOHA (HOT) : pH de surface − 0,0019 ± 0,0002 par an (environ 20 ans depuis 1988) | Dore et al., PNAS 106, 2009 | Pente du pH in situ annuel sur 1989-2007 dans une fourchette à décider |
+| — | Ozone, puits, troposphère | aucune référence retenue (puits : la source est la référence elle-même) | confiance au plus « moyenne » |
+
+### Critères proposés
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| K1 | Exhaustivité | Tout le périmètre retenu ; exclusions justifiées |
+| K2 | Complétude | Année retenue si complète selon la règle propre à chaque série (12 mois ; HOT : au moins 6 campagnes dans l'année) |
+| K3 | Produits publiés | Séries reprises sans modification, unités contrôlées (C2 : pas de série brute de station) |
+| K4 | Validation externe | R11, R12 ; sinon confiance au plus « moyenne » |
+| K5 | **Contrôle croisé surface / troposphère (nouveau)** | Corrélation interannuelle entre la température de surface HadCRUT5 et chaque série TLT, 1979-2025 : r ≥ 0,8 |
+| K6 | Cohérence entre produits | UAH et RSS : même signe de pente ; écart publié en information |
+| K7 | Plausibilité | Bornes fixées par série (niveau marin ± 200 mm, pH 7,9-8,2, trou d'ozone 0-35 millions de km², puits 0-6 GtC/an, TLT ± 2 °C) |
+| K8 | Technique | Tests, CI, contrat, pages |
+
+### Décisions demandées à Grég
+
+- **D-Q** : périmètre (A à G).
+- **D-R** : source du niveau marin (NOAA STAR jusqu'en 2025 sans correction isostatique, ou Colorado avec correction
+  jusqu'en 2023).
+- **D-S** : fourchette de R12.
+- **Actions** : compte Earthdata (F) et conditions de l'ADS (G), si retenus.
 
 ## P5 bis — Carte départementale des tendances (demande de Grég du 30/10/2026, choix fixés AVANT calcul)
 
