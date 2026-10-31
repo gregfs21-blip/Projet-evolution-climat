@@ -457,6 +457,20 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 | K7 | Plausibilité | Bornes fixées par série (niveau marin ± 200 mm, pH 7,9-8,2, trou d'ozone 0-35 millions de km², puits 0-6 GtC/an, TLT ± 2 °C) |
 | K8 | Technique | Tests, CI, contrat, pages |
 
+### Choix de mise en œuvre fixés AVANT le premier calcul (31/10/2026, A à E ; `etl/sources/globaux.py`, `etl/indicators/monde.py`)
+
+- **Niveau marin** (NOAA STAR, TOPEX/Jason/Sentinel-6, annuel retiré) : valeur d'une ligne = première mission
+  renseignée ; moyenne de l'année civile, retenue si chaque mois a au moins une valeur (1993-2025).
+- **pH (HOT)** : pH in situ calculé (`pHcalc_insitu`, complet depuis 1988 ; le pH mesuré manque avant 1992) ; −999 =
+  absent ; moyenne annuelle des campagnes, année retenue si au moins 6 campagnes.
+- **Trou d'ozone** : surface moyenne 7 sept.-13 oct. ; tendance mise en avant sur **2000-2025** (après le maximum des
+  substances destructrices, période de la résorption attendue), tendance 1979-1994 publiée à côté (1995 manque).
+- **Puits de carbone** (GCB 2025) : première colonne de valeurs de chaque fichier (estimation GCB), contrôlée par son
+  en-tête ; **part absorbée** = (puits océanique + puits terrestre) / (émissions fossiles + changement d'usage des
+  sols), en %.
+- **Troposphère** : UAH 6.1 colonne « Globe », RSS 4.0 « Global » ; moyenne des 12 mois ; anomalies telles que
+  publiées (références de période différentes : comparer les pentes, pas les niveaux). K5 : HadCRUT5 annuel.
+
 ### Décisions demandées à Grég
 
 - **D-Q** : périmètre (A à G).
