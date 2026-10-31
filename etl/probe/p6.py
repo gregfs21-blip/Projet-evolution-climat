@@ -109,19 +109,34 @@ def ads(md: list[str]) -> None:
         md += ["", "### soumission minimale (AOD 550 nm, janvier 2020)", "", f"→ **{st}**", "", "```", txt, "```"]
 
 
+CANDIDATES_2 = {
+    "Puits de carbone : fichiers CSV openclimatedata (Global Carbon Budget 2025)": [
+        "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-ocean-sink-gcb.csv",
+        "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-terrestrial-sink-gcb.csv",
+        "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-fossil-emissions.csv",
+        "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-land-use-change-emissions-gcb.csv",
+    ],
+}
+PASS = 2      # 2e passage (31/10/2026) : en-têtes des CSV du Global Carbon Budget
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P6 — sources mondiales (généré)", "", f"Généré par `python -m etl.probe.p6` le {now}. Aucun indicateur calculé."]
-    for title, urls in CANDIDATES.items():
+    if PASS == 2:
+        global OUT
+        OUT = ROOT / "docs" / "sonde-p6b.md"
+    for title, urls in (CANDIDATES_2 if PASS == 2 else CANDIDATES).items():
         md += ["", f"## {title}"]
         for url in urls:
             st, data, ctype = get(url, headers={"Accept": "application/vnd.github+json"} if "api.github.com" in url else None)
             md += ["", f"### `{url}` → **{st}**", "", "```", *[x[:300] for x in describe(data, ctype)][:60], "```"]
             OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
-    try:
-        ads(md)
-    except Exception as exc:  # noqa: BLE001
-        md += ["", f"**ADS : échec — {type(exc).__name__} {exc}**"]
+    if PASS == 1:
+        try:
+            ads(md)
+        except Exception as exc:  # noqa: BLE001
+            md += ["", f"**ADS : échec — {type(exc).__name__} {exc}**"]
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     print(f"→ {OUT.relative_to(ROOT)}")
     return 0
