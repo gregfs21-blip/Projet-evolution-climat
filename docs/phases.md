@@ -11,7 +11,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P3 | Atmosphère et littoral Gironde : vent, humidité, pression (ERA5), SST golfe de Gascogne, niveau marin | critères H1-H8 validés le 27/10/2026 | **close le 28/10/2026** (écart H5 humidité accepté) |
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | **close le 29/10/2026** (écart I4 accepté) |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
-| P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 proposés le 31/10/2026 | en cours |
+| P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | en cours |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | | à faire |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | | à faire |
 
@@ -401,9 +401,14 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   (elle était déjà en « signal non établi »).
 - P3 close.
 
-## P6 — Critères (proposition du 31/10/2026, avant tout calcul)
+## P6 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 
-> Statut : **proposition**, à valider par Grég. Sonde : `docs/sonde-p6.md`. Déjà publiés pour le monde hors P6
+> **Décisions de Grég du 31/10/2026, avant tout calcul** : D-Q périmètre **A à G** (F et G après ses démarches :
+> compte Earthdata, conditions de l'ADS ; leurs références seront fixées après la sonde d'accès, avant calcul) ;
+> D-R niveau marin **NOAA STAR jusqu'en 2025** (sans correction isostatique, limite assumée) ; D-S R12 avec la
+> fourchette **[−0,0023 ; −0,0015] pH/an** (± 20 %) ; **critères K1-K8 validés**.
+>
+> Statut d'origine : proposition. Sonde : `docs/sonde-p6.md`. Déjà publiés pour le monde hors P6
 > (« largeur d'abord ») : températures de surface (HadCRUT5, GISTEMP, Berkeley), SST (NOAA, HadSST), CO₂, CH₄, N₂O,
 > chaleur de l'océan 0-700 et 0-2000 m, banquise, ONI, ouragans et ACE, jet stream (ERA5).
 
@@ -436,7 +441,7 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 | # | Énoncé | Source | Contrôle proposé |
 |---|---|---|---|
 | R11 | Niveau marin mondial : + 3,7 [3,2 à 4,2] mm/an sur 2006-2018 | GIEC AR6, GT1, résumé A.1.7 | Pente annuelle 2006-2018 dans **[3,2 ; 4,2] mm/an** ; limite : NOAA STAR sans correction isostatique (− 0,2 à − 0,5 mm/an) |
-| R12 | Station ALOHA (HOT) : pH de surface − 0,0019 ± 0,0002 par an (environ 20 ans depuis 1988) | Dore et al., PNAS 106, 2009 | Pente du pH in situ annuel sur 1989-2007 dans une fourchette à décider |
+| R12 | Station ALOHA (HOT) : pH de surface − 0,0019 ± 0,0002 par an (environ 20 ans depuis 1988) | Dore et al., PNAS 106, 2009 | Pente du pH in situ annuel sur 1989-2007 dans **[−0,0023 ; −0,0015] par an** |
 | — | Ozone, puits, troposphère | aucune référence retenue (puits : la source est la référence elle-même) | confiance au plus « moyenne » |
 
 ### Critères proposés
