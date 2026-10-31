@@ -33,6 +33,8 @@ themes:
   puits-carbone: Puits de carbone
   bilan-energetique: Bilan énergétique de la Terre
   aerosols: Aérosols
+  blocages: Blocages atmosphériques
+  orages: Orages (indicateur indirect)
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -112,3 +114,8 @@ variables:
   tlt-rss: {code: TLT RSS, label: température de la basse troposphère (RSS), theme: altitude, order: 3}
   desequilibre-energetique: {code: EEI, label: déséquilibre énergétique de la Terre, theme: bilan-energetique, order: 0}
   aerosols: {code: AOD, label: épaisseur optique des aérosols à 550 nm, theme: aerosols, order: 0}
+# --- P7 (critères L1-L5 validés le 31/10/2026)
+  jours-blocage-hiver: {code: Hiver, label: jours de blocage atlantique-européen en hiver, theme: blocages, order: 0}
+  jours-blocage-ete: {code: Été, label: jours de blocage atlantique-européen en été, theme: blocages, order: 1}
+  z500-europe: {code: Z500 Europe, label: géopotentiel 500 hPa moyen sur l'Atlantique-Europe, theme: geopotentiel, order: 1}
+  cape: {code: CAPE, label: énergie de convection en été (CAPE), theme: orages, order: 0}

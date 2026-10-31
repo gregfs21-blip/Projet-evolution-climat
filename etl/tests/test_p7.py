@@ -35,5 +35,30 @@ class TestBlocking(unittest.TestCase):
         self.assertAlmostEqual(B.sector_mean(z, self.lat, self.lon), 5500.0)
 
 
+class TestEpisodes(unittest.TestCase):
+    def test_sector_contiguity(self):
+        from etl.indicators import exploratoire as E
+        bits = ["0"] * 49
+        for i in (20, 21):                       # 2 longitudes contiguës dans le secteur : insuffisant
+            bits[i] = "1"
+        self.assertFalse(E.sector_blocked("".join(bits)))
+        bits[22] = "1"
+        self.assertTrue(E.sector_blocked("".join(bits)))
+        far = ["0"] * 49
+        for i in (0, 1, 2):                      # −60 à −55° : hors secteur
+            far[i] = "1"
+        self.assertFalse(E.sector_blocked("".join(far)))
+
+    def test_episode_persistence(self):
+        from etl.indicators import exploratoire as E
+        flags = {f"2001-01-{d:02d}": d in (1, 2, 3, 4, 10, 11, 12, 13, 14) for d in range(1, 20)}
+        self.assertEqual(E.episode_days(flags), {f"2001-01-{d:02d}" for d in (10, 11, 12, 13, 14)})
+
+    def test_winter_includes_previous_december(self):
+        from etl.indicators import exploratoire as E
+        days = E.season_days(2001, "hiver")
+        self.assertEqual((days[0], days[-1], len(days)), ("2000-12-01", "2001-02-28", 90))
+
+
 if __name__ == "__main__":
     unittest.main()
