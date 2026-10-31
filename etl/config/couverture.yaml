@@ -30,7 +30,7 @@ parametres:
     label: Température en altitude
     echelles:
       gironde: {statut: prevu, variables: [t850, t500], source: "Radiosondages de Bordeaux-Mérignac (IGRA, NOAA)", note: "Radiosondages bruts (changements de sondes) : tendance indicative seulement, confiance au plus « faible » (exception à la règle C2)."}
-      monde: {statut: prevu, source: "ERA5 niveaux de pression (compte Copernicus gratuit)"}
+      monde: {statut: prevu, variables: [tlt-uah, tlt-rss], source: "Basse troposphère par satellites : UAH 6.1 et RSS 4.0, depuis 1979"}
 
   - id: vent
     label: Vent
@@ -96,7 +96,7 @@ parametres:
     echelles:
       gironde: {statut: prevu, variables: [niveau-mer], source: "Altimétrie satellite Copernicus (depuis 1993) ; marégraphe PSMSL d'Arcachon-Eyrac (2002-2024, lacunaire)", note: "Niveau relatif : inclut les mouvements verticaux du sol. Le Verdon écarté : moins de 10 années valides au PSMSL (calcul du 23/10/2026)."}
       france: {statut: prevu, variables: [niveau-mer], source: "Marégraphe PSMSL de Brest, l'un des plus longs du monde"}
-      monde: {statut: prevu, source: "Altimétrie satellitaire : liens NOAA STAR et CSIRO de la sonde injoignables, autre accès à trouver"}
+      monde: {statut: prevu, variables: [niveau-mer], source: "Altimétrie satellitaire NOAA STAR (TOPEX/Jason/Sentinel-6), depuis 1993", note: "Sans correction isostatique (− 0,2 à − 0,5 mm/an)."}
 
   - id: ocean-chaleur
     label: Contenu thermique des océans
@@ -106,7 +106,7 @@ parametres:
   - id: ocean-acidification
     label: Acidification des océans
     echelles:
-      monde: {statut: prevu, source: "Station HOT (Hawaï) ou BATS ; Copernicus Marine"}
+      monde: {statut: prevu, variables: [ph-ocean], source: "Station ALOHA, Hawaii Ocean Time-series, depuis 1988"}
 
   - id: ges
     label: Concentration des gaz à effet de serre (CO₂, méthane, protoxyde d'azote)
@@ -116,12 +116,12 @@ parametres:
   - id: aerosols
     label: Aérosols
     echelles:
-      monde: {statut: prevu, source: "CAMS (Copernicus), MERRA-2", note: "Séries de réanalyse, pas d'observation directe longue."}
+      monde: {statut: prevu, variables: [aerosols], source: "CAMS EAC4 (Copernicus), épaisseur optique à 550 nm, depuis 2003", note: "Réanalyse, pas d'observation directe longue."}
 
   - id: desequilibre-energetique
     label: Déséquilibre énergétique de la Terre
     echelles:
-      monde: {statut: prevu, source: "NASA CERES EBAF (compte Earthdata gratuit)"}
+      monde: {statut: prevu, variables: [desequilibre-energetique], source: "NASA CERES EBAF-TOA Edition 4.2.1, depuis 2001"}
 
   - id: agroclimat
     label: Indicateurs agroclimatiques
@@ -141,12 +141,12 @@ parametres:
   - id: puits-carbone
     label: Santé des puits de carbone
     echelles:
-      monde: {statut: prevu, source: "Global Carbon Budget (puits océanique et terrestre)"}
+      monde: {statut: prevu, variables: [puits-ocean, puits-terres, part-puits], source: "Global Carbon Budget 2025 (puits océanique et terrestre, 1959-2024)"}
 
   - id: ozone
     label: Couche d'ozone
     echelles:
-      monde: {statut: prevu, variables: [trou-ozone], source: "NASA Ozone Watch"}
+      monde: {statut: prevu, variables: [trou-ozone], source: "NASA Ozone Watch, surface du trou d'ozone antarctique, 1979-2025"}
 
   - id: el-nino
     label: El Niño

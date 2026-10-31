@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-30T21:36:49Z",
+ "generated_at": "2026-10-31T21:11:56Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -460,10 +460,21 @@
     },
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "ERA5 niveaux de pression (compte Copernicus gratuit)",
+     "status": "publie",
+     "source": "Basse troposphère par satellites : UAH 6.1 et RSS 4.0, depuis 1979",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "tlt-uah-monde",
+       "title": "Température de la basse troposphère — UAH 6.1 (satellites)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "tlt-rss-monde",
+       "title": "Température de la basse troposphère — RSS 4.0 (satellites)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -1022,10 +1033,16 @@
     },
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "Altimétrie satellitaire : liens NOAA STAR et CSIRO de la sonde injoignables, autre accès à trouver",
-     "note": null,
-     "indicators": []
+     "status": "publie",
+     "source": "Altimétrie satellitaire NOAA STAR (TOPEX/Jason/Sentinel-6), depuis 1993",
+     "note": "Sans correction isostatique (− 0,2 à − 0,5 mm/an).",
+     "indicators": [
+      {
+       "id": "niveau-mer-monde",
+       "title": "Niveau moyen mondial de la mer (altimétrie satellitaire)",
+       "confidence": "elevee"
+      }
+     ]
     }
    ]
   },
@@ -1059,10 +1076,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "Station HOT (Hawaï) ou BATS ; Copernicus Marine",
+     "status": "publie",
+     "source": "Station ALOHA, Hawaii Ocean Time-series, depuis 1988",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "ph-ocean-hot",
+       "title": "pH de surface de l'océan à la station ALOHA (Hawaï)",
+       "confidence": "elevee"
+      }
+     ]
     }
    ]
   },
@@ -1101,10 +1124,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "CAMS (Copernicus), MERRA-2",
-     "note": "Séries de réanalyse, pas d'observation directe longue.",
-     "indicators": []
+     "status": "publie",
+     "source": "CAMS EAC4 (Copernicus), épaisseur optique à 550 nm, depuis 2003",
+     "note": "Réanalyse, pas d'observation directe longue.",
+     "indicators": [
+      {
+       "id": "aerosols-monde",
+       "title": "Épaisseur optique des aérosols (CAMS)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -1114,10 +1143,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "NASA CERES EBAF (compte Earthdata gratuit)",
+     "status": "publie",
+     "source": "NASA CERES EBAF-TOA Edition 4.2.1, depuis 2001",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "desequilibre-energetique-monde",
+       "title": "Déséquilibre énergétique de la Terre (CERES)",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },
@@ -1349,10 +1384,26 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "Global Carbon Budget (puits océanique et terrestre)",
+     "status": "publie",
+     "source": "Global Carbon Budget 2025 (puits océanique et terrestre, 1959-2024)",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "puits-ocean-monde",
+       "title": "Puits de carbone océanique (Global Carbon Budget)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "puits-terres-monde",
+       "title": "Puits de carbone terrestre (Global Carbon Budget)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "part-puits-monde",
+       "title": "Part des émissions de CO₂ absorbée par l'océan et les terres",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },
@@ -1362,10 +1413,16 @@
    "cells": [
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "NASA Ozone Watch",
+     "status": "publie",
+     "source": "NASA Ozone Watch, surface du trou d'ozone antarctique, 1979-2025",
      "note": null,
-     "indicators": []
+     "indicators": [
+      {
+       "id": "trou-ozone-monde",
+       "title": "Surface du trou d'ozone antarctique",
+       "confidence": "non_etabli"
+      }
+     ]
     }
    ]
   },

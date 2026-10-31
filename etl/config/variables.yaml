@@ -28,6 +28,11 @@ themes:
   viticulture: Viticulture
   sante: Santé (chaleur)
   incendie: Danger météo d'incendie
+  acidification: Acidification de l'océan
+  ozone: Couche d'ozone
+  puits-carbone: Puits de carbone
+  bilan-energetique: Bilan énergétique de la Terre
+  aerosols: Aérosols
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -97,3 +102,13 @@ variables:
   catnat-vagues: {code: Vagues, label: reconnaissances CatNat « chocs mécaniques des vagues », theme: catastrophes, order: 3}
   fwi-ete: {code: FWI été, label: "indice forêt-météo moyen de juin à septembre (FWI)", theme: incendie, order: 0}
   jours-fwi: {code: "FWI ≥ 21,3", label: "jours de danger météo d'incendie très élevé (FWI ≥ 21,3)", theme: incendie, order: 1}
+# --- P6 (critères K1-K8 validés le 31/10/2026)
+  ph-ocean: {code: pH, label: pH de surface de l'océan, theme: acidification, order: 0}
+  trou-ozone: {code: Trou d'ozone, label: surface du trou d'ozone antarctique, theme: ozone, order: 0}
+  puits-ocean: {code: Océan, label: puits de carbone océanique, theme: puits-carbone, order: 0}
+  puits-terres: {code: Terres, label: puits de carbone terrestre, theme: puits-carbone, order: 1}
+  part-puits: {code: Part puits, label: part des émissions absorbée par les puits, theme: puits-carbone, order: 2}
+  tlt-uah: {code: TLT UAH, label: température de la basse troposphère (UAH), theme: altitude, order: 2}
+  tlt-rss: {code: TLT RSS, label: température de la basse troposphère (RSS), theme: altitude, order: 3}
+  desequilibre-energetique: {code: EEI, label: déséquilibre énergétique de la Terre, theme: bilan-energetique, order: 0}
+  aerosols: {code: AOD, label: épaisseur optique des aérosols à 550 nm, theme: aerosols, order: 0}

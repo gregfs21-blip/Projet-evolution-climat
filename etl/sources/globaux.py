@@ -330,6 +330,106 @@ def parse_ghd(text: str, code: str = "Bor") -> dict[int, float]:
     return out
 
 
+# --- P6 (formats constatés par les sondes du 31/10/2026, docs/sonde-p6.md et sonde-p6b.md) -------------------------
+
+
+def parse_star_gmsl(text: str) -> dict[int, float]:
+    """NOAA STAR : « année décimale, TOPEX, Jason-1, … » ; première mission renseignée par ligne ; moyenne de l'année
+    civile si chacun des 12 mois a au moins une valeur."""
+    per: dict[int, dict[int, list[float]]] = {}
+    for ln in text.splitlines():
+        if not ln or ln.startswith("#") or ln.lower().startswith("year"):
+            continue
+        cells = ln.split(",")
+        vals = [float(c) for c in cells[1:] if c.strip()]
+        if not vals:
+            continue
+        t = float(cells[0])
+        y = int(t)
+        m = min(12, int((t - y) * 12) + 1)
+        per.setdefault(y, {}).setdefault(m, []).append(vals[0])
+    out = {}
+    for y, months in per.items():
+        if len(months) == 12:
+            allv = [v for vs in months.values() for v in vs]
+            out[y] = round(sum(allv) / len(allv), 2)
+    return out
+
+
+def parse_hot_ph(text: str, min_cruises: int = 6) -> dict[int, float]:
+    """HOT_surface_CO2.txt (tabulé) : pH in situ calculé, moyenne annuelle des campagnes (au moins `min_cruises`)."""
+    lines = text.splitlines()
+    head_i = next(i for i, ln in enumerate(lines) if ln.startswith("cruise\t"))
+    head = lines[head_i].split("\t")
+    ix_date, ix_ph = head.index("date"), head.index("pHcalc_insitu")
+    per: dict[int, list[float]] = {}
+    for ln in lines[head_i + 1:]:
+        c = ln.split("\t")
+        if len(c) <= ix_ph or not c[ix_date].strip():
+            continue
+        v = float(c[ix_ph])
+        if v <= -999:
+            continue
+        yy = int(c[ix_date].strip().split("-")[-1])
+        y = yy + (1900 if yy >= 50 else 2000)
+        per.setdefault(y, []).append(v)
+    return {y: round(sum(v) / len(v), 4) for y, v in per.items() if len(v) >= min_cruises}
+
+
+def parse_ozone_hole(text: str) -> dict[int, float]:
+    """NASA Ozone Watch annual_data.txt : « Année  surface (millions de km²)  ozone minimal (DU) »."""
+    out = {}
+    for ln in text.splitlines():
+        c = ln.split()
+        if len(c) >= 2 and c[0].isdigit() and len(c[0]) == 4:
+            try:
+                out[int(c[0])] = float(c[1])
+            except ValueError:
+                continue
+    return out
+
+
+def parse_gcb(text: str, keyword: tuple[str, ...]) -> dict[int, float]:
+    """CSV openclimatedata du Global Carbon Budget : en-tête = première ligne non commentée ; première colonne de
+    valeurs (estimation GCB), dont l'intitulé doit contenir l'un des mots de `keyword`."""
+    rows = [ln for ln in text.splitlines() if ln.strip() and not ln.startswith("#")]
+    head = [h.strip() for h in rows[0].split(",")]
+    if not any(k in head[1].lower() for k in keyword):
+        raise ValueError(f"GCB : colonne inattendue {head[1]!r} (attendu : « {keyword} »), en-tête {head}")
+    out = {}
+    for ln in rows[1:]:
+        c = ln.split(",")
+        if c[0].strip().isdigit() and c[1].strip():
+            out[int(c[0])] = round(float(c[1]), 4)
+    return out
+
+
+def parse_uah(text: str) -> dict[int, float]:
+    """UAH 6.1 : « Year Mo Globe … » ; moyenne des 12 mois de la colonne Globe."""
+    per: dict[int, list[float]] = {}
+    for ln in text.splitlines():
+        c = ln.split()
+        if len(c) > 3 and c[0].isdigit() and len(c[0]) == 4 and c[1].isdigit():
+            per.setdefault(int(c[0]), []).append(float(c[2]))
+    return {y: round(sum(v) / 12, 3) for y, v in per.items() if len(v) == 12}
+
+
+def parse_rss(text: str) -> dict[int, float]:
+    """RSS 4.0 : « année mois anomalie (K) », −99.9 = absent ; moyenne des 12 mois."""
+    per: dict[int, list[float]] = {}
+    for ln in text.splitlines():
+        c = ln.split()
+        if len(c) == 3 and c[0].isdigit() and len(c[0]) == 4:
+            v = float(c[2])
+            if v > -99:
+                per.setdefault(int(c[0]), []).append(v)
+    return {y: round(sum(v) / 12, 3) for y, v in per.items() if len(v) == 12}
+
+
+GCB = "https://openclimatedata.github.io/global-carbon-budget/data/global-carbon-budget-2025-{}.csv"
+GCB_PAGE = "https://globalcarbonbudget.org/datahub/"
+
+
 PSMSL = "https://psmsl.org/data/obtaining/rlr.annual.data/{id}.rlrdata"
 PSMSL_PAGE = "https://psmsl.org/data/obtaining/stations/{id}.php"
 
@@ -350,6 +450,32 @@ SOURCES: dict[str, Source] = {s.id: s for s in [
     Source("vendanges-bordeaux", "NOAA WDS Paleoclimatology — base européenne des dates de vendanges (Daux et al., 2012), Bordeaux",
            "https://www.ncei.noaa.gov/pub/data/paleo/historical/europe/europe2012ghd.txt",
            "https://www.ncei.noaa.gov/access/paleo-search/study/13194", "Domaine public (NOAA WDS)", "jours", parse_ghd),
+    # --- P6 (31/10/2026)
+    Source("gmsl-noaa", "NOAA NESDIS STAR — niveau moyen mondial de la mer par altimétrie (TOPEX/Jason/Sentinel-6)",
+           "https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/slr/slr_sla_gbl_free_ref_90.csv",
+           "https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/LSA_SLR_timeseries_global.php", "Domaine public (NOAA)",
+           "mm", parse_star_gmsl, drop_current_year=True),
+    Source("ph-hot", "University of Hawaii — Hawaii Ocean Time-series (HOT), système CO₂ de surface, station ALOHA",
+           "https://hahana.soest.hawaii.edu/hot/hotco2/HOT_surface_CO2.txt",
+           "https://hahana.soest.hawaii.edu/hot/hotco2/hotco2.html", "Libre, citation demandée (Dore et al., 2009)",
+           "pH", parse_hot_ph),
+    Source("ozone-trou", "NASA Ozone Watch — surface du trou d'ozone antarctique (TOMS, OMI, OMPS)",
+           "https://ozonewatch.gsfc.nasa.gov/statistics/annual_data.txt",
+           "https://ozonewatch.gsfc.nasa.gov/statistics/annual_data.html", "Domaine public (NASA)", "millions de km²",
+           parse_ozone_hole),
+    *[Source(sid, "Global Carbon Project — Global Carbon Budget 2025 (copie CSV openclimatedata)", GCB.format(f), GCB_PAGE,
+             "CC BY 4.0", "GtC/an", partial(parse_gcb, keyword=kw))
+      for sid, f, kw in (("gcb-ocean", "ocean-sink-gcb", ("ocean", "gcb")),
+                         ("gcb-land", "terrestrial-sink-gcb", ("terrestrial", "land", "gcb", "sink")),
+                         ("gcb-fossil", "fossil-emissions", ("fossil", "total")),
+                         ("gcb-luc", "land-use-change-emissions-gcb", ("net", "land", "luc", "gcb")))],
+    Source("tlt-uah", "University of Alabama in Huntsville — UAH 6.1, température de la basse troposphère (satellites)",
+           "https://www.nsstc.uah.edu/data/msu/v6.1/tlt/uahncdc_lt_6.1.txt", "https://www.nsstc.uah.edu/climate/",
+           "Libre (UAH)", "°C", parse_uah, drop_current_year=True),
+    Source("tlt-rss", "Remote Sensing Systems — RSS 4.0, température de la basse troposphère (satellites)",
+           "https://data.remss.com/msu/graphics/TLT_v40/time_series/RSS_TS_channel_TLT_Global_Land_And_Sea_v04_0.txt",
+           "https://www.remss.com/measurements/upper-air-temperature/", "CC BY 4.0 (RSS)", "°C", parse_rss,
+           drop_current_year=True),
     Source("sst-noaa", "NOAA NCEI — NOAAGlobalTemp, température de surface de l'océan mondial (Climate at a Glance)",
            f"https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/ocean/12/12/1850-{_LAST}/data.csv",
            "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series", "Domaine public (NOAA)", "°C", parse_cag),
