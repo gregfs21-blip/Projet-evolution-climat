@@ -468,7 +468,7 @@ SOURCES: dict[str, Source] = {s.id: s for s in [
       for sid, f, kw in (("gcb-ocean", "ocean-sink-gcb", ("ocean", "gcb")),
                          ("gcb-land", "terrestrial-sink-gcb", ("terrestrial", "land", "gcb", "sink")),
                          ("gcb-fossil", "fossil-emissions", ("fossil", "total")),
-                         ("gcb-luc", "land-use-change-emissions-gcb", ("land", "luc", "gcb")))],
+                         ("gcb-luc", "land-use-change-emissions-gcb", ("net", "land", "luc", "gcb")))],
     Source("tlt-uah", "University of Alabama in Huntsville — UAH 6.1, température de la basse troposphère (satellites)",
            "https://www.nsstc.uah.edu/data/msu/v6.1/tlt/uahncdc_lt_6.1.txt", "https://www.nsstc.uah.edu/climate/",
            "Libre (UAH)", "°C", parse_uah, drop_current_year=True),
