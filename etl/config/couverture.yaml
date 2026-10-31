@@ -116,12 +116,12 @@ parametres:
   - id: aerosols
     label: Aérosols
     echelles:
-      monde: {statut: prevu, source: "CAMS (Copernicus), MERRA-2", note: "Séries de réanalyse, pas d'observation directe longue."}
+      monde: {statut: prevu, variables: [aerosols], source: "CAMS EAC4 (Copernicus), épaisseur optique à 550 nm, depuis 2003", note: "Réanalyse, pas d'observation directe longue."}
 
   - id: desequilibre-energetique
     label: Déséquilibre énergétique de la Terre
     echelles:
-      monde: {statut: prevu, source: "NASA CERES EBAF (compte Earthdata gratuit)"}
+      monde: {statut: prevu, variables: [desequilibre-energetique], source: "NASA CERES EBAF-TOA Edition 4.2.1, depuis 2001"}
 
   - id: agroclimat
     label: Indicateurs agroclimatiques

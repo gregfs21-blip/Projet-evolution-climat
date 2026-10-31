@@ -1460,3 +1460,11 @@ indicators:
       variable: tlt-rss
       title: Température de la basse troposphère — RSS 4.0 (satellites)
       description: Anomalie annuelle de la température moyenne de la basse troposphère (70° S-82,5° N) mesurée par les radiomètres hyperfréquences des satellites, produit Remote Sensing Systems.
+  - id: desequilibre-energetique-monde
+    scale: monde
+    builder: etl.indicators.monde:build_eei
+    params: {}
+  - id: aerosols-monde
+    scale: monde
+    builder: etl.indicators.monde:build_aod
+    params: {}

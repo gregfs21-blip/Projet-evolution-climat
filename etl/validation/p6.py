@@ -18,7 +18,7 @@ from etl.indicators import temperature as T
 from etl.schema import Indicator, ValidationCheck, ValidationReport
 
 SCOPE = {"niveau-mer-monde", "ph-ocean-hot", "trou-ozone-monde", "puits-ocean-monde", "puits-terres-monde",
-         "part-puits-monde", "tlt-uah-monde", "tlt-rss-monde"}
+         "part-puits-monde", "tlt-uah-monde", "tlt-rss-monde", "desequilibre-energetique-monde", "aerosols-monde"}
 OUT = ROOT / "docs" / "validation-p6-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p6.json"
 ACCEPTED: dict[str, str] = {}
@@ -97,6 +97,16 @@ def checks(inds: dict[str, Indicator], out_dir: Path) -> list[Check]:
                         f"{T.fr(b.trend.slope_per_decade - a.trend.slope_per_decade, 3)}"))
     else:
         cs.append(Check("K6 cohérence UAH / RSS", "critère", False, "tendance absente"))
+    e = inds.get("desequilibre-energetique-monde")
+    if e is not None:
+        s_ = _series(e)
+        ys = [y for y in range(2006, 2019) if y in s_]
+        from etl.stats.trend import annual_trend
+        t = annual_trend(ys, [s_[y] for y in ys]) if len(ys) >= 10 else None
+        cs.append(Check("Déséquilibre énergétique et Loeb et al. 2021 (information)", "info", True,
+                        f"pente 2006-2018 des moyennes annuelles : {T.fr(t.slope_per_decade, 2) if t else '—'} W/m² par "
+                        "décennie ; Loeb et al. 2021 : + 0,50 ± 0,47 sur mi-2005 à mi-2019 (mêmes données CERES, "
+                        "contrôle de lecture, pas une validation)"))
     cs.append(Check("K7 plausibilité", "critère", bool(inds), f"Bornes contrôlées à la construction pour les "
                                                               f"{len(inds)} indicateurs publiés."))
     cs.append(Check("K8 technique", "info", True, "Tests, CI et contrat vérifiés par les workflows."))

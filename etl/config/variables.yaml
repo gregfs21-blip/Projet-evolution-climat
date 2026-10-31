@@ -31,6 +31,8 @@ themes:
   acidification: Acidification de l'océan
   ozone: Couche d'ozone
   puits-carbone: Puits de carbone
+  bilan-energetique: Bilan énergétique de la Terre
+  aerosols: Aérosols
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -108,3 +110,5 @@ variables:
   part-puits: {code: Part puits, label: part des émissions absorbée par les puits, theme: puits-carbone, order: 2}
   tlt-uah: {code: TLT UAH, label: température de la basse troposphère (UAH), theme: altitude, order: 2}
   tlt-rss: {code: TLT RSS, label: température de la basse troposphère (RSS), theme: altitude, order: 3}
+  desequilibre-energetique: {code: EEI, label: déséquilibre énergétique de la Terre, theme: bilan-energetique, order: 0}
+  aerosols: {code: AOD, label: épaisseur optique des aérosols à 550 nm, theme: aerosols, order: 0}

@@ -86,3 +86,68 @@ def build_ozone(ctx: BuildContext) -> Indicator:
     return ind.model_copy(update={"trend": main, "alt_trends": [alt], "breakpoints": breaks, "finding": finding,
                                   "confidence": S.confidence(main, None)})
 
+
+
+# ---------------------------------------------------------------- F, G : CERES et CAMS (choix fixés le 31/10/2026 avant calcul)
+
+
+def annual_of(monthly: dict[str, float]) -> dict[int, float]:
+    """Moyenne des 12 mois ; années incomplètes écartées."""
+    per: dict[int, list[float]] = {}
+    for m, v in monthly.items():
+        per.setdefault(int(m[:4]), []).append(v)
+    return {y: round(sum(v) / 12, 4) for y, v in per.items() if len(v) == 12}
+
+
+def build_eei(ctx: BuildContext) -> Indicator:
+    from etl.sources import ceres as C
+    series = annual_of(C.load())
+    bad = {y: v for y, v in series.items() if not -3 <= v <= 4}
+    if bad or len(series) < 20:
+        raise ValueError(f"déséquilibre énergétique hors [−3 ; 4] W/m² (K7) ou série courte : {list(bad.items())[:3]}")
+    prov = Provenance(source_name=C.SOURCE_NAME, source_url=C.PAGE, license=C.LICENSE, extracted_at=ctx.extracted_at,
+                      script="etl.indicators.monde", etl_version=ctx.etl_version, homogenized=True)
+    return S.assemble(ctx, ind_id="desequilibre-energetique-monde", scale="monde", variable="desequilibre-energetique",
+                      place=vocab.composite("monde", "Monde"), title="Déséquilibre énergétique de la Terre (CERES)",
+                      description="Flux net moyen au sommet de l'atmosphère (énergie solaire absorbée moins rayonnement "
+                                  "infrarouge émis), en W/m², mesuré par les satellites CERES. Positif : la Terre accumule "
+                                  "de la chaleur.",
+                      unit="W/m²", series=series, hom=set(series), provenance=prov,
+                      limitations=[
+                          "Le niveau moyen du produit EBAF est ajusté sur la chaleur accumulée par l'océan (mesures Argo) : "
+                          "le niveau n'est pas une mesure satellitaire indépendante, la variation l'est davantage.",
+                          "Série courte (depuis 2001) : la variabilité naturelle (El Niño, nuages) pèse sur la tendance.",
+                          "Aucune référence retenue (décision de Grég du 31/10/2026) ; pour information, Loeb et al. 2021 "
+                          "publient + 0,50 ± 0,47 W/m² par décennie sur mi-2005 à mi-2019, avec les mêmes données CERES.",
+                      ],
+                      stations=[], method_note="Moyenne des 12 mois de la variable gtoa_net_all_mon (flux net global, "
+                      "toutes conditions de ciel) du produit CERES EBAF-TOA Edition 4.2.1.", reference=None, baseline=None,
+                      group="Synthèse monde — bilan énergétique", where="À l'échelle du globe",
+                      label="le déséquilibre énergétique")
+
+
+def build_aod(ctx: BuildContext) -> Indicator:
+    from etl.sources import ads_aod as A
+    series = annual_of(A.load())
+    bad = {y: v for y, v in series.items() if not 0 <= v <= 1}
+    if bad or len(series) < 15:
+        raise ValueError(f"épaisseur optique hors [0 ; 1] (K7) ou série courte : {list(bad.items())[:3]}")
+    prov = Provenance(source_name=A.SOURCE_NAME, source_url=A.PAGE, license=A.LICENSE, extracted_at=ctx.extracted_at,
+                      script="etl.indicators.monde", etl_version=ctx.etl_version, homogenized=True)
+    return S.assemble(ctx, ind_id="aerosols-monde", scale="monde", variable="aerosols",
+                      place=vocab.composite("monde", "Monde"), title="Épaisseur optique des aérosols (CAMS)",
+                      description="Moyenne mondiale de l'épaisseur optique des aérosols à 550 nm (poussières, sels marins, "
+                                  "sulfates, fumées, pollution) : plus elle est forte, plus l'atmosphère atténue la lumière "
+                                  "du Soleil. Réanalyse CAMS EAC4 de Copernicus.",
+                      unit="sans unité", series=series, hom=set(series), provenance=prov,
+                      limitations=[
+                          "Réanalyse (modèle contraint par les observations satellitaires), pas une mesure directe ; "
+                          "série courte, depuis 2003.",
+                          "Une moyenne mondiale mélange des évolutions opposées (baisse de la pollution en Europe, en "
+                          "Amérique du Nord puis en Chine ; feux et poussières variables).",
+                          "Aucune référence retenue (décision de Grég du 31/10/2026) : confiance au plus « moyenne ».",
+                      ],
+                      stations=[], method_note="Moyenne mondiale de aod550 pondérée par le cosinus de la latitude, chaque "
+                      "mois, puis moyenne des 12 mois.", reference=None, baseline=None,
+                      group="Synthèse monde — aérosols", where="À l'échelle du globe",
+                      label="l'épaisseur optique des aérosols")
