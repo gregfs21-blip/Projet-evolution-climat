@@ -12,7 +12,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | **close le 29/10/2026** (écart I4 accepté) |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | **close le 31/10/2026** |
-| P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | critères L1-L5 proposés le 31/10/2026 | en cours |
+| P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | critères L1-L5 validés le 31/10/2026 | en cours |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | | à faire |
 
 ## Journal P0
@@ -401,9 +401,13 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   (elle était déjà en « signal non établi »).
 - P3 close.
 
-## P7 — Critères (proposition du 31/10/2026, avant tout calcul)
+## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 
-> Statut : **proposition**, à valider par Grég. Sonde : `docs/sonde-p7.md`. Déjà publiés hors P7 : jet stream
+> **Décisions de Grég du 31/10/2026, avant tout calcul** : D-T périmètre **A, B et C** (A ajouté après explication de
+> ce qu'est un blocage) ; D-U méthode de A **telle que décrite** ; D-V **plafond « signal non établi »** pour A et C ;
+> **critères L1-L5 validés**.
+>
+> Statut d'origine : proposition. Sonde : `docs/sonde-p7.md`. Déjà publiés hors P7 : jet stream
 > (vitesse et latitude, ERA5, « signal non établi »), géopotentiel 500 hPa au-dessus de Bordeaux (ERA5 et
 > radiosondages).
 
@@ -445,6 +449,18 @@ al., 2018). Proposition : comme annoncé pour la P7, **confiance plafonnée à �
 | L3 | Plausibilité climatologique | Hiver : la fréquence moyenne de blocage 1981-2010 est plus forte que l'été, et comprise entre 5 et 40 % des jours (repère des climatologies publiées) |
 | L4 | Robustesse | Mêmes conclusions de signe avec un secteur décalé (20° O-40° E), en information |
 | L5 | Technique | Tests, CI, contrat, pages |
+
+### Choix de mise en œuvre fixés AVANT le premier calcul (31/10/2026)
+
+- **Relevé du Z500 quotidien** (`etl/sources/era5_blocking.py`, workflow « Blocages ») : une requête par année,
+  moyenne quotidienne des 4 échéances de 6 h (UTC), 30-85° N, 60° O-60° E, grille 2,5°. Le relevé n'écrit que deux
+  grandeurs par jour : les longitudes bloquées (critère de Tibaldi-Molteni ci-dessus, chaîne de 0 et de 1 sur
+  60° O-60° E) et le Z500 moyen de 35-70° N, 30° O-30° E (pondéré par le cosinus de la latitude). Secteur,
+  contiguïté et persistance sont appliqués par l'ETL.
+- **Saisons** : hiver = décembre de l'année précédente à février (hivers 1941-2025) ; été = juin-août (1940-2025).
+- **CAPE** (`etl/sources/cds_era5.py`) : moyennes mensuelles ERA5, boîte Gironde 44,2-45,6° N, 1,3° O-0,4° E,
+  moyenne pondérée des mailles, puis moyenne de juin à août (J/kg).
+- **Tendances** : séries de plus de 80 ans, tendance mise en avant sur les 50 dernières années (règle du 23/10/2026).
 
 ### Décisions demandées à Grég
 
