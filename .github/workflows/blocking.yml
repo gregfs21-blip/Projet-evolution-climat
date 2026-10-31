@@ -1,0 +1,50 @@
+# Relevé du Z500 quotidien ERA5 pour les blocages (P7). Une requête par année (1940 à la dernière année complète) ;
+# le collecteur garde 3 requêtes en file chez Copernicus et boucle jusqu'à 5 h 30, puis commite ce qu'il a relevé.
+name: Blocages
+
+on:
+  schedule:
+    - cron: "23 1 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "etl/sources/era5_blocking.py"
+      - ".github/workflows/blocking.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blocking-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: etl/requirements.txt
+      - run: pip install -r etl/requirements.txt
+      - name: Relevé du Z500 quotidien
+        env:
+          CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # secret du dépôt, jamais affiché
+          BLOCKING_MAX_SECONDS: "19500"
+        run: python -m etl.sources.era5_blocking
+      - name: Publication
+        if: always()
+        run: |
+          git config user.name "etl-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sources/era5-pl
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "data: relevé des blocages du $(date -u +%Y-%m-%d)"
+            git pull --rebase
+            git push
+          fi

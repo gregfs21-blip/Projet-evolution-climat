@@ -68,9 +68,12 @@ def alti_names() -> list[str]:
     return [f"alti-gironde-{y}" for y in range(ALTI_FIRST, last_year() + 1, ALTI_CHUNK)]
 
 
+CAPE_BOX = [45.6, -1.3, 44.2, 0.4]   # Gironde (P7, 31/10/2026)
+
+
 def datasets() -> dict[str, str]:
     """Jeu de données CDS de chaque requête (par défaut : niveaux de pression)."""
-    return {**{name: SINGLE for name in SST_BOXES}, **{name: ALTI for name in alti_names()}}
+    return {**{name: SINGLE for name in SST_BOXES}, **{name: ALTI for name in alti_names()}, "cape-gironde": SINGLE}
 
 
 def requests() -> dict[str, dict]:
@@ -81,7 +84,9 @@ def requests() -> dict[str, dict]:
     alti = {name: {"variable": ["monthly_mean"],
                    "year": [str(y) for y in range(int(name[-4:]), min(int(name[-4:]) + ALTI_CHUNK, last_year() + 1))],
                    "month": months, "version": ["vdt2024"], "area": ALTI_BOX} for name in alti_names()}
-    return {**sst, **alti,
+    cape = {"cape-gironde": {**BASE, "variable": ["convective_available_potential_energy"], "year": years,
+                             "month": months, "area": CAPE_BOX}}
+    return {**sst, **alti, **cape,
         "bordeaux": {**BASE, "variable": ["temperature", "geopotential", "u_component_of_wind"],
                      "pressure_level": ["250", "500", "850"], "year": years, "month": months,
                      "area": [45.0, -1.0, 44.5, -0.5]},
@@ -140,7 +145,7 @@ def read_nc(path: Path) -> dict[str, np.ndarray]:
         for name in ds.variables:
             if name in ("valid_time", "pressure_level", "latitude", "longitude"):
                 out[name] = np.asarray(ds.variables[name][:])
-            elif name in ("t", "z", "u", "sst"):
+            elif name in ("t", "z", "u", "sst", "cape"):
                 out[name] = np.ma.filled(np.ma.asarray(ds.variables[name][:], dtype=float), np.nan)
     return out
 
@@ -189,6 +194,26 @@ def extract_area_mean(arrays: dict[str, np.ndarray], var: str = "sst") -> list[d
         rows.append({"month": month, "sst_c": round(float((x[k][ok] * w[ok]).sum() / w[ok].sum()) - 273.15, 3),
                      "cells": int(ok.sum())})
     return rows
+
+
+def extract_area_value(arrays: dict[str, np.ndarray], var: str) -> list[dict]:
+    """Moyenne pondérée par cos(latitude) des mailles valides, sans conversion d'unité ; une ligne par mois."""
+    x = np.asarray(arrays[var], dtype=float)
+    if x.ndim == 4:
+        x = x[:, 0]
+    w = np.cos(np.radians(np.asarray(arrays["latitude"], dtype=float)))[:, None] * np.ones(x.shape[2])
+    rows = []
+    for k, month in enumerate(months_of(arrays["valid_time"])):
+        ok = np.isfinite(x[k])
+        if ok.sum():
+            rows.append({"month": month, "value": round(float((x[k][ok] * w[ok]).sum() / w[ok].sum()), 3),
+                         "cells": int(ok.sum())})
+    return rows
+
+
+def load_value(name: str, out_dir: Path = OUT_DIR) -> dict[str, float]:
+    with (out_dir / f"{name}.csv").open(encoding="utf-8") as f:
+        return {r["month"]: float(r["value"]) for r in csv.DictReader(f)}
 
 
 # ---------------------------------------------------------------- lecture des CSV commités (utilisée par l'ETL)
@@ -318,7 +343,8 @@ def _one(name: str, req: dict, dataset: str, jobs: list, details: dict, pending:
             else:
                 arrays = read_nc(path)
                 rows = (extract_point(arrays, *BORDEAUX) if name == "bordeaux"
-                        else extract_area_mean(arrays) if name in SST_BOXES else extract_zonal(arrays))
+                        else extract_area_mean(arrays) if name in SST_BOXES
+                        else extract_area_value(arrays, "cape") if name == "cape-gironde" else extract_zonal(arrays))
         _write_csv(out_dir / f"{name}.csv", rows)
         m[name] = {"job": job["jobID"], "finished": job.get("finished"), "rows": len(rows),
                    "years": [req["year"][0], req["year"][-1]], "collected": datetime.now(timezone.utc).isoformat()}
