@@ -1351,3 +1351,112 @@ indicators:
     scale: france
     builder: etl.indicators.france:build_rain
     params: {}
+
+  # --- P6 : monde (critères K1-K8 validés par Grég le 31/10/2026, avant calcul ; sources : docs/sonde-p6*.md)
+  - id: niveau-mer-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: gmsl-noaa
+      scale: monde
+      variable: niveau-mer
+      place: {id: monde, name: Monde}
+      where: À l'échelle du globe
+      label: le niveau moyen de la mer
+      title: Niveau moyen mondial de la mer (altimétrie satellitaire)
+      description: Anomalie annuelle du niveau moyen de la mer entre 66° S et 66° N, mesurée par les satellites altimétriques TOPEX/Poseidon, Jason-1, -2, -3 et Sentinel-6 (NOAA STAR), cycle annuel retiré.
+      limitations:
+      - 'Aucune correction isostatique glaciaire (rebond du sol depuis la dernière glaciation) : la hausse est sous-estimée de 0,2 à 0,5 mm/an par rapport aux estimations corrigées (GIEC), choix assumé par Grég le 31/10/2026.'
+      - 'Altimétrie entre 66° S et 66° N seulement ; série commencée fin 1992.'
+      reference:
+        kind: rate
+        period: [2006, 2018]
+        range: [3.2, 4.2]
+        unit: mm/an
+        fixed_on: '2026-10-31'
+        statement: 'Niveau moyen mondial de la mer : + 3,7 [3,2 à 4,2] mm/an sur 2006-2018'
+        source: GIEC AR6, Groupe de travail I, résumé pour décideurs, A.1.7
+        url: https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/
+  - id: ph-ocean-hot
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      source: ph-hot
+      scale: monde
+      variable: ph-ocean
+      place: {id: hot, name: Station ALOHA (Hawaï)}
+      station: {id: hot-aloha, name: Station ALOHA (Hawaii Ocean Time-series), lat: 22.75, lon: -158.0}
+      where: À la station ALOHA, au nord d'Hawaï
+      label: le pH de surface de l'océan
+      title: pH de surface de l'océan à la station ALOHA (Hawaï)
+      description: Moyenne annuelle du pH de surface in situ calculé à partir du carbone inorganique dissous et de l'alcalinité mesurés à chaque campagne (Hawaii Ocean Time-series). Une baisse du pH signifie une acidification.
+      limitations:
+      - 'Une seule station du Pacifique Nord subtropical : représentative de l''océan ouvert, pas des côtes ni des mers fermées.'
+      - 'pH calculé et non mesuré (le pH mesuré manque avant 1992) ; moyenne annuelle de 6 à 12 campagnes, sans retrait du cycle saisonnier.'
+      reference:
+        kind: rate
+        period: [1989, 2007]
+        range: [-0.0023, -0.0015]
+        unit: pH/an
+        fixed_on: '2026-10-31'
+        statement: 'Station ALOHA : pH de surface − 0,0019 ± 0,0002 par an (environ 20 ans de mesures depuis 1988), fourchette ± 20 % fixée par Grég'
+        source: Dore et al., PNAS 106 (30), 12235-12240, 2009
+        url: https://doi.org/10.1073/pnas.0906044106
+  - id: trou-ozone-monde
+    scale: monde
+    builder: etl.indicators.monde:build_ozone
+    params: {}
+  - id: puits-ocean-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params: &gcb
+      source: gcb-ocean
+      scale: monde
+      variable: puits-ocean
+      place: {id: monde, name: Monde}
+      where: À l'échelle du globe
+      label: le puits de carbone océanique
+      title: Puits de carbone océanique (Global Carbon Budget)
+      description: CO₂ absorbé chaque année par l'océan, en milliards de tonnes de carbone (× 3,664 pour des tonnes de CO₂), estimation du Global Carbon Budget 2025.
+      limitations:
+      - 'Estimation par des modèles et des produits d''observation (incertitude ± 0,4 GtC/an pour l''océan, ± 0,5 pour les terres), pas une mesure directe.'
+      - 'Aucune référence indépendante : la source est elle-même la référence ; confiance au plus « moyenne ».'
+  - id: puits-terres-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      <<: *gcb
+      source: gcb-land
+      variable: puits-terres
+      label: le puits de carbone terrestre
+      title: Puits de carbone terrestre (Global Carbon Budget)
+      description: CO₂ absorbé chaque année par la végétation et les sols, en milliards de tonnes de carbone (× 3,664 pour des tonnes de CO₂), estimation du Global Carbon Budget 2025. Il varie fortement avec El Niño et les sécheresses.
+  - id: part-puits-monde
+    scale: monde
+    builder: etl.indicators.monde:build_fraction
+    params: {}
+  - id: tlt-uah-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params: &tlt
+      source: tlt-uah
+      scale: monde
+      variable: tlt-uah
+      place: {id: monde, name: Monde}
+      where: Dans la basse troposphère (0 à 8 km environ)
+      label: la température de la basse troposphère
+      title: Température de la basse troposphère — UAH 6.1 (satellites)
+      description: Anomalie annuelle de la température moyenne de la basse troposphère mesurée par les radiomètres hyperfréquences des satellites (MSU, AMSU), produit de l'Université d'Alabama à Huntsville.
+      limitations:
+      - 'Température déduite des mesures de satellites successifs, raccordés entre eux : les choix de raccordement expliquent l''écart entre UAH et RSS.'
+      - 'Anomalies par rapport à la période de référence propre à chaque produit : comparer les pentes, pas les niveaux.'
+      - 'Aucune référence retenue : confiance au plus « moyenne ».'
+  - id: tlt-rss-monde
+    scale: monde
+    builder: etl.indicators.serie:build
+    params:
+      <<: *tlt
+      source: tlt-rss
+      variable: tlt-rss
+      title: Température de la basse troposphère — RSS 4.0 (satellites)
+      description: Anomalie annuelle de la température moyenne de la basse troposphère (70° S-82,5° N) mesurée par les radiomètres hyperfréquences des satellites, produit Remote Sensing Systems.

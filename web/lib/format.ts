@@ -23,7 +23,7 @@ export const SCALE_LABELS: Record<Scale, { name: string; blurb: string; phase: s
     blurb: "Gaz à effet de serre, températures globales, océans, cryosphère, bilan énergétique.",
     phase: "phase 6",
     phaseCode: "P6",
-    validations: [],
+    validations: ["p6"],
   },
 };
 
