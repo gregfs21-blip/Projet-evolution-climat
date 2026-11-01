@@ -60,5 +60,15 @@ class TestEpisodes(unittest.TestCase):
         self.assertEqual((days[0], days[-1], len(days)), ("2000-12-01", "2001-02-28", 90))
 
 
+class TestDailyMean(unittest.TestCase):
+    def test_four_times_required(self):
+        t0 = 946684800                                       # 2000-01-01 00:00 UTC
+        vt = np.array([t0 + h * 3600 for h in (0, 6, 12, 18)] + [t0 + 86400 + h * 3600 for h in (0, 6, 12)])
+        z = np.arange(7, dtype=float)[:, None, None] * np.ones((7, 2, 2))
+        days, zd = B.daily_mean(z, vt)
+        self.assertEqual(days, ["2000-01-01"])               # le 2 janvier n'a que 3 échéances
+        self.assertEqual(float(zd[0, 0, 0]), 1.5)
+
+
 if __name__ == "__main__":
     unittest.main()

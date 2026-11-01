@@ -5,13 +5,14 @@ netCDF, `z` (m² s⁻²) de dimensions (valid_time, pressure_level, latitude, lo
 30° N, longitudes de −60 à 60° E, pas de 2,5° ; `valid_time` en jours depuis le 1er janvier de l'année.
 
 Changement du 01/11/2026, AVANT tout calcul : le jeu des statistiques quotidiennes est calculé à la demande et trop lent
-(6 semestres relevés en 5 h 30, soit plusieurs semaines pour 86 ans ; une année entière y dépasse aussi la limite de
-coût). Le relevé utilise désormais le jeu horaire `reanalysis-era5-pressure-levels` à **12 UTC**, une valeur par jour,
-comme la définition d'origine de Tibaldi et Molteni (1990) ; requêtes par décennie (acceptées, docs/sonde-p7c.md).
+(6 semestres relevés en 5 h 30, soit plusieurs semaines pour 86 ans). Grég a choisi de garder la **moyenne quotidienne
+des 4 échéances de 6 h** (UTC) : elle est calculée ici à partir du jeu horaire `reanalysis-era5-pressure-levels`
+(0, 6, 12 et 18 UTC), ce que fait le produit quotidien de Copernicus ; requêtes de 2 ans (8 champs par jour sur
+2 ans restent sous la taille acceptée pour 10 ans à une échéance, docs/sonde-p7c.md).
 Le relevé n'écrit, pour chaque jour, que :
 - `blocked` : chaîne de 0 et de 1, une par longitude de −60 à 60° E (critère de Tibaldi et Molteni, 1990) ;
 - `z500_sector` : Z500 moyen de 35-70° N, 30° O-30° E (m), pondéré par le cosinus de la latitude.
-Fichiers : data/sources/era5-pl/blocking-AAAAs.csv (une décennie), réunis dans blocking.csv quand tout est là.
+Fichiers : data/sources/era5-pl/blocking-AAAA.csv (2 ans à partir de AAAA), réunis dans blocking.csv quand tout est là.
 """
 
 from __future__ import annotations
@@ -32,7 +33,9 @@ from etl.sources import cds_era5 as cds
 DATASET = "reanalysis-era5-pressure-levels"
 OLD_DATASET = "derived-era5-pressure-levels-daily-statistics"     # travaux encore en file : supprimés au relevé
 PAGE = "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels"
-SOURCE_NAME = "ECMWF / Copernicus — ERA5 horaire sur niveaux de pression (Z500 à 12 UTC)"
+SOURCE_NAME = "ECMWF / Copernicus — ERA5 horaire sur niveaux de pression (Z500, moyenne quotidienne de 0, 6, 12 et 18 UTC)"
+TIMES = ["00:00", "06:00", "12:00", "18:00"]
+CHUNK = 2
 OUT_DIR = cds.OUT_DIR
 FIRST_YEAR = 1940
 G0 = 9.80665
@@ -44,18 +47,18 @@ MAX_PENDING = 3
 
 
 def names() -> list[str]:
-    return [f"blocking-{y}s" for y in range(FIRST_YEAR, cds.last_year() + 1, 10)]
+    return [f"blocking-{y}" for y in range(FIRST_YEAR, cds.last_year() + 1, CHUNK)]
 
 
 def years_of(name: str) -> list[str]:
     y0 = int(name.split("-")[1][:4])
-    return [str(y) for y in range(y0, min(y0 + 10, cds.last_year() + 1))]
+    return [str(y) for y in range(y0, min(y0 + CHUNK, cds.last_year() + 1))]
 
 
 def request(name: str) -> dict:
     return {"product_type": ["reanalysis"], "variable": ["geopotential"], "pressure_level": ["500"],
             "year": years_of(name), "month": [f"{m:02d}" for m in range(1, 13)],
-            "day": [f"{d:02d}" for d in range(1, 32)], "time": ["12:00"], "area": [85, -60, 30, 60],
+            "day": [f"{d:02d}" for d in range(1, 32)], "time": TIMES, "area": [85, -60, 30, 60],
             "grid": ["2.5", "2.5"], "data_format": "netcdf", "download_format": "unarchived"}
 
 
@@ -85,6 +88,18 @@ def sector_mean(z: np.ndarray, lat: np.ndarray, lon: np.ndarray) -> float:
     return float((sub * wts).sum() / wts.sum())
 
 
+def daily_mean(z: np.ndarray, valid_time: np.ndarray) -> tuple[list[str], np.ndarray]:
+    """Moyenne par jour civil (UTC) des échéances présentes ; un jour n'est gardé que si ses 4 échéances existent."""
+    days = [datetime.fromtimestamp(int(t), tz=timezone.utc).strftime("%Y-%m-%d") for t in valid_time]
+    keep, out = [], []
+    for d in sorted(set(days)):
+        idx = [i for i, x in enumerate(days) if x == d]
+        if len(idx) == len(TIMES):
+            keep.append(d)
+            out.append(z[idx].mean(axis=0))
+    return keep, np.asarray(out)
+
+
 def extract(arrays: dict[str, np.ndarray]) -> list[dict]:
     lat = np.asarray(arrays["latitude"], dtype=float)
     lon = np.asarray(arrays["longitude"], dtype=float)
@@ -95,14 +110,14 @@ def extract(arrays: dict[str, np.ndarray]) -> list[dict]:
     z = z / G0
     order = np.argsort(lon)
     lon, z = lon[order], z[:, :, order]
+    days, zd = daily_mean(z, np.asarray(arrays["valid_time"]))
     rows = []
-    for k, t in enumerate(np.asarray(arrays["valid_time"], dtype=float)):
-        day = datetime.fromtimestamp(int(t), tz=timezone.utc).strftime("%Y-%m-%d")     # secondes depuis 1970
-        if not np.isfinite(z[k]).all():
+    for day, f in zip(days, zd):
+        if not np.isfinite(f).all():
             continue
-        b = blocked_longitudes(z[k], lat)
+        b = blocked_longitudes(f, lat)
         rows.append({"day": day, "blocked": "".join("1" if x else "0" for x in b),
-                     "z500_sector": round(sector_mean(z[k], lat, lon), 2)})
+                     "z500_sector": round(sector_mean(f, lat, lon), 2)})
     return rows
 
 
@@ -128,6 +143,16 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
             try:
                 cds._call(f"jobs/{j['jobID']}", "DELETE")
                 log.append(f"ancien travail {j['jobID']} supprimé")
+            except Exception as exc:  # noqa: BLE001
+                log.append(f"suppression {j['jobID']} : {exc}")
+    all_jobs = cds._call("jobs?limit=100").get("jobs", [])
+    for j in all_jobs:                      # essai à 12 UTC seulement (abandonné) : libère la file
+        if j.get("processID") == DATASET and j.get("status") in ("accepted", "running"):
+            try:
+                ids = cds._call(f"jobs/{j['jobID']}?request=true").get("metadata", {}).get("request", {}).get("ids", {})
+                if [str(x) for x in ids.get("time", [])] != TIMES:
+                    cds._call(f"jobs/{j['jobID']}", "DELETE")
+                    log.append(f"travail à 12 UTC {j['jobID']} supprimé")
             except Exception as exc:  # noqa: BLE001
                 log.append(f"suppression {j['jobID']} : {exc}")
     all_jobs = cds._call("jobs?limit=100").get("jobs", [])
@@ -193,7 +218,7 @@ def main() -> int:
     while True:
         log = collect()
         done = sum(1 for n in names() if (OUT_DIR / f"{n}.csv").exists())
-        print(f"[{(time.time() - t0) / 60:.0f} min] {done}/{len(names())} décennies ; " + " | ".join(x for x in log if "relevé" in x or "ÉCHEC" in x or "soumise" in x or "supprimé" in x), flush=True)
+        print(f"[{(time.time() - t0) / 60:.0f} min] {done}/{len(names())} tranches de 2 ans ; " + " | ".join(x for x in log if "relevé" in x or "ÉCHEC" in x or "soumise" in x or "supprimé" in x), flush=True)
         if done == len(names()) or time.time() - t0 > limit:
             return 0
         time.sleep(120)
