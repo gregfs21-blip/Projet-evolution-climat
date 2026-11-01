@@ -452,9 +452,11 @@ al., 2018). Proposition : comme annoncé pour la P7, **confiance plafonnée à �
 
 ### Choix de mise en œuvre fixés AVANT le premier calcul (31/10/2026)
 
-- **Relevé du Z500 quotidien** (`etl/sources/era5_blocking.py`, workflow « Blocages ») : une requête par semestre
-  (une année entière dépasse la limite de coût du CDS, constaté le 01/11/2026 ; aucun effet sur le calcul),
-  moyenne quotidienne des 4 échéances de 6 h (UTC), 30-85° N, 60° O-60° E, grille 2,5°. Le relevé n'écrit que deux
+- **Relevé du Z500 quotidien** (`etl/sources/era5_blocking.py`, workflow « Blocages ») : **changement du 01/11/2026,
+  avant tout calcul** (aucun résultat vu) : le jeu des statistiques quotidiennes est trop lent (6 semestres en 5 h 30) ;
+  Z500 **à 12 UTC** du jeu horaire ERA5, comme la définition d'origine de Tibaldi et Molteni, requêtes par décennie
+  (au lieu de la moyenne des 4 échéances de 6 h prévue au départ),
+  30-85° N, 60° O-60° E, grille 2,5°. Le relevé n'écrit que deux
   grandeurs par jour : les longitudes bloquées (critère de Tibaldi-Molteni ci-dessus, chaîne de 0 et de 1 sur
   60° O-60° E) et le Z500 moyen de 35-70° N, 30° O-30° E (pondéré par le cosinus de la latitude). Secteur,
   contiguïté et persistance sont appliqués par l'ETL.
