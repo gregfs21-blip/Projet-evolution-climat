@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # relance du workflow tant que le relevé n'est pas complet
 
 concurrency:
   group: blocking-${{ github.ref }}
@@ -47,4 +48,14 @@ jobs:
             git commit -m "data: relevé des blocages du $(date -u +%Y-%m-%d)"
             git pull --rebase
             git push
+          fi
+      - name: Relance si le relevé n'est pas complet
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f data/sources/era5-pl/blocking.csv ]; then
+            echo "Relevé complet."
+          else
+            gh workflow run blocking.yml --ref "${{ github.ref_name }}"
           fi
