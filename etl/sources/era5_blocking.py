@@ -4,10 +4,12 @@ Format constaté par la sonde du 31/10/2026 (docs/sonde-p7.md) : jeu `derived-er
 netCDF, `z` (m² s⁻²) de dimensions (valid_time, pressure_level, latitude, longitude), latitudes décroissantes de 85 à
 30° N, longitudes de −60 à 60° E, pas de 2,5° ; `valid_time` en jours depuis le 1er janvier de l'année.
 
-Une requête par année. Le relevé n'écrit, pour chaque jour, que :
+Une requête par semestre : une année entière dépasse la limite de coût du CDS (refus « cost limits exceeded » au premier
+relevé du 31/10/2026 ; 6 mois acceptés, sonde du 01/11/2026, docs/sonde-p7b.md). Le relevé n'écrit, pour chaque jour,
+que :
 - `blocked` : chaîne de 0 et de 1, une par longitude de −60 à 60° E (critère de Tibaldi et Molteni, 1990) ;
 - `z500_sector` : Z500 moyen de 35-70° N, 30° O-30° E (m), pondéré par le cosinus de la latitude.
-Fichiers : data/sources/era5-pl/blocking-AAAA.csv, réunis dans blocking.csv quand toutes les années sont là.
+Fichiers : data/sources/era5-pl/blocking-AAAA-S.csv (S = 1 ou 2), réunis dans blocking.csv quand tout est là.
 """
 
 from __future__ import annotations
@@ -39,12 +41,16 @@ MAX_PENDING = 3
 
 
 def names() -> list[str]:
-    return [f"blocking-{y}" for y in range(FIRST_YEAR, cds.last_year() + 1)]
+    return [f"blocking-{y}-{h}" for y in range(FIRST_YEAR, cds.last_year() + 1) for h in (1, 2)]
 
 
-def request(year: int) -> dict:
+def months_of_half(half: int) -> list[str]:
+    return [f"{m:02d}" for m in (range(1, 7) if half == 1 else range(7, 13))]
+
+
+def request(year: int, half: int) -> dict:
     return {"product_type": "reanalysis", "variable": ["geopotential"], "pressure_level": ["500"], "year": str(year),
-            "month": [f"{m:02d}" for m in range(1, 13)], "day": [f"{d:02d}" for d in range(1, 32)],
+            "month": months_of_half(half), "day": [f"{d:02d}" for d in range(1, 32)],
             "daily_statistic": "daily_mean", "time_zone": "utc+00:00", "frequency": "6_hourly",
             "area": [85, -60, 30, 60], "grid": ["2.5", "2.5"]}
 
@@ -113,22 +119,24 @@ def merge(out_dir: Path = OUT_DIR) -> None:
 def collect(out_dir: Path = OUT_DIR) -> list[str]:
     log = []
     jobs = [j for j in cds._call("jobs?limit=100").get("jobs", []) if j.get("processID") == DATASET]
-    years_of = {}
+    key_of = {}
     for j in jobs:
         if j.get("status") in ("accepted", "running", "successful"):
             try:
                 ids = cds._call(f"jobs/{j['jobID']}?request=true").get("metadata", {}).get("request", {}).get("ids", {})
                 y = ids.get("year")
-                years_of[j["jobID"]] = str(y[0] if isinstance(y, list) else y)
+                months = [str(x) for x in (ids.get("month") or [])]
+                key_of[j["jobID"]] = (str(y[0] if isinstance(y, list) else y), months[0] if months else "", len(months))
             except Exception:  # noqa: BLE001
                 pass
     pending = [j for j in cds._call("jobs?limit=100").get("jobs", []) if j.get("status") in ("accepted", "running")]
     m = cds.meta(out_dir)
     for name in names():
-        year = int(name[-4:])
+        year, half = int(name.split("-")[1]), int(name.split("-")[2])
         if (out_dir / f"{name}.csv").exists() and name in m:
             continue
-        mine = [j for j in jobs if years_of.get(j["jobID"]) == str(year)]
+        key = (str(year), months_of_half(half)[0], 6)
+        mine = [j for j in jobs if key_of.get(j["jobID"]) == key]
         done = sorted((j for j in mine if j["status"] == "successful"), key=lambda j: j.get("finished") or "")
         try:
             if done:
@@ -137,7 +145,7 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
                     path = Path(tmp) / "r.nc"
                     cds._download(cds._call(f"jobs/{job['jobID']}/results")["asset"]["value"]["href"], path)
                     rows = extract(cds.read_nc(path), year)
-                if len(rows) < 365:
+                if len(rows) < 181:
                     raise ValueError(f"{len(rows)} jours seulement")
                 cds._write_csv(out_dir / f"{name}.csv", rows)
                 m[name] = {"job": job["jobID"], "rows": len(rows), "collected": datetime.now(timezone.utc).isoformat()}
@@ -145,7 +153,7 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
             elif any(j["status"] in ("accepted", "running") for j in mine):
                 log.append(f"{name} : en file")
             elif len(pending) < MAX_PENDING:
-                job = cds._call(f"processes/{DATASET}/execution", "POST", {"inputs": request(year)})
+                job = cds._call(f"processes/{DATASET}/execution", "POST", {"inputs": request(year, half)})
                 pending.append(job)
                 log.append(f"{name} : soumise (travail {job.get('jobID')})")
         except Exception as exc:  # noqa: BLE001
@@ -173,7 +181,7 @@ def main() -> int:
     while True:
         log = collect()
         done = sum(1 for n in names() if (OUT_DIR / f"{n}.csv").exists())
-        print(f"[{(time.time() - t0) / 60:.0f} min] {done}/{len(names())} années ; " + " | ".join(x for x in log if "relevé" in x or "ÉCHEC" in x or "soumise" in x), flush=True)
+        print(f"[{(time.time() - t0) / 60:.0f} min] {done}/{len(names())} semestres ; " + " | ".join(x for x in log if "relevé" in x or "ÉCHEC" in x or "soumise" in x), flush=True)
         if done == len(names()) or time.time() - t0 > limit:
             return 0
         time.sleep(120)
