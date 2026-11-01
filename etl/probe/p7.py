@@ -95,7 +95,39 @@ def submit_and_read(pid: str, inputs: dict, wait: int = 1500) -> list[str]:
     return lines
 
 
+def cost_limits() -> list[str]:
+    """Taille maximale acceptée : soumissions de 2, 3, 4 et 6 mois de Z500 quotidien ; le refus « cost limits » est
+    immédiat ; une requête acceptée est aussitôt supprimée (aucun calcul lancé pour rien)."""
+    out = []
+    for n in (2, 3, 4, 6):
+        inputs = {"product_type": "reanalysis", "variable": ["geopotential"], "pressure_level": ["500"], "year": "1990",
+                  "month": [f"{m:02d}" for m in range(1, n + 1)], "day": [f"{d:02d}" for d in range(1, 32)],
+                  "daily_statistic": "daily_mean", "time_zone": "utc+00:00", "frequency": "6_hourly",
+                  "area": [85, -60, 30, 60], "grid": ["2.5", "2.5"]}
+        st, data = get(f"{API}/processes/derived-era5-pressure-levels-daily-statistics/execution",
+                       data=json.dumps({"inputs": inputs}).encode(), method="POST")
+        txt = data.decode("utf-8", "replace")
+        out.append(f"{n} mois → {st} {txt[:160]}")
+        try:
+            job = json.loads(data)["jobID"]
+            st2, _ = get(f"{API}/jobs/{job}", method="DELETE")
+            out.append(f"   travail {job} supprimé → {st2}")
+        except Exception:  # noqa: BLE001
+            pass
+    return out
+
+
+STEPS_PASS = 2   # 2e passage (01/11/2026) : une année entière dépasse la limite de coût du CDS
+
+
 def main() -> int:
+    if STEPS_PASS == 2:
+        global OUT
+        OUT = ROOT / "docs" / "sonde-p7b.md"
+        md = ["# Sonde P7 bis — limite de coût du Z500 quotidien (généré)", ""]
+        md += ["```", *cost_limits(), "```"]
+        OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
+        return 0
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P7 — blocages et foudre (généré)", "", f"Généré par `python -m etl.probe.p7` le {now}. Aucun indicateur calculé."]
     steps = [
