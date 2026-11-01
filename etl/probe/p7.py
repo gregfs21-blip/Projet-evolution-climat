@@ -117,15 +117,47 @@ def cost_limits() -> list[str]:
     return out
 
 
-STEPS_PASS = 2   # 2e passage (01/11/2026) : une année entière dépasse la limite de coût du CDS
+def cost_limits_hourly() -> list[str]:
+    """ERA5 horaire sur niveaux de pression, Z500 à 12 UTC seulement : taille acceptée pour 1, 5 et 10 ans
+    (refus immédiat si trop gros ; requête acceptée aussitôt supprimée), puis temps de traitement d'une année."""
+    out = []
+    for n in (1, 5, 10):
+        inputs = {"product_type": ["reanalysis"], "variable": ["geopotential"], "pressure_level": ["500"],
+                  "year": [str(y) for y in range(1990, 1990 + n)], "month": [f"{m:02d}" for m in range(1, 13)],
+                  "day": [f"{d:02d}" for d in range(1, 32)], "time": ["12:00"], "area": [85, -60, 30, 60],
+                  "grid": ["2.5", "2.5"], "data_format": "netcdf", "download_format": "unarchived"}
+        st, data = get(f"{API}/processes/reanalysis-era5-pressure-levels/execution",
+                       data=json.dumps({"inputs": inputs}).encode(), method="POST")
+        out.append(f"{n} an(s) → {st} {data.decode('utf-8', 'replace')[:160]}")
+        try:
+            job = json.loads(data)["jobID"]
+            if n == 1:
+                t0 = time.time()
+                status = None
+                while time.time() - t0 < 1500:
+                    time.sleep(30)
+                    _, dj = get(f"{API}/jobs/{job}")
+                    status = json.loads(dj).get("status")
+                    if status in ("successful", "failed", "rejected", "dismissed"):
+                        break
+                out.append(f"   1 an : état {status} après {time.time() - t0:.0f} s")
+            else:
+                st2, _ = get(f"{API}/jobs/{job}", method="DELETE")
+                out.append(f"   travail supprimé → {st2}")
+        except Exception:  # noqa: BLE001
+            pass
+    return out
+
+
+STEPS_PASS = 3   # 3e passage (01/11/2026) : ERA5 horaire à 12 UTC (statistiques quotidiennes trop lentes)
 
 
 def main() -> int:
-    if STEPS_PASS == 2:
+    if STEPS_PASS in (2, 3):
         global OUT
-        OUT = ROOT / "docs" / "sonde-p7b.md"
-        md = ["# Sonde P7 bis — limite de coût du Z500 quotidien (généré)", ""]
-        md += ["```", *cost_limits(), "```"]
+        OUT = ROOT / "docs" / ("sonde-p7b.md" if STEPS_PASS == 2 else "sonde-p7c.md")
+        md = ["# Sonde P7 — limite de coût du Z500 quotidien (généré)", ""]
+        md += ["```", *(cost_limits() if STEPS_PASS == 2 else cost_limits_hourly()), "```"]
         OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
         return 0
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
