@@ -67,7 +67,7 @@ export default function ThemeSection({ scale, scaleName, theme, heading }: { sca
                 <b className="font-mono">
                   {fmt(maxSpread)} {u}/déc.
                 </b>
-                {spreads.length > 1 ? ", quelle que soit la variable" : ""}.
+                {spreads.length > 1 ? ", quelle que soit la variable." : ""}
               </>
             )}
           </p>

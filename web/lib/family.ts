@@ -4,7 +4,8 @@
 //
 // Contrat v1.2 : `variable` et `place` sont publiés par l'ETL (vocabulaire etl/config/variables.yaml).
 // Le site ne connaît aucune variable à l'avance. Un indicateur sans ces champs reste listé normalement.
-import { getIndicator, listIndicators } from "./data";
+import { getIndicator, getValidation, listIndicators } from "./data";
+import { SCALE_LABELS } from "./format";
 import type { Indicator, ManifestEntry, Place, Scale, Trend, Variable } from "./schema";
 
 export type Member = { entry: ManifestEntry; variable: Variable; place: Place };
@@ -181,4 +182,40 @@ export function siblings(ind: Indicator): { variables: Sibling[]; places: Siblin
     .map((m) => ({ key: m.place.id, label: m.place.name, href: href(m), active: m.place.id === self.place.id }));
   const comp = self.place.kind === "composite" ? undefined : same.find(isComposite);
   return { variables, places, composite: comp ? load(comp) : null };
+}
+
+// Ordre des boutons de thème : grandes familles côte à côte (températures, océans, eau, atmosphère, composition, impacts).
+// Choix d'affichage uniquement : un thème absent de cette liste apparaît à la suite, sans aucun code à ajouter.
+const THEME_ORDER = [
+  "temperature", "temperature-globale", "extremes-temperature", "altitude", "geopotentiel",
+  "temperature-mer", "chaleur-ocean", "niveau-mer", "banquise", "acidification",
+  "precipitations", "pluies-intenses", "secheresse", "ensoleillement",
+  "humidite", "pression", "vent", "ouragans", "jet-stream", "enso",
+  "ges", "aerosols", "ozone", "bilan-energetique", "puits-carbone",
+  "catastrophes", "incendie", "viticulture", "sante",
+];
+
+export function orderedThemes(scale: Scale): Theme[] {
+  const rank = (id: string) => {
+    const i = THEME_ORDER.indexOf(id);
+    return i < 0 ? THEME_ORDER.length : i;
+  };
+  // Tri stable : les thèmes inconnus gardent entre eux l'ordre du manifeste.
+  return [...themes(scale)].sort((a, b) => rank(a.id) - rank(b.id));
+}
+
+/** Toutes les séries d'un thème, composites d'abord : garantit que chacune reste accessible depuis son thème. */
+export function themeEntries(scale: Scale, theme: string): ManifestEntry[] {
+  return inTheme(scale, theme)
+    .sort((a, b) => Number(isComposite(b)) - Number(isComposite(a)) || byOrder(a.variable, b.variable) || a.place.name.localeCompare(b.place.name, "fr"))
+    .map((m) => m.entry);
+}
+
+export const VALIDATION_SECTION = "validation";
+
+/** Rubriques d'une page d'échelle : un bouton par thème publié, plus la validation s'il existe un rapport. */
+export function scaleSections(scale: Scale): { id: string; label: string }[] {
+  const out = orderedThemes(scale).map((t) => ({ id: t.id, label: t.label.replace(/\s*\([^)]*\)$/, "") }));
+  const reports = SCALE_LABELS[scale].validations.flatMap((p) => getValidation(p) ?? []);
+  return reports.length > 0 ? [...out, { id: VALIDATION_SECTION, label: "Validation" }] : out;
 }

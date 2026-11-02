@@ -85,6 +85,14 @@ body {
   }
 }
 
+/* Ligne de boutons qui défile sur mobile : le bouton coupé au bord suffit à signaler la suite. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Curseur d'année des bandes climatiques : posé sur fond sombre quel que soit le thème. */
 .year-range {
   appearance: none;

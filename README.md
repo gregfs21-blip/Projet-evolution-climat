@@ -29,7 +29,8 @@ par la CI côté Python, puis par le build côté site.
 2. Le déclarer dans `etl/config/indicators.yaml`.
 3. `python -m etl.pipeline --only <id>` puis `python -m etl.validate`.
 
-La page `/<échelle>/<id>` apparaît automatiquement au build suivant. Aucun code côté site.
+La page `/<échelle>/<id>` apparaît automatiquement au build suivant. Aucun code côté site. Un nouveau thème
+ajoute de même son bouton et sa page `/<échelle>/themes/<thème>`.
 Pour rattacher l'indicateur à une famille (matrice, superposition, carte, navigation entre lieux),
 le constructeur renseigne `variable` (vocabulaire `etl/config/variables.yaml`) et `place` (station ou
 composite). Une nouvelle variable s'ajoute au vocabulaire ; le site n'en connaît aucune à l'avance.
