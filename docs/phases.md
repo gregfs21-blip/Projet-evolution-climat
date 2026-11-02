@@ -428,6 +428,11 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
   confiance à 95 % disjoints ; sinon « du même ordre ». Température : période commune 1959-2021 (fin de la série
   France), pente de Sen recalculée sur ce tronçon. Limite écrite : la Gironde et la France sont des terres, la moyenne
   mondiale est à 70 % océanique ; un écart est attendu et ne dit rien de propre à la région.
+  **Corrigé après calcul, sur relecture indépendante (M6, 02/11/2026)** : la seconde moitié de cette phrase était
+  fausse. Le contraste terres/océan du GIEC (1,59 °C contre 0,88 °C, moyenne mondiale 1,09 °C) explique un rapport
+  d'environ 1,5, alors que l'étude trouve environ 1,9 pour la Gironde et la France. Une partie seulement de l'écart
+  est attendue ; faute de moyenne des seules terres, l'étude ne peut pas dire si la région se réchauffe plus vite
+  que les terres en général. La synthèse est rédigée ainsi.
 - **S4 — pas d'attribution** : la synthèse décrit des évolutions observées ; les causes ne sont citées qu'en contexte
   externe (GIEC AR6), sauf ce que mesurent directement les indicateurs (GES, déséquilibre énergétique).
 - **S5 — test d'accélération** (annoncé en P1) : régression quadratique par moindres carrés, accélération = 2 × le
@@ -471,6 +476,13 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
 - Le texte des affirmations dont le sens dépend d'un résultat (accélération, comparaison, signal) est choisi par le
   code selon ce résultat ; si une mise à jour mensuelle fait perdre la significativité d'un indicateur cité comme
   « signal », la validation M2 échoue et le signale, au lieu de laisser un texte devenu faux.
+
+### Journal P8
+- 02/11/2026 : synthèse générée (79 affirmations). Première relecture indépendante : 4 erreurs factuelles, 13
+  sur-interprétations et 12 omissions signalées, toutes corrigées sauf deux exceptions tracées (DOI de Beaulieu et
+  al. non vérifié ; dépendance du SPEI à l'ETP non répétée dans le texte des mois secs). Contre-relecture : deux
+  problèmes introduits par les corrections, corrigés. M1-M7 conformes (`docs/validation-p8.md`) ; section
+  exploratoire en attente de P7.
 
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 

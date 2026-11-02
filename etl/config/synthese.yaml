@@ -40,7 +40,8 @@ sections:
             text: >-
               La température moyenne annuelle de la Gironde a augmenté de {tm-annuelle-gironde|slope|+.2} °C par
               décennie entre {tm-annuelle-gironde|start} et {tm-annuelle-gironde|end}, soit
-              {tm-annuelle-gironde|total|+.1} °C sur la période (séries homogénéisées).
+              {tm-annuelle-gironde|total|+.1} °C sur la période (séries homogénéisées ; composite de stations à poids
+              égal, pas une moyenne spatiale : le littoral y pèse autant que l'intérieur).
           - id: gironde-tx-tn
             kind: comparaison
             params: [temperature-air]
@@ -74,7 +75,10 @@ sections:
             literals: [0]
             text: >-
               Les jours de gel (TN ≤ 0 °C) reculent de {jours-gel-gironde|slope|.1} jours par décennie
-              ({jours-gel-gironde|start}-{jours-gel-gironde|end}).
+              ({jours-gel-gironde|start}-{jours-gel-gironde|end}). Le résultat dépend de la période : sur
+              {jours-gel-gironde|alt_trends.1.period.start}-{jours-gel-gironde|alt_trends.1.period.end}, la baisse
+              ({jours-gel-gironde|alt_trends.1.slope_per_decade|.1} jours par décennie) n'est pas significative, et la
+              validation externe de cet indice n'est pas établie.
           - id: gironde-canicule
             kind: signal
             params: [sante-ecologie]
@@ -90,7 +94,8 @@ sections:
             params: [temperature-mer]
             text: >-
               La surface du golfe de Gascogne se réchauffe de {sst-golfe-gascogne|slope|+.2} °C par décennie
-              ({sst-golfe-gascogne|start}-{sst-golfe-gascogne|end}).
+              ({sst-golfe-gascogne|start}-{sst-golfe-gascogne|end}, ERA5 ; la source des températures de mer change
+              entre 1979 et 1982, des navires aux satellites).
           - id: gironde-sst-large
             kind: signal
             params: [temperature-mer]
@@ -109,10 +114,11 @@ sections:
           - id: gironde-z500
             kind: signal
             params: [geopotentiel]
-            literals: [500]
+            literals: [500, 850]
             text: >-
               La surface 500 hPa s'élève de {z500-bordeaux-era5|slope|+.1} m par décennie au-dessus de Bordeaux
-              ({z500-bordeaux-era5|start}-{z500-bordeaux-era5|end}, ERA5) : la colonne d'air, plus chaude, se dilate.
+              ({z500-bordeaux-era5|start}-{z500-bordeaux-era5|end}, ERA5), ce qui est cohérent avec le réchauffement
+              mesuré à 850 et 500 hPa.
       - title: Pluie et eau
         claims:
           - id: gironde-pluie
@@ -130,13 +136,16 @@ sections:
               Aucune évolution des pluies intenses n'est détectée : ni la pluie maximale en un jour
               ({rx1day-gironde|slope|+.1} mm par décennie), ni en cinq jours ({rx5day-gironde|slope|+.1} mm), ni le
               nombre de jours de pluie d'au moins 10 ou 20 mm, sur {rx1day-gironde|start}-{rx1day-gironde|end}.
+            indicators: [r10mm-gironde, r20mm-gironde]
           - id: gironde-etp
             kind: signal
             params: [agroclimat]
             text: >-
               L'évapotranspiration potentielle, la demande en eau de l'atmosphère, augmente :
-              {etp-bordeaux-paulin|slope|+.1} mm par décennie à Bordeaux et {etp-cazaux|slope|+.1} mm à Cazaux
-              ({etp-bordeaux-paulin|start}-{etp-bordeaux-paulin|end}).
+              {etp-bordeaux-paulin|slope|+.1} mm par décennie à Bordeaux ({etp-bordeaux-paulin|start}-{etp-bordeaux-paulin|end})
+              et {etp-cazaux|slope|+.1} mm à Cazaux ({etp-cazaux|start}-{etp-cazaux|end}). Elle est calculée par la
+              formule de Hargreaves à partir des seules températures : sa hausse traduit le réchauffement, ce n'est
+              pas une confirmation indépendante.
           - id: gironde-bilan-hydrique
             kind: absence
             params: [agroclimat]
@@ -145,20 +154,23 @@ sections:
               Le bilan pluie − évapotranspiration et l'indice de sécheresse SPEI à 12 mois ne montrent pas de
               tendance détectée (bilan : {bilan-hydrique-bordeaux-paulin|slope|+.1} mm par décennie à Bordeaux,
               {bilan-hydrique-bordeaux-paulin|start}-{bilan-hydrique-bordeaux-paulin|end}) : la hausse de la demande
-              en eau ne ressort pas encore au-delà de la variabilité de la pluie.
+              en eau ne ressort pas au-delà de la variabilité de la pluie.
             indicators: [spei12-bordeaux-paulin, spei12-cazaux, spei12-cap-ferret, bilan-hydrique-cazaux]
           - id: gironde-mois-secs
             kind: signal
             params: [agroclimat]
             text: >-
               Les mois secs deviennent plus fréquents à Cap-Ferret ({mois-secs-cap-ferret|slope|+.2} mois par
-              décennie) et à Cazaux ({mois-secs-cazaux|slope|+.2}), sur {mois-secs-cazaux|start}-{mois-secs-cazaux|end}.
+              décennie) et à Cazaux ({mois-secs-cazaux|slope|+.2}), sur {mois-secs-cazaux|start}-{mois-secs-cazaux|end},
+              l'intervalle de la pente touche {mois-secs-cazaux|ci_low|.1}, car les comptages sont des nombres
+              entiers de mois.
           - id: gironde-mois-secs-bordeaux
             kind: absence
             params: [agroclimat]
             text: >-
-              À Bordeaux, la hausse des mois secs n'est pas significative ({mois-secs-bordeaux-paulin|slope|+.2} mois
-              par décennie) : le signal du littoral ne se retrouve pas partout.
+              À Bordeaux, la hausse des mois secs ({mois-secs-bordeaux-paulin|slope|+.2} mois par décennie,
+              {mois-secs-bordeaux-paulin|start}-{mois-secs-bordeaux-paulin|end}) n'est pas significative ; rien ne dit
+              pour autant qu'elle diffère de celle de Cap-Ferret et de Cazaux.
       - title: Vigne et agriculture
         claims:
           - id: gironde-huglin
@@ -181,13 +193,13 @@ sections:
             text: >-
               Les gelées tardives de printemps reculent à Mérignac ({gelees-tardives-bordeaux-merignac|nc_first|.1}
               à {gelees-tardives-bordeaux-merignac|nc_second|.1} jour par an entre 1961-1990 et 1991-2020) et à Cazaux
-              ({gelees-tardives-cazaux|nc_first|.1} à {gelees-tardives-cazaux|nc_second|.1}).
+              ({gelees-tardives-cazaux|nc_first|.1} à {gelees-tardives-cazaux|nc_second|.1}) ; à Cazaux, le recul
+              prend la forme d'un saut vers {gelees-tardives-cazaux|breakpoints.0.time} plutôt que d'une pente.
           - id: gironde-gelees-autres
             kind: absence
             params: [agroclimat]
             text: >-
-              Dans les autres postes, plus abrités ou où elles étaient déjà rares, la baisse des gelées tardives n'est
-              pas établie (Bordeaux-Paulin : {gelees-tardives-bordeaux-paulin|nc_first|.1} à
+              Dans les autres postes, la baisse des gelées tardives n'est pas établie (Bordeaux-Paulin : {gelees-tardives-bordeaux-paulin|nc_first|.1} à
               {gelees-tardives-bordeaux-paulin|nc_second|.1} ; Sauternes : {gelees-tardives-sauternes|nc_first|.1} à
               {gelees-tardives-sauternes|nc_second|.1}, non significatifs), et la fraîcheur des nuits de septembre ne montre pas de tendance détectée
               ({fraicheur-nuits-bordeaux-merignac|slope|+.2} °C par décennie à Mérignac).
@@ -220,6 +232,10 @@ sections:
               décennie), la rafale maximale annuelle, les jours de tempête à Mérignac, la pression au niveau de la mer,
               l'humidité relative et l'ensoleillement (série arrêtée en {insolation-bordeaux-merignac|end}).
               L'humidité ERA5 dérive par rapport à la station de Mérignac : sa confiance est faible quoi qu'il arrive.
+              Sur toute la série ERA5 ({jours-vent-fort-bordeaux-era5|alt_trends.0.period.start}-{jours-vent-fort-bordeaux-era5|alt_trends.0.period.end}),
+              les jours de vent fort augmentent significativement ({jours-vent-fort-bordeaux-era5|alt_trends.0.slope_per_decade|+.1}
+              par décennie) : c'est probablement un effet des années pauvres en observations avant 1979, et non une
+              évolution réelle.
             indicators: [rafale-max-bordeaux-era5, jours-tempete-bordeaux-merignac, pression-bordeaux-era5,
                          humidite-bordeaux-era5, insolation-bordeaux-merignac]
       - title: Littoral et catastrophes
@@ -245,13 +261,15 @@ sections:
               ({catnat-gironde|start}-{catnat-gironde|end}). C'est une série administrative : elle compte des arrêtés,
               qui dépendent des demandes des communes et des règles de reconnaissance, pas des aléas eux-mêmes.
     conclusion: >-
-      En Gironde, le réchauffement est l'évolution la mieux établie : environ {tm-annuelle-gironde|total|+.1} °C en
-      soixante-dix ans, dans l'air, en altitude et en mer, avec des journées chaudes plus fréquentes et des gels plus
-      rares. Ses effets se lisent dans la vigne (indice de Huglin, vendanges plus précoces), la demande en eau de
-      l'atmosphère et le danger météorologique de feu. La pluie, en revanche, ne montre aucune tendance détectée, ni
-      en cumul ni en intensité, et ses séries s'arrêtent en {rr-cumul-gironde|end} ; le vent, les tempêtes et la
-      pression non plus. La sécheresse ressort par l'évaporation et par les mois secs du littoral, pas encore par le
-      bilan d'eau.
+      En Gironde, le réchauffement est l'évolution la mieux établie : environ {tm-annuelle-gironde|total|+.1} °C
+      pour l'air en surface entre {tm-annuelle-gironde|start} et {tm-annuelle-gironde|end}, avec des journées chaudes
+      plus fréquentes et des gels plus rares ; l'altitude et la mer se réchauffent aussi depuis
+      {t850-bordeaux-era5|start}. Les indicateurs qui dépendent de la température, comme l'indice de Huglin et
+      l'évapotranspiration potentielle, augmentent ; les vendanges sont plus précoces et le danger météorologique de
+      feu augmente depuis {fwi-ete-gironde|start}. La pluie, en revanche, ne montre aucune tendance détectée, ni en
+      cumul ni en intensité, et ses séries s'arrêtent en {rr-cumul-gironde|end} ; le vent, les tempêtes et la pression
+      non plus. Les mois secs augmentent à Cap-Ferret et Cazaux, mais le bilan pluie − évapotranspiration ne montre
+      pas de tendance détectée.
 
   # ------------------------------------------------------------------ FRANCE
   - id: france
@@ -266,14 +284,15 @@ sections:
             text: >-
               La température moyenne de la France métropolitaine a augmenté de {tm-france|slope|+.2} °C par décennie
               entre {tm-france|start} et {tm-france|end}, soit {tm-france|total|+.1} °C sur la période (stations à
-              longue série homogénéisées de Météo-France, moyenne pondérée par département).
+              longue série homogénéisées de Météo-France, moyenne des départements à poids égal).
           - id: france-tx-tn
             kind: comparaison
             params: [temperature-air]
             text: >-
               Le réchauffement des maximales ({cmp:tx-tn-france|a_slope|+.2} °C par décennie, intervalle
               {cmp:tx-tn-france|a_low|+.2} à {cmp:tx-tn-france|a_high|+.2}) est {cmp:tx-tn-france|verdict} celui des
-              minimales ({cmp:tx-tn-france|b_slope|+.2}, {cmp:tx-tn-france|b_low|+.2} à {cmp:tx-tn-france|b_high|+.2}).
+              minimales ({cmp:tx-tn-france|b_slope|+.2}, {cmp:tx-tn-france|b_low|+.2} à {cmp:tx-tn-france|b_high|+.2}),
+              sur {cmp:tx-tn-france|start}-{cmp:tx-tn-france|end}.
       - title: Pluie
         claims:
           - id: france-pluie
@@ -290,7 +309,8 @@ sections:
             params: [niveau-mer]
             text: >-
               À Brest, le niveau marin moyen monte de {niveau-mer-brest|slope|+.1} mm par décennie sur
-              {niveau-mer-brest|start}-{niveau-mer-brest|end}.
+              {niveau-mer-brest|start}-{niveau-mer-brest|end}. C'est un niveau relatif au sol du port : il inclut les
+              mouvements verticaux de la côte.
           - id: france-catnat-secheresse
             kind: signal
             params: [catastrophes]
@@ -365,17 +385,18 @@ sections:
             params: [aerosols]
             text: >-
               L'épaisseur optique des aérosols baisse légèrement, de {aerosols-monde|slope|.4} par décennie sur
-              {aerosols-monde|start}-{aerosols-monde|end} (réanalyse CAMS) : moins d'aérosols, c'est moins de
-              rayonnement solaire renvoyé vers l'espace.
+              {aerosols-monde|start}-{aerosols-monde|end} (réanalyse CAMS, série courte). La moyenne mondiale mêle des
+              évolutions opposées : baisse de la pollution en Europe, en Amérique du Nord puis en Chine, feux et
+              poussières variables.
           - id: monde-eei
             kind: signal
             params: [desequilibre-energetique]
             text: >-
-              La Terre reçoit plus d'énergie qu'elle n'en renvoie, et l'écart grandit : le déséquilibre mesuré par
-              CERES augmente de {desequilibre-energetique-monde|slope|+.2} W/m² par décennie
-              ({desequilibre-energetique-monde|start}-{desequilibre-energetique-monde|end}) et vaut en moyenne
-              {desequilibre-energetique-monde|mean:2016-2025|+.2} W/m² sur 2016-2025. La série ne compte que
-              vingt-cinq ans.
+              Le déséquilibre énergétique de la Terre augmente de {desequilibre-energetique-monde|slope|+.2} W/m² par
+              décennie ({desequilibre-energetique-monde|start}-{desequilibre-energetique-monde|end}, CERES) : cette
+              variation est la partie mesurée par satellite. Son niveau moyen, {desequilibre-energetique-monde|mean:2016-2025|+.2}
+              W/m² sur 2016-2025, est calé sur la chaleur accumulée par l'océan (Argo) et n'est donc pas une mesure
+              indépendante. La série ne compte que vingt-cinq ans.
       - title: Océans et glaces
         claims:
           - id: monde-ohc
@@ -385,21 +406,25 @@ sections:
             text: >-
               L'océan accumule de la chaleur : {ohc-700-monde|slope|+.2} × 10²² J par décennie entre 0 et 700 m
               ({ohc-700-monde|start}-{ohc-700-monde|end}), {ohc-2000-monde|slope|+.1} × 10²² J entre 0 et 2000 m
-              depuis {ohc-2000-monde|start} (flotteurs Argo).
+              depuis {ohc-2000-monde|start} (flotteurs Argo). Pour 0-700 m, une rupture vers
+              {ohc-700-monde|breakpoints.0.time} reste significative une fois la tendance retirée : la droite résume mal
+              une série qui a accéléré ou sauté, et les mesures d'avant Argo sont rares.
           - id: monde-niveau-mer
             kind: signal
             params: [niveau-mer]
             text: >-
               Le niveau moyen de la mer monte de {niveau-mer-monde|slope|+.1} mm par décennie
               ({niveau-mer-monde|start}-{niveau-mer-monde|end}, altimétrie satellitaire), soit
-              {niveau-mer-monde|total|+.0} mm sur la période.
+              {niveau-mer-monde|total|+.0} mm sur la période. La série n'est pas corrigée de l'ajustement isostatique
+              glaciaire (l'affaissement moyen du fond des océans depuis la dernière glaciation) : la hausse est un peu
+              sous-estimée par rapport aux estimations du GIEC.
           - id: monde-ph
             kind: signal
             params: [ocean-acidification]
             text: >-
               Le pH de surface baisse de {ph-ocean-hot|slope|.3} par décennie à la station ALOHA, au nord d'Hawaï
-              ({ph-ocean-hot|start}-{ph-ocean-hot|end}) : l'océan s'acidifie en absorbant du CO₂. Une seule station,
-              mais la plus longue série ouverte.
+              ({ph-ocean-hot|start}-{ph-ocean-hot|end} ; la tendance s'arrête là car une année manque ensuite) : l'océan
+              s'acidifie. Une seule station, du Pacifique Nord subtropical.
           - id: monde-banquise-arctique
             kind: signal
             params: [glaces]
@@ -411,8 +436,10 @@ sections:
             params: [glaces]
             text: >-
               La banquise antarctique ne montre pas de tendance détectée sur
-              {banquise-antarctique-fevrier-monde|start}-{banquise-antarctique-fevrier-monde|end} : la série est trop
-              variable d'une année à l'autre pour conclure dans un sens ou dans l'autre.
+              {banquise-antarctique-fevrier-monde|start}-{banquise-antarctique-fevrier-monde|end}. Une rupture est
+              détectée vers {banquise-antarctique-fevrier-monde|breakpoints.0.time} (étendue moyenne en baisse après
+              cette date, test de Pettitt), mais la série est trop variable et ces années trop peu nombreuses pour
+              établir une tendance.
       - title: Puits de carbone
         claims:
           - id: monde-puits
@@ -427,8 +454,8 @@ sections:
             params: [puits-carbone]
             text: >-
               La part des émissions qu'ils absorbent ne montre pas de tendance détectée
-              ({part-puits-monde|start}-{part-puits-monde|end}) : les puits suivent la hausse des émissions, sans
-              signe établi d'affaiblissement ni de renforcement relatif.
+              ({part-puits-monde|start}-{part-puits-monde|end}) : aucun signe établi d'affaiblissement ni de
+              renforcement relatif.
       - title: Circulation, tempêtes, El Niño, ozone
         claims:
           - id: monde-ace
@@ -437,9 +464,10 @@ sections:
             literals: [10]
             text: >-
               L'énergie cumulée des cyclones de l'Atlantique Nord augmente de {ace-monde|slope|+.1} × 10⁴ kt² par
-              décennie sur {ace-monde|start}-{ace-monde|end}, mais
-              une rupture est détectée vers {ace-monde|breakpoints.0.time} et elle n'est plus significative une fois la
-              tendance retirée : saut et pente ne se distinguent pas. Les moyens d'observation ont aussi changé.
+              décennie sur {ace-monde|start}-{ace-monde|end}. À lire avec prudence : sur une soixantaine d'années, la
+              variabilité multidécennale de l'Atlantique pèse lourd sur une tendance, et aucune référence publiée n'a
+              été fixée pour cet indicateur ; une rupture vers {ace-monde|breakpoints.0.time} disparaît une fois la
+              tendance retirée.
           - id: monde-ouragans
             kind: absence
             params: [tempetes]
@@ -452,33 +480,46 @@ sections:
             text: >-
               Le jet stream d'hiver sur l'Atlantique Nord ne montre de tendance détectée ni en latitude
               ({jet-latitude-monde|slope|+.2} ° par décennie) ni en vitesse ({jet-vitesse-monde|slope|+.2} m/s), sur
-              {jet-latitude-monde|start}-{jet-latitude-monde|end}.
+              {jet-latitude-monde|start}-{jet-latitude-monde|end}. Sur toute la série ERA5 (depuis
+              {jet-vitesse-monde|alt_trends.0.period.start}), la vitesse augmente significativement
+              ({jet-vitesse-monde|alt_trends.0.slope_per_decade|+.2} m/s par décennie), probablement un effet des
+              années pauvres en observations avant 1979.
             indicators: [jet-vitesse-monde]
           - id: monde-enso
             kind: absence
             params: [el-nino]
             text: >-
-              L'indice El Niño annuel ne montre pas de tendance détectée ({oni-monde|start}-{oni-monde|end}) : il
-              module les températures d'une année à l'autre sans dériver lui-même.
+              L'indice El Niño annuel (ONI) ne montre pas de tendance ({oni-monde|start}-{oni-monde|end}), mais il est
+              construit pour retirer le réchauffement de fond : il ne permet pas de dire si El Niño évolue.
           - id: monde-ozone
             kind: absence
             params: [ozone]
             text: >-
-              Le trou d'ozone antarctique s'est creusé de {trou-ozone-monde|alt_trends.0.slope_per_decade|+.1} millions
-              de km² par décennie sur 1979-1994 ; depuis {trou-ozone-monde|start}, sa résorption n'est pas détectée
-              dans cet indicateur ({trou-ozone-monde|slope|+.2} million de km² par décennie, non significatif).
+              Depuis {trou-ozone-monde|start}, la résorption du trou d'ozone antarctique n'est pas détectée dans cet
+              indicateur ({trou-ozone-monde|slope|+.2} million de km² par décennie, non significatif).
+          - id: monde-ozone-creusement
+            kind: information
+            params: [ozone]
+            text: >-
+              Sur 1979-1994, le trou s'était creusé de {trou-ozone-monde|alt_trends.0.slope_per_decade|+.1} millions de
+              km² par décennie (tendance significative, mais l'indicateur est classé « signal non établi » dans son
+              ensemble).
+    literals: [5]
     conclusion: >-
       À l'échelle du globe, les mesures vont toutes dans le même sens : les gaz à effet de serre augmentent, la Terre
-      accumule de l'énergie, l'air, la surface de l'océan et ses profondeurs se réchauffent, la mer monte et la
-      banquise arctique recule. Les tendances de la circulation (jet stream, El Niño) et du nombre d'ouragans, elles,
-      ne sont pas établies, et la hausse du rythme du réchauffement de l'air n'est pas encore significative.
+      accumule de l'énergie, l'air, la surface de l'océan et ses couches jusqu'à 2000 m se réchauffent, la mer monte
+      et la banquise arctique recule. Les tendances de la circulation (jet stream) et du nombre d'ouragans, elles, ne
+      sont pas établies, l'indice El Niño ne permet pas d'en juger, et la hausse du rythme du réchauffement de l'air
+      n'est pas significative au seuil de 5 %.
 
   # ------------------------------------------------------------------ COMPARAISON DES ÉCHELLES
   - id: echelles
     title: Comparaison des échelles
     intro: >-
       Pentes de Sen recalculées sur une période commune ; « plus rapide » seulement quand les intervalles de
-      confiance à 95 % ne se recouvrent pas.
+      confiance à 95 % ne se recouvrent pas. Les produits comparés diffèrent parfois (ERA5 contre HadSST pour la
+      température de mer, deux traitements altimétriques pour le niveau marin) : une partie d'un écart peut tenir
+      aux produits.
     literals: [95]
     groups:
       - title: Température de l'air (1959-2021)
@@ -506,10 +547,10 @@ sections:
             kind: contexte
             literals: ["1,59", "0,88", 70]
             text: >-
-              Ces écarts sont attendus et ne disent rien de propre à la région : la Gironde et la France sont des
-              terres, la moyenne mondiale est à 70 % océanique, et les terres se réchauffent plus vite que l'océan.
-              Le GIEC estime le réchauffement 2011-2020 par rapport à 1850-1900 à 1,59 °C sur les terres et 0,88 °C
-              sur l'océan.
+              Une partie de l'écart est attendue : la Gironde et la France sont des terres, la moyenne mondiale est à
+              70 % océanique, et les terres se réchauffent plus vite que l'océan (GIEC : 1,59 °C contre 0,88 °C sur
+              2011-2020 par rapport à 1850-1900). L'étude ne compare pas la région à une moyenne des seules terres :
+              elle ne peut pas dire si la Gironde ou la France se réchauffent plus vite que les terres en général.
             source: {label: "GIEC AR6, groupe I, résumé pour décideurs (A.1.2)", url: "https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/"}
       - title: Mer
         claims:
@@ -553,8 +594,10 @@ sections:
             kind: contexte
             literals: ["0,084", "0,097"]
             text: >-
-              Recalculée sur 1993-2017, la même méthode donne {acc:gmsl-nerem|value|.3} mm/an². Nerem et al. (2018)
-              publient 0,084 mm/an² après retrait des effets du Pinatubo et d'El Niño, et 0,097 sans ces corrections.
+              Recalculée sur 1993-2017, la même méthode donne {acc:gmsl-nerem|value|.3} mm/an², avec un intervalle large
+              ({acc:gmsl-nerem|ci_low|.3} à {acc:gmsl-nerem|ci_high|.3}). Nerem et al. (2018) publient 0,084 mm/an²
+              après retrait des effets du Pinatubo et d'El Niño, et 0,097 sans ces corrections : notre valeur brute est
+              dans la fourchette fixée avant calcul, mais sous les deux.
             source: {label: "Nerem et al. (2018), PNAS", url: "https://www.pnas.org/doi/10.1073/pnas.1717312115"}
           - id: acc-temperature-monde
             kind: acceleration
@@ -573,9 +616,9 @@ sections:
           - id: acc-temperature-contexte
             kind: contexte
             text: >-
-              La question est débattue : Beaulieu et al. (2024) ne détectaient pas encore de hausse du rythme jusqu'en
-              2023 ; d'autres travaux, avec d'autres méthodes et les années 2023-2025, la jugent amorcée.
-            source: {label: "Beaulieu et al. (2024), Communications Earth & Environment, présentation UCSC", url: "https://news.ucsc.edu/2024/10/global-warming-statistics.html"}
+              Résultat cohérent avec Beaulieu et al. (2024), qui ne détectaient pas de hausse statistiquement établie
+              du rythme du réchauffement mondial dans les données jusqu'en 2023. La question reste débattue.
+            source: {label: "Beaulieu et al. (2024), « A recent surge in global warming is not detectable yet », Communications Earth & Environment, vol. 5", url: "https://par.nsf.gov/biblio/10548760-recent-surge-global-warming-detectable-yet"}
       - title: Information, sans référence
         claims:
           - id: acc-co2
@@ -596,8 +639,8 @@ sections:
               significant: >-
                 La hausse du méthane s'accélère sur {acc:ch4|start}-{acc:ch4|end} (p {acc:ch4|p|p}).
               not_significant: >-
-                Pas d'accélération détectée pour le méthane sur {acc:ch4|start}-{acc:ch4|end} (p {acc:ch4|p|p}) :
-                sa hausse a été irrégulière, ce qu'un ajustement quadratique décrit mal.
+                Pas d'accélération détectée pour le méthane sur {acc:ch4|start}-{acc:ch4|end} (p {acc:ch4|p|p}) ; un
+                ajustement quadratique décrit peut-être mal une hausse irrégulière.
           - id: acc-tm-france
             kind: information
             acc: [tm-france]
@@ -615,8 +658,9 @@ sections:
               significant: >-
                 En Gironde, le terme quadratique est significatif sur {acc:tm-gironde|start}-{acc:tm-gironde|end}
                 (p {acc:tm-gironde|p|p}), mais ce test ne distingue pas une accélération continue d'un
-                réchauffement qui démarre dans les années 1970 après une période plate : il ne suffit pas à dire que
-                le rythme augmente aujourd'hui.
+                réchauffement concentré sur la seconde partie de la période (rupture vers
+                {tm-annuelle-gironde|breakpoints.0.time}, test de Pettitt) : il ne suffit pas à dire que le rythme
+                augmente aujourd'hui.
               not_significant: >-
                 Pas d'accélération détectée en Gironde sur {acc:tm-gironde|start}-{acc:tm-gironde|end} (p
                 {acc:tm-gironde|p|p}).
@@ -677,5 +721,6 @@ sections:
           - id: limite-reanalyse
             kind: lacune
             text: >-
-              Les variables d'altitude, de vent, de pression, d'humidité et de feu viennent de la réanalyse ERA5 :
-              utile mais non homogénéisée, et pauvre en observations avant 1979.
+              Les variables d'altitude, de vent, de pression, d'humidité, de feu, de jet stream et la température de
+              mer du golfe viennent de la réanalyse ERA5 : utile mais non homogénéisée, et pauvre en observations avant
+              1979, surtout avant 1950.
