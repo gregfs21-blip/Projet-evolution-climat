@@ -458,6 +458,20 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
   (HadCRUT5 et Berkeley), TM France et Gironde.
 - Critères M1-M7 validés tels quels.
 
+### Choix de mise en œuvre fixés AVANT le premier calcul (02/11/2026, `etl/stats/acceleration.py`, `etl/synthese.py`)
+- Accélération : ajustement sur les moyennes annuelles publiées, années centrées ; p bilatéral sur une loi de Student
+  à n − 3 degrés de liberté ; au moins 20 années consécutives. Périodes : niveau marin 1993-2024 (et 1993-2017 pour
+  M5), CO₂ 1979-2025, CH₄ 1984-2025, HadCRUT5 1970-2025, Berkeley 1970-2024, TM France 1959-2021, **TM Gironde
+  1953-2022 et non 1953-2024** : 2023 et 2024 ne sont pas homogénéisées et la règle du projet interdit d'en tirer une
+  tendance (précision par rapport au cadrage, prise avant calcul).
+- M5, à lire avec la référence : le 0,084 mm/an² de Nerem et al. retire les effets du Pinatubo et d'ENSO ; leur
+  ajustement quadratique brut vaut 0,097 mm/an². Notre calcul est brut ; la fourchette validée [0,059 ; 0,109] contient
+  les deux valeurs et n'est pas modifiée.
+- Comparaison S3 : pente de Sen et intervalle à 95 % recalculés sur 1959-2021 pour TM Gironde, TM France, HadCRUT5.
+- Le texte des affirmations dont le sens dépend d'un résultat (accélération, comparaison, signal) est choisi par le
+  code selon ce résultat ; si une mise à jour mensuelle fait perdre la significativité d'un indicateur cité comme
+  « signal », la validation M2 échoue et le signale, au lieu de laisser un texte devenu faux.
+
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 
 > **Décisions de Grég du 31/10/2026, avant tout calcul** : D-T périmètre **A, B et C** (A ajouté après explication de
