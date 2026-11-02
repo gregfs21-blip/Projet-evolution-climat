@@ -11,11 +11,13 @@ import {
   validationReportSchema,
   coverageSchema,
   departmentMapSchema,
+  synthesisSchema,
   type Coverage,
   type DepartmentMap,
   type Indicator,
   type Manifest,
   type Scale,
+  type Synthesis,
   type ValidationReport,
 } from "./schema";
 
@@ -82,6 +84,12 @@ export function getValidation(phase: string): ValidationReport | undefined {
 export function getCoverage(): Coverage | undefined {
   if (!existsSync(join(DATA_DIR, "couverture.json"))) return undefined;
   return load("couverture.json", coverageSchema);
+}
+
+/** Synthèse par échelle (P8). Absente = page d'attente. */
+export function getSynthesis(): Synthesis | undefined {
+  if (!existsSync(join(DATA_DIR, "synthese.json"))) return undefined;
+  return load("synthese.json", synthesisSchema);
 }
 
 /** Cartes départementales des tendances (P5 bis). Absente = rien n'est affiché. */

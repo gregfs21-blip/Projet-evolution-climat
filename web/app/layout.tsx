@@ -27,7 +27,7 @@ function nav() {
   return [
     ...scales,
     { href: "/couverture", label: "Couverture", soon: null },
-    { href: "/synthese", label: "Synthèse", soon: "P8" },
+    { href: "/synthese", label: "Synthèse", soon: null },
     { href: "/methode", label: "Méthode", soon: null },
   ];
 }

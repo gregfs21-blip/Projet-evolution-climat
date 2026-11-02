@@ -52,6 +52,8 @@ jobs:
           fi
       - name: Carte départementale (P5 bis)
         run: python -m etl.carte
+      - name: Synthèse (P8)
+        run: python -m etl.synthese
       - run: python -m pytest etl/tests -q
       - run: python -m etl.validate
       - name: Validation de phase (critères docs/phases.md)
@@ -64,6 +66,7 @@ jobs:
           python -m etl.validation.p5
           python -m etl.validation.p6
           python -m etl.validation.p7
+          python -m etl.validation.p8
 
       - name: Publication des résultats
         run: |

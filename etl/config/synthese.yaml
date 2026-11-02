@@ -1,0 +1,681 @@
+# P8 — affirmations de la synthèse (cadrage validé par Grég le 02/11/2026). Généré par etl/synthese.py.
+# Champs à trous : {indicateur|champ|format}, {acc:id|champ|format}, {cmp:id|champ|format}.
+#   champs d'indicateur : slope, ci_low, ci_high, start, end, p, total, nc_first, nc_second, nc_diff, nc_p,
+#   mean:AAAA-AAAA, last, last_time, ou un chemin dans le JSON (alt_trends.0.slope_per_decade).
+#   formats : « +.2 » signe et 2 décimales, « .1 », « d » entier ; vide = texte.
+# Aucun nombre écrit en dur hors années et seuils déclarés dans `literals` (critère M1).
+# Types : signal, absence, comparaison, acceleration (affirmations avec confiance) ; information, contexte, lacune.
+
+accelerations:
+  - {id: gmsl, indicator: niveau-mer-monde, start: 1993, end: 2024}
+  - {id: gmsl-nerem, indicator: niveau-mer-monde, start: 1993, end: 2017}
+  - {id: co2, indicator: co2-monde, start: 1979, end: 2025}
+  - {id: ch4, indicator: ch4-monde, start: 1984, end: 2025}
+  - {id: hadcrut, indicator: temperature-hadcrut5-monde, start: 1970, end: 2025}
+  - {id: berkeley, indicator: temperature-berkeley-monde, start: 1970, end: 2024}
+  - {id: tm-france, indicator: tm-france, start: 1959, end: 2021}
+  - {id: tm-gironde, indicator: tm-annuelle-gironde, start: 1953, end: 2022}
+
+comparisons:
+  - {id: tm-gironde-monde, a: tm-annuelle-gironde, b: temperature-hadcrut5-monde, start: 1959, end: 2021}
+  - {id: tm-france-monde, a: tm-france, b: temperature-hadcrut5-monde, start: 1959, end: 2021}
+  - {id: tm-gironde-france, a: tm-annuelle-gironde, b: tm-france, start: 1959, end: 2021}
+  - {id: sst-golfe-monde, a: sst-golfe-gascogne, b: sst-hadsst-monde, start: 1976, end: 2025}
+  - {id: mer-gironde-monde, a: niveau-mer-large-gironde, b: niveau-mer-monde, start: 1993, end: 2024}
+  - {id: tlt-rss-uah, a: tlt-rss-monde, b: tlt-uah-monde, start: 1979, end: 2025}
+  - {id: tx-tn-gironde, a: tx-annuelle-gironde, b: tn-annuelle-gironde, start: 1953, end: 2022}
+  - {id: tx-tn-france, a: tx-france, b: tn-france, start: 1959, end: 2021}
+
+sections:
+  # ------------------------------------------------------------------ GIRONDE
+  - id: gironde
+    title: Gironde
+    scale: gironde
+    groups:
+      - title: Température de l'air
+        claims:
+          - id: gironde-tm
+            kind: signal
+            params: [temperature-air]
+            text: >-
+              La température moyenne annuelle de la Gironde a augmenté de {tm-annuelle-gironde|slope|+.2} °C par
+              décennie entre {tm-annuelle-gironde|start} et {tm-annuelle-gironde|end}, soit
+              {tm-annuelle-gironde|total|+.1} °C sur la période (séries homogénéisées).
+          - id: gironde-tx-tn
+            kind: comparaison
+            params: [temperature-air]
+            text: >-
+              Le réchauffement des maximales ({cmp:tx-tn-gironde|a_slope|+.2} °C par décennie, intervalle
+              {cmp:tx-tn-gironde|a_low|+.2} à {cmp:tx-tn-gironde|a_high|+.2}) est {cmp:tx-tn-gironde|verdict} celui
+              des minimales ({cmp:tx-tn-gironde|b_slope|+.2}, {cmp:tx-tn-gironde|b_low|+.2} à
+              {cmp:tx-tn-gironde|b_high|+.2}), sur {cmp:tx-tn-gironde|start}-{cmp:tx-tn-gironde|end}.
+      - title: Extrêmes de température
+        claims:
+          - id: gironde-chaleur
+            kind: signal
+            params: [temperature-air]
+            literals: [25, 30]
+            text: >-
+              Les journées estivales (TX ≥ 25 °C) augmentent de {jours-tx25-gironde|slope|+.1} jours par décennie et
+              les journées chaudes (TX ≥ 30 °C) de {jours-tx30-gironde|slope|+.1} jours par décennie
+              ({jours-tx25-gironde|start}-{jours-tx25-gironde|end}).
+          - id: gironde-tres-chaud
+            kind: signal
+            params: [temperature-air]
+            literals: [35, 20]
+            text: >-
+              Les journées très chaudes (TX ≥ 35 °C) passent de {jours-tx35-gironde|nc_first|.1} à
+              {jours-tx35-gironde|nc_second|.1} par an en moyenne entre 1961-1990 et 1991-2020, et les nuits
+              tropicales (TN ≥ 20 °C) de {nuits-tn20-gironde|nc_first|.1} à {nuits-tn20-gironde|nc_second|.1} par an.
+              Ces événements restent rares : la comparaison des deux normales remplace une pente.
+          - id: gironde-gel
+            kind: signal
+            params: [temperature-air]
+            literals: [0]
+            text: >-
+              Les jours de gel (TN ≤ 0 °C) reculent de {jours-gel-gironde|slope|.1} jours par décennie
+              ({jours-gel-gironde|start}-{jours-gel-gironde|end}).
+          - id: gironde-canicule
+            kind: signal
+            params: [sante-ecologie]
+            text: >-
+              À Mérignac, les jours de canicule au sens des seuils de vigilance de la Gironde passent de
+              {canicule-bordeaux-merignac|nc_first|.1} à {canicule-bordeaux-merignac|nc_second|.1} par an entre
+              1961-1990 et 1991-2020 (p {canicule-bordeaux-merignac|nc_p|p}) : l'écart est significatif mais
+              repose sur peu d'événements, et sur une seule station.
+      - title: Mer, altitude et géopotentiel
+        claims:
+          - id: gironde-sst
+            kind: signal
+            params: [temperature-mer]
+            text: >-
+              La surface du golfe de Gascogne se réchauffe de {sst-golfe-gascogne|slope|+.2} °C par décennie
+              ({sst-golfe-gascogne|start}-{sst-golfe-gascogne|end}).
+          - id: gironde-sst-large
+            kind: signal
+            params: [temperature-mer]
+            text: >-
+              Au large de la Gironde, le réchauffement de surface atteint {sst-gascogne-large-gironde|slope|+.2} °C par
+              décennie ({sst-gascogne-large-gironde|start}-{sst-gascogne-large-gironde|end}, ERA5).
+          - id: gironde-altitude
+            kind: signal
+            params: [temperature-altitude]
+            literals: [850, 500, 1, 5]
+            text: >-
+              Au-dessus de Bordeaux, la réanalyse ERA5 donne {t850-bordeaux-era5|slope|+.2} °C par décennie à
+              850 hPa (environ 1 500 m) et {t500-bordeaux-era5|slope|+.2} °C à 500 hPa (environ 5 500 m),
+              sur {t850-bordeaux-era5|start}-{t850-bordeaux-era5|end}. Les radiosondages de Mérignac, trop courts et
+              non homogénéisés, ne servent pas de preuve.
+          - id: gironde-z500
+            kind: signal
+            params: [geopotentiel]
+            literals: [500]
+            text: >-
+              La surface 500 hPa s'élève de {z500-bordeaux-era5|slope|+.1} m par décennie au-dessus de Bordeaux
+              ({z500-bordeaux-era5|start}-{z500-bordeaux-era5|end}, ERA5) : la colonne d'air, plus chaude, se dilate.
+      - title: Pluie et eau
+        claims:
+          - id: gironde-pluie
+            kind: absence
+            params: [precipitations]
+            text: >-
+              Aucune tendance du cumul annuel de pluie n'est détectée en Gironde ({rr-cumul-gironde|slope|+.1} mm
+              par décennie sur {rr-cumul-gironde|start}-{rr-cumul-gironde|end}, non significatif). Non détectée ne
+              veut pas dire stable : la pluie varie beaucoup d'une année à l'autre et peut masquer une tendance modeste.
+          - id: gironde-pluies-intenses
+            kind: absence
+            params: [precipitations]
+            literals: [10, 20]
+            text: >-
+              Aucune évolution des pluies intenses n'est détectée : ni la pluie maximale en un jour
+              ({rx1day-gironde|slope|+.1} mm par décennie), ni en cinq jours ({rx5day-gironde|slope|+.1} mm), ni le
+              nombre de jours de pluie d'au moins 10 ou 20 mm, sur {rx1day-gironde|start}-{rx1day-gironde|end}.
+          - id: gironde-etp
+            kind: signal
+            params: [agroclimat]
+            text: >-
+              L'évapotranspiration potentielle, la demande en eau de l'atmosphère, augmente :
+              {etp-bordeaux-paulin|slope|+.1} mm par décennie à Bordeaux et {etp-cazaux|slope|+.1} mm à Cazaux
+              ({etp-bordeaux-paulin|start}-{etp-bordeaux-paulin|end}).
+          - id: gironde-bilan-hydrique
+            kind: absence
+            params: [agroclimat]
+            literals: [12]
+            text: >-
+              Le bilan pluie − évapotranspiration et l'indice de sécheresse SPEI à 12 mois ne montrent pas de
+              tendance détectée (bilan : {bilan-hydrique-bordeaux-paulin|slope|+.1} mm par décennie à Bordeaux,
+              {bilan-hydrique-bordeaux-paulin|start}-{bilan-hydrique-bordeaux-paulin|end}) : la hausse de la demande
+              en eau ne ressort pas encore au-delà de la variabilité de la pluie.
+            indicators: [spei12-bordeaux-paulin, spei12-cazaux, spei12-cap-ferret, bilan-hydrique-cazaux]
+          - id: gironde-mois-secs
+            kind: signal
+            params: [agroclimat]
+            text: >-
+              Les mois secs deviennent plus fréquents à Cap-Ferret ({mois-secs-cap-ferret|slope|+.2} mois par
+              décennie) et à Cazaux ({mois-secs-cazaux|slope|+.2}), sur {mois-secs-cazaux|start}-{mois-secs-cazaux|end}.
+          - id: gironde-mois-secs-bordeaux
+            kind: absence
+            params: [agroclimat]
+            text: >-
+              À Bordeaux, la hausse des mois secs n'est pas significative ({mois-secs-bordeaux-paulin|slope|+.2} mois
+              par décennie) : le signal du littoral ne se retrouve pas partout.
+      - title: Vigne et agriculture
+        claims:
+          - id: gironde-huglin
+            kind: signal
+            params: [agroclimat]
+            text: >-
+              L'indice de Huglin, la chaleur utile à la vigne, augmente de {huglin-gironde|slope|+.0} °C·j par
+              décennie ({huglin-gironde|start}-{huglin-gironde|end}), soit {huglin-gironde|total|+.0} °C·j sur la
+              période.
+          - id: gironde-vendanges
+            kind: signal
+            params: [agroclimat]
+            text: >-
+              Les vendanges du Bordelais commencent plus tôt : {vendanges-bordeaux|slope|.1} jours par décennie sur
+              {vendanges-bordeaux|start}-{vendanges-bordeaux|end} (dernière année de la série publiée). La date dépend
+              aussi des choix des viticulteurs, pas seulement du climat.
+          - id: gironde-gelees-tardives
+            kind: signal
+            params: [agroclimat]
+            text: >-
+              Les gelées tardives de printemps reculent à Mérignac ({gelees-tardives-bordeaux-merignac|nc_first|.1}
+              à {gelees-tardives-bordeaux-merignac|nc_second|.1} jour par an entre 1961-1990 et 1991-2020) et à Cazaux
+              ({gelees-tardives-cazaux|nc_first|.1} à {gelees-tardives-cazaux|nc_second|.1}).
+          - id: gironde-gelees-autres
+            kind: absence
+            params: [agroclimat]
+            text: >-
+              Dans les autres postes, plus abrités ou où elles étaient déjà rares, la baisse des gelées tardives n'est
+              pas établie (Bordeaux-Paulin : {gelees-tardives-bordeaux-paulin|nc_first|.1} à
+              {gelees-tardives-bordeaux-paulin|nc_second|.1} ; Sauternes : {gelees-tardives-sauternes|nc_first|.1} à
+              {gelees-tardives-sauternes|nc_second|.1}, non significatifs), et la fraîcheur des nuits de septembre ne montre pas de tendance détectée
+              ({fraicheur-nuits-bordeaux-merignac|slope|+.2} °C par décennie à Mérignac).
+            indicators: [fraicheur-nuits-bordeaux-paulin, gelees-tardives-cap-ferret]
+      - title: Feux de forêt
+        claims:
+          - id: gironde-fwi
+            kind: signal
+            params: [incendie]
+            text: >-
+              Le danger météorologique de feu augmente depuis {fwi-ete-gironde|start} : l'indice forêt-météo moyen de
+              l'été gagne {fwi-ete-gironde|slope|+.2} par décennie et les jours de danger très élevé
+              {jours-fwi-gironde|slope|+.1} par décennie, jusqu'en {fwi-ete-gironde|end}.
+          - id: gironde-fwi-1940
+            kind: information
+            params: [incendie]
+            text: >-
+              À relativiser : dans ERA5, l'indice moyen de la décennie 1940-1949 dépasse celui de 2016-2025 (indice
+              {fwi-ete-gironde|mean:1940-1949|.1} contre {fwi-ete-gironde|mean:2016-2025|.1} ; jours de danger très
+              élevé {jours-fwi-gironde|mean:1940-1949|.1} contre {jours-fwi-gironde|mean:2016-2025|.1}). Soit ces
+              années sèches étaient réellement extrêmes, soit ERA5, pauvre en observations avant 1950, les surestime :
+              la hausse depuis 1976 est établie, un record actuel ne l'est pas.
+      - title: Vent, tempêtes, pression, humidité, ensoleillement
+        claims:
+          - id: gironde-atmosphere
+            kind: absence
+            params: [vent, tempetes, pression, humidite, ensoleillement]
+            text: >-
+              Aucune tendance n'est détectée pour le vent fort ({jours-vent-fort-bordeaux-era5|slope|+.2} jours par
+              décennie), la rafale maximale annuelle, les jours de tempête à Mérignac, la pression au niveau de la mer,
+              l'humidité relative et l'ensoleillement (série arrêtée en {insolation-bordeaux-merignac|end}).
+              L'humidité ERA5 dérive par rapport à la station de Mérignac : sa confiance est faible quoi qu'il arrive.
+            indicators: [rafale-max-bordeaux-era5, jours-tempete-bordeaux-merignac, pression-bordeaux-era5,
+                         humidite-bordeaux-era5, insolation-bordeaux-merignac]
+      - title: Littoral et catastrophes
+        claims:
+          - id: gironde-niveau-mer
+            kind: signal
+            params: [niveau-mer]
+            text: >-
+              Au large de la Gironde, le niveau de la mer monte de {niveau-mer-large-gironde|slope|+.1} mm par
+              décennie ({niveau-mer-large-gironde|start}-{niveau-mer-large-gironde|end}, altimétrie satellitaire).
+          - id: gironde-arcachon
+            kind: absence
+            params: [niveau-mer]
+            text: >-
+              Le marégraphe d'Arcachon, dont la série commence en {niveau-mer-arcachon-eyrac|series.time.0}, est trop
+              court et trop lacunaire pour une tendance.
+            indicators: [niveau-mer-arcachon-eyrac]
+          - id: gironde-catnat
+            kind: absence
+            params: [catastrophes]
+            text: >-
+              Le nombre de reconnaissances de catastrophe naturelle en Gironde ne montre pas de tendance détectée
+              ({catnat-gironde|start}-{catnat-gironde|end}). C'est une série administrative : elle compte des arrêtés,
+              qui dépendent des demandes des communes et des règles de reconnaissance, pas des aléas eux-mêmes.
+    conclusion: >-
+      En Gironde, le réchauffement est l'évolution la mieux établie : environ {tm-annuelle-gironde|total|+.1} °C en
+      soixante-dix ans, dans l'air, en altitude et en mer, avec des journées chaudes plus fréquentes et des gels plus
+      rares. Ses effets se lisent dans la vigne (indice de Huglin, vendanges plus précoces), la demande en eau de
+      l'atmosphère et le danger météorologique de feu. La pluie, en revanche, ne montre aucune tendance détectée, ni
+      en cumul ni en intensité, et ses séries s'arrêtent en {rr-cumul-gironde|end} ; le vent, les tempêtes et la
+      pression non plus. La sécheresse ressort par l'évaporation et par les mois secs du littoral, pas encore par le
+      bilan d'eau.
+
+  # ------------------------------------------------------------------ FRANCE
+  - id: france
+    title: France métropolitaine
+    scale: france
+    groups:
+      - title: Température de l'air
+        claims:
+          - id: france-tm
+            kind: signal
+            params: [temperature-air]
+            text: >-
+              La température moyenne de la France métropolitaine a augmenté de {tm-france|slope|+.2} °C par décennie
+              entre {tm-france|start} et {tm-france|end}, soit {tm-france|total|+.1} °C sur la période (stations à
+              longue série homogénéisées de Météo-France, moyenne pondérée par département).
+          - id: france-tx-tn
+            kind: comparaison
+            params: [temperature-air]
+            text: >-
+              Le réchauffement des maximales ({cmp:tx-tn-france|a_slope|+.2} °C par décennie, intervalle
+              {cmp:tx-tn-france|a_low|+.2} à {cmp:tx-tn-france|a_high|+.2}) est {cmp:tx-tn-france|verdict} celui des
+              minimales ({cmp:tx-tn-france|b_slope|+.2}, {cmp:tx-tn-france|b_low|+.2} à {cmp:tx-tn-france|b_high|+.2}).
+      - title: Pluie
+        claims:
+          - id: france-pluie
+            kind: absence
+            params: [precipitations]
+            text: >-
+              Aucune tendance du cumul annuel de pluie n'est détectée à l'échelle nationale ({rr-cumul-france|slope|+.1}
+              mm par décennie, {rr-cumul-france|start}-{rr-cumul-france|end}). Une moyenne nationale peut masquer des
+              évolutions opposées entre régions ; la carte départementale du site les montre, sans les établir.
+      - title: Littoral et catastrophes
+        claims:
+          - id: france-brest
+            kind: signal
+            params: [niveau-mer]
+            text: >-
+              À Brest, le niveau marin moyen monte de {niveau-mer-brest|slope|+.1} mm par décennie sur
+              {niveau-mer-brest|start}-{niveau-mer-brest|end}.
+          - id: france-catnat-secheresse
+            kind: signal
+            params: [catastrophes]
+            text: >-
+              Les reconnaissances de catastrophe naturelle pour sécheresse augmentent de
+              {catnat-secheresse-france|slope|+.0} par décennie ({catnat-secheresse-france|start}-{catnat-secheresse-france|end}).
+              C'est un signal administratif : il mêle l'aléa (retrait-gonflement des argiles), l'exposition des
+              maisons et l'évolution des règles de reconnaissance.
+          - id: france-catnat
+            kind: absence
+            params: [catastrophes]
+            text: >-
+              Toutes catégories confondues, le nombre de reconnaissances ne montre pas de tendance détectée
+              ({catnat-france|start}-{catnat-france|end}).
+    conclusion: >-
+      En France, le réchauffement atteint environ {tm-france|total|+.1} °C entre {tm-france|start} et
+      {tm-france|end} (la comparaison avec la Gironde et le monde est faite plus bas, sur une période commune). Comme
+      en Gironde, la pluie ne montre pas de tendance détectée à l'échelle
+      nationale. L'étude reste mince à cette échelle : la série nationale s'arrête en {tm-france|end} et les extrêmes
+      quotidiens n'y ont pas été traités.
+
+  # ------------------------------------------------------------------ MONDE
+  - id: monde
+    title: Monde
+    scale: monde
+    groups:
+      - title: Températures
+        claims:
+          - id: monde-temperature
+            kind: signal
+            params: [temperature-air]
+            text: >-
+              La température moyenne de surface du globe a augmenté de {temperature-hadcrut5-monde|slope|+.2} °C par
+              décennie sur {temperature-hadcrut5-monde|start}-{temperature-hadcrut5-monde|end} (HadCRUT5 ; Berkeley :
+              {temperature-berkeley-monde|slope|+.2} sur {temperature-berkeley-monde|start}-{temperature-berkeley-monde|end}).
+              La décennie 2016-2025 est en moyenne {temperature-hadcrut5-monde|mean:2016-2025|+.2} °C au-dessus de
+              1961-1990. Les deux jeux partagent l'essentiel de leurs stations : leur accord ne compte pas comme deux
+              preuves.
+          - id: monde-sst
+            kind: signal
+            params: [temperature-mer]
+            text: >-
+              La surface de l'océan mondial se réchauffe de {sst-hadsst-monde|slope|+.2} °C par décennie
+              ({sst-hadsst-monde|start}-{sst-hadsst-monde|end}, HadSST).
+          - id: monde-tlt
+            kind: comparaison
+            params: [temperature-altitude]
+            text: >-
+              La basse troposphère se réchauffe selon les deux traitements satellitaires, mais le réchauffement selon
+              RSS ({cmp:tlt-rss-uah|a_slope|+.2} °C par décennie, intervalle {cmp:tlt-rss-uah|a_low|+.2} à
+              {cmp:tlt-rss-uah|a_high|+.2}) est {cmp:tlt-rss-uah|verdict} celui d'UAH ({cmp:tlt-rss-uah|b_slope|+.2},
+              {cmp:tlt-rss-uah|b_low|+.2} à {cmp:tlt-rss-uah|b_high|+.2}) sur {cmp:tlt-rss-uah|start}-{cmp:tlt-rss-uah|end}.
+              Les deux partent des mêmes mesures : l'écart tient aux corrections appliquées, et la valeur exacte reste
+              incertaine.
+      - title: Gaz à effet de serre, aérosols et bilan d'énergie
+        claims:
+          - id: monde-co2-ch4
+            kind: signal
+            params: [ges]
+            text: >-
+              La concentration de CO₂ augmente de {co2-monde|slope|+.1} ppm par décennie
+              ({co2-monde|start}-{co2-monde|end}) et celle du méthane de {ch4-monde|slope|+.0} ppb par décennie
+              ({ch4-monde|start}-{ch4-monde|end}).
+          - id: monde-n2o
+            kind: signal
+            params: [ges]
+            text: >-
+              La concentration de protoxyde d'azote augmente de {n2o-monde|slope|+.1} ppb par décennie
+              ({n2o-monde|start}-{n2o-monde|end}).
+          - id: monde-aerosols
+            kind: signal
+            params: [aerosols]
+            text: >-
+              L'épaisseur optique des aérosols baisse légèrement, de {aerosols-monde|slope|.4} par décennie sur
+              {aerosols-monde|start}-{aerosols-monde|end} (réanalyse CAMS) : moins d'aérosols, c'est moins de
+              rayonnement solaire renvoyé vers l'espace.
+          - id: monde-eei
+            kind: signal
+            params: [desequilibre-energetique]
+            text: >-
+              La Terre reçoit plus d'énergie qu'elle n'en renvoie, et l'écart grandit : le déséquilibre mesuré par
+              CERES augmente de {desequilibre-energetique-monde|slope|+.2} W/m² par décennie
+              ({desequilibre-energetique-monde|start}-{desequilibre-energetique-monde|end}) et vaut en moyenne
+              {desequilibre-energetique-monde|mean:2016-2025|+.2} W/m² sur 2016-2025. La série ne compte que
+              vingt-cinq ans.
+      - title: Océans et glaces
+        claims:
+          - id: monde-ohc
+            kind: signal
+            params: [ocean-chaleur]
+            literals: [700, 10, 0]
+            text: >-
+              L'océan accumule de la chaleur : {ohc-700-monde|slope|+.2} × 10²² J par décennie entre 0 et 700 m
+              ({ohc-700-monde|start}-{ohc-700-monde|end}), {ohc-2000-monde|slope|+.1} × 10²² J entre 0 et 2000 m
+              depuis {ohc-2000-monde|start} (flotteurs Argo).
+          - id: monde-niveau-mer
+            kind: signal
+            params: [niveau-mer]
+            text: >-
+              Le niveau moyen de la mer monte de {niveau-mer-monde|slope|+.1} mm par décennie
+              ({niveau-mer-monde|start}-{niveau-mer-monde|end}, altimétrie satellitaire), soit
+              {niveau-mer-monde|total|+.0} mm sur la période.
+          - id: monde-ph
+            kind: signal
+            params: [ocean-acidification]
+            text: >-
+              Le pH de surface baisse de {ph-ocean-hot|slope|.3} par décennie à la station ALOHA, au nord d'Hawaï
+              ({ph-ocean-hot|start}-{ph-ocean-hot|end}) : l'océan s'acidifie en absorbant du CO₂. Une seule station,
+              mais la plus longue série ouverte.
+          - id: monde-banquise-arctique
+            kind: signal
+            params: [glaces]
+            text: >-
+              La banquise arctique de fin d'été recule de {banquise-arctique-septembre-monde|slope|.2} million de km²
+              par décennie ({banquise-arctique-septembre-monde|start}-{banquise-arctique-septembre-monde|end}).
+          - id: monde-banquise-antarctique
+            kind: absence
+            params: [glaces]
+            text: >-
+              La banquise antarctique ne montre pas de tendance détectée sur
+              {banquise-antarctique-fevrier-monde|start}-{banquise-antarctique-fevrier-monde|end} : la série est trop
+              variable d'une année à l'autre pour conclure dans un sens ou dans l'autre.
+      - title: Puits de carbone
+        claims:
+          - id: monde-puits
+            kind: signal
+            params: [puits-carbone]
+            text: >-
+              L'océan et les terres absorbent de plus en plus de carbone en valeur absolue :
+              {puits-ocean-monde|slope|+.2} et {puits-terres-monde|slope|+.2} GtC/an par décennie
+              ({puits-ocean-monde|start}-{puits-ocean-monde|end}, Global Carbon Budget).
+          - id: monde-part-puits
+            kind: absence
+            params: [puits-carbone]
+            text: >-
+              La part des émissions qu'ils absorbent ne montre pas de tendance détectée
+              ({part-puits-monde|start}-{part-puits-monde|end}) : les puits suivent la hausse des émissions, sans
+              signe établi d'affaiblissement ni de renforcement relatif.
+      - title: Circulation, tempêtes, El Niño, ozone
+        claims:
+          - id: monde-ace
+            kind: signal
+            params: [tempetes]
+            literals: [10]
+            text: >-
+              L'énergie cumulée des cyclones de l'Atlantique Nord augmente de {ace-monde|slope|+.1} × 10⁴ kt² par
+              décennie sur {ace-monde|start}-{ace-monde|end}, mais
+              une rupture est détectée vers {ace-monde|breakpoints.0.time} et elle n'est plus significative une fois la
+              tendance retirée : saut et pente ne se distinguent pas. Les moyens d'observation ont aussi changé.
+          - id: monde-ouragans
+            kind: absence
+            params: [tempetes]
+            text: >-
+              Le nombre d'ouragans par saison dans l'Atlantique Nord ne montre pas de tendance détectée
+              ({ouragans-monde|start}-{ouragans-monde|end}).
+          - id: monde-jet
+            kind: absence
+            params: [jet-stream-puissance, jet-stream-trajectoire]
+            text: >-
+              Le jet stream d'hiver sur l'Atlantique Nord ne montre de tendance détectée ni en latitude
+              ({jet-latitude-monde|slope|+.2} ° par décennie) ni en vitesse ({jet-vitesse-monde|slope|+.2} m/s), sur
+              {jet-latitude-monde|start}-{jet-latitude-monde|end}.
+            indicators: [jet-vitesse-monde]
+          - id: monde-enso
+            kind: absence
+            params: [el-nino]
+            text: >-
+              L'indice El Niño annuel ne montre pas de tendance détectée ({oni-monde|start}-{oni-monde|end}) : il
+              module les températures d'une année à l'autre sans dériver lui-même.
+          - id: monde-ozone
+            kind: absence
+            params: [ozone]
+            text: >-
+              Le trou d'ozone antarctique s'est creusé de {trou-ozone-monde|alt_trends.0.slope_per_decade|+.1} millions
+              de km² par décennie sur 1979-1994 ; depuis {trou-ozone-monde|start}, sa résorption n'est pas détectée
+              dans cet indicateur ({trou-ozone-monde|slope|+.2} million de km² par décennie, non significatif).
+    conclusion: >-
+      À l'échelle du globe, les mesures vont toutes dans le même sens : les gaz à effet de serre augmentent, la Terre
+      accumule de l'énergie, l'air, la surface de l'océan et ses profondeurs se réchauffent, la mer monte et la
+      banquise arctique recule. Les tendances de la circulation (jet stream, El Niño) et du nombre d'ouragans, elles,
+      ne sont pas établies, et la hausse du rythme du réchauffement de l'air n'est pas encore significative.
+
+  # ------------------------------------------------------------------ COMPARAISON DES ÉCHELLES
+  - id: echelles
+    title: Comparaison des échelles
+    intro: >-
+      Pentes de Sen recalculées sur une période commune ; « plus rapide » seulement quand les intervalles de
+      confiance à 95 % ne se recouvrent pas.
+    literals: [95]
+    groups:
+      - title: Température de l'air (1959-2021)
+        claims:
+          - id: cmp-gironde-monde
+            kind: comparaison
+            text: >-
+              Le réchauffement de la Gironde ({cmp:tm-gironde-monde|a_slope|+.2} °C par décennie, intervalle
+              {cmp:tm-gironde-monde|a_low|+.2} à {cmp:tm-gironde-monde|a_high|+.2}) est
+              {cmp:tm-gironde-monde|verdict} celui de la moyenne mondiale ({cmp:tm-gironde-monde|b_slope|+.2},
+              {cmp:tm-gironde-monde|b_low|+.2} à {cmp:tm-gironde-monde|b_high|+.2}), sur
+              {cmp:tm-gironde-monde|start}-{cmp:tm-gironde-monde|end}.
+          - id: cmp-france-monde
+            kind: comparaison
+            text: >-
+              Le réchauffement de la France ({cmp:tm-france-monde|a_slope|+.2} °C par décennie) est
+              {cmp:tm-france-monde|verdict} celui de la moyenne mondiale ({cmp:tm-france-monde|b_slope|+.2}) sur la
+              même période.
+          - id: cmp-gironde-france
+            kind: comparaison
+            text: >-
+              Le réchauffement de la Gironde ({cmp:tm-gironde-france|a_slope|+.2}) est
+              {cmp:tm-gironde-france|verdict} celui de la France ({cmp:tm-gironde-france|b_slope|+.2}).
+          - id: cmp-terres-oceans
+            kind: contexte
+            literals: ["1,59", "0,88", 70]
+            text: >-
+              Ces écarts sont attendus et ne disent rien de propre à la région : la Gironde et la France sont des
+              terres, la moyenne mondiale est à 70 % océanique, et les terres se réchauffent plus vite que l'océan.
+              Le GIEC estime le réchauffement 2011-2020 par rapport à 1850-1900 à 1,59 °C sur les terres et 0,88 °C
+              sur l'océan.
+            source: {label: "GIEC AR6, groupe I, résumé pour décideurs (A.1.2)", url: "https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/"}
+      - title: Mer
+        claims:
+          - id: cmp-sst-golfe-monde
+            kind: comparaison
+            text: >-
+              Le réchauffement de surface du golfe de Gascogne ({cmp:sst-golfe-monde|a_slope|+.2} °C par décennie)
+              est {cmp:sst-golfe-monde|verdict} celui de l'océan mondial ({cmp:sst-golfe-monde|b_slope|+.2}), sur
+              {cmp:sst-golfe-monde|start}-{cmp:sst-golfe-monde|end}.
+          - id: cmp-mer-gironde-monde
+            kind: comparaison
+            text: >-
+              La montée de la mer au large de la Gironde ({cmp:mer-gironde-monde|a_slope|+.1} mm par décennie,
+              intervalle {cmp:mer-gironde-monde|a_low|+.1} à {cmp:mer-gironde-monde|a_high|+.1}) est
+              {cmp:mer-gironde-monde|verdict} la moyenne mondiale ({cmp:mer-gironde-monde|b_slope|+.1},
+              {cmp:mer-gironde-monde|b_low|+.1} à {cmp:mer-gironde-monde|b_high|+.1}), sur
+              {cmp:mer-gironde-monde|start}-{cmp:mer-gironde-monde|end}.
+
+  # ------------------------------------------------------------------ ACCÉLÉRATION
+  - id: acceleration
+    title: Accélération
+    intro: >-
+      Régression quadratique sur les moyennes annuelles, erreur type de Newey-West, seuil de 5 %. Un terme
+      quadratique significatif dit que la pente a augmenté sur la période ; il ne dit pas quand, ni pourquoi.
+    literals: [5]
+    groups:
+      - title: Affirmations
+        claims:
+          - id: acc-niveau-mer
+            kind: acceleration
+            acc: [gmsl]
+            text_if:
+              significant: >-
+                La montée du niveau de la mer accélère : {acc:gmsl|value|.3} mm/an² sur
+                {acc:gmsl|start}-{acc:gmsl|end} (intervalle {acc:gmsl|ci_low|.3} à {acc:gmsl|ci_high|.3}) ; d'après
+                l'ajustement, son rythme passe d'environ {acc:gmsl|rate_start|.1} à {acc:gmsl|rate_end|.1} mm par an.
+              not_significant: >-
+                L'accélération de la montée du niveau de la mer n'est pas détectée sur
+                {acc:gmsl|start}-{acc:gmsl|end} (p {acc:gmsl|p|p}).
+          - id: acc-niveau-mer-nerem
+            kind: contexte
+            literals: ["0,084", "0,097"]
+            text: >-
+              Recalculée sur 1993-2017, la même méthode donne {acc:gmsl-nerem|value|.3} mm/an². Nerem et al. (2018)
+              publient 0,084 mm/an² après retrait des effets du Pinatubo et d'El Niño, et 0,097 sans ces corrections.
+            source: {label: "Nerem et al. (2018), PNAS", url: "https://www.pnas.org/doi/10.1073/pnas.1717312115"}
+          - id: acc-temperature-monde
+            kind: acceleration
+            literals: [5]
+            acc: [hadcrut, berkeley]
+            text_if:
+              significant: >-
+                Le réchauffement mondial accélère, sur les deux jeux testés : {acc:hadcrut|value|.4} °C/an² pour
+                HadCRUT5 ({acc:hadcrut|start}-{acc:hadcrut|end}, p {acc:hadcrut|p|p}) et {acc:berkeley|value|.4}
+                pour Berkeley ({acc:berkeley|start}-{acc:berkeley|end}, p {acc:berkeley|p|p}).
+              not_significant: >-
+                Une accélération du réchauffement mondial n'est pas détectée au seuil de 5 % : p {acc:hadcrut|p|p} pour HadCRUT5 ({acc:hadcrut|start}-{acc:hadcrut|end}) et p {acc:berkeley|p|p} pour
+                Berkeley ({acc:berkeley|start}-{acc:berkeley|end}). L'estimation centrale va dans ce sens (pente de
+                l'ajustement de {acc:hadcrut|rate_start10|.2} à {acc:hadcrut|rate_end10|.2} °C par décennie), mais
+                l'incertitude reste trop grande pour l'affirmer.
+          - id: acc-temperature-contexte
+            kind: contexte
+            text: >-
+              La question est débattue : Beaulieu et al. (2024) ne détectaient pas encore de hausse du rythme jusqu'en
+              2023 ; d'autres travaux, avec d'autres méthodes et les années 2023-2025, la jugent amorcée.
+            source: {label: "Beaulieu et al. (2024), Communications Earth & Environment, présentation UCSC", url: "https://news.ucsc.edu/2024/10/global-warming-statistics.html"}
+      - title: Information, sans référence
+        claims:
+          - id: acc-co2
+            kind: information
+            acc: [co2]
+            text_if:
+              significant: >-
+                La hausse annuelle du CO₂ s'accélère : terme quadratique significatif sur
+                {acc:co2|start}-{acc:co2|end} (p {acc:co2|p|p}), rythme d'environ {acc:co2|rate_start|.1} ppm par an en
+                début de période et {acc:co2|rate_end|.1} en fin de période.
+              not_significant: >-
+                Pas d'accélération détectée de la hausse du CO₂ sur {acc:co2|start}-{acc:co2|end} (p
+                {acc:co2|p|p}).
+          - id: acc-ch4
+            kind: information
+            acc: [ch4]
+            text_if:
+              significant: >-
+                La hausse du méthane s'accélère sur {acc:ch4|start}-{acc:ch4|end} (p {acc:ch4|p|p}).
+              not_significant: >-
+                Pas d'accélération détectée pour le méthane sur {acc:ch4|start}-{acc:ch4|end} (p {acc:ch4|p|p}) :
+                sa hausse a été irrégulière, ce qu'un ajustement quadratique décrit mal.
+          - id: acc-tm-france
+            kind: information
+            acc: [tm-france]
+            text_if:
+              significant: >-
+                Le réchauffement de la France accélère sur {acc:tm-france|start}-{acc:tm-france|end}
+                (p {acc:tm-france|p|p}).
+              not_significant: >-
+                Pas d'accélération détectée en France sur {acc:tm-france|start}-{acc:tm-france|end} (p
+                {acc:tm-france|p|p}).
+          - id: acc-tm-gironde
+            kind: information
+            acc: [tm-gironde]
+            text_if:
+              significant: >-
+                En Gironde, le terme quadratique est significatif sur {acc:tm-gironde|start}-{acc:tm-gironde|end}
+                (p {acc:tm-gironde|p|p}), mais ce test ne distingue pas une accélération continue d'un
+                réchauffement qui démarre dans les années 1970 après une période plate : il ne suffit pas à dire que
+                le rythme augmente aujourd'hui.
+              not_significant: >-
+                Pas d'accélération détectée en Gironde sur {acc:tm-gironde|start}-{acc:tm-gironde|end} (p
+                {acc:tm-gironde|p|p}).
+
+  # ------------------------------------------------------------------ EXPLORATOIRE (P7)
+  - id: exploratoire
+    title: Exploratoire (P7)
+    optional: true
+    pending: >-
+      En attente du relevé des blocages atlantiques (P7, en cours). Les indicateurs exploratoires (blocages, Z500
+      Atlantique-Europe, énergie de convection en Gironde) seront ajoutés ici, plafonnés à « signal non établi ».
+    groups: []
+
+  # ------------------------------------------------------------------ CE QUE L'ÉTUDE NE DIT PAS
+  - id: limites
+    title: Ce que l'étude ne dit pas
+    gaps_from_coverage: true
+    groups:
+      - title: Échelles et sujets non traités
+        claims:
+          - id: limite-europe
+            kind: lacune
+            text: >-
+              L'Europe n'est pas une échelle de l'étude : seul le secteur Atlantique-Europe des blocages (P7) la touche.
+          - id: limite-glaciers
+            kind: lacune
+            text: >-
+              La fonte des glaces n'est traitée que par la banquise ; les glaciers de montagne et les calottes du
+              Groenland et de l'Antarctique ne le sont pas.
+          - id: limite-projections
+            kind: lacune
+            text: >-
+              L'étude décrit le climat observé ; elle ne contient aucune projection.
+      - title: Causes
+        claims:
+          - id: limite-attribution
+            kind: lacune
+            text: >-
+              L'étude ne fait aucune attribution : elle ne calcule pas la part humaine des évolutions qu'elle décrit.
+          - id: contexte-attribution
+            kind: contexte
+            text: >-
+              Le GIEC juge sans équivoque que l'influence humaine a réchauffé l'atmosphère, l'océan et les terres.
+            source: {label: "GIEC AR6, groupe I, résumé pour décideurs (A.1)", url: "https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/"}
+      - title: Limites des données
+        claims:
+          - id: limite-pluie
+            kind: lacune
+            text: >-
+              Les séries de pluie s'arrêtent en {rr-cumul-gironde|end} en Gironde et en {rr-cumul-france|end} pour
+              la France (réseaux homogènes et complets) : les années récentes ne sont pas dans les tendances de la pluie.
+          - id: limite-non-detecte
+            kind: lacune
+            text: >-
+              Une tendance « non détectée » n'est pas une absence d'évolution : pour les événements rares (pluies
+              intenses, tempêtes), plusieurs décennies ne suffisent souvent pas à séparer un changement modéré de la
+              variabilité naturelle.
+          - id: limite-reanalyse
+            kind: lacune
+            text: >-
+              Les variables d'altitude, de vent, de pression, d'humidité et de feu viennent de la réanalyse ERA5 :
+              utile mais non homogénéisée, et pauvre en observations avant 1979.
