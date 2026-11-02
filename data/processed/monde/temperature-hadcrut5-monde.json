@@ -656,9 +656,9 @@
   "source_name": "Met Office Hadley Centre / CRU — HadCRUT5, température globale",
   "source_url": "https://www.metoffice.gov.uk/hadobs/hadcrut5/",
   "license": "Open Government Licence v3",
-  "extracted_at": "2026-11-02T19:59:37Z",
+  "extracted_at": "2026-11-02T21:12:49Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+f12ebe5",
+  "etl_version": "0.1.0+ee9167f",
   "homogenized": true
  },
  "is_demo": false
