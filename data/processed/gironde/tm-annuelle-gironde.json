@@ -301,6 +301,23 @@
    "significant": true,
    "alpha": 0.05,
    "p_value_classical": 0.0
+  },
+  {
+   "label": "1959-2021, comparaison entre échelles",
+   "method": "pente de Sen ; significativité Mann-Kendall corrigé de Hamed-Rao (1998)",
+   "period": {
+    "start": 1959,
+    "end": 2021
+   },
+   "slope_per_decade": 0.3325,
+   "slope_ci_low": 0.2561,
+   "slope_ci_high": 0.4142,
+   "fitted_start": -0.4477,
+   "fitted_end": 1.6137,
+   "p_value": 0.0,
+   "significant": true,
+   "alpha": 0.05,
+   "p_value_classical": 0.0
   }
  ],
  "headline": "trend",
@@ -487,9 +504,9 @@
   "source_name": "Météo-France — Longues Séries Homogénéisées (LSH)",
   "source_url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
   "license": "Licence Ouverte 2.0 (Etalab)",
-  "extracted_at": "2026-10-28T12:23:38Z",
+  "extracted_at": "2026-11-02T19:59:37Z",
   "script": "etl/indicators/temperature.py",
-  "etl_version": "0.1.0+8ba3916",
+  "etl_version": "0.1.0+f12ebe5",
   "homogenized": true
  },
  "is_demo": false
