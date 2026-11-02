@@ -13,7 +13,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | **close le 31/10/2026** |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | critères L1-L5 validés le 31/10/2026 | en cours |
-| P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 proposés le 02/11/2026 | en cours |
+| P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 | en cours |
 
 ## Journal P0
 
@@ -401,7 +401,7 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   (elle était déjà en « signal non établi »).
 - P3 close.
 
-## P8 — Synthèse : cadrage proposé le 02/11/2026, avant toute rédaction et tout calcul
+## P8 — Synthèse : cadrage proposé et validé le 02/11/2026, avant toute rédaction et tout calcul
 
 ### Constat
 196 indicateurs publiés (P1-P6) : 34 en confiance « élevée », 63 « moyenne », 3 « faible », 96 « signal non établi »
@@ -451,8 +451,12 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
 | M6 | Relecture indépendante : un agent séparé, qui n'a pas vu la rédaction, confronte chaque affirmation aux JSON et signale écarts et sur-interprétations ; chaque signalement corrigé ou tracé |
 | M7 | P7 intégrée dans une section exploratoire plafonnée dès que les blocages sont relevés ; la synthèse peut paraître avant, avec la mention « en attente » |
 
-### Décisions demandées à Grég
-Forme, règle S1, séries du test d'accélération, critères M1-M7.
+### Décisions de Grég du 02/11/2026, avant toute rédaction et tout calcul
+- Forme : page du site générée par l'ETL (pas de document figé).
+- Règle S1 : la plus faible confiance, jamais relevée par concordance.
+- Test d'accélération sur les cinq groupes de séries : niveau marin mondial, CO₂ et CH₄, température mondiale
+  (HadCRUT5 et Berkeley), TM France et Gironde.
+- Critères M1-M7 validés tels quels.
 
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 
