@@ -920,3 +920,10 @@ changent pas. Le site compare uniquement ces pentes sur l'accueil.
 une période commune, l'écart avec la Gironde ou la France n'est pas un effet purement local. Une fenêtre fixe ne
 profite pas des années récentes tant que la série France reste homogénéisée jusqu'en 2021 ; elle ne bouge que par une
 nouvelle décision consignée ici. Si une série ne la couvre plus, l'ETL échoue, et le build du site aussi.
+
+**Alerte de fraîcheur (décision de Grég du 02/11/2026).** `etl/fraicheur.py`, exécuté après chaque ETL mensuel, ouvre
+une issue GitHub si la fenêtre de comparaison peut avancer, ou si un téléchargement a échoué et que l'ancien fichier a
+été réutilisé. Sa fin dépend de la dernière année homogénéisée de la Gironde et du globe, et d'un seuil de **220 stations
+françaises** ayant TN et TX homogénéisés sur toute la fenêtre (taille du réseau actuel). Il ne change aucun chiffre :
+déplacer la fenêtre reste une décision consignée ici, qui modifie aussi `T_SPAN`, donc la tendance mise en avant de la
+France et sa carte. Le début de fenêtre reste 1959 ; 1961-2022, déjà possible avec 226 stations, n'a pas été retenu.
