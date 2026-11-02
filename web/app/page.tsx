@@ -17,7 +17,6 @@ export default function Home() {
   const t = temperatureByScale();
   const featured = featuredIndicators();
   const findings = publishedFindings();
-  const trended = t.series.filter((s) => s.trend);
 
   return (
     <div className="space-y-6">
@@ -25,14 +24,15 @@ export default function Home() {
         <div className="space-y-3">
           <h1 className="text-3xl leading-tight font-semibold tracking-tight sm:text-[2.6rem]">Comment évolue le climat, ici et ailleurs&nbsp;?</h1>
           <p className="max-w-3xl text-base leading-relaxed text-white/85">
-            La température moyenne évolue de{" "}
-            {trended.map((s, i) => (
+            Sur la même période {t.period}, la température moyenne évolue de{" "}
+            {t.series.map((s, i) => (
               <span key={s.key}>
-                {i > 0 && (i === trended.length - 1 ? " et " : ", ")}
+                {i > 0 && (i === t.series.length - 1 ? " et " : ", ")}
                 <b className="font-semibold whitespace-nowrap tabular-nums">
-                  {fmtSigned(s.trend!.slope)} {t.unit}
+                  {fmtSigned(s.trend.slope)} {t.unit}
                 </b>{" "}
-                par décennie {WHERE[s.key]} ({s.trend!.start}-{s.trend!.end})
+                par décennie {WHERE[s.key]}
+                {!s.trend.significant && " (non significatif)"}
               </span>
             ))}
             . Chaque chiffre vient de données ouvertes, avec sa méthode, sa source et son niveau de confiance.
@@ -51,7 +51,7 @@ export default function Home() {
 
       <section className="card space-y-3 p-4 sm:p-6">
         <h2 className="text-lg font-semibold tracking-tight">Écart de température par échelle</h2>
-        <ScalesChart series={t.series} first={t.first} last={t.last} unit={t.unit} reference={t.reference} />
+        <ScalesChart series={t.series} first={t.first} last={t.last} unit={t.unit} reference={t.reference} period={t.period} />
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">

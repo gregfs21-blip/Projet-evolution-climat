@@ -9,7 +9,7 @@ import Segmented from "./Segmented";
 import { fmtSigned } from "@/lib/format";
 import type { ScaleSeries } from "@/lib/home";
 
-type Props = { series: ScaleSeries[]; first: number; last: number; unit: string; reference: string };
+type Props = { series: ScaleSeries[]; first: number; last: number; unit: string; reference: string; period: string };
 type Pt = { x: number; y: number };
 
 const fmtTick = new Intl.NumberFormat("fr-FR", { signDisplay: "exceptZero", maximumFractionDigits: 1 });
@@ -18,7 +18,7 @@ function path(pts: Pt[]): string {
   return pts.map((p, i) => `${i ? "L" : "M"}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join("");
 }
 
-export default function ScalesChart({ series, first, last, unit, reference }: Props) {
+export default function ScalesChart({ series, first, last, unit, reference, period }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [w, setW] = useState(960);
   const [range, setRange] = useState<"all" | "1950" | "50" | "30">("1950");
@@ -76,7 +76,7 @@ export default function ScalesChart({ series, first, last, unit, reference }: Pr
     });
     const t = s.trend;
     let sen: { a: Pt; b: Pt } | null = null;
-    if (t && t.end > start) {
+    if (t.end > start) {
       const y0 = Math.max(t.start, start);
       const f = (y: number) => t.fittedStart + ((y - t.start) / Math.max(1, t.end - t.start)) * (t.fittedEnd - t.fittedStart);
       sen = { a: { x: X(y0), y: Y(f(y0)) }, b: { x: X(t.end), y: Y(t.fittedEnd) } };
@@ -179,7 +179,7 @@ export default function ScalesChart({ series, first, last, unit, reference }: Pr
             <g key={s.key}>
               <circle cx={w - m.r + 9} cy={y - 4} r={3.5} style={{ fill: s.color }} />
               <text x={w - m.r + 16} y={y} fontSize={12} style={{ fill: "var(--ink)", fontVariantNumeric: "tabular-nums" }}>
-                {narrow ? s.name : `${s.name} ${s.trend ? `${fmtSigned(s.trend.slope)}/déc.` : ""}`}
+                {narrow ? s.name : `${s.name} ${fmtSigned(s.trend.slope)}/déc.`}
               </text>
             </g>
           ))}
@@ -219,7 +219,7 @@ export default function ScalesChart({ series, first, last, unit, reference }: Pr
       </div>
 
       <p className="text-xs text-[var(--muted)]">
-        Trait fin : écart annuel à la moyenne {reference}. Trait épais : droite de Sen, sur la période propre à chaque série. Pointillés : années non
+        Trait fin : écart annuel à la moyenne {reference}. Trait épais : droite de Sen sur la période commune {period}. Pointillés : années non
         homogénéisées, hors tendance. Le chiffre mondial inclut les océans, qui se réchauffent moins vite que les terres : l&apos;écart avec la Gironde
         ou la France n&apos;est pas un effet purement local.
       </p>

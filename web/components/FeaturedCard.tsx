@@ -4,7 +4,7 @@ import Link from "next/link";
 import ConfidenceBadge from "./ConfidenceBadge";
 import MiniBars from "./MiniBars";
 import { fmt, fmtSigned, fmtSigned1 } from "@/lib/format";
-import type { Indicator } from "@/lib/schema";
+import type { Indicator, Trend } from "@/lib/schema";
 
 function lastValue(ind: Indicator) {
   for (let i = ind.series.value.length - 1; i >= 0; i--) {
@@ -14,8 +14,7 @@ function lastValue(ind: Indicator) {
   return null;
 }
 
-export default function FeaturedCard({ ind, label, show, href }: { ind: Indicator; label: string; show: "slope" | "last"; href: string }) {
-  const t = ind.trend;
+export default function FeaturedCard({ ind, trend: t, label, show, href }: { ind: Indicator; trend: Trend | null; label: string; show: "slope" | "last"; href: string }) {
   const last = lastValue(ind);
   return (
     <Link href={href} className="card flex flex-col gap-1 px-4 pt-3.5 pb-3 transition-colors hover:border-[var(--primary)]">
