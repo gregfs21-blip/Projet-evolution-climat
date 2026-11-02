@@ -8,7 +8,7 @@ export default function TrendTable({ trends, unit }: { trends: Trend[]; unit: st
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[34rem] text-left text-sm">
-        <thead className="text-xs uppercase tracking-wide text-[var(--muted)]">
+        <thead className="text-xs text-[var(--muted)]">
           <tr className="border-b border-[var(--rule)]">
             <th className="py-2 pr-3 font-medium">Période</th>
             <th className="py-2 pr-3 font-medium">Pente de Sen ({unit}/déc.)</th>

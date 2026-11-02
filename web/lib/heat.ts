@@ -73,3 +73,28 @@ export function heatGradient(unit: string, steps = 10): string {
   });
   return `linear-gradient(90deg, ${stops.join(", ")})`;
 }
+
+// Bandes climatiques : écart annuel à la référence, sur une échelle unique pour toutes les échelles géographiques,
+// de sorte qu'une même couleur signifie partout le même écart. ±3 °C : choix d'affichage, englobe les extrêmes publiés.
+export const ANOMALY_MAX = 3;
+const ANOMALY_RAMP: RGB[] = [
+  [8, 48, 107], [8, 81, 156], [33, 113, 181], [66, 146, 198], [107, 174, 214], [158, 202, 225], [198, 219, 239], [222, 235, 247],
+  [254, 224, 210], [252, 187, 161], [252, 146, 114], [251, 106, 74], [239, 59, 44], [203, 24, 29], [165, 15, 21], [103, 0, 13],
+];
+
+/** Couleur d'un écart annuel (°C). */
+export function anomalyColor(v: number): string {
+  const k = (Math.max(-ANOMALY_MAX, Math.min(ANOMALY_MAX, v)) + ANOMALY_MAX) / (2 * ANOMALY_MAX);
+  const pos = k * (ANOMALY_RAMP.length - 1);
+  const i = Math.min(ANOMALY_RAMP.length - 2, Math.floor(pos));
+  const a = ANOMALY_RAMP[i]!;
+  const b = ANOMALY_RAMP[i + 1]!;
+  const [r, g, bl] = [0, 1, 2].map((j) => Math.round(a[j]! + (pos - i) * (b[j]! - a[j]!)));
+  return `rgb(${r} ${g} ${bl})`;
+}
+
+/** Dégradé de légende, de −ANOMALY_MAX à +ANOMALY_MAX. */
+export function anomalyGradient(): string {
+  const n = ANOMALY_RAMP.length - 1;
+  return `linear-gradient(90deg, ${ANOMALY_RAMP.map(([r, g, b], i) => `rgb(${r} ${g} ${b}) ${(i / n) * 100}%`).join(", ")})`;
+}

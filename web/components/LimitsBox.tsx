@@ -7,7 +7,7 @@ export default function LimitsBox({ ind }: { ind: Indicator }) {
   const p = ind.provenance;
   return (
     <aside className="rounded-md border border-[var(--rule)] p-4 text-sm" aria-label="Limites et traçabilité">
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Limites</h3>
+      <h3 className="mb-2 text-xs font-semibold text-[var(--muted)]">Limites</h3>
       <ul className="mb-4 list-disc space-y-1 pl-5">
         {ind.limitations.map((l) => (
           <li key={l}>{l}</li>
@@ -42,7 +42,7 @@ export default function LimitsBox({ ind }: { ind: Indicator }) {
       </dl>
       {ind.stations.length > 0 && (
         <div className="mt-4 overflow-x-auto">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+          <h3 className="mb-2 text-xs font-semibold text-[var(--muted)]">
             Séries Météo-France utilisées
           </h3>
           <table className="w-full min-w-[36rem] text-left text-xs">

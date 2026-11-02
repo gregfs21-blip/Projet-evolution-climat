@@ -128,7 +128,7 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
 export default function WhyConfidence({ ind, reports }: { ind: Indicator; reports: ValidationReport[] }) {
   const pts = points(ind, reports);
   return (
-    <section aria-label="Niveau de confiance" className="rounded-lg border border-[var(--rule)] bg-[var(--card)] p-4">
+    <section aria-label="Niveau de confiance" className="card p-4">
       <div className="mb-3 flex flex-wrap items-center gap-3">
         <ConfidenceBadge level={ind.confidence} />
         <h2 className="text-sm font-semibold">Ce qui fonde ce niveau</h2>

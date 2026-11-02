@@ -1,40 +1,57 @@
 @import "tailwindcss";
 
+/* Les noms de variables restent ceux du site : les graphiques ECharts et les cartes les lisent à l'exécution. */
 :root {
-  --paper: #fbfaf7;
-  --ink: #1b1e22;
-  --muted: #66707a;
-  --rule: #e2dfd8;
-  --hover: #f2efe8;
-  --warm: #b4352a;
-  --warm-soft: #fbece9;
-  --cold: #2c66a3;
-  --accent: #0e6f68;
+  --paper: #f2f6fb;
+  --rail: #fbfdff;
+  --ink: #0f2540;
+  --muted: #56677c;
+  --rule: #dbe4ef;
+  --hover: #e8f0fa;
+  --warm: #c63a2e;
+  --warm-soft: #fdecea;
+  --cold: #1d6fb8;
+  --accent: #0e7a70;
   --good: #2e7a34;
-  --good-soft: #f1f8f1;
+  --good-soft: #eef7ef;
   --card: #ffffff;
+  --primary: #0b5cc4;
+  --primary-ink: #ffffff;
+  /* Une couleur par échelle (validée CVD et contraste sur la surface des cartes). */
+  --s-gironde: #d9480f;
+  --s-france: #008f7c;
+  --s-monde: #1b4f9c;
+  --card-shadow: 0 1px 2px rgb(15 37 64 / 0.04), 0 10px 24px -18px rgb(15 37 64 / 0.22);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #121417;
-    --ink: #e7e5e0;
-    --muted: #9aa3ab;
-    --rule: #2b2f35;
-    --hover: #1b1e22;
-    --warm: #e2675b;
-    --warm-soft: #2a1715;
-    --cold: #6fa3dc;
-    --accent: #3fb8ad;
+    --paper: #0c1726;
+    --rail: #0f1c2e;
+    --ink: #e6edf5;
+    --muted: #93a4b8;
+    --rule: #24344a;
+    --hover: #18283c;
+    --warm: #ee7a6d;
+    --warm-soft: #2e1a1a;
+    --cold: #6fb0ea;
+    --accent: #3fc0b3;
     --good: #6cc070;
-    --good-soft: #142219;
-    --card: #181b1f;
+    --good-soft: #13261b;
+    --card: #13233a;
+    --primary: #5aa2f2;
+    --primary-ink: #08172a;
+    --s-gironde: #e8682a;
+    --s-france: #0fa48f;
+    --s-monde: #6a90ee;
+    --card-shadow: none;
   }
 }
 
 @theme inline {
   --font-sans: var(--font-plex-sans), system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* Plus de chasse fixe : les classes font-mono existantes passent en chiffres tabulaires. */
+  --font-mono: var(--font-plex-sans), system-ui, sans-serif;
 }
 
 html {
@@ -49,15 +66,58 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Bandes de réchauffement en filigrane de l'en-tête : décor neutre, pas une donnée. */
-.stripes {
-  background: linear-gradient(
-    90deg,
-    var(--cold) 0%,
-    color-mix(in srgb, var(--cold) 45%, var(--paper)) 30%,
-    color-mix(in srgb, var(--warm) 35%, var(--paper)) 62%,
-    var(--warm) 100%
-  );
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* En couche components : les utilitaires Tailwind (hover:border-…) doivent pouvoir la surcharger. */
+@layer components {
+  .card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+  }
+}
+
+/* Curseur d'année des bandes climatiques : posé sur fond sombre quel que soit le thème. */
+.year-range {
+  appearance: none;
+  background: transparent;
+  height: 20px;
+  width: 100%;
+  cursor: ew-resize;
+}
+.year-range::-webkit-slider-runnable-track {
+  height: 2px;
+  background: rgb(255 255 255 / 0.35);
+}
+.year-range::-moz-range-track {
+  height: 2px;
+  background: rgb(255 255 255 / 0.35);
+}
+.year-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -6px;
+  border-radius: 9999px;
+  background: #fff;
+}
+.year-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff;
+}
+.year-range:focus-visible {
+  outline-color: #fff;
 }
 
 /* Marqueurs de la carte des stations : couleur posée par le script, sur l'échelle absolue de lib/heat.ts. */
@@ -65,14 +125,15 @@ body {
   display: inline-block;
   padding: 2px 6px;
   border-radius: 9999px;
-  font: 500 12px/1.4 var(--font-mono);
+  font: 500 12px/1.4 var(--font-plex-sans), sans-serif;
+  font-variant-numeric: tabular-nums;
   border: 1px solid #fff;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
   text-decoration: none;
   white-space: nowrap;
 }
 .station-label {
-  font: 500 11px/1.2 var(--font-sans);
+  font: 500 11px/1.2 var(--font-plex-sans), sans-serif;
   color: #1b1e22;
   text-shadow: 0 0 3px #fff, 0 0 3px #fff;
   white-space: nowrap;

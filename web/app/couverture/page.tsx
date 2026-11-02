@@ -62,7 +62,7 @@ export default function CouverturePage() {
       </header>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[44rem] border-collapse text-left text-sm">
-          <thead className="text-xs uppercase tracking-wide text-[var(--muted)]">
+          <thead className="text-xs text-[var(--muted)]">
             <tr className="border-b border-[var(--rule)]">
               <th className="py-2 pr-3 font-medium">Paramètre</th>
               {SCALES.map((s) => (
