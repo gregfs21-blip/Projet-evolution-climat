@@ -148,6 +148,12 @@ body {
   pointer-events: none;
 }
 
+/* Infobulle des cartes : fond blanc imposé par MapLibre. Sans couleur fixe, le texte clair du thème sombre y serait invisible. */
+.maplibregl-map .maplibregl-popup-content {
+  color: #0f2540;
+  font: 400 13px/1.35 var(--font-plex-sans), sans-serif;
+}
+
 /* Case « pas de série » des matrices : hachures discrètes, pour qu'une absence ne se lise pas comme une valeur. */
 .hatch {
   background: repeating-linear-gradient(45deg, var(--hover), var(--hover) 4px, transparent 4px, transparent 8px);

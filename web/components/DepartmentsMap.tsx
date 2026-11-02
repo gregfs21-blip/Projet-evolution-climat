@@ -64,8 +64,17 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
       map.on("load", () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         map.addSource("deps", { type: "geojson", data: geojson as any });
-        map.addLayer({ id: "deps-fill", type: "fill", source: "deps", paint: { "fill-color": "#ccc", "fill-opacity": 0.5 } });
-        map.addLayer({ id: "deps-line", type: "line", source: "deps", paint: { "line-color": "#ffffff", "line-width": 0.7 } });
+        // Les aplats passent sous les noms du fond de carte : posés au-dessus, ils les réduisaient à des traces illisibles.
+        const labels = (map.getStyle().layers ?? []).filter((l) => l.type === "symbol");
+        const firstLabel = labels[0]?.id;
+        map.addLayer({ id: "deps-fill", type: "fill", source: "deps", paint: { "fill-color": "#ccc", "fill-opacity": 0.5 } }, firstLabel);
+        map.addLayer({ id: "deps-line", type: "line", source: "deps", paint: { "line-color": "#ffffff", "line-width": 0.7 } }, firstLabel);
+        // Le gris pâle du fond de carte ne se lit pas sur les couleurs de l'échelle : texte foncé, liseré blanc, fixes quel que soit le thème.
+        for (const l of labels) {
+          map.setPaintProperty(l.id, "text-color", "#0f2540");
+          map.setPaintProperty(l.id, "text-halo-color", "#ffffff");
+          map.setPaintProperty(l.id, "text-halo-width", 1.5);
+        }
         const popup = new Popup({ closeButton: false, closeOnClick: false });
         map.on("mousemove", "deps-fill", (e) => {
           const f = e.features?.[0];
