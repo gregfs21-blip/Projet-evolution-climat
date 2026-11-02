@@ -17,9 +17,8 @@ Critères M1-M7 validés par Grég le 02/11/2026, avant toute rédaction.
 | Accélération | 2 |
 | Information | 6 |
 | Contexte externe | 4 |
-| Lacune | 12 |
+| Lacune | 12, dont 5 tirées de la couverture |
 
-S'y ajoutent 5 lacunes tirées de la couverture.
 
 ## Ce que le calcul a apporté
 
