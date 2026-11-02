@@ -13,7 +13,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | **close le 31/10/2026** |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | critères L1-L5 validés le 31/10/2026 | en cours |
-| P8 | Synthèse par échelle, avec niveau de confiance par affirmation | | à faire |
+| P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 proposés le 02/11/2026 | en cours |
 
 ## Journal P0
 
@@ -400,6 +400,59 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P8 — Synthèse : cadrage proposé le 02/11/2026, avant toute rédaction et tout calcul
+
+### Constat
+196 indicateurs publiés (P1-P6) : 34 en confiance « élevée », 63 « moyenne », 3 « faible », 96 « signal non établi »
+(88 en Gironde, surtout la pluie et ses extrêmes). Trois échelles traitées : Gironde, France, monde. **L'Europe n'est
+pas une échelle du projet** (seul le secteur Z500 Atlantique-Europe de P7 la touche) : la synthèse le dira. Foudre sans
+donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide en instantané (pas de tendance possible).
+
+### Forme proposée
+- La synthèse est **générée par l'ETL** (`etl/synthese.py` → `data/processed/synthese.json` → page `/synthese`), à partir
+  d'un fichier déclaratif `etl/synthese.yaml` : chaque affirmation = un texte à trous, les indicateurs qui la fondent,
+  les champs cités. **Aucun chiffre n'est tapé à la main** : ils sont lus dans les JSON publiés, la synthèse suit donc
+  les mises à jour mensuelles.
+- Par échelle : 8 à 15 affirmations groupées par thème, puis une conclusion courte en prose ; une section transverse
+  (comparaison des échelles, accélération) ; une section « Ce que l'étude ne dit pas » (lacunes, attribution).
+
+### Règles proposées
+- **S1 — confiance d'une affirmation** = la plus faible des confiances des indicateurs nécessaires. Jamais relevée par
+  la concordance de plusieurs jeux : HadCRUT5, GISTEMP et Berkeley partagent l'essentiel de leurs stations, compter
+  leur accord comme une preuve de plus serait un double compte.
+- **S2 — trois types d'affirmations** : signal établi (tendance significative et confiance au moins « moyenne ») ;
+  absence de signal, dite explicitement et formulée « non détectée » (une absence de tendance ne prouve pas la
+  stabilité) ; contexte externe (GIEC, littérature), étiqueté comme tel et non calculé ici.
+- **S3 — comparaison d'échelles** : « plus rapide » seulement sur une période commune et avec des intervalles de
+  confiance à 95 % disjoints ; sinon « du même ordre ». Température : période commune 1959-2021 (fin de la série
+  France), pente de Sen recalculée sur ce tronçon. Limite écrite : la Gironde et la France sont des terres, la moyenne
+  mondiale est à 70 % océanique ; un écart est attendu et ne dit rien de propre à la région.
+- **S4 — pas d'attribution** : la synthèse décrit des évolutions observées ; les causes ne sont citées qu'en contexte
+  externe (GIEC AR6), sauf ce que mesurent directement les indicateurs (GES, déséquilibre énergétique).
+- **S5 — test d'accélération** (annoncé en P1) : régression quadratique par moindres carrés, accélération = 2 × le
+  coefficient du terme carré, erreur type de Newey-West (décalage ⌊0,75·n^(1/3)⌋), seuil 5 %. Séries : niveau marin
+  mondial (1993-2024), CO₂ et CH₄, température mondiale HadCRUT5 (1970-2025), TM France (1959-2021) et Gironde
+  (1953-2024). Une accélération de température n'est affirmée que si elle est significative sur HadCRUT5 **et**
+  Berkeley ; contexte : Beaulieu et al. (2024) ne détectaient pas encore de hausse du rythme jusqu'en 2023.
+
+### Référence proposée
+- Niveau marin : accélération de 0,084 ± 0,025 mm/an² sur 1993-2017 (Nerem et al., 2018, PNAS), recalculée sur la
+  même période → fourchette [0,059 ; 0,109] mm/an².
+
+### Critères proposés
+| | Critère |
+|---|---|
+| M1 | 100 % des chiffres de la synthèse produits par l'ETL depuis les JSON publiés (contrôle : aucun nombre littéral dans `synthese.yaml` hors années et seuils déclarés) |
+| M2 | Confiance de chaque affirmation calculée selon S1 ; aucune affirmation « signal établi » sur un indicateur non significatif ou en « signal non établi » |
+| M3 | Chaque case « publié » de la couverture donne au moins une affirmation (signal ou absence) ; les autres cases figurent dans « Ce que l'étude ne dit pas » |
+| M4 | Toute comparaison d'échelles respecte S3 |
+| M5 | Accélération du niveau marin 1993-2017 dans [0,059 ; 0,109] mm/an² |
+| M6 | Relecture indépendante : un agent séparé, qui n'a pas vu la rédaction, confronte chaque affirmation aux JSON et signale écarts et sur-interprétations ; chaque signalement corrigé ou tracé |
+| M7 | P7 intégrée dans une section exploratoire plafonnée dès que les blocages sont relevés ; la synthèse peut paraître avant, avec la mention « en attente » |
+
+### Décisions demandées à Grég
+Forme, règle S1, séries du test d'accélération, critères M1-M7.
 
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 
