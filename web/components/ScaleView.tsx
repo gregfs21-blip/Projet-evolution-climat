@@ -1,4 +1,4 @@
-// Page d'une échelle : ses boutons de thème et un seul thème à la fois.
+// Page d'une échelle : ses familles, leurs thèmes, et un seul thème affiché à la fois.
 // Tout vient du manifeste : un nouveau thème publié par l'ETL ajoute son bouton et sa page, sans code ici.
 import DepartmentsMap from "./DepartmentsMap";
 import IndicatorList from "./IndicatorList";
@@ -6,7 +6,7 @@ import ThemeSection from "./ThemeSection";
 import ThemeTabs from "./ThemeTabs";
 import ValidationBox from "./ValidationBox";
 import { getDepartmentMap, getValidation } from "@/lib/data";
-import { nonMembers, orderedThemes, scaleSections, themeEntries, VALIDATION_SECTION } from "@/lib/family";
+import { nonMembers, scaleFamilies, themeEntries, themes, VALIDATION_SECTION } from "@/lib/family";
 import { SCALE_LABELS } from "@/lib/format";
 import type { Scale } from "@/lib/schema";
 
@@ -18,9 +18,9 @@ const THEME_MAPS: Partial<Record<Scale, Record<string, string>>> = {
 /** `active` absent : page d'accueil de l'échelle, qui ouvre le premier thème. */
 export default function ScaleView({ scale, active }: { scale: Scale; active?: string }) {
   const label = SCALE_LABELS[scale];
-  const sections = scaleSections(scale);
-  const current = active ?? sections[0]?.id ?? "";
-  const theme = orderedThemes(scale).find((t) => t.id === current);
+  const families = scaleFamilies(scale);
+  const current = active ?? families[0]?.sections[0]?.id ?? "";
+  const theme = themes(scale).find((t) => t.id === current);
   const mapName = THEME_MAPS[scale]?.[current];
   const depMap = mapName ? getDepartmentMap(mapName) : undefined;
   const others = nonMembers(scale);
@@ -33,7 +33,7 @@ export default function ScaleView({ scale, active }: { scale: Scale; active?: st
         <p className="text-sm text-[var(--muted)]">{label.blurb}</p>
       </header>
 
-      <ThemeTabs active={current} tabs={sections.map((s) => ({ ...s, href: `/${scale}/themes/${s.id}` }))} />
+      <ThemeTabs scale={scale} families={families} active={current} />
 
       <div className="space-y-12 pt-4">
         {theme && <ThemeSection scale={scale} scaleName={label.name} theme={theme} heading />}
