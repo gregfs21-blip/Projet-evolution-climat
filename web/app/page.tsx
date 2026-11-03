@@ -1,72 +1,83 @@
+// Accueil : les trois échelles côte à côte, sur la même référence.
+// Le constat d'en-tête est composé à partir des JSON publiés : aucune conclusion n'est écrite à la main ici
+// (la synthèse rédigée, avec son niveau de confiance par affirmation, relève de la phase P8).
 import Link from "next/link";
 
-import CompositeCards from "@/components/CompositeCards";
-import IndicatorList from "@/components/IndicatorList";
-import { groupedIndicators, listIndicators } from "@/lib/data";
-import { composites, themes } from "@/lib/family";
-import { SCALE_LABELS } from "@/lib/format";
-import { SCALES } from "@/lib/schema";
+import ClimateStripes from "@/components/ClimateStripes";
+import ConfidenceBadge from "@/components/ConfidenceBadge";
+import ConfidenceBars from "@/components/ConfidenceBars";
+import FeaturedCard from "@/components/FeaturedCard";
+import ScalesChart from "@/components/ScalesChart";
+import { fmtSigned } from "@/lib/format";
+import { featuredIndicators, publishedFindings, temperatureByScale } from "@/lib/home";
+
+const WHERE: Record<string, string> = { gironde: "en Gironde", france: "en France", monde: "à l'échelle du globe" };
 
 export default function Home() {
-  const published = SCALES.filter((s) => listIndicators(s).length > 0);
-  const upcoming = SCALES.filter((s) => listIndicators(s).length === 0);
+  const t = temperatureByScale();
+  const featured = featuredIndicators();
+  const findings = publishedFindings();
 
   return (
-    <div className="space-y-12">
-      <section className="max-w-2xl space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Comment évolue le climat, ici et ailleurs ?</h1>
-        <p className="text-[var(--muted)]">
-          Chaque chiffre est calculé à partir de données ouvertes, avec sa méthode, sa source et son niveau de
-          confiance. Les tendances sont testées statistiquement ; ce qui n&apos;est pas établi est présenté comme tel.
-        </p>
+    <div className="space-y-6">
+      <section className="rounded-3xl bg-[#0b2748] px-4 pt-6 pb-14 text-white sm:px-7 sm:pt-8">
+        <div className="space-y-3">
+          <h1 className="text-3xl leading-tight font-semibold tracking-tight sm:text-[2.6rem]">Comment évolue le climat, ici et ailleurs&nbsp;?</h1>
+          <p className="max-w-3xl text-base leading-relaxed text-white/85">
+            Sur la même période {t.period}, la température moyenne évolue de{" "}
+            {t.series.map((s, i) => (
+              <span key={s.key}>
+                {i > 0 && (i === t.series.length - 1 ? " et " : ", ")}
+                <b className="font-semibold whitespace-nowrap tabular-nums">
+                  {fmtSigned(s.trend.slope)} {t.unit}
+                </b>{" "}
+                par décennie {WHERE[s.key]}
+                {!s.trend.significant && " (non significatif)"}
+              </span>
+            ))}
+            . Chaque chiffre vient de données ouvertes, avec sa méthode, sa source et son niveau de confiance.
+          </p>
+        </div>
+        <div className="mt-6">
+          <ClimateStripes series={t.series} first={t.first} last={t.last} unit={t.unit} reference={t.reference} />
+        </div>
       </section>
 
-      {published.map((scale) => {
-        const label = SCALE_LABELS[scale];
-        const n = listIndicators(scale).length;
-        const ths = themes(scale);
-        const synth = groupedIndicators(scale).find(([g]) => g.startsWith("Synthèse"));
-        return (
-          <section key={scale} className="space-y-3">
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="text-xl font-semibold">
-                <Link href={`/${scale}`} className="hover:underline">
-                  {label.name}
-                </Link>
-              </h2>
-              <Link href={`/${scale}`} className="text-sm text-[var(--muted)] hover:underline">
-                {n} indicateur{n > 1 ? "s" : ""}, stations comparées →
-              </Link>
-            </div>
-            {ths.length > 0 ? (
-              ths.filter((t) => composites(scale, t.id).length > 0).map((t) => (
-                <div key={t.id} className="space-y-2">
-                  {ths.length > 1 && <h3 className="text-sm font-medium text-[var(--muted)]">{t.label}</h3>}
-                  <CompositeCards scale={scale} theme={t.id} />
-                </div>
-              ))
-            ) : (
-              <IndicatorList items={synth ? synth[1] : listIndicators(scale)} />
-            )}
-          </section>
-        );
-      })}
+      <section aria-label="Chiffres-clés" className="relative z-10 -mt-14 grid gap-3 px-2 sm:grid-cols-2 sm:px-5 xl:grid-cols-4">
+        {featured.map((f) => (
+          <FeaturedCard key={f.href} {...f} />
+        ))}
+      </section>
 
-      {upcoming.length > 0 && (
-        <section className="space-y-2 border-t border-[var(--rule)] pt-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">À venir</h2>
-          <ul className="space-y-1 text-sm">
-            {upcoming.map((scale) => (
-              <li key={scale}>
-                <span className="font-medium">{SCALE_LABELS[scale].name}</span>{" "}
-                <span className="text-[var(--muted)]">
-                  ({SCALE_LABELS[scale].phase}) : {SCALE_LABELS[scale].blurb}
-                </span>
+      <section className="card space-y-3 p-4 sm:p-6">
+        <h2 className="text-lg font-semibold tracking-tight">Écart de température par échelle</h2>
+        <ScalesChart series={t.series} first={t.first} last={t.last} unit={t.unit} reference={t.reference} period={t.period} />
+      </section>
+
+      <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+        <section className="card space-y-3 p-4 sm:p-6">
+          <h2 className="text-lg font-semibold tracking-tight">Ce qui est établi, et ce qui ne l&apos;est pas</h2>
+          <ConfidenceBars />
+        </section>
+        <section className="card space-y-3 p-4 sm:p-6">
+          <h2 className="text-lg font-semibold tracking-tight">Trois constats publiés</h2>
+          <ul className="divide-y divide-[var(--rule)]">
+            {findings.map(({ ind, href }) => (
+              <li key={href} className="space-y-1.5 py-3 first:pt-0 last:pb-0">
+                <ConfidenceBadge level={ind.confidence} />
+                <p className="text-sm leading-relaxed">
+                  <Link href={href} className="underline-offset-2 hover:underline">
+                    {ind.finding}
+                  </Link>
+                </p>
               </li>
             ))}
           </ul>
+          <p className="text-xs text-[var(--muted)]">
+            Constats par indicateur, repris tels quels. La synthèse par échelle reste à écrire (phase P8).
+          </p>
         </section>
-      )}
+      </div>
     </div>
   );
 }

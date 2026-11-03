@@ -9,6 +9,8 @@ Toutes les séries sont rendues sous la même forme : {année: valeur}. Une vale
 
 from __future__ import annotations
 
+import logging
+
 import io
 import os
 import re
@@ -559,6 +561,7 @@ def fetch(src: Source, raw_dir: Path) -> str:
         except Exception as exc:  # noqa: BLE001
             if not path.exists():
                 raise RuntimeError(f"{src.id} : téléchargement impossible et aucun cache : {exc}") from exc
+            log.warning("%s : téléchargement impossible (%s), cache réutilisé", src.id, exc)
     return path.read_text(encoding="utf-8", errors="replace")
 
 

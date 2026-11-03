@@ -12,6 +12,8 @@ Données BRUTES : aucune homogénéisation (changements de sondes, d'horaires et
 
 from __future__ import annotations
 
+import logging
+
 import io
 import os
 import urllib.request
@@ -38,6 +40,7 @@ def fetch(station: str, raw_dir: Path) -> Path:
         except Exception as exc:  # noqa: BLE001
             if not path.exists():
                 raise RuntimeError(f"IGRA {station} : téléchargement impossible et aucun cache : {exc}") from exc
+            log.warning("IGRA %s : téléchargement impossible (%s), cache réutilisé", station, exc)
     return path
 
 

@@ -6,7 +6,7 @@ import type { Indicator } from "@/lib/schema";
 function Cell({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="border-[var(--rule)] px-4 py-3 not-last:border-b sm:not-last:border-r sm:not-last:border-b-0">
-      <div className="text-xs uppercase tracking-wide text-[var(--muted)]">{label}</div>
+      <div className="text-xs text-[var(--muted)]">{label}</div>
       {children}
     </div>
   );
@@ -19,7 +19,7 @@ export default function KpiBand({ ind }: { ind: Indicator }) {
   if (c) {
     // Indice rare (critère E9) : la pente de Sen est peu informative, l'écart entre normales est mis en avant.
     return (
-      <div className="grid rounded-lg border border-[var(--rule)] bg-[var(--card)] sm:grid-cols-[1.25fr_1fr_1fr]">
+      <div className="grid card sm:grid-cols-[1.25fr_1fr_1fr]">
         <Cell label="Écart entre normales">
           <div className="font-mono text-3xl tabular-nums">
             {fmtSigned1(c.difference)} <span className="text-sm text-[var(--muted)]">{u} / an</span>
@@ -61,7 +61,7 @@ export default function KpiBand({ ind }: { ind: Indicator }) {
   const years = t.period.end - t.period.start + 1;
 
   return (
-    <div className="grid rounded-lg border border-[var(--rule)] bg-[var(--card)] sm:grid-cols-[1.25fr_1fr_1fr]">
+    <div className="grid card sm:grid-cols-[1.25fr_1fr_1fr]">
       <Cell label={`${ind.indicative ? "Tendance indicative" : "Tendance"} ${t.period.start}-${t.period.end}`}>
         <div className="font-mono text-3xl tabular-nums">
           {fmtSigned(t.slope_per_decade)} <span className="text-sm text-[var(--muted)]">{u} / décennie</span>

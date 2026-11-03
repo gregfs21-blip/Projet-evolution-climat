@@ -972,3 +972,28 @@ lisse les déplacements du jet au sein de l'hiver. La série à 250 hPa déjà r
 sans calcul de tendance : valeurs annuelles dans les bornes plausibles (T850 4,4 à 8,4 °C, cohérent avec les
 radiosondages ; Z500 5 618 à 5 706 m) ; profil d'hiver à 850 hPa à un seul maximum (≈ 45-50° N), latitude du jet
 entre 34 et 59° N, jamais au bord de la boîte. Les cinq indicateurs sont activés.
+
+## Pente de comparaison entre échelles (décision de Grég du 02/11/2026, fenêtre fixée AVANT calcul)
+
+**Constat.** L'accueil place côte à côte les tendances de température de la Gironde (1953-2022), de la France
+(1959-2021) et du globe (1976-2025). Ces périodes diffèrent : les pentes ne se comparent pas.
+
+**Décision.** Publier pour ces trois séries une tendance sur la même fenêtre, **1959-2021**, intersection de leurs
+périodes homogénéisées. Même méthode que partout (pente de Sen, Hamed-Rao). Choix fait sur la seule couverture des
+séries, avant tout calcul sur cette fenêtre, et non ajusté ensuite.
+
+**Portée.** `etl/indicators/comparaison.py`, ajoutée à `alt_trends` de `tm-annuelle-gironde`, `tm-france` et
+`temperature-hadcrut5-monde`. La tendance mise en avant, le constat et le niveau de confiance de ces indicateurs ne
+changent pas. Le site compare uniquement ces pentes sur l'accueil.
+
+**Limites assumées.** Le chiffre mondial inclut les océans, qui se réchauffent moins vite que les terres : même sur
+une période commune, l'écart avec la Gironde ou la France n'est pas un effet purement local. Une fenêtre fixe ne
+profite pas des années récentes tant que la série France reste homogénéisée jusqu'en 2021 ; elle ne bouge que par une
+nouvelle décision consignée ici. Si une série ne la couvre plus, l'ETL échoue, et le build du site aussi.
+
+**Alerte de fraîcheur (décision de Grég du 02/11/2026).** `etl/fraicheur.py`, exécuté après chaque ETL mensuel, ouvre
+une issue GitHub si la fenêtre de comparaison peut avancer, ou si un téléchargement a échoué et que l'ancien fichier a
+été réutilisé. Sa fin dépend de la dernière année homogénéisée de la Gironde et du globe, et d'un seuil de **220 stations
+françaises** ayant TN et TX homogénéisés sur toute la fenêtre (taille du réseau actuel). Il ne change aucun chiffre :
+déplacer la fenêtre reste une décision consignée ici, qui modifie aussi `T_SPAN`, donc la tendance mise en avant de la
+France et sa carte. Le début de fenêtre reste 1959 ; 1961-2022, déjà possible avec 226 stations, n'a pas été retenu.
