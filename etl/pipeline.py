@@ -25,6 +25,7 @@ from typing import Any, Callable
 import yaml
 
 from etl.context import PROCESSED_DIR, ROOT, BuildContext, etl_version, make_context
+from etl.indicators import comparaison
 from etl.schema import Indicator, Manifest, ManifestEntry
 
 CONFIG = ROOT / "etl" / "config" / "indicators.yaml"
@@ -111,7 +112,7 @@ def run(only: set[str] | None = None, out_dir: Path = PROCESSED_DIR, registry_pa
                     f"le constructeur a produit {ind.scale}/{ind.id}, "
                     f"le registre attend {entry['scale']}/{entry['id']}"
                 )
-            path = write_indicator(ind, out_dir)
+            path = write_indicator(comparaison.with_comparison(ind), out_dir)
             log.info("OK   %s → %s", entry["id"], path.relative_to(out_dir))
         except Exception as exc:  # noqa: BLE001 — on veut le rapport complet
             log.error("ÉCHEC %s : %s", entry["id"], exc)

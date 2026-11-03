@@ -12,7 +12,7 @@ function Group({ label, items }: { label: string; items: Sibling[] }) {
         const base = "rounded-full border px-3 py-0.5 text-sm";
         if (s.active) {
           return (
-            <span key={s.key} aria-current="page" title={s.title} className={`${base} border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)]`}>
+            <span key={s.key} aria-current="page" title={s.title} className={`${base} border-[var(--ink)] bg-[var(--primary)] text-[var(--primary-ink)]`}>
               {s.label}
             </span>
           );

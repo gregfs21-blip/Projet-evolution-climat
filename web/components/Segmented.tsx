@@ -15,7 +15,7 @@ export default function Segmented<K extends string>({
   label: string;
 }) {
   return (
-    <div role="radiogroup" aria-label={label} className="inline-flex overflow-hidden rounded-md border border-[var(--rule)] text-sm">
+    <div role="radiogroup" aria-label={label} className="inline-flex flex-wrap gap-0.5 rounded-full bg-[var(--hover)] p-0.5 text-sm">
       {options.map((o) => {
         const on = o.key === value;
         return (
@@ -27,8 +27,8 @@ export default function Segmented<K extends string>({
             disabled={o.disabled}
             title={o.title}
             onClick={() => onChange(o.key)}
-            className={`px-3 py-1 ${
-              on ? "bg-[var(--ink)] text-[var(--paper)]" : "text-[var(--muted)] hover:bg-[var(--hover)]"
+            className={`rounded-full px-3 py-1 ${
+              on ? "bg-[var(--primary)] font-medium text-[var(--primary-ink)]" : "text-[var(--muted)] hover:text-[var(--ink)]"
             } disabled:cursor-not-allowed disabled:opacity-40`}
           >
             {o.label}

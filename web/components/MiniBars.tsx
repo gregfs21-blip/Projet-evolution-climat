@@ -1,4 +1,4 @@
-// Mini-courbe (SVG rendu au build, sans JavaScript) : barres, droite de Sen, années brutes en gris.
+// Mini-courbe (SVG rendu au build, sans JavaScript) : barres ou ligne, droite de Sen, années brutes en gris.
 // Anomalie : rouge au-dessus de zéro, bleu en dessous. Comptage (pas d'anomalie) : barres neutres, le signe n'a pas de sens.
 type Props = {
   time: string[];
@@ -22,6 +22,34 @@ export default function MiniBars({ time, value, quality, trend, isAnomaly = true
   const X = (y: number) => ((y - x0) / n) * W;
   const Y = (v: number) => 2 + ((hi - v) / (hi - lo || 1)) * (H - 4);
   const bw = (W / n) * 0.75;
+
+  // Niveau qui ne s'approche jamais de zéro (ppm…) : des barres depuis zéro feraient un mur plein.
+  // Une ligne à échelle resserrée montre l'évolution ; une barre, elle, ne se lit qu'à partir de zéro.
+  const [a, b] = [Math.min(...vals), Math.max(...vals)];
+  if (!isAnomaly && a > 0 && a > 0.5 * b) {
+    const YL = (v: number) => 4 + ((b - v) / (b - a || 1)) * (H - 8);
+    const pts = years.flatMap((y, i) => {
+      const v = value[i];
+      return v === null || v === undefined ? [] : [`${X(y).toFixed(1)},${YL(v).toFixed(1)}`];
+    });
+    return (
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-16 w-full" aria-hidden>
+        <polyline points={pts.join(" ")} fill="none" style={{ stroke: "var(--accent)" }} strokeWidth={2} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        {trend && (
+          <line
+            x1={X(trend.start)}
+            y1={YL(trend.fittedStart)}
+            x2={X(trend.end)}
+            y2={YL(trend.fittedEnd)}
+            style={{ stroke: "var(--ink)" }}
+            strokeWidth={1.6}
+            strokeDasharray="5 3"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
+      </svg>
+    );
+  }
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-16 w-full" aria-hidden>

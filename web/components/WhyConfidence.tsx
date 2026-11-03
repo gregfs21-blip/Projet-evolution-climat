@@ -51,7 +51,10 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
       text: `Sur ${a.period.start}-${a.period.end}, après la dernière rupture connue, la série brute donne ${a.slope_per_decade.toLocaleString("fr-FR", { signDisplay: "always", maximumFractionDigits: 2 })} contre ${b.slope_per_decade.toLocaleString("fr-FR", { signDisplay: "always", maximumFractionDigits: 2 })} ${ind.unit}/déc. pour la série corrigée.`,
     });
   }
-  const periods = ind.alt_trends.filter((x) => !x.label.startsWith(CONTROL_A) && !x.label.startsWith(B_ON_A));
+  // Une fenêtre identique à la tendance principale (France et fenêtre de comparaison) n'apporte aucun recoupement : on ne la compte pas.
+  const periods = ind.alt_trends.filter(
+    (x) => !x.label.startsWith(CONTROL_A) && !x.label.startsWith(B_ON_A) && !(t && x.period.start === t.period.start && x.period.end === t.period.end),
+  );
   if (periods.length > 0 && t && !c) {
     const agree = periods.filter((x) => Math.sign(x.slope_per_decade) === Math.sign(t.slope_per_decade) && x.significant === t.significant);
     const n = periods.length;
@@ -128,7 +131,7 @@ function points(ind: Indicator, reports: ValidationReport[]): Point[] {
 export default function WhyConfidence({ ind, reports }: { ind: Indicator; reports: ValidationReport[] }) {
   const pts = points(ind, reports);
   return (
-    <section aria-label="Niveau de confiance" className="rounded-lg border border-[var(--rule)] bg-[var(--card)] p-4">
+    <section aria-label="Niveau de confiance" className="card p-4">
       <div className="mb-3 flex flex-wrap items-center gap-3">
         <ConfidenceBadge level={ind.confidence} />
         <h2 className="text-sm font-semibold">Ce qui fonde ce niveau</h2>

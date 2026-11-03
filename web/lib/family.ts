@@ -4,7 +4,8 @@
 //
 // Contrat v1.2 : `variable` et `place` sont publiés par l'ETL (vocabulaire etl/config/variables.yaml).
 // Le site ne connaît aucune variable à l'avance. Un indicateur sans ces champs reste listé normalement.
-import { getIndicator, listIndicators } from "./data";
+import { getIndicator, getValidation, listIndicators } from "./data";
+import { SCALE_LABELS } from "./format";
 import type { Indicator, ManifestEntry, Place, Scale, Trend, Variable } from "./schema";
 
 export type Member = { entry: ManifestEntry; variable: Variable; place: Place };
@@ -181,4 +182,48 @@ export function siblings(ind: Indicator): { variables: Sibling[]; places: Siblin
     .map((m) => ({ key: m.place.id, label: m.place.name, href: href(m), active: m.place.id === self.place.id }));
   const comp = self.place.kind === "composite" ? undefined : same.find(isComposite);
   return { variables, places, composite: comp ? load(comp) : null };
+}
+
+// Familles de thèmes : premier niveau de navigation des pages d'échelle. L'ordre ici donne l'ordre des boutons.
+// Choix d'affichage uniquement : un thème absent de cette liste tombe dans « Autres », sans code à ajouter.
+const FAMILIES = [
+  { id: "temperatures", label: "Températures", themes: ["temperature", "temperature-globale", "extremes-temperature", "altitude"] },
+  { id: "oceans", label: "Océans et glaces", themes: ["temperature-mer", "chaleur-ocean", "niveau-mer", "banquise", "acidification"] },
+  { id: "eau", label: "Eau", themes: ["precipitations", "pluies-intenses", "secheresse"] },
+  { id: "atmosphere", label: "Atmosphère", themes: ["ensoleillement", "humidite", "pression", "vent", "orages", "geopotentiel", "ouragans", "jet-stream", "blocages", "enso"] },
+  { id: "gaz-energie", label: "Gaz et énergie", themes: ["ges", "aerosols", "ozone", "bilan-energetique", "puits-carbone"] },
+  { id: "impacts", label: "Impacts", themes: ["catastrophes", "incendie", "viticulture", "sante"] },
+];
+
+/** Toutes les séries d'un thème, composites d'abord : garantit que chacune reste accessible depuis son thème. */
+export function themeEntries(scale: Scale, theme: string): ManifestEntry[] {
+  return inTheme(scale, theme)
+    .sort((a, b) => Number(isComposite(b)) - Number(isComposite(a)) || byOrder(a.variable, b.variable) || a.place.name.localeCompare(b.place.name, "fr"))
+    .map((m) => m.entry);
+}
+
+export const VALIDATION_SECTION = "validation";
+
+export type Section = { id: string; label: string };
+export type Family = { id: string; label: string; sections: Section[] };
+
+/** Navigation d'une page d'échelle : les familles qui ont du contenu, puis la validation s'il existe un rapport. */
+export function scaleFamilies(scale: Scale): Family[] {
+  const published = themes(scale);
+  const section = (t: Theme): Section => ({ id: t.id, label: t.label.replace(/\s*\([^)]*\)$/, "") });
+  const known = new Set(FAMILIES.flatMap((f) => f.themes));
+  const out: Family[] = FAMILIES.map((f) => ({
+    id: f.id,
+    label: f.label,
+    sections: f.themes.flatMap((id) => published.filter((t) => t.id === id).map(section)),
+  }));
+  out.push({ id: "autres", label: "Autres", sections: published.filter((t) => !known.has(t.id)).map(section) });
+  const reports = SCALE_LABELS[scale].validations.flatMap((p) => getValidation(p) ?? []);
+  if (reports.length > 0) out.push({ id: VALIDATION_SECTION, label: "Validation", sections: [{ id: VALIDATION_SECTION, label: "Validation" }] });
+  return out.filter((f) => f.sections.length > 0);
+}
+
+/** Toutes les rubriques d'une échelle, à plat : une page par rubrique. */
+export function scaleSections(scale: Scale): Section[] {
+  return scaleFamilies(scale).flatMap((f) => f.sections);
 }

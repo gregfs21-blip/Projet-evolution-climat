@@ -72,7 +72,17 @@ export default async function IndicatorPage({ params }: { params: Params }) {
           <Link href={`/${ind.scale}`} className="hover:underline">
             {label.name}
           </Link>
-          {ind.group && <> › {ind.group}</>}
+          {ind.variable ? (
+            <>
+              {" "}
+              ›{" "}
+              <Link href={`/${ind.scale}/themes/${ind.variable.theme}`} className="hover:underline">
+                {ind.variable.theme_label}
+              </Link>
+            </>
+          ) : (
+            ind.group && <> › {ind.group}</>
+          )}
           {ind.place && (
             <>
               {" "}

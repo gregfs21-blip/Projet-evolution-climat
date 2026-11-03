@@ -1,6 +1,6 @@
 # Sonde P6 — accès CERES et CAMS (généré)
 
-Généré par `python -m etl.probe.p6` le 31/10/2026 21:04 UTC. Aucun indicateur calculé.
+Généré par `python -m etl.probe.p6` le 31/10/2026 21:19 UTC. Aucun indicateur calculé.
 
 ## CERES EBAF par le catalogue CMR (NASA)
 

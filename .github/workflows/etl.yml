@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  issues: write   # alerte de fraîcheur : etl/fraicheur.py ouvre une issue
 
 concurrency:
   group: etl
@@ -41,14 +42,15 @@ jobs:
           restore-keys: raw-
 
       - name: ETL
+        shell: bash   # active pipefail : un ETL en échec reste en échec malgré tee
         env:
           ONLY: ${{ inputs.only }}   # passé par variable, jamais interpolé dans le script
         run: |
           if [ -n "$ONLY" ]; then
             # shellcheck disable=SC2086 — découpage voulu : plusieurs identifiants
-            python -m etl.pipeline --only $ONLY
+            python -m etl.pipeline --only $ONLY 2>&1 | tee etl.log
           else
-            python -m etl.pipeline
+            python -m etl.pipeline 2>&1 | tee etl.log
           fi
       - name: Carte départementale (P5 bis)
         run: python -m etl.carte
@@ -79,3 +81,9 @@ jobs:
             git commit -m "data: ETL du $(date -u +%Y-%m-%d)"
             git push
           fi
+
+      # Après la publication : une alerte en échec ne doit pas empêcher de publier les données.
+      - name: Fraîcheur (période commune, téléchargements en échec)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m etl.fraicheur --log etl.log --issues

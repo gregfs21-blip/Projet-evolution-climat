@@ -60,16 +60,6 @@ export function getIndicator(scale: Scale, id: string): Indicator | undefined {
   return ind;
 }
 
-/** Indicateurs d'une échelle regroupés par `group`, synthèses d'abord, dans l'ordre du manifeste. */
-export function groupedIndicators(scale: Scale) {
-  const groups = new Map<string, ReturnType<typeof listIndicators>>();
-  for (const e of listIndicators(scale)) {
-    const g = e.group ?? "Indicateurs";
-    groups.set(g, [...(groups.get(g) ?? []), e]);
-  }
-  return [...groups.entries()].sort(([a], [b]) => Number(b.startsWith("Synthèse")) - Number(a.startsWith("Synthèse")));
-}
-
 /**
  * Rapport de validation d'une phase, s'il est publié. Absent = rien n'est affiché (jamais de valeur
  * par défaut). Présent mais invalide = le build échoue, comme pour un indicateur.

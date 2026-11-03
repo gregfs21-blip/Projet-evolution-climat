@@ -18,9 +18,9 @@ export default function CompositeCards({ scale, theme }: { scale: Scale; theme: 
           <Link
             key={`${variable.id}-${place.id}`}
             href={href}
-            className="block rounded-lg border border-[var(--rule)] bg-[var(--card)] px-4 pt-3 pb-2 transition-colors hover:border-[var(--muted)]"
+            className="block card px-4 pt-3 pb-2 transition-colors hover:border-[var(--muted)]"
           >
-            <div className="text-xs uppercase tracking-wide text-[var(--muted)]">
+            <div className="text-xs text-[var(--muted)]">
               {variable.label} · {place.kind === "station" ? place.name : variable.code}
             </div>
             {c ? (
