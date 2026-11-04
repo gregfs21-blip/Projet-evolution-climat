@@ -71,7 +71,7 @@ export default function DepartmentsMap({ data }: { data: DepartmentMap }) {
         map.addLayer({ id: "deps-line", type: "line", source: "deps", paint: { "line-color": "#ffffff", "line-width": 0.7 } }, firstLabel);
         // Le gris pâle du fond de carte ne se lit pas sur les couleurs de l'échelle : texte foncé, liseré blanc, fixes quel que soit le thème.
         for (const l of labels) {
-          map.setPaintProperty(l.id, "text-color", "#0f2540");
+          map.setPaintProperty(l.id, "text-color", "#12331f");
           map.setPaintProperty(l.id, "text-halo-color", "#ffffff");
           map.setPaintProperty(l.id, "text-halo-width", 1.5);
         }

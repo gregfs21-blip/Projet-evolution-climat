@@ -2,12 +2,13 @@
 
 /* Les noms de variables restent ceux du site : les graphiques ECharts et les cartes les lisent à l'exécution. */
 :root {
-  --paper: #f2f6fb;
-  --rail: #fbfdff;
-  --ink: #0f2540;
-  --muted: #56677c;
-  --rule: #dbe4ef;
-  --hover: #e8f0fa;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --paper: #f3f8f2;
+  --rail: #ffffff;
+  --ink: #12331f;
+  --muted: #53695a;
+  --rule: #d9e6da;
+  --hover: #e6f2e6;
   --warm: #c63a2e;
   --warm-soft: #fdecea;
   --cold: #1d6fb8;
@@ -15,32 +16,37 @@
   --good: #2e7a34;
   --good-soft: #eef7ef;
   --card: #ffffff;
-  --primary: #0b5cc4;
+  --primary: #1e6b3c;
   --primary-ink: #ffffff;
+  --highlight: #23804a;
+  /* Fond du panneau des bandes climatiques : sombre dans les deux thèmes, pour que les bandes pâles restent lisibles. */
+  --forest: #0f3a24;
   /* Une couleur par échelle (validée CVD et contraste sur la surface des cartes). */
   --s-gironde: #d9480f;
   --s-france: #008f7c;
   --s-monde: #1b4f9c;
-  --card-shadow: 0 1px 2px rgb(15 37 64 / 0.04), 0 10px 24px -18px rgb(15 37 64 / 0.22);
+  --card-shadow: none;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #0c1726;
-    --rail: #0f1c2e;
-    --ink: #e6edf5;
-    --muted: #93a4b8;
-    --rule: #24344a;
-    --hover: #18283c;
+    --paper: #0b1a12;
+    --rail: #0f2118;
+    --ink: #e5f0e8;
+    --muted: #94ab9b;
+    --rule: #24402f;
+    --hover: #173023;
     --warm: #ee7a6d;
     --warm-soft: #2e1a1a;
     --cold: #6fb0ea;
     --accent: #3fc0b3;
     --good: #6cc070;
     --good-soft: #13261b;
-    --card: #13233a;
-    --primary: #5aa2f2;
-    --primary-ink: #08172a;
+    --card: #12281c;
+    --primary: #5cc389;
+    --primary-ink: #07170e;
+    --highlight: #6fd39a;
+    --forest: #0d2f1d;
     --s-gironde: #e8682a;
     --s-france: #0fa48f;
     --s-monde: #6a90ee;
@@ -49,9 +55,9 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-sans: var(--font-ui);
   /* Plus de chasse fixe : les classes font-mono existantes passent en chiffres tabulaires. */
-  --font-mono: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-ui);
 }
 
 html {
@@ -133,7 +139,7 @@ body {
   display: inline-block;
   padding: 2px 6px;
   border-radius: 9999px;
-  font: 500 12px/1.4 var(--font-plex-sans), sans-serif;
+  font: 500 12px/1.4 var(--font-ui);
   font-variant-numeric: tabular-nums;
   border: 1px solid #fff;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
@@ -141,7 +147,7 @@ body {
   white-space: nowrap;
 }
 .station-label {
-  font: 500 11px/1.2 var(--font-plex-sans), sans-serif;
+  font: 500 11px/1.2 var(--font-ui);
   color: #1b1e22;
   text-shadow: 0 0 3px #fff, 0 0 3px #fff;
   white-space: nowrap;
@@ -150,8 +156,8 @@ body {
 
 /* Infobulle des cartes : fond blanc imposé par MapLibre. Sans couleur fixe, le texte clair du thème sombre y serait invisible. */
 .maplibregl-map .maplibregl-popup-content {
-  color: #0f2540;
-  font: 400 13px/1.35 var(--font-plex-sans), sans-serif;
+  color: #12331f;
+  font: 400 13px/1.35 var(--font-ui);
 }
 
 /* Case « pas de série » des matrices : hachures discrètes, pour qu'une absence ne se lise pas comme une valeur. */
