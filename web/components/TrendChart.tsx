@@ -59,7 +59,7 @@ export default function TrendChart({ time, value, unit, isAnomaly, trend, breakp
         chart.setOption(
           {
             animation: false,
-            textStyle: { fontFamily: `${cssVar("--font-plex-sans") || "system-ui"}, sans-serif`, color: muted },
+            textStyle: { fontFamily: `${cssVar("--font-ui") || "system-ui"}, sans-serif`, color: muted },
             grid: { left: 48, right: 16, top: 24, bottom: 72 },
             tooltip: {
               trigger: "axis" as const,
