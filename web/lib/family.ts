@@ -190,7 +190,7 @@ const FAMILIES = [
   { id: "temperatures", label: "Températures", themes: ["temperature", "temperature-globale", "extremes-temperature", "altitude"] },
   { id: "oceans", label: "Océans et glaces", themes: ["temperature-mer", "chaleur-ocean", "niveau-mer", "banquise", "acidification"] },
   { id: "eau", label: "Eau", themes: ["precipitations", "pluies-intenses", "secheresse"] },
-  { id: "atmosphere", label: "Atmosphère", themes: ["ensoleillement", "humidite", "pression", "vent", "geopotentiel", "ouragans", "jet-stream", "enso"] },
+  { id: "atmosphere", label: "Atmosphère", themes: ["ensoleillement", "humidite", "pression", "vent", "orages", "geopotentiel", "ouragans", "jet-stream", "blocages", "enso"] },
   { id: "gaz-energie", label: "Gaz et énergie", themes: ["ges", "aerosols", "ozone", "bilan-energetique", "puits-carbone"] },
   { id: "impacts", label: "Impacts", themes: ["catastrophes", "incendie", "viticulture", "sante"] },
 ];

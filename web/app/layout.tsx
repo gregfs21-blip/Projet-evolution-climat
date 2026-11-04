@@ -29,7 +29,7 @@ function nav(): { tabs: NavItem[]; more: NavItem[] } {
     tabs: [{ href: "/", label: "Accueil", soon: null, icon: "home" }, ...scales],
     more: [
       { href: "/couverture", label: "Couverture", soon: null, icon: "grid" },
-      { href: "/synthese", label: "Synthèse", soon: "P8", icon: "doc" },
+      { href: "/synthese", label: "Synthèse", soon: null, icon: "doc" },
       { href: "/methode", label: "Méthode", soon: null, icon: "ruler" },
     ],
   };

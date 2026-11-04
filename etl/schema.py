@@ -421,3 +421,68 @@ class DepartmentMap(_Strict):
             if unknown:
                 raise ValueError(f"carte : départements sans contour {sorted(unknown)}")
         return self
+
+
+# ---------------------------------------------------------------- Synthèse (P8)
+# data/processed/synthese.json : affirmations par échelle, générées par etl/synthese.py depuis etl/config/synthese.yaml.
+# Chaque chiffre du texte est lu dans les indicateurs publiés ; la confiance est la plus faible des indicateurs cités
+# (règle S1). Le site affiche le texte tel quel.
+
+SYNTHESIS_SCHEMA_VERSION = "1.0"
+ClaimKind = Literal["signal", "absence", "comparaison", "acceleration", "information", "contexte", "lacune"]
+
+
+class ClaimIndicator(_Strict):
+    id: str
+    scale: Scale
+    title: str
+    confidence: Confidence
+
+
+class ClaimSource(_Strict):
+    label: str = Field(min_length=1)
+    url: str = Field(pattern=r"^https://")
+
+
+class Claim(_Strict):
+    id: str = Field(pattern=SLUG)
+    kind: ClaimKind
+    params: list[str] = Field(default_factory=list, description="Paramètres de la couverture traités (critère M3)")
+    text: str = Field(min_length=1)
+    confidence: Confidence | None = Field(default=None, description="Règle S1 ; None pour information, contexte et lacune")
+    indicators: list[ClaimIndicator] = Field(default_factory=list)
+    source: ClaimSource | None = None
+    problem: str | None = Field(default=None, description="Règle non respectée à la génération (critères M2, M4) : "
+                                                          "le site l'affiche au lieu de laisser un texte devenu faux")
+
+    @model_validator(mode="after")
+    def _coherent(self) -> "Claim":
+        needs = self.kind in ("signal", "absence", "comparaison", "acceleration")
+        if needs and (self.confidence is None or not self.indicators):
+            raise ValueError(f"{self.id} : une affirmation « {self.kind} » exige une confiance et des indicateurs")
+        if not needs and self.confidence is not None:
+            raise ValueError(f"{self.id} : « {self.kind} » ne porte pas de niveau de confiance")
+        if self.kind == "contexte" and self.source is None:
+            raise ValueError(f"{self.id} : un contexte externe cite sa source")
+        return self
+
+
+class ClaimGroup(_Strict):
+    title: str = Field(min_length=1)
+    claims: list[Claim] = Field(min_length=1)
+
+
+class SynthesisSection(_Strict):
+    id: str = Field(pattern=SLUG)
+    title: str = Field(min_length=1)
+    scale: Scale | None = None
+    intro: str | None = None
+    groups: list[ClaimGroup] = Field(default_factory=list)
+    conclusion: str | None = None
+    pending: str | None = Field(default=None, description="Section en attente de données (critère M7)")
+
+
+class Synthesis(_Strict):
+    schema_version: Literal["1.0"] = SYNTHESIS_SCHEMA_VERSION
+    generated_at: datetime
+    sections: list[SynthesisSection] = Field(min_length=1)
