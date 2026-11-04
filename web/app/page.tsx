@@ -12,9 +12,6 @@ import ScalesChart from "@/components/ScalesChart";
 import { fmtSigned } from "@/lib/format";
 import { featuredIndicators, publishedFindings, temperatureByScale } from "@/lib/home";
 
-// Hébergée par le site socio-vote du même compte (photo Unsplash), tant qu'elle n'est pas versée dans web/public.
-const PHOTO = "https://correlation-socio-vote.vercel.app/accueil/bourg.jpg";
-
 const WHERE: Record<string, string> = { gironde: "en Gironde", france: "en France", monde: "à l'échelle du globe" };
 
 export default function Home() {
@@ -26,9 +23,9 @@ export default function Home() {
     <div className="space-y-6">
       <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-10">
         <figure className="relative -mx-4 -mt-5 h-[170px] overflow-hidden sm:-mx-6 sm:h-[240px] lg:order-last lg:mx-0 lg:mt-0 lg:h-auto lg:min-h-[380px] lg:rounded-2xl">
-          <Image src={PHOTO} alt="Bourg de Saint-Émilion et ses vignes" fill priority sizes="(min-width: 1152px) 560px, (min-width: 1024px) 50vw, 100vw" className="object-cover" />
+          <Image src="/accueil/vallee-glaciaire.jpg" alt="Vallée glaciaire entre des sommets enneigés, avec des conifères au premier plan" fill priority sizes="(min-width: 1152px) 560px, (min-width: 1024px) 50vw, 100vw" className="object-cover" />
           <figcaption className="absolute inset-x-0 bottom-0 bg-linear-to-t from-[rgb(8_38_22/0.82)] to-transparent px-3 pt-7 pb-2.5 text-sm font-semibold text-white">
-            Saint-Émilion, Gironde
+            Vallée glaciaire
           </figcaption>
         </figure>
         <div className="self-center">

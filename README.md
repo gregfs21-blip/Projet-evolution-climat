@@ -39,8 +39,7 @@ composite). Une nouvelle variable s'ajoute au vocabulaire ; le site n'en connaî
 ## Apparence
 
 Couleurs dans `web/app/globals.css`. Les couleurs de données (échelles, chaud/froid, bandes) ne suivent pas le thème.
-Photo de l'accueil : Saint-Émilion, Unsplash (licence libre, attribution non obligatoire), servie pour l'instant par
-le site socio-vote (`PHOTO` dans `web/app/page.tsx`).
+Photo de l'accueil : `web/public/accueil/vallee-glaciaire.jpg`, Unsplash.
 
 ## Lancer en local
 
