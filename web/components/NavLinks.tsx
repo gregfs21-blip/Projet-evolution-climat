@@ -1,6 +1,6 @@
 "use client";
 
-// Navigation : colonne à gauche sur grand écran, barre d'onglets en bas sur mobile.
+// Navigation : pastilles dans l'en-tête sur grand écran, barre d'onglets en bas sinon.
 // Rubriques sans contenu grisées avec leur phase : le menu ne promet pas ce que le site n'a pas encore.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,28 +33,27 @@ function Soon({ code }: { code: string }) {
   return <span className="rounded-full border border-[var(--rule)] px-1.5 text-[10px] leading-4">{code}</span>;
 }
 
-export function RailNav({ items }: { items: NavItem[] }) {
+export function TopNav({ items }: { items: NavItem[] }) {
   const path = usePathname();
   return (
-    <ul className="space-y-0.5">
+    <ul className="no-scrollbar flex items-center gap-0.5 overflow-x-auto p-0.5 xl:gap-1">
       {items.map((n) => {
         const active = isActive(path, n.href);
         return (
-          <li key={n.href}>
+          <li key={n.href} className="shrink-0">
             <Link
               href={n.href}
               aria-current={active ? "page" : undefined}
               title={n.soon ? `À venir (${n.soon})` : undefined}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm ${
+              className={`inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-sm font-medium transition-colors xl:h-10 xl:px-3.5 xl:text-[15px] ${
                 active
-                  ? "bg-[var(--primary)] font-medium text-[var(--primary-ink)]"
+                  ? "bg-[var(--primary)] text-[var(--primary-ink)]"
                   : n.soon
                     ? "text-[var(--muted)] hover:bg-[var(--hover)]"
                     : "hover:bg-[var(--hover)]"
               }`}
             >
-              <Icon name={n.icon} />
-              <span className="mr-auto">{n.label}</span>
+              {n.label}
               {n.soon && <Soon code={n.soon} />}
             </Link>
           </li>

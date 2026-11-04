@@ -36,6 +36,12 @@ Pour rattacher l'indicateur à une famille (matrice, superposition, carte, navig
 le constructeur renseigne `variable` (vocabulaire `etl/config/variables.yaml`) et `place` (station ou
 composite). Une nouvelle variable s'ajoute au vocabulaire ; le site n'en connaît aucune à l'avance.
 
+## Apparence
+
+Couleurs dans `web/app/globals.css`. Les couleurs de données (échelles, chaud/froid, bandes) ne suivent pas le thème.
+Photo de l'accueil : Saint-Émilion, Unsplash (licence libre, attribution non obligatoire), servie pour l'instant par
+le site socio-vote (`PHOTO` dans `web/app/page.tsx`).
+
 ## Lancer en local
 
 ```bash
