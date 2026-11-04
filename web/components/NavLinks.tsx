@@ -45,7 +45,7 @@ export function TopNav({ items }: { items: NavItem[] }) {
               href={n.href}
               aria-current={active ? "page" : undefined}
               title={n.soon ? `À venir (${n.soon})` : undefined}
-              className={`inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-sm font-medium transition-colors xl:h-10 xl:px-3.5 xl:text-[15px] ${
+              className={`inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-sm font-medium transition-colors xl:h-10 xl:px-3 xl:text-[15px] ${
                 active
                   ? "bg-[var(--primary)] text-[var(--primary-ink)]"
                   : n.soon

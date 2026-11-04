@@ -45,7 +45,7 @@ function Brand() {
         ))}
       </span>
       <span className="leading-tight">
-        <span className="block max-w-[6rem] font-bold tracking-tight sm:max-w-none sm:text-[19px] lg:max-w-[6rem] lg:text-base xl:max-w-none xl:text-[22px]">Évolution climatique</span>
+        <span className="block max-w-[6rem] font-bold tracking-tight sm:max-w-none sm:text-[19px] lg:max-w-[6rem] lg:text-base xl:max-w-none xl:text-[19px]">Évolution climatique</span>
         <span className="hidden text-[13px] text-[var(--muted)] sm:block lg:hidden xl:block">Gironde, France, monde</span>
       </span>
     </Link>
@@ -77,7 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav aria-label="Navigation principale" className="hidden min-w-0 flex-1 lg:block">
               <TopNav items={[...tabs, ...more]} />
             </nav>
-            <div className="ml-auto min-w-0 flex-1 sm:max-w-64 lg:w-40 lg:flex-none xl:w-48">
+            <div className="ml-auto min-w-0 flex-1 sm:max-w-64 lg:w-40 lg:flex-none">
               <SearchBox items={items} />
             </div>
           </div>
