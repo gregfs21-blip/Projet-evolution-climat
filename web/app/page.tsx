@@ -93,7 +93,11 @@ export default function Home() {
             ))}
           </ul>
           <p className="text-xs text-[var(--muted)]">
-            Constats par indicateur, repris tels quels. La synthèse par échelle reste à écrire (phase P8).
+            Constats par indicateur, repris tels quels. La{" "}
+            <Link href="/synthese" className="underline underline-offset-2 hover:text-[var(--ink)]">
+              synthèse
+            </Link>{" "}
+            les rassemble par échelle, avec le niveau de confiance de chaque affirmation.
           </p>
         </section>
       </div>
