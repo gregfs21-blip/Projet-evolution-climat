@@ -47,14 +47,9 @@ export default function Home() {
             ))}
             . Chaque chiffre vient de données ouvertes, avec sa méthode, sa source et son niveau de confiance.
           </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/gironde" className="inline-flex h-[50px] items-center justify-center rounded-full bg-[var(--primary)] px-6 font-semibold text-[var(--primary-ink)] transition-opacity hover:opacity-90">
-              Explorer la Gironde
-            </Link>
-            <Link href="/methode" className="hidden h-[50px] items-center justify-center rounded-full border-[1.5px] border-[var(--rule)] bg-[var(--card)] px-6 font-semibold text-[var(--primary)] transition-colors hover:border-[var(--primary)] sm:inline-flex">
-              Voir la méthode
-            </Link>
-          </div>
+          <Link href="/synthese" className="inline-flex h-[50px] w-full items-center justify-center rounded-full bg-[var(--primary)] px-6 font-semibold text-[var(--primary-ink)] transition-opacity hover:opacity-90 sm:w-auto">
+            Lire la synthèse
+          </Link>
         </div>
       </section>
 
