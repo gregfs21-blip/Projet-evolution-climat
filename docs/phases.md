@@ -1080,3 +1080,5 @@ une issue GitHub si la fenêtre de comparaison peut avancer, ou si un téléchar
 françaises** ayant TN et TX homogénéisés sur toute la fenêtre (taille du réseau actuel). Il ne change aucun chiffre :
 déplacer la fenêtre reste une décision consignée ici, qui modifie aussi `T_SPAN`, donc la tendance mise en avant de la
 France et sa carte. Le début de fenêtre reste 1959 ; 1961-2022, déjà possible avec 226 stations, n'a pas été retenu.
+
+**04/11/2026, synthèse publiée avant la fin de P7 :** `main` reçoit la synthèse sans `.github/workflows/blocking.yml`, pour ne pas doubler le relevé des blocages qui tourne sur `p7` avec la même clé Copernicus. La section exploratoire reste « en attente du relevé P7 » (critère M7). Le workflow reviendra dans `main` à la fin du relevé.
