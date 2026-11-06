@@ -373,9 +373,9 @@
   "source_name": "Copernicus CEMS / EFFIS — indices de danger d'incendie historiques sur ERA5 (Early Warning Data Store)",
   "source_url": "https://ewds.climate.copernicus.eu/datasets/cems-fire-historical-v1",
   "license": "CC BY 4.0 (Copernicus)",
-  "extracted_at": "2026-10-29T18:42:59Z",
+  "extracted_at": "2026-11-05T12:26:32Z",
   "script": "etl.indicators.impacts",
-  "etl_version": "0.1.0+0bc5c6e",
+  "etl_version": "0.1.0+702a15f",
   "homogenized": false
  },
  "is_demo": false

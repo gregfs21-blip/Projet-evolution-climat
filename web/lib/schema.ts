@@ -323,3 +323,44 @@ export const departmentMapSchema = z
     return m.variables.every((v) => v.departments.every((d) => codes.has(d.code)));
   }, "carte : département sans contour");
 export type DepartmentMap = z.infer<typeof departmentMapSchema>;
+
+// ---------------------------------------------------------------- Synthèse (P8)
+// Miroir de Synthesis (etl/schema.py). Le texte est rendu par l'ETL ; le site l'affiche tel quel.
+const claimSchema = z
+  .strictObject({
+    id: z.string().regex(SLUG),
+    kind: z.enum(["signal", "absence", "comparaison", "acceleration", "information", "contexte", "lacune"]),
+    params: z.array(z.string()).default([]),
+    text: z.string().min(1),
+    confidence: confidenceSchema.optional(),
+    indicators: z
+      .array(z.strictObject({ id: z.string(), scale: scaleSchema, title: z.string(), confidence: confidenceSchema }))
+      .default([]),
+    source: z.strictObject({ label: z.string().min(1), url: z.string().regex(/^https:\/\//) }).optional(),
+    problem: z.string().optional(),
+  })
+  .refine(
+    (c) =>
+      ["signal", "absence", "comparaison", "acceleration"].includes(c.kind) === (c.confidence !== undefined),
+    "synthèse : confiance présente ssi l'affirmation est qualifiée",
+  );
+export type Claim = z.infer<typeof claimSchema>;
+
+export const synthesisSchema = z.strictObject({
+  schema_version: z.literal("1.0"),
+  generated_at: isoDate,
+  sections: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(SLUG),
+        title: z.string().min(1),
+        scale: scaleSchema.optional(),
+        intro: z.string().optional(),
+        groups: z.array(z.strictObject({ title: z.string().min(1), claims: z.array(claimSchema).min(1) })).default([]),
+        conclusion: z.string().optional(),
+        pending: z.string().optional(),
+      }),
+    )
+    .min(1),
+});
+export type Synthesis = z.infer<typeof synthesisSchema>;

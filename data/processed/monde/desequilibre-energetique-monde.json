@@ -152,9 +152,9 @@
   "source_name": "NASA LaRC — CERES EBAF-TOA Edition 4.2.1 (flux radiatifs au sommet de l'atmosphère)",
   "source_url": "https://ceres.larc.nasa.gov/data/#ebaftoa-level-3",
   "license": "Domaine public (NASA)",
-  "extracted_at": "2026-10-31T21:11:52Z",
+  "extracted_at": "2026-11-05T12:26:32Z",
   "script": "etl.indicators.monde",
-  "etl_version": "0.1.0+d5cffca",
+  "etl_version": "0.1.0+702a15f",
   "homogenized": true
  },
  "is_demo": false

@@ -1,6 +1,7 @@
 // Accueil : les trois échelles côte à côte, sur la même référence.
 // Le constat d'en-tête est composé à partir des JSON publiés : aucune conclusion n'est écrite à la main ici
 // (la synthèse rédigée, avec son niveau de confiance par affirmation, relève de la phase P8).
+import Image from "next/image";
 import Link from "next/link";
 
 import ClimateStripes from "@/components/ClimateStripes";
@@ -20,10 +21,19 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl bg-[#0b2748] px-4 pt-6 pb-14 text-white sm:px-7 sm:pt-8">
-        <div className="space-y-3">
-          <h1 className="text-3xl leading-tight font-semibold tracking-tight sm:text-[2.6rem]">Comment évolue le climat, ici et ailleurs&nbsp;?</h1>
-          <p className="max-w-3xl text-base leading-relaxed text-white/85">
+      <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-10">
+        <figure className="relative -mx-4 -mt-5 h-[170px] overflow-hidden sm:-mx-6 sm:h-[240px] lg:order-last lg:mx-0 lg:mt-0 lg:h-auto lg:min-h-[380px] lg:rounded-2xl">
+          <Image src="/accueil/vallee-glaciaire.jpg" alt="Vallée glaciaire entre des sommets enneigés, avec des conifères au premier plan" fill priority sizes="(min-width: 1152px) 560px, (min-width: 1024px) 50vw, 100vw" className="object-cover" />
+          <figcaption className="absolute inset-x-0 bottom-0 bg-linear-to-t from-[rgb(8_38_22/0.82)] to-transparent px-3 pt-7 pb-2.5 text-sm font-semibold text-white">
+            Vallée glaciaire
+          </figcaption>
+        </figure>
+        <div className="self-center">
+          <p className="text-xs font-semibold tracking-[0.08em] text-[var(--muted)] uppercase">Gironde, France, monde · données ouvertes</p>
+          <h1 className="mt-2 mb-3 text-[27px] leading-[1.1] font-bold tracking-tight sm:text-4xl lg:mb-4 lg:text-[44px]">
+            Comment évolue le <span className="text-[var(--highlight)]">climat</span>, ici et ailleurs&nbsp;?
+          </h1>
+          <p className="mb-5 max-w-xl text-[15px] leading-relaxed lg:mb-6 lg:text-base">
             Sur la même période {t.period}, la température moyenne évolue de{" "}
             {t.series.map((s, i) => (
               <span key={s.key}>
@@ -37,16 +47,25 @@ export default function Home() {
             ))}
             . Chaque chiffre vient de données ouvertes, avec sa méthode, sa source et son niveau de confiance.
           </p>
-        </div>
-        <div className="mt-6">
-          <ClimateStripes series={t.series} first={t.first} last={t.last} unit={t.unit} reference={t.reference} />
+          <Link href="/synthese" className="inline-flex h-[50px] w-full items-center justify-center rounded-full bg-[var(--primary)] px-6 font-semibold text-[var(--primary-ink)] transition-opacity hover:opacity-90 sm:w-auto">
+            Lire la synthèse
+          </Link>
         </div>
       </section>
 
-      <section aria-label="Chiffres-clés" className="relative z-10 -mt-14 grid gap-3 px-2 sm:grid-cols-2 sm:px-5 xl:grid-cols-4">
-        {featured.map((f) => (
-          <FeaturedCard key={f.href} {...f} />
-        ))}
+      <section aria-labelledby="titre-chiffres" className="space-y-2.5">
+        <h2 id="titre-chiffres" className="text-xs font-semibold tracking-[0.08em] text-[var(--muted)] uppercase">
+          Chiffres-clés
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+          {featured.map((f) => (
+            <FeaturedCard key={f.href} {...f} />
+          ))}
+        </div>
+      </section>
+
+      <section aria-label="Bandes climatiques" className="rounded-2xl bg-[var(--forest)] p-4 text-white sm:p-6">
+        <ClimateStripes series={t.series} first={t.first} last={t.last} unit={t.unit} reference={t.reference} />
       </section>
 
       <section className="card space-y-3 p-4 sm:p-6">
@@ -74,7 +93,11 @@ export default function Home() {
             ))}
           </ul>
           <p className="text-xs text-[var(--muted)]">
-            Constats par indicateur, repris tels quels. La synthèse par échelle reste à écrire (phase P8).
+            Constats par indicateur, repris tels quels. La{" "}
+            <Link href="/synthese" className="underline underline-offset-2 hover:text-[var(--ink)]">
+              synthèse
+            </Link>{" "}
+            les rassemble par échelle, avec le niveau de confiance de chaque affirmation.
           </p>
         </section>
       </div>

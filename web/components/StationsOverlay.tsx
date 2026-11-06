@@ -58,7 +58,7 @@ export default function StationsOverlay({
         chart.setOption(
           {
             animation: false,
-            textStyle: { fontFamily: `${cssVar("--font-plex-sans") || "system-ui"}, sans-serif`, color: muted },
+            textStyle: { fontFamily: `${cssVar("--font-ui") || "system-ui"}, sans-serif`, color: muted },
             grid: { left: 40, right: 12, top: 16, bottom: 28 },
             tooltip: {
               trigger: "axis" as const,

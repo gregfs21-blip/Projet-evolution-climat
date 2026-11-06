@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 
-import { RailNav, TabBar, type IconName, type NavItem } from "@/components/NavLinks";
+import { TabBar, TopNav, type IconName, type NavItem } from "@/components/NavLinks";
 import SearchBox from "@/components/SearchBox";
 import { getManifest, listIndicators } from "@/lib/data";
 import { fmtDateTime, SCALE_LABELS } from "@/lib/format";
 import { anomalyColor } from "@/lib/heat";
 import { SCALES, type Scale } from "@/lib/schema";
 import "./globals.css";
-
-const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-plex-sans" });
 
 export const metadata: Metadata = {
   title: { default: "Évolution climatique", template: "%s · Évolution climatique" },
@@ -32,7 +29,7 @@ function nav(): { tabs: NavItem[]; more: NavItem[] } {
     tabs: [{ href: "/", label: "Accueil", soon: null, icon: "home" }, ...scales],
     more: [
       { href: "/couverture", label: "Couverture", soon: null, icon: "grid" },
-      { href: "/synthese", label: "Synthèse", soon: "P8", icon: "doc" },
+      { href: "/synthese", label: "Synthèse", soon: null, icon: "doc" },
       { href: "/methode", label: "Méthode", soon: null, icon: "ruler" },
     ],
   };
@@ -41,16 +38,15 @@ function nav(): { tabs: NavItem[]; more: NavItem[] } {
 // Le logo reprend le motif du site : bandes d'écart de température, du froid au chaud.
 function Brand() {
   return (
-    <Link href="/" className="flex items-center gap-2.5 font-semibold leading-tight tracking-tight">
-      <span className="flex h-8 w-8 shrink-0 overflow-hidden rounded-lg" aria-hidden>
+    <Link href="/" aria-label="Évolution climatique, accueil" className="flex shrink-0 items-center gap-2.5 xl:gap-3">
+      <span className="flex h-9 w-9 shrink-0 overflow-hidden rounded-[11px] lg:h-[42px] lg:w-[42px]" aria-hidden>
         {[-2, -1, -0.25, 0.5, 1.5, 2.6].map((v) => (
           <i key={v} className="block flex-1" style={{ background: anomalyColor(v) }} />
         ))}
       </span>
-      <span>
-        Évolution
-        <br />
-        climatique
+      <span className="leading-tight">
+        <span className="block max-w-[6rem] font-bold tracking-tight sm:max-w-none sm:text-[19px] lg:max-w-[6rem] lg:text-base xl:max-w-none xl:text-[19px]">Évolution climatique</span>
+        <span className="hidden text-[13px] text-[var(--muted)] sm:block lg:hidden xl:block">Gironde, France, monde</span>
       </span>
     </Link>
   );
@@ -73,33 +69,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const { tabs, more } = nav();
   const items = getManifest().indicators.map((e) => ({ title: e.title, scale: SCALE_LABELS[e.scale].name, href: `/${e.scale}/${e.id}` }));
   return (
-    <html lang="fr" className={sans.variable}>
-      <body className="min-h-screen md:grid md:grid-cols-[15rem_minmax(0,1fr)]">
-        <aside className="sticky top-0 hidden h-screen flex-col gap-5 overflow-y-auto border-r border-[var(--rule)] bg-[var(--rail)] p-4 md:flex">
-          <Brand />
-          <SearchBox items={items} />
-          <nav aria-label="Navigation principale">
-            <RailNav items={[...tabs, ...more]} />
-          </nav>
-          <div className="mt-auto">
-            <Freshness />
-          </div>
-        </aside>
-
-        <div className="min-w-0">
-          <header className="flex items-center gap-4 border-b border-[var(--rule)] bg-[var(--rail)] px-4 py-3 md:hidden">
+    <html lang="fr">
+      <body className="flex min-h-screen flex-col">
+        <header className="border-b border-[var(--rule)] bg-[var(--rail)] lg:sticky lg:top-0 lg:z-40">
+          <div className="mx-auto flex h-16 max-w-[72rem] items-center gap-4 px-4 sm:px-6 lg:h-[76px]">
             <Brand />
-            <div className="min-w-0 flex-1">
+            <nav aria-label="Navigation principale" className="hidden min-w-0 flex-1 lg:block">
+              <TopNav items={[...tabs, ...more]} />
+            </nav>
+            <div className="ml-auto min-w-0 flex-1 sm:max-w-64 lg:w-40 lg:flex-none">
               <SearchBox items={items} />
             </div>
-          </header>
-          <main className="mx-auto max-w-[72rem] px-4 pt-5 pb-8 md:px-8 md:pt-8">{children}</main>
-          <footer className="mx-auto max-w-[72rem] border-t border-[var(--rule)] px-4 pt-4 pb-24 md:hidden">
-            <Freshness />
-          </footer>
-        </div>
+          </div>
+        </header>
 
-        <nav aria-label="Navigation principale" className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--rule)] bg-[var(--rail)] pb-[env(safe-area-inset-bottom)] md:hidden">
+        <main className="mx-auto w-full max-w-[72rem] flex-1 px-4 pt-5 pb-10 sm:px-6 lg:pt-8">{children}</main>
+
+        <footer className="border-t border-[var(--rule)] bg-[var(--rail)] pb-20 lg:pb-0">
+          <div className="mx-auto max-w-[72rem] px-4 py-5 sm:px-6">
+            <Freshness />
+          </div>
+        </footer>
+
+        <nav aria-label="Navigation principale" className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--rule)] bg-[var(--rail)] pb-[env(safe-area-inset-bottom)] lg:hidden">
           <TabBar tabs={tabs} more={more} />
         </nav>
       </body>
