@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-11-05T12:31:35Z",
- "etl_version": "0.1.0+702a15f",
+ "generated_at": "2026-11-06T20:03:30Z",
+ "etl_version": "0.1.0+local",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -4509,6 +4509,98 @@
     "id": "monde",
     "name": "Monde",
     "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-blocage-hiver-monde",
+   "scale": "monde",
+   "title": "Jours de blocage atlantique-européen (hiver)",
+   "unit": "jours",
+   "path": "monde/jours-blocage-hiver-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Exploratoire — circulation atmosphérique",
+   "variable": {
+    "id": "jours-blocage-hiver",
+    "code": "Hiver",
+    "label": "jours de blocage atlantique-européen en hiver",
+    "theme": "blocages",
+    "theme_label": "Blocages atmosphériques",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "jours-blocage-ete-monde",
+   "scale": "monde",
+   "title": "Jours de blocage atlantique-européen (été)",
+   "unit": "jours",
+   "path": "monde/jours-blocage-ete-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Exploratoire — circulation atmosphérique",
+   "variable": {
+    "id": "jours-blocage-ete",
+    "code": "Été",
+    "label": "jours de blocage atlantique-européen en été",
+    "theme": "blocages",
+    "theme_label": "Blocages atmosphériques",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "z500-europe-monde",
+   "scale": "monde",
+   "title": "Géopotentiel 500 hPa moyen sur l'Atlantique-Europe",
+   "unit": "m",
+   "path": "monde/z500-europe-monde.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Exploratoire — circulation atmosphérique",
+   "variable": {
+    "id": "z500-europe",
+    "code": "Z500 Europe",
+    "label": "géopotentiel 500 hPa moyen sur l'Atlantique-Europe",
+    "theme": "geopotentiel",
+    "theme_label": "Géopotentiel",
+    "order": 1
+   },
+   "place": {
+    "id": "monde",
+    "name": "Monde",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "cape-gironde",
+   "scale": "gironde",
+   "title": "Énergie de convection en été en Gironde (indicateur indirect d'orages)",
+   "unit": "J/kg",
+   "path": "gironde/cape-gironde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Exploratoire — orages",
+   "variable": {
+    "id": "cape",
+    "code": "CAPE",
+    "label": "énergie de convection en été (CAPE)",
+    "theme": "orages",
+    "theme_label": "Orages (indicateur indirect)",
+    "order": 0
+   },
+   "place": {
+    "id": "gironde-era5",
+    "name": "Gironde (ERA5, 44,2-45,6° N, 1,3° O-0,4° E)",
+    "kind": "station"
    }
   }
  ]

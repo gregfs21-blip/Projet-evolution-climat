@@ -67,7 +67,7 @@ parametres:
   - id: foudre
     label: Impact de foudre
     echelles:
-      gironde: {statut: sans-donnee, note: "Les séries d'impacts (Météorage) ne sont pas ouvertes ; la climatologie satellite NASA (1995-2014) ne permet pas de tendance. Au mieux, un indicateur indirect « signal non établi » (P7)."}
+      gironde: {statut: sans-donnee, variables: [cape], source: "ERA5 moyennes mensuelles (CAPE), indicateur indirect", note: "Aucune série ouverte d'impacts de foudre (Météorage est privé). Seul un indicateur indirect est publié : l'énergie de convection (CAPE) de l'été, plafonnée à « signal non établi » (P7). Ce n'est pas la foudre."}
       monde: {statut: sans-donnee, note: "Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance."}
 
   - id: jet-stream-puissance
@@ -84,7 +84,7 @@ parametres:
     label: Géopotentiel
     echelles:
       gironde: {statut: prevu, variables: [z500], source: "Radiosondages de Bordeaux-Mérignac (IGRA)", note: "Un seul point, brut : tendance indicative seulement (exception à la règle C2) ; ne remplace pas le champ ERA5."}
-      monde: {statut: prevu, source: "ERA5 géopotentiel 500 hPa, indices de blocage"}
+      monde: {statut: prevu, variables: [z500-europe, jours-blocage-hiver, jours-blocage-ete], source: "ERA5 géopotentiel 500 hPa quotidien, Atlantique-Europe ; blocages de Tibaldi et Molteni", note: "Exploratoire (P7) : les blocages sont plafonnés à « signal non établi »."}
 
   - id: glaces
     label: Fonte des glaces

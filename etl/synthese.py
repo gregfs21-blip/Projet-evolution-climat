@@ -319,8 +319,12 @@ def build(out_dir: Path = PROCESSED_DIR, config: Path = CONFIG) -> Result:
                                          intro=r.render(sec["intro"]) if sec.get("intro") else None, groups=groups,
                                          conclusion=r.render(sec["conclusion"]) if sec.get("conclusion") else None,
                                          pending=pending))
+    # Une section d'échelle couvre ses paramètres à son échelle ; une section transverse (exploratoire) les couvre à
+    # l'échelle des indicateurs que chaque affirmation cite.
     covered = {(s.scale, p) for s in sections if s.scale for g in s.groups for c in g.claims
                if c.kind != "lacune" for p in c.params}
+    covered |= {(i.scale, p) for s in sections if not s.scale for g in s.groups for c in g.claims
+                if c.kind != "lacune" for p in c.params for i in c.indicators}
     m3 = [f"{p.id} / {c.scale}" for p in cov.parameters for c in p.cells
           if c.status == "publie" and (c.scale, p.id) not in covered]
     syn = Synthesis(generated_at=datetime.now(timezone.utc).replace(microsecond=0), sections=sections)

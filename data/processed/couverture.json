@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-05T12:31:35Z",
+ "generated_at": "2026-11-06T20:03:35Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -889,10 +889,16 @@
    "cells": [
     {
      "scale": "gironde",
-     "status": "sans-donnee",
-     "source": null,
-     "note": "Les séries d'impacts (Météorage) ne sont pas ouvertes ; la climatologie satellite NASA (1995-2014) ne permet pas de tendance. Au mieux, un indicateur indirect « signal non établi » (P7).",
-     "indicators": []
+     "status": "publie",
+     "source": "ERA5 moyennes mensuelles (CAPE), indicateur indirect",
+     "note": "Aucune série ouverte d'impacts de foudre (Météorage est privé). Seul un indicateur indirect est publié : l'énergie de convection (CAPE) de l'été, plafonnée à « signal non établi » (P7). Ce n'est pas la foudre.",
+     "indicators": [
+      {
+       "id": "cape-gironde",
+       "title": "Énergie de convection en été en Gironde (indicateur indirect d'orages)",
+       "confidence": "non_etabli"
+      }
+     ]
     },
     {
      "scale": "monde",
@@ -965,10 +971,26 @@
     },
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "ERA5 géopotentiel 500 hPa, indices de blocage",
-     "note": null,
-     "indicators": []
+     "status": "publie",
+     "source": "ERA5 géopotentiel 500 hPa quotidien, Atlantique-Europe ; blocages de Tibaldi et Molteni",
+     "note": "Exploratoire (P7) : les blocages sont plafonnés à « signal non établi ».",
+     "indicators": [
+      {
+       "id": "jours-blocage-hiver-monde",
+       "title": "Jours de blocage atlantique-européen (hiver)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-blocage-ete-monde",
+       "title": "Jours de blocage atlantique-européen (été)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "z500-europe-monde",
+       "title": "Géopotentiel 500 hPa moyen sur l'Atlantique-Europe",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },

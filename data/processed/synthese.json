@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-05T12:31:52Z",
+ "generated_at": "2026-11-06T20:04:36Z",
  "sections": [
   {
    "id": "gironde",
@@ -1131,6 +1131,23 @@
        ]
       },
       {
+       "id": "monde-z500-europe",
+       "kind": "signal",
+       "params": [
+        "geopotentiel"
+       ],
+       "text": "La surface 500 hPa s'élève de +6,7 m par décennie au-dessus de l'Atlantique et de l'Europe (1976-2025, ERA5), ce qui est cohérent avec le réchauffement de la colonne d'air.",
+       "confidence": "moyenne",
+       "indicators": [
+        {
+         "id": "z500-europe-monde",
+         "scale": "monde",
+         "title": "Géopotentiel 500 hPa moyen sur l'Atlantique-Europe",
+         "confidence": "moyenne"
+        }
+       ]
+      },
+      {
        "id": "monde-enso",
        "kind": "absence",
        "params": [
@@ -1452,8 +1469,79 @@
   {
    "id": "exploratoire",
    "title": "Exploratoire (P7)",
-   "groups": [],
-   "pending": "En attente du relevé des blocages atlantiques (P7, en cours). Les indicateurs exploratoires (blocages, Z500 Atlantique-Europe, énergie de convection en Gironde) seront ajoutés ici, plafonnés à « signal non établi »."
+   "intro": "Indicateurs de la phase exploratoire, dont la confiance est plafonnée à « signal non établi » quel que soit le résultat du test : leur définition ou leur lien avec le phénomène visé est trop fragile pour plus.",
+   "groups": [
+    {
+     "title": "Blocages atmosphériques (Atlantique-Europe)",
+     "claims": [
+      {
+       "id": "exp-blocages-hiver",
+       "kind": "absence",
+       "params": [
+        "geopotentiel"
+       ],
+       "text": "Les jours de blocage en hiver (décembre à février) ne montrent pas de tendance établie : −2,0 jours par décennie sur 1976-2025 (p = 0,08). Sur toute la série (1941-2025), la baisse (−1,1 jours par décennie) est significative, mais ERA5 manque d'observations en altitude avant 1979.",
+       "confidence": "non_etabli",
+       "indicators": [
+        {
+         "id": "jours-blocage-hiver-monde",
+         "scale": "monde",
+         "title": "Jours de blocage atlantique-européen (hiver)",
+         "confidence": "non_etabli"
+        }
+       ]
+      },
+      {
+       "id": "exp-blocages-ete",
+       "kind": "absence",
+       "params": [
+        "geopotentiel"
+       ],
+       "text": "Les jours de blocage en été (juin à août) ne montrent pas de tendance détectée : −0,9 jours par décennie sur 1976-2025 (p = 0,44).",
+       "confidence": "non_etabli",
+       "indicators": [
+        {
+         "id": "jours-blocage-ete-monde",
+         "scale": "monde",
+         "title": "Jours de blocage atlantique-européen (été)",
+         "confidence": "non_etabli"
+        }
+       ]
+      },
+      {
+       "id": "exp-blocages-methode",
+       "kind": "information",
+       "params": [
+        "geopotentiel"
+       ],
+       "text": "Le résultat dépend de la définition : l'indice de Tibaldi et Molteni repose sur un seuil de gradient du géopotentiel, et d'autres indices des blocages donnent d'autres fréquences. Changer le secteur retenu ne change pas le signe des pentes (contrôle L4).",
+       "indicators": []
+      }
+     ]
+    },
+    {
+     "title": "Orages (indicateur indirect)",
+     "claims": [
+      {
+       "id": "exp-cape",
+       "kind": "absence",
+       "params": [
+        "foudre"
+       ],
+       "text": "L'énergie disponible pour la convection (CAPE) de l'été en Gironde augmente de +15,3 J/kg par décennie sur 1976-2025 (p = 0,01), mais ce n'est ni la foudre ni les orages : une moyenne mensuelle ne voit pas les pics de quelques heures ni les déclencheurs. Le signal reste non établi pour les orages.",
+       "confidence": "non_etabli",
+       "indicators": [
+        {
+         "id": "cape-gironde",
+         "scale": "gironde",
+         "title": "Énergie de convection en été en Gironde (indicateur indirect d'orages)",
+         "confidence": "non_etabli"
+        }
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "limites",
@@ -1463,30 +1551,12 @@
      "title": "Cases de la couverture sans série publiée",
      "claims": [
       {
-       "id": "lacune-foudre-gironde",
-       "kind": "lacune",
-       "params": [
-        "foudre"
-       ],
-       "text": "Impact de foudre — Gironde : sans donnée ouverte. Les séries d'impacts (Météorage) ne sont pas ouvertes ; la climatologie satellite NASA (1995-2014) ne permet pas de tendance. Au mieux, un indicateur indirect « signal non établi » (P7).",
-       "indicators": []
-      },
-      {
        "id": "lacune-foudre-monde",
        "kind": "lacune",
        "params": [
         "foudre"
        ],
        "text": "Impact de foudre — Monde : sans donnée ouverte. Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance.",
-       "indicators": []
-      },
-      {
-       "id": "lacune-geopotentiel-monde",
-       "kind": "lacune",
-       "params": [
-        "geopotentiel"
-       ],
-       "text": "Géopotentiel — Monde : prévu.",
        "indicators": []
       },
       {
@@ -1524,6 +1594,13 @@
        "kind": "lacune",
        "params": [],
        "text": "La fonte des glaces n'est traitée que par la banquise ; les glaciers de montagne et les calottes du Groenland et de l'Antarctique ne le sont pas.",
+       "indicators": []
+      },
+      {
+       "id": "limite-foudre",
+       "kind": "lacune",
+       "params": [],
+       "text": "Aucune série ouverte d'impacts de foudre n'existe (le réseau Météorage est privé) : la case « foudre » de la Gironde n'est couverte que par l'énergie de convection (CAPE), un indicateur indirect.",
        "indicators": []
       },
       {

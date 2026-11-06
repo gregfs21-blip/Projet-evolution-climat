@@ -1468,3 +1468,20 @@ indicators:
     scale: monde
     builder: etl.indicators.monde:build_aod
     params: {}
+  # P7 — exploratoire (critères L1-L5 validés le 31/10/2026) ; confiance plafonnée à « signal non établi »
+  - id: jours-blocage-hiver-monde
+    scale: monde
+    builder: etl.indicators.exploratoire:build_blocking
+    params: {season: hiver}
+  - id: jours-blocage-ete-monde
+    scale: monde
+    builder: etl.indicators.exploratoire:build_blocking
+    params: {season: ete}
+  - id: z500-europe-monde
+    scale: monde
+    builder: etl.indicators.exploratoire:build_z500
+    params: {}
+  - id: cape-gironde
+    scale: gironde
+    builder: etl.indicators.exploratoire:build_cape
+    params: {}
