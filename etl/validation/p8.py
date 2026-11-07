@@ -46,9 +46,17 @@ def checks(res: S.Result) -> list[Check]:
     cs.append(Check("M5 accélération du niveau marin 1993-2017", "critère", lo <= r.value <= hi,
                     f"{r.value:.3f} mm/an² (IC {r.ci_low:.3f} à {r.ci_high:.3f}, p = {r.p_value}) ; fourchette [{lo} ; {hi}] "
                     "(Nerem et al., 2018)"))
-    closed = RELECTURE.exists() and CLOSED_MARK in RELECTURE.read_text(encoding="utf-8")
+    # M6 (renforcé le 06/11/2026 sur relecture P7) : la marque de clôture ne suffit plus ; chaque affirmation publiée
+    # (hors lacunes tirées de la couverture) doit figurer dans une liste « Affirmations relues » de docs/relecture-p8.md.
+    text = RELECTURE.read_text(encoding="utf-8") if RELECTURE.exists() else ""
+    reviewed = {x.strip(" `.") for line in text.splitlines() if line.startswith("Affirmations relues")
+                for x in line.split(":", 1)[1].split(",")}
+    unreviewed = [c.id for c in claims if not c.id.startswith("lacune-") and c.id not in reviewed]
+    closed = CLOSED_MARK in text and not unreviewed
     cs.append(Check("M6 relecture indépendante", "critère", closed,
-                    "relecture close : docs/relecture-p8.md" if closed else "relecture indépendante non close (docs/relecture-p8.md)"))
+                    f"relecture close, {len(claims) - sum(c.id.startswith('lacune-') for c in claims)} affirmations relues "
+                    "(docs/relecture-p8.md)" if closed else
+                    "affirmations non relues : " + ", ".join(unreviewed[:10]) if unreviewed else "relecture non close"))
     exp = next(s for s in syn.sections if s.id == "exploratoire")
     exp_claims = [c for g in exp.groups for c in g.claims]
     capped = all(c.confidence in (None, "non_etabli") for c in exp_claims)

@@ -245,7 +245,9 @@ def claim_from(item: dict, r: Renderer, scale: str | None) -> tuple[Claim, list[
                 problems.append(f"signal sur un indicateur non significatif ou de confiance insuffisante : {', '.join(bad)} (M2)")
         elif kind == "absence":
             confidence = "non_etabli"
-            bad = [d["id"] for d in inds if significant(d) and d["confidence"] != "non_etabli"]
+            # Corrigé le 06/11/2026 (relecture P7) : un indicateur significatif mais plafonné ne peut plus fonder
+            # une « absence » ; il relève d'une « information ».
+            bad = [d["id"] for d in inds if significant(d)]
             if bad:
                 problems.append(f"absence de signal affirmée sur un indicateur significatif : {', '.join(bad)} (M2)")
         elif kind == "acceleration" and not all(r.accs[a][1].significant for a in accs):

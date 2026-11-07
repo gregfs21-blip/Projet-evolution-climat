@@ -67,7 +67,7 @@ parametres:
   - id: foudre
     label: Impact de foudre
     echelles:
-      gironde: {statut: sans-donnee, variables: [cape], source: "ERA5 moyennes mensuelles (CAPE), indicateur indirect", note: "Aucune série ouverte d'impacts de foudre (Météorage est privé). Seul un indicateur indirect est publié : l'énergie de convection (CAPE) de l'été, plafonnée à « signal non établi » (P7). Ce n'est pas la foudre."}
+      gironde: {statut: sans-donnee, note: "Aucune série ouverte d'impacts de foudre assez longue pour une tendance (Météorage est privé ; la climatologie satellite NASA 1995-2014 est figée). Un indicateur indirect est publié en exploratoire, l'énergie de convection de l'été (CAPE), plafonné à « signal non établi » : ce n'est pas la foudre, la case reste donc « sans donnée »."}
       monde: {statut: sans-donnee, note: "Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance."}
 
   - id: jet-stream-puissance

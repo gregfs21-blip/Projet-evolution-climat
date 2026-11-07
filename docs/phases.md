@@ -12,7 +12,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P4 | Impacts Gironde : vendanges, danger météo incendie, CatNat (avec avertissement exposition/déclarations) | critères I1-I9 validés le 28/10/2026 | **close le 29/10/2026** (écart I4 accepté) |
 | P5 | France : indicateur thermique national (LSH), cartes de tendances, extension P2-P4 | critères J1-J8 validés le 29/10/2026 | **close le 29/10/2026** (carte et extrêmes quotidiens hors P5) |
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | **close le 31/10/2026** |
-| P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — statut « signal non établi » | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
+| P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 | en cours |
 
 ## Journal P0
@@ -483,6 +483,12 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
   al. non vérifié ; dépendance du SPEI à l'ETP non répétée dans le texte des mois secs). Contre-relecture : deux
   problèmes introduits par les corrections, corrigés. M1-M7 conformes (`docs/validation-p8.md`) ; section
   exploratoire en attente de P7.
+- 06/11/2026 : P7 intégrée. Le Z500 Atlantique-Europe, non plafonné selon D-V, va dans la section Monde et non dans
+  la section exploratoire, contrairement à ce qu'annonçait le texte « en attente ». Relecture indépendante des
+  ajouts : aucun chiffre faux, sept formulations corrigées. Trois règles renforcées après calcul, tracées : une
+  « absence » ne peut plus citer un indicateur significatif même plafonné (la CAPE passe en « information ») ; M6
+  exige que chaque affirmation publiée figure dans une liste « Affirmations relues » ; la case foudre de la Gironde
+  reste « sans donnée », la CAPE n'étant pas la foudre.
 
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 

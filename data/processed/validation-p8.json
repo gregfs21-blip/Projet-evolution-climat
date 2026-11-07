@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "phase": "p8",
-  "generated_at": "2026-11-06T20:04:28Z",
-  "closure_ok": true,
-  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "generated_at": "2026-11-07T11:32:40Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
     "ace-monde",
     "aerosols-monde",
@@ -104,7 +104,7 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "61 affirmations qualifiées selon S1, aucune règle S2 enfreinte"
+      "detail": "60 affirmations qualifiées selon S1, aucune règle S2 enfreinte"
     },
     {
       "name": "M3 couverture",
@@ -130,9 +130,9 @@
     {
       "name": "M6 relecture indépendante",
       "kind": "critère",
-      "status": "✅ conforme",
-      "satisfied": true,
-      "detail": "relecture close : docs/relecture-p8.md"
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "affirmations non relues : monde-z500-europe, exp-blocages-hiver, exp-blocages-ete, exp-blocages-methode, exp-cape"
     },
     {
       "name": "M7 section exploratoire (P7)",
@@ -202,7 +202,7 @@
       "kind": "info",
       "status": "ℹ️ information",
       "satisfied": true,
-      "detail": "absence 19, acceleration 2, comparaison 8, contexte 4, information 7, lacune 10, signal 32"
+      "detail": "absence 18, acceleration 2, comparaison 8, contexte 4, information 8, lacune 11, signal 32"
     }
   ]
 }

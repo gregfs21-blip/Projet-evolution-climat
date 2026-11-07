@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p7",
-  "generated_at": "2026-11-06T20:03:36Z",
+  "generated_at": "2026-11-07T11:32:46Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
@@ -20,10 +20,10 @@
     },
     {
       "name": "L2 complétude",
-      "kind": "info",
-      "status": "ℹ️ information",
+      "kind": "critère",
+      "status": "✅ conforme",
       "satisfied": true,
-      "detail": "Saisons retenues si tous leurs jours (blocages) ou leurs 3 mois (CAPE) existent ; années complètes (Z500)."
+      "detail": "aucune saison ni année écartée en cours de série (cape 1940-2025, jours-blocage-ete 1940-2025, jours-blocage-hiver 1941-2025, z500-europe 1940-2025)"
     },
     {
       "name": "L3 plausibilité climatologique",
@@ -44,7 +44,7 @@
       "kind": "info",
       "status": "ℹ️ information",
       "satisfied": true,
-      "detail": "Tests, CI et contrat vérifiés par les workflows."
+      "detail": "Tests, contrat et construction des pages vérifiés par la CI (ci.yml), hors de ce module, comme pour les phases précédentes."
     }
   ]
 }

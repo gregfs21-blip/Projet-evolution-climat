@@ -360,14 +360,13 @@
  "confidence": "moyenne",
  "limitations": [
   "Réanalyse ERA5 : avant 1979, peu d'observations en altitude ; aucune homogénéisation.",
-  "Aucune référence retenue : confiance au plus « moyenne ».",
   "Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne »."
  ],
  "provenance": {
   "source_name": "ECMWF / Copernicus — ERA5 horaire sur niveaux de pression (Z500, moyenne quotidienne de 0, 6, 12 et 18 UTC)",
   "source_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels",
   "license": "Licence d'utilisation des produits Copernicus (CC BY 4.0)",
-  "extracted_at": "2026-11-06T20:03:30Z",
+  "extracted_at": "2026-11-07T11:32:45Z",
   "script": "etl.indicators.exploratoire",
   "etl_version": "0.1.0+local",
   "homogenized": false

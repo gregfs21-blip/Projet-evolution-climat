@@ -64,8 +64,18 @@ def checks(inds: dict[str, Indicator], out_dir: Path) -> list[Check]:
     missing = sorted(SCOPE - set(inds))
     cs.append(Check("L1 exhaustivité", "critère", not missing,
                     f"{len(inds)} indicateurs sur {len(SCOPE)}" + (f" ; manquants : {', '.join(missing)}" if missing else "")))
-    cs.append(Check("L2 complétude", "info", True, "Saisons retenues si tous leurs jours (blocages) ou leurs 3 mois (CAPE) "
-                                                   "existent ; années complètes (Z500)."))
+    # L2 (corrigé le 06/11/2026 sur relecture : mesuré au lieu d'être affiché en information). La règle de complétude
+    # est appliquée à la construction ; on vérifie ici qu'aucune saison ou année n'a été écartée en cours de série.
+    gaps = []
+    for iid in sorted(SCOPE & set(inds)):
+        ys = sorted(_series(inds[iid]))
+        holes = sorted(set(range(ys[0], ys[-1] + 1)) - set(ys)) if ys else []
+        if holes:
+            gaps.append(f"{iid} : {holes[:5]}")
+    spans = ", ".join(f"{iid.replace('-monde', '').replace('-gironde', '')} {min(_series(inds[iid]))}-{max(_series(inds[iid]))}"
+                      for iid in sorted(SCOPE & set(inds)))
+    cs.append(Check("L2 complétude", "critère", not gaps,
+                    f"aucune saison ni année écartée en cours de série ({spans})" if not gaps else "lacunes : " + " ; ".join(gaps)))
     try:
         frac = {}
         for season, iid in (("hiver", "jours-blocage-hiver-monde"), ("ete", "jours-blocage-ete-monde")):
@@ -92,7 +102,8 @@ def checks(inds: dict[str, Indicator], out_dir: Path) -> list[Check]:
         cs.append(Check("L4 robustesse au secteur (information)", "info", True, " ; ".join(parts)))
     except Exception as exc:  # noqa: BLE001
         cs.append(Check("L4 robustesse au secteur (information)", "info", True, f"non calculé : {exc}"))
-    cs.append(Check("L5 technique", "info", True, "Tests, CI et contrat vérifiés par les workflows."))
+    cs.append(Check("L5 technique", "info", True, "Tests, contrat et construction des pages vérifiés par la CI (ci.yml), "
+                                               "hors de ce module, comme pour les phases précédentes."))
     return cs
 
 

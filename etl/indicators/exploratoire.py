@@ -138,7 +138,6 @@ def build_z500(ctx: BuildContext) -> Indicator:
                       unit="m", series=series, hom=set(series), provenance=_prov(ctx, B.SOURCE_NAME, B.PAGE),
                       limitations=[
                           "Réanalyse ERA5 : avant 1979, peu d'observations en altitude ; aucune homogénéisation.",
-                          "Aucune référence retenue : confiance au plus « moyenne ».",
                       ],
                       stations=[], method_note="Moyenne quotidienne du Z500 sur la zone, pondérée par le cosinus de la "
                       "latitude, puis moyenne de l'année.", reference=None, baseline=None,
@@ -167,6 +166,11 @@ def build_cape(ctx: BuildContext) -> Indicator:
                          "privé) ; la densité d'éclairs du modèle ERA5 n'est pas disponible en moyenne mensuelle.",
                          "Moyenne mensuelle de la CAPE : les orages dépendent de pics de quelques heures et d'un "
                          "déclencheur, que cette moyenne ne voit pas.",
+                         "CAPE calculée par le modèle ERA5 (réanalyse non homogénéisée, peu d'observations avant 1979). "
+                         "Elle dépend fortement de l'humidité des basses couches, or l'humidité ERA5 à Bordeaux dérive "
+                         "par rapport à la station de Mérignac (contrôle H5 non conforme, P3).",
+                         "Résultat sensible à l'année de départ : la hausse n'est plus significative si l'on part de "
+                         "1981 (relecture P7 du 06/11/2026).",
                      ],
                      stations=[cds_station()], method_note="Moyenne pondérée des mailles de la boîte, chaque mois, puis "
                      "moyenne de juin, juillet et août.", reference=None, baseline=None,

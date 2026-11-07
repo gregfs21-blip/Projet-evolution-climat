@@ -83,6 +83,11 @@ class TestClaims(unittest.TestCase):
         self.assertIsNone(c.problem)
         self.assertEqual(c.confidence, "non_etabli")
 
+    def test_absence_on_capped_significant_indicator_is_flagged(self):
+        self.inds["c"] = ind("c", conf="non_etabli", sig=True)
+        c, _ = S.claim_from({"id": "x", "kind": "absence", "text": "rien : {c|start}"}, self.r, "gironde")
+        self.assertIn("M2", c.problem)
+
     def test_comparison_words_reserved(self):
         c, _ = S.claim_from({"id": "x", "kind": "signal", "text": "{a|slope|.1}, plus rapide qu'ailleurs"}, self.r, "gironde")
         self.assertIn("S3", c.problem)
