@@ -491,6 +491,12 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
   reste « sans donnée », la CAPE n'étant pas la foudre. Contre-relecture du 07/11 : deux phrases qui dépendaient de
   calculs de contrôle non automatisés retirées ; M6 compare désormais une empreinte du texte rédigé, de sorte qu'une
   affirmation reformulée doit être relue de nouveau, lacunes de la couverture comprises.
+- 07/11/2026, décision de Grég : les blocages et le Z500 Atlantique-Europe sont **mis à jour chaque année**. Le
+  workflow « Blocages » revient dans main, déclenché le 15 janvier (et à la main), sans déclenchement sur « push » ;
+  il ne relève que les tranches incomplètes (la dernière tranche de 2 ans est relevée de nouveau quand l'année qui
+  lui manque devient disponible), se relance tant que le relevé n'est pas complet, et l'ETL du 5 février recalcule
+  les indicateurs. L'année écoulée vient d'ERA5T (préliminaire) ; elle n'est pas relevée de nouveau quand ERA5
+  devient définitif, l'écart étant en général négligeable pour un Z500 moyen.
 
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 

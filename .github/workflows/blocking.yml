@@ -1,0 +1,61 @@
+# Relevé du Z500 quotidien ERA5 pour les blocages (P7), mis à jour une fois par an (décision de Grég du 07/11/2026).
+# Le 15 janvier, l'année écoulée est disponible chez Copernicus (ERA5T, données préliminaires qui peuvent encore
+# légèrement changer) ; le collecteur ne relève que les tranches de 2 ans incomplètes, garde au plus 3 requêtes en
+# file, boucle jusqu'à 5 h 30, commite, puis se relance tant que le relevé n'est pas complet. L'ETL du 5 février
+# recalcule ensuite les indicateurs de blocage et le Z500 Atlantique-Europe.
+# Pas de déclenchement sur « push » : il publiait des relevés sur les branches de travail.
+name: Blocages
+
+on:
+  schedule:
+    - cron: "23 1 15 1 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write   # relance du workflow tant que le relevé n'est pas complet
+
+concurrency:
+  group: blocking-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: etl/requirements.txt
+      - run: pip install -r etl/requirements.txt
+      - name: Relevé du Z500 quotidien
+        env:
+          CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}   # secret du dépôt, jamais affiché
+          BLOCKING_MAX_SECONDS: "19500"
+        run: python -m etl.sources.era5_blocking
+      - name: Publication
+        if: always()
+        run: |
+          git config user.name "etl-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sources/era5-pl
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "data: relevé des blocages du $(date -u +%Y-%m-%d)"
+            git pull --rebase
+            git push
+          fi
+      - name: Relance si le relevé n'est pas complet
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if python -c "import sys; from etl.sources import era5_blocking as B; sys.exit(0 if B.complete() else 1)"; then
+            echo "Relevé complet."
+          else
+            gh workflow run blocking.yml --ref "${{ github.ref_name }}"
+          fi
