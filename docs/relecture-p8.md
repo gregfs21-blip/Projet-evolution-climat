@@ -110,10 +110,13 @@ Contre-relecture du 07/11/2026 :
 
 | | Signalement | Traitement |
 |---|---|---|
-| N1 | Deux phrases dépendaient de calculs de contrôle non automatisés (hiver : décalage du secteur ; CAPE : départ en 1981) | Retirées de la synthèse et des limites ; les calculs restent dans `validation-p7.md` comme constats de relecture |
+| N1 | Deux phrases dépendaient de calculs de contrôle non automatisés (hiver : décalage du secteur ; CAPE : départ en 1981) | Retirées de la synthèse ; dans les limites de la CAPE, remplacées par un constat daté renvoyant à `validation-p7.md`, où restent les calculs de relecture |
 | N2 | `validation-p7.md` : une cause non testée était donnée pour la faible pente du Z500 sur toute la série | Reformulé |
-| N3 | M6 contrôlait les identifiants, pas les textes | Empreinte du gabarit rédigé ; `limite-europe` et `limite-reanalyse`, modifiées, sortent de la liste des passes 1 et 2 |
+| N3 | M6 contrôlait les identifiants, pas les textes | Empreinte du gabarit rédigé. `limite-europe`, `limite-reanalyse` et `lacune-foudre-gironde` restent dans la liste des passes 1 et 2 avec leur empreinte du 02/11, devenue caduque ; elles sont relues dans la liste P7. Limite : l'empreinte ne couvre que le texte ; un changement de type, d'indicateurs, de paramètres, ou des intros et conclusions de section, n'est pas détecté par M6 |
 | N4 | Les lacunes tirées de la couverture échappaient à M6 | Incluses (empreinte du texte généré) |
 | — | « restitue mal » exagérait le contrôle H5 ; « +0,0 » ; style du Z500 | Corrigés |
 
+Vérification finale du 07/11/2026 : `exp-blocages-hiver` et `exp-cape` conformes ; intro de la section exploratoire relue. Point mineur non corrigé : la première limite de la CAPE (« aucune série ouverte d'impacts de foudre n'existe ») est plus absolue que la note de couverture. **Relecture des ajouts P7 close** le 07/11/2026.
+
 Affirmations relues (contre-relecture P7, 07/11/2026) : monde-z500-europe#76d2d64b2d, exp-blocages-ete#913b8ce646, exp-blocages-methode#f9f5489b20, limite-europe#e49a347af5, limite-reanalyse#c9837a9c32, lacune-foudre-gironde#f2649a15b7
+Affirmations relues (vérification finale P7, 07/11/2026) : exp-blocages-hiver#6b7c01cb8e, exp-cape#cad95b7c94

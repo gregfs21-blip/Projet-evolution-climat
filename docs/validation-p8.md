@@ -5,19 +5,20 @@ Critères M1-M7 validés par Grég le 02/11/2026, avant toute rédaction.
 
 ## Bilan
 
-**Critères** : M1 à M7 conformes. Seul M7 reste « en attente » de la P7, comme le critère le permet.
+**Critères** : M1 à M7 conformes. La section exploratoire (P7) est intégrée depuis le 07/11/2026, et M6 vérifie
+désormais que chaque affirmation a été relue dans sa rédaction actuelle.
 
-**Affirmations** : 79 au total, dont :
+**Affirmations** : 83 au total depuis l'intégration de la P7 le 07/11/2026 (79 au 02/11), dont :
 
 | Type | Nombre |
 |---|---|
-| Signal | 31 |
-| Absence de signal | 16 |
+| Signal | 32 |
+| Absence de signal | 18 |
 | Comparaison | 8 |
 | Accélération | 2 |
-| Information | 6 |
+| Information | 8 |
 | Contexte externe | 4 |
-| Lacune | 12, dont 5 tirées de la couverture |
+| Lacune | 11, dont 5 tirées de la couverture |
 
 
 ## Ce que le calcul a apporté
@@ -42,6 +43,3 @@ Critères M1-M7 validés par Grég le 02/11/2026, avant toute rédaction.
 - **Règle S3** : la phrase « un écart est attendu et ne dit rien de propre à la région » était fausse. Elle a été corrigée sur relecture (voir `phases.md`).
 - **TM Gironde** : l'accélération est calculée sur 1953-2022, et non sur 1953-2024. Ce choix a été fait avant calcul : les années 2023-2024 ne sont pas homogénéisées.
 
-## Reste à faire
-
-- Ajouter la section exploratoire quand le relevé des blocages de la P7 sera complet.

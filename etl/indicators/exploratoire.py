@@ -162,7 +162,7 @@ def build_cape(ctx: BuildContext) -> Indicator:
                      unit="J/kg", series=series, hom=set(series), provenance=_prov(ctx, cds.SOURCE_NAME.replace(
                          "niveaux de pression", "niveaux uniques"), "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means"),
                      limitations=[
-                         "Ce n'est pas la foudre : aucune série ouverte d'impacts de foudre n'existe (Météorage, réseau "
+                         "Ce n'est pas la foudre : aucune série ouverte d'impacts de foudre assez longue pour une tendance (Météorage, réseau "
                          "privé) ; la densité d'éclairs du modèle ERA5 n'est pas disponible en moyenne mensuelle.",
                          "Moyenne mensuelle de la CAPE : les orages dépendent de pics de quelques heures et d'un "
                          "déclencheur, que cette moyenne ne voit pas.",
