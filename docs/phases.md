@@ -496,7 +496,7 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
   il ne relève que les tranches incomplètes (la dernière tranche de 2 ans est relevée de nouveau quand l'année qui
   lui manque devient disponible), se relance tant que le relevé n'est pas complet, et l'ETL du 5 février recalcule
   les indicateurs. L'année écoulée vient d'ERA5T (préliminaire) ; elle n'est pas relevée de nouveau quand ERA5
-  devient définitif, l'écart étant en général négligeable pour un Z500 moyen.
+  devient définitif : écart accepté, non mesuré.
 
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 
