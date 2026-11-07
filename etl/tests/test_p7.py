@@ -70,5 +70,21 @@ class TestDailyMean(unittest.TestCase):
         self.assertEqual(float(zd[0, 0, 0]), 1.5)
 
 
+class TestAnnualRefresh(unittest.TestCase):
+    def test_last_chunk_refreshed_when_year_missing(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+        from etl.sources import era5_blocking as B
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(B.cds, "last_year", return_value=2027):
+            d = Path(tmp)
+            (d / "blocking-2026.csv").write_text("day,blocked,z500_sector\n2026-12-31,0,5500\n", encoding="utf-8")
+            self.assertEqual(B.years_of("blocking-2026"), ["2026", "2027"])
+            self.assertFalse(B.chunk_complete("blocking-2026", d))      # 2027 manque : à relever de nouveau
+            (d / "blocking-2026.csv").write_text("day,blocked,z500_sector\n2027-12-31,0,5500\n", encoding="utf-8")
+            self.assertTrue(B.chunk_complete("blocking-2026", d))
+            self.assertFalse(B.chunk_complete("blocking-2024", d))      # absent
+
+
 if __name__ == "__main__":
     unittest.main()

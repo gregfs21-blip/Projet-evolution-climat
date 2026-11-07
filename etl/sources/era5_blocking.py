@@ -122,11 +122,30 @@ def extract(arrays: dict[str, np.ndarray]) -> list[dict]:
 
 
 # ---------------------------------------------------------------- relevé
+#
+# Mise à jour annuelle (décision de Grég du 07/11/2026) : le workflow « Blocages » tourne chaque 15 janvier. La
+# dernière tranche de 2 ans peut n'avoir été relevée que pour sa première année : une tranche n'est tenue pour faite
+# que si son fichier va jusqu'à la dernière année qu'elle doit couvrir.
+
+
+def chunk_complete(name: str, out_dir: Path = OUT_DIR) -> bool:
+    path = out_dir / f"{name}.csv"
+    if not path.exists():
+        return False
+    last = None
+    with path.open(encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            last = row["day"]
+    return last is not None and last >= f"{years_of(name)[-1]}-12-31"
+
+
+def complete(out_dir: Path = OUT_DIR) -> bool:
+    return all(chunk_complete(n, out_dir) for n in names()) and (out_dir / "blocking.csv").exists()
 
 
 def merge(out_dir: Path = OUT_DIR) -> None:
     parts = [out_dir / f"{n}.csv" for n in names()]
-    if not all(p.exists() for p in parts):
+    if not all(chunk_complete(n, out_dir) for n in names()):
         return
     rows = []
     for p in parts:
@@ -169,7 +188,7 @@ def collect(out_dir: Path = OUT_DIR) -> list[str]:
     pending = [j for j in all_jobs if j.get("status") in ("accepted", "running")]
     m = cds.meta(out_dir)
     for name in names():
-        if (out_dir / f"{name}.csv").exists() and name in m:
+        if chunk_complete(name, out_dir) and name in m:
             continue
         req = request(name)
         key = (req["year"], req["time"], [str(x) for x in req["area"]])
@@ -216,8 +235,11 @@ def main() -> int:
     limit = float(os.environ.get("BLOCKING_MAX_SECONDS", 5.5 * 3600))
     t0 = time.time()
     while True:
-        log = collect()
-        done = sum(1 for n in names() if (OUT_DIR / f"{n}.csv").exists())
+        try:
+            log = collect()
+        except Exception as exc:  # noqa: BLE001 — panne passagère de Copernicus (HTTP 500 vu le 06/11/2026) : on réessaie
+            log = [f"ÉCHEC de la lecture de la file : {type(exc).__name__} {str(exc)[:200]}"]
+        done = sum(1 for n in names() if chunk_complete(n))
         print(f"[{(time.time() - t0) / 60:.0f} min] {done}/{len(names())} tranches de 2 ans ; " + " | ".join(x for x in log if "relevé" in x or "ÉCHEC" in x or "soumise" in x or "supprimé" in x), flush=True)
         if done == len(names()) or time.time() - t0 > limit:
             return 0

@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-05T12:31:35Z",
+ "generated_at": "2026-11-07T11:38:06Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -891,7 +891,7 @@
      "scale": "gironde",
      "status": "sans-donnee",
      "source": null,
-     "note": "Les séries d'impacts (Météorage) ne sont pas ouvertes ; la climatologie satellite NASA (1995-2014) ne permet pas de tendance. Au mieux, un indicateur indirect « signal non établi » (P7).",
+     "note": "Aucune série ouverte d'impacts de foudre assez longue pour une tendance (Météorage est privé ; la climatologie satellite NASA 1995-2014 est figée). Un indicateur indirect est publié en exploratoire, l'énergie de convection de l'été (CAPE), plafonné à « signal non établi » : ce n'est pas la foudre, la case reste donc « sans donnée ».",
      "indicators": []
     },
     {
@@ -965,10 +965,26 @@
     },
     {
      "scale": "monde",
-     "status": "prevu",
-     "source": "ERA5 géopotentiel 500 hPa, indices de blocage",
-     "note": null,
-     "indicators": []
+     "status": "publie",
+     "source": "ERA5 géopotentiel 500 hPa quotidien, Atlantique-Europe ; blocages de Tibaldi et Molteni",
+     "note": "Exploratoire (P7) : les blocages sont plafonnés à « signal non établi ».",
+     "indicators": [
+      {
+       "id": "jours-blocage-hiver-monde",
+       "title": "Jours de blocage atlantique-européen (hiver)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "jours-blocage-ete-monde",
+       "title": "Jours de blocage atlantique-européen (été)",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "z500-europe-monde",
+       "title": "Géopotentiel 500 hPa moyen sur l'Atlantique-Europe",
+       "confidence": "moyenne"
+      }
+     ]
     }
    ]
   },

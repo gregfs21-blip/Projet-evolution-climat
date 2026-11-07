@@ -485,6 +485,14 @@ sections:
               ({jet-vitesse-monde|alt_trends.0.slope_per_decade|+.2} m/s par décennie), probablement un effet des
               années pauvres en observations avant 1979.
             indicators: [jet-vitesse-monde]
+          - id: monde-z500-europe
+            kind: signal
+            params: [geopotentiel]
+            literals: [500]
+            text: >-
+              La surface 500 hPa s'élève de {z500-europe-monde|slope|+.1} m par décennie au-dessus de
+              l'Atlantique et de l'Europe ({z500-europe-monde|start}-{z500-europe-monde|end}, ERA5), ce qu'on attend d'une colonne d'air qui se réchauffe ; l'étude ne mesure pas sa température sur cette
+              zone, et la circulation peut aussi y contribuer.
           - id: monde-enso
             kind: absence
             params: [el-nino]
@@ -670,9 +678,54 @@ sections:
     title: Exploratoire (P7)
     optional: true
     pending: >-
-      En attente du relevé des blocages atlantiques (P7, en cours). Les indicateurs exploratoires (blocages, Z500
-      Atlantique-Europe, énergie de convection en Gironde) seront ajoutés ici, plafonnés à « signal non établi ».
-    groups: []
+      En attente du relevé des blocages atlantiques (P7). Les indicateurs exploratoires (blocages, énergie de
+      convection en Gironde) seront ajoutés ici, plafonnés à « signal non établi ».
+    intro: >-
+      Blocages et énergie de convection : leur confiance est plafonnée à « signal non établi » quel que soit le
+      résultat du test, car leur définition ou leur lien avec le phénomène visé est trop fragile pour plus. Le Z500
+      Atlantique-Europe, issu de la même phase mais non plafonné, figure dans la section Monde.
+    groups:
+      - title: Blocages atmosphériques (Atlantique-Europe)
+        claims:
+          - id: exp-blocages-hiver
+            kind: absence
+            params: [geopotentiel]
+            text: >-
+              Les jours de blocage en hiver (décembre à février) ne montrent pas de tendance détectée :
+              {jours-blocage-hiver-monde|slope|+.1} jours par décennie sur
+              {jours-blocage-hiver-monde|start}-{jours-blocage-hiver-monde|end} (p {jours-blocage-hiver-monde|p|p}).
+              Sur toute la série ({jours-blocage-hiver-monde|alt_trends.0.period.start}-{jours-blocage-hiver-monde|alt_trends.0.period.end}),
+              la baisse ({jours-blocage-hiver-monde|alt_trends.0.slope_per_decade|+.1} jours par décennie) passe le
+              test mais reste fragile : son intervalle de confiance va de
+              {jours-blocage-hiver-monde|alt_trends.0.slope_ci_low|+.1} à {jours-blocage-hiver-monde|alt_trends.0.slope_ci_high|.1},
+              et elle s'appuie en partie sur des années pauvres en observations d'altitude (avant 1979).
+          - id: exp-blocages-ete
+            kind: absence
+            params: [geopotentiel]
+            text: >-
+              Les jours de blocage en été (juin à août) ne montrent pas de tendance détectée :
+              {jours-blocage-ete-monde|slope|+.1} jours par décennie sur
+              {jours-blocage-ete-monde|start}-{jours-blocage-ete-monde|end} (p {jours-blocage-ete-monde|p|p}).
+          - id: exp-blocages-methode
+            kind: information
+            params: [geopotentiel]
+            literals: [10]
+            text: >-
+              Le résultat dépend de la définition : l'indice de Tibaldi et Molteni repose sur un seuil de gradient du
+              géopotentiel, et d'autres indices des blocages donnent d'autres fréquences. Décaler le secteur de 10°
+              vers l'est ne change pas le signe des pentes sur 1976-2025 (contrôle L4), mais un seul décalage a été
+              testé.
+      - title: Orages (indicateur indirect)
+        claims:
+          - id: exp-cape
+            kind: information
+            literals: [10]
+            text: >-
+              L'énergie disponible pour la convection (CAPE) de l'été en Gironde, calculée par ERA5, montre au test une
+              hausse de {cape-gironde|slope|+.1} J/kg par décennie sur {cape-gironde|start}-{cape-gironde|end}
+              (p {cape-gironde|p|p}). L'indicateur reste plafonné à « signal non établi » : la CAPE dépend de
+              l'humidité des basses couches, dont l'évolution dans ERA5 dérive par rapport à la station de Mérignac
+              (contrôle H5), et ce n'est ni la foudre ni les orages, qu'une moyenne mensuelle ne voit pas.
 
   # ------------------------------------------------------------------ CE QUE L'ÉTUDE NE DIT PAS
   - id: limites
@@ -684,7 +737,8 @@ sections:
           - id: limite-europe
             kind: lacune
             text: >-
-              L'Europe n'est pas une échelle de l'étude : seul le secteur Atlantique-Europe des blocages (P7) la touche.
+              L'Europe n'est pas une échelle de l'étude : seuls le Z500 et les blocages du secteur Atlantique-Europe
+              (P7) la touchent.
           - id: limite-glaciers
             kind: lacune
             text: >-
@@ -721,6 +775,6 @@ sections:
           - id: limite-reanalyse
             kind: lacune
             text: >-
-              Les variables d'altitude, de vent, de pression, d'humidité, de feu, de jet stream et la température de
-              mer du golfe viennent de la réanalyse ERA5 : utile mais non homogénéisée, et pauvre en observations avant
+              Les variables d'altitude, de vent, de pression, d'humidité, de feu, de jet stream, de convection (CAPE),
+              les blocages, le Z500 et la température de mer du golfe viennent de la réanalyse ERA5 : utile mais non homogénéisée, et pauvre en observations avant
               1979, surtout avant 1950.

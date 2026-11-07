@@ -245,7 +245,9 @@ def claim_from(item: dict, r: Renderer, scale: str | None) -> tuple[Claim, list[
                 problems.append(f"signal sur un indicateur non significatif ou de confiance insuffisante : {', '.join(bad)} (M2)")
         elif kind == "absence":
             confidence = "non_etabli"
-            bad = [d["id"] for d in inds if significant(d) and d["confidence"] != "non_etabli"]
+            # Corrigé le 06/11/2026 (relecture P7) : un indicateur significatif mais plafonné ne peut plus fonder
+            # une « absence » ; il relève d'une « information ».
+            bad = [d["id"] for d in inds if significant(d)]
             if bad:
                 problems.append(f"absence de signal affirmée sur un indicateur significatif : {', '.join(bad)} (M2)")
         elif kind == "acceleration" and not all(r.accs[a][1].significant for a in accs):
@@ -277,6 +279,24 @@ def coverage_gaps(cov: Coverage) -> list[tuple[str, str, str, str | None]]:
             if c.status != "publie":
                 status = {"prevu": "prévu", "sans-donnee": "sans donnée ouverte", "instantane": "valeur instantanée, pas de série"}[c.status]
                 out.append((p.id, f"{p.label} — {labels[c.scale]} : {status}.", c.scale, c.note))
+    return out
+
+
+def fingerprints(config_text: str, claims_text: dict[str, str]) -> dict[str, str]:
+    """Empreinte de chaque affirmation pour M6 : celle de son gabarit (stable quand les données changent, modifiée dès
+    que le texte rédigé change) ; pour les lacunes tirées de la couverture, celle du texte généré."""
+    import hashlib
+    h = lambda t: hashlib.sha1(" ".join(t.split()).encode("utf-8")).hexdigest()[:10]  # noqa: E731
+    cfg = yaml.safe_load(config_text)
+    out = {}
+    for sec in cfg["sections"]:
+        for g in sec.get("groups", []):
+            for item in g["claims"]:
+                t = item["text"] if "text" in item else " || ".join(item["text_if"][k] for k in sorted(item["text_if"]))
+                out[item["id"]] = h(t)
+    for cid, text in claims_text.items():
+        if cid.startswith("lacune-") and cid not in out:
+            out[cid] = h(text)
     return out
 
 
@@ -319,8 +339,12 @@ def build(out_dir: Path = PROCESSED_DIR, config: Path = CONFIG) -> Result:
                                          intro=r.render(sec["intro"]) if sec.get("intro") else None, groups=groups,
                                          conclusion=r.render(sec["conclusion"]) if sec.get("conclusion") else None,
                                          pending=pending))
+    # Une section d'échelle couvre ses paramètres à son échelle ; une section transverse (exploratoire) les couvre à
+    # l'échelle des indicateurs que chaque affirmation cite.
     covered = {(s.scale, p) for s in sections if s.scale for g in s.groups for c in g.claims
                if c.kind != "lacune" for p in c.params}
+    covered |= {(i.scale, p) for s in sections if not s.scale for g in s.groups for c in g.claims
+                if c.kind != "lacune" for p in c.params for i in c.indicators}
     m3 = [f"{p.id} / {c.scale}" for p in cov.parameters for c in p.cells
           if c.status == "publie" and (c.scale, p.id) not in covered]
     syn = Synthesis(generated_at=datetime.now(timezone.utc).replace(microsecond=0), sections=sections)

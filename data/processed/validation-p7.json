@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "phase": "p7",
+  "generated_at": "2026-11-07T11:38:07Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "indicators": [
+    "cape-gironde",
+    "jours-blocage-ete-monde",
+    "jours-blocage-hiver-monde",
+    "z500-europe-monde"
+  ],
+  "checks": [
+    {
+      "name": "L1 exhaustivité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "4 indicateurs sur 4"
+    },
+    {
+      "name": "L2 complétude",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "aucune saison ni année écartée en cours de série (cape 1940-2025, jours-blocage-ete 1940-2025, jours-blocage-hiver 1941-2025, z500-europe 1940-2025)"
+    },
+    {
+      "name": "L3 plausibilité climatologique",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "jours bloqués 1981-2010 : hiver 33,9 %, été 17,6 % (attendu : hiver > été, chacun entre 5 et 40 %)"
+    },
+    {
+      "name": "L4 robustesse au secteur (information)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "hiver : 30° O-30° E -2,00, 20° O-40° E -2,11 jours/déc. (même signe) ; ete : 30° O-30° E -0,91, 20° O-40° E -0,62 jours/déc. (même signe)"
+    },
+    {
+      "name": "L5 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests, contrat et construction des pages vérifiés par la CI (ci.yml), hors de ce module, comme pour les phases précédentes."
+    }
+  ]
+}

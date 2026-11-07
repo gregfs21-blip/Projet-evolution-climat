@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p8",
-  "generated_at": "2026-11-05T12:34:37Z",
+  "generated_at": "2026-11-07T11:38:09Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
@@ -12,6 +12,7 @@
     "bilan-hydrique-bordeaux-paulin",
     "bilan-hydrique-cazaux",
     "canicule-bordeaux-merignac",
+    "cape-gironde",
     "catnat-france",
     "catnat-gironde",
     "catnat-secheresse-france",
@@ -33,6 +34,8 @@
     "insolation-bordeaux-merignac",
     "jet-latitude-monde",
     "jet-vitesse-monde",
+    "jours-blocage-ete-monde",
+    "jours-blocage-hiver-monde",
     "jours-fwi-gironde",
     "jours-gel-gironde",
     "jours-tempete-bordeaux-merignac",
@@ -85,7 +88,8 @@
     "tx-annuelle-gironde",
     "tx-france",
     "vendanges-bordeaux",
-    "z500-bordeaux-era5"
+    "z500-bordeaux-era5",
+    "z500-europe-monde"
   ],
   "checks": [
     {
@@ -100,7 +104,7 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "57 affirmations qualifiées selon S1, aucune règle S2 enfreinte"
+      "detail": "60 affirmations qualifiées selon S1, aucune règle S2 enfreinte"
     },
     {
       "name": "M3 couverture",
@@ -128,14 +132,14 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "relecture close : docs/relecture-p8.md"
+      "detail": "relecture close, 83 affirmations relues dans leur rédaction actuelle (docs/relecture-p8.md)"
     },
     {
       "name": "M7 section exploratoire (P7)",
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "en attente du relevé P7, mention affichée"
+      "detail": "4 affirmations, toutes plafonnées"
     },
     {
       "name": "Accélération gmsl",
@@ -198,7 +202,7 @@
       "kind": "info",
       "status": "ℹ️ information",
       "satisfied": true,
-      "detail": "absence 16, acceleration 2, comparaison 8, contexte 4, information 6, lacune 12, signal 31"
+      "detail": "absence 18, acceleration 2, comparaison 8, contexte 4, information 8, lacune 11, signal 32"
     }
   ]
 }
