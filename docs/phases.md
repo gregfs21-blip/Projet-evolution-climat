@@ -483,12 +483,14 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
   al. non vérifié ; dépendance du SPEI à l'ETP non répétée dans le texte des mois secs). Contre-relecture : deux
   problèmes introduits par les corrections, corrigés. M1-M7 conformes (`docs/validation-p8.md`) ; section
   exploratoire en attente de P7.
-- 06/11/2026 : P7 intégrée. Le Z500 Atlantique-Europe, non plafonné selon D-V, va dans la section Monde et non dans
+- 06-07/11/2026 : P7 intégrée. Le Z500 Atlantique-Europe, non plafonné selon D-V, va dans la section Monde et non dans
   la section exploratoire, contrairement à ce qu'annonçait le texte « en attente ». Relecture indépendante des
   ajouts : aucun chiffre faux, sept formulations corrigées. Trois règles renforcées après calcul, tracées : une
   « absence » ne peut plus citer un indicateur significatif même plafonné (la CAPE passe en « information ») ; M6
   exige que chaque affirmation publiée figure dans une liste « Affirmations relues » ; la case foudre de la Gironde
-  reste « sans donnée », la CAPE n'étant pas la foudre.
+  reste « sans donnée », la CAPE n'étant pas la foudre. Contre-relecture du 07/11 : deux phrases qui dépendaient de
+  calculs de contrôle non automatisés retirées ; M6 compare désormais une empreinte du texte rédigé, de sorte qu'une
+  affirmation reformulée doit être relue de nouveau, lacunes de la couverture comprises.
 
 ## P7 — Critères (proposés et validés le 31/10/2026, avant tout calcul)
 

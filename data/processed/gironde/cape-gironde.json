@@ -366,7 +366,7 @@
   "Ce n'est pas la foudre : aucune série ouverte d'impacts de foudre n'existe (Météorage, réseau privé) ; la densité d'éclairs du modèle ERA5 n'est pas disponible en moyenne mensuelle.",
   "Moyenne mensuelle de la CAPE : les orages dépendent de pics de quelques heures et d'un déclencheur, que cette moyenne ne voit pas.",
   "CAPE calculée par le modèle ERA5 (réanalyse non homogénéisée, peu d'observations avant 1979). Elle dépend fortement de l'humidité des basses couches, or l'humidité ERA5 à Bordeaux dérive par rapport à la station de Mérignac (contrôle H5 non conforme, P3).",
-  "Résultat sensible à l'année de départ : la hausse n'est plus significative si l'on part de 1981 (relecture P7 du 06/11/2026).",
+  "La relecture P7 du 07/11/2026 a trouvé le résultat sensible à l'année de départ (calcul de contrôle non automatisé, docs/validation-p7.md).",
   "Aucune référence publiée n'a été fixée pour cet indicateur : confiance au plus « moyenne ».",
   "Indicateur exploratoire : confiance plafonnée à « signal non établi » (décision de Grég du 31/10/2026, P7)."
  ],
@@ -374,7 +374,7 @@
   "source_name": "ECMWF / Copernicus — ERA5, moyennes mensuelles sur niveaux uniques (Climate Data Store)",
   "source_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means",
   "license": "Licence d'utilisation des produits Copernicus (CC BY 4.0)",
-  "extracted_at": "2026-11-07T11:32:45Z",
+  "extracted_at": "2026-11-07T11:36:02Z",
   "script": "etl.indicators.exploratoire",
   "etl_version": "0.1.0+local",
   "homogenized": false

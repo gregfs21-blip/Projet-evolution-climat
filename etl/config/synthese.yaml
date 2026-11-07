@@ -491,8 +491,7 @@ sections:
             literals: [500]
             text: >-
               La surface 500 hPa s'élève de {z500-europe-monde|slope|+.1} m par décennie au-dessus de
-              l'Atlantique et de l'Europe ({z500-europe-monde|start}-{z500-europe-monde|end}, ERA5), ce qui est
-              ce qu'on attend d'une colonne d'air qui se réchauffe ; l'étude ne mesure pas sa température sur cette
+              l'Atlantique et de l'Europe ({z500-europe-monde|start}-{z500-europe-monde|end}, ERA5), ce qu'on attend d'une colonne d'air qui se réchauffe ; l'étude ne mesure pas sa température sur cette
               zone, et la circulation peut aussi y contribuer.
           - id: monde-enso
             kind: absence
@@ -697,10 +696,9 @@ sections:
               {jours-blocage-hiver-monde|start}-{jours-blocage-hiver-monde|end} (p {jours-blocage-hiver-monde|p|p}).
               Sur toute la série ({jours-blocage-hiver-monde|alt_trends.0.period.start}-{jours-blocage-hiver-monde|alt_trends.0.period.end}),
               la baisse ({jours-blocage-hiver-monde|alt_trends.0.slope_per_decade|+.1} jours par décennie) passe le
-              test mais reste fragile : son intervalle de confiance touche zéro
-              ({jours-blocage-hiver-monde|alt_trends.0.slope_ci_low|+.1} à {jours-blocage-hiver-monde|alt_trends.0.slope_ci_high|+.1}),
-              elle s'appuie en partie sur des années pauvres en observations d'altitude (avant 1979) et ne résiste pas
-              au décalage du secteur (relecture P7).
+              test mais reste fragile : son intervalle de confiance va de
+              {jours-blocage-hiver-monde|alt_trends.0.slope_ci_low|+.1} à {jours-blocage-hiver-monde|alt_trends.0.slope_ci_high|.1},
+              et elle s'appuie en partie sur des années pauvres en observations d'altitude (avant 1979).
           - id: exp-blocages-ete
             kind: absence
             params: [geopotentiel]
@@ -725,8 +723,8 @@ sections:
             text: >-
               L'énergie disponible pour la convection (CAPE) de l'été en Gironde, calculée par ERA5, montre au test une
               hausse de {cape-gironde|slope|+.1} J/kg par décennie sur {cape-gironde|start}-{cape-gironde|end}
-              (p {cape-gironde|p|p}). L'indicateur reste plafonné à « signal non établi » : la hausse n'est plus
-              significative si l'on part de 1981, la CAPE dépend de l'humidité des basses couches, que ERA5 restitue mal à Bordeaux
+              (p {cape-gironde|p|p}). L'indicateur reste plafonné à « signal non établi » : la CAPE dépend de
+              l'humidité des basses couches, dont l'évolution dans ERA5 dérive par rapport à la station de Mérignac
               (contrôle H5), et ce n'est ni la foudre ni les orages, qu'une moyenne mensuelle ne voit pas.
 
   # ------------------------------------------------------------------ CE QUE L'ÉTUDE NE DIT PAS

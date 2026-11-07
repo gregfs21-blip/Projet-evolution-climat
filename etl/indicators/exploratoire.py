@@ -169,8 +169,8 @@ def build_cape(ctx: BuildContext) -> Indicator:
                          "CAPE calculée par le modèle ERA5 (réanalyse non homogénéisée, peu d'observations avant 1979). "
                          "Elle dépend fortement de l'humidité des basses couches, or l'humidité ERA5 à Bordeaux dérive "
                          "par rapport à la station de Mérignac (contrôle H5 non conforme, P3).",
-                         "Résultat sensible à l'année de départ : la hausse n'est plus significative si l'on part de "
-                         "1981 (relecture P7 du 06/11/2026).",
+                         "La relecture P7 du 07/11/2026 a trouvé le résultat sensible à l'année de départ (calcul de "
+                         "contrôle non automatisé, docs/validation-p7.md).",
                      ],
                      stations=[cds_station()], method_note="Moyenne pondérée des mailles de la boîte, chaque mois, puis "
                      "moyenne de juin, juillet et août.", reference=None, baseline=None,

@@ -282,6 +282,24 @@ def coverage_gaps(cov: Coverage) -> list[tuple[str, str, str, str | None]]:
     return out
 
 
+def fingerprints(config_text: str, claims_text: dict[str, str]) -> dict[str, str]:
+    """Empreinte de chaque affirmation pour M6 : celle de son gabarit (stable quand les données changent, modifiée dès
+    que le texte rédigé change) ; pour les lacunes tirées de la couverture, celle du texte généré."""
+    import hashlib
+    h = lambda t: hashlib.sha1(" ".join(t.split()).encode("utf-8")).hexdigest()[:10]  # noqa: E731
+    cfg = yaml.safe_load(config_text)
+    out = {}
+    for sec in cfg["sections"]:
+        for g in sec.get("groups", []):
+            for item in g["claims"]:
+                t = item["text"] if "text" in item else " || ".join(item["text_if"][k] for k in sorted(item["text_if"]))
+                out[item["id"]] = h(t)
+    for cid, text in claims_text.items():
+        if cid.startswith("lacune-") and cid not in out:
+            out[cid] = h(text)
+    return out
+
+
 def build(out_dir: Path = PROCESSED_DIR, config: Path = CONFIG) -> Result:
     cfg = yaml.safe_load(config.read_text(encoding="utf-8"))
     inds = load_indicators(out_dir)

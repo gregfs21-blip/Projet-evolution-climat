@@ -11,7 +11,7 @@ Fichier généré par `python -m etl.validation.p8` à chaque exécution de l'ET
 | M3 couverture | ✅ conforme | chaque case publiée de la couverture a au moins une affirmation à son échelle |
 | M4 comparaisons sur période commune (S3) | ✅ conforme | 8 affirmations de comparaison ; tm-gironde-monde 1959-2021 : plus rapide; tm-france-monde 1959-2021 : plus rapide; tm-gironde-france 1959-2021 : du même ordre; sst-golfe-monde 1976-2025 : plus rapide; mer-gironde-monde 1993-2024 : du même ordre; tlt-rss-uah 1979-2025 : plus rapide; tx-tn-gironde 1953-2022 : du même ordre; tx-tn-france 1959-2021 : du même ordre |
 | M5 accélération du niveau marin 1993-2017 | ✅ conforme | 0.067 mm/an² (IC 0.006 à 0.128, p = 0.032089) ; fourchette [0.059 ; 0.109] (Nerem et al., 2018) |
-| M6 relecture indépendante | ❌ non conforme | affirmations non relues : monde-z500-europe, exp-blocages-hiver, exp-blocages-ete, exp-blocages-methode, exp-cape |
+| M6 relecture indépendante | ❌ non conforme | affirmations non relues ou modifiées depuis leur relecture : exp-blocages-hiver, exp-cape |
 | M7 section exploratoire (P7) | ✅ conforme | 4 affirmations, toutes plafonnées |
 | Accélération gmsl | ℹ️ information | niveau-mer-monde 1993-2024 : 0.07642 par an² (IC 0.04505 à 0.1078), p = 2.7e-05, Newey-West décalage 2 |
 | Accélération gmsl-nerem | ℹ️ information | niveau-mer-monde 1993-2017 : 0.06723 par an² (IC 0.006301 à 0.1282), p = 0.032089, Newey-West décalage 2 |

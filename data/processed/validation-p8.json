@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p8",
-  "generated_at": "2026-11-07T11:32:40Z",
+  "generated_at": "2026-11-07T11:36:23Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
@@ -132,7 +132,7 @@
       "kind": "critère",
       "status": "❌ non conforme",
       "satisfied": false,
-      "detail": "affirmations non relues : monde-z500-europe, exp-blocages-hiver, exp-blocages-ete, exp-blocages-methode, exp-cape"
+      "detail": "affirmations non relues ou modifiées depuis leur relecture : exp-blocages-hiver, exp-cape"
     },
     {
       "name": "M7 section exploratoire (P7)",

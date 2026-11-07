@@ -27,7 +27,8 @@ L4 montre que décaler le secteur de 10° vers l'est ne change pas le signe des 
 **Z500.** Il monte nettement, ce qu'on attend d'une colonne d'air qui se réchauffe ; l'étude ne mesure pas la
 température de la colonne sur cette zone, et la circulation peut aussi jouer. L'indicateur reste « moyenne » : c'est
 ERA5, sans référence. Une rupture vers 2002 disparaît une fois la tendance retirée. Sur toute la série, la pente est
-bien plus faible (+2,9) : avant 1979, ERA5 est moins contraint.
+plus faible (+2,9 m par décennie, p = 0,009) parce que la série baisse avant 1979, période où ERA5 est moins
+contraint ; la part réelle et la part d'artefact ne sont pas séparées.
 
 **CAPE.** La pente est significative, mais fragile et indirecte. Elle dépend de l'année de départ : selon la
 relecture, +13,8 J/kg par décennie (p = 0,04) en partant de 1979, +9,1 (p = 0,12) en partant de 1981. Elle dépend aussi
@@ -45,7 +46,7 @@ plafonnée.
 - Foudre Gironde : reste « sans donnée ». La CAPE est publiée en exploratoire, mais ce n'est pas la foudre ; la
   rattacher à la case l'aurait affichée « publiée » (corrigé sur relecture, le 06/11/2026).
 
-## Corrections tracées après calcul (relecture indépendante du 06/11/2026)
+## Corrections tracées après calcul (relecture indépendante des 06 et 07/11/2026)
 
 - L2 était affiché « information » alors que c'est un critère avec seuil : il est désormais mesuré (aucune saison ni
   année écartée en cours de série) et conforme. L5 reste vérifié par la CI, comme aux phases précédentes.
@@ -53,3 +54,6 @@ plafonnée.
   du Z500.
 - Les chiffres « selon la relecture » ci-dessus viennent de calculs de contrôle du relecteur ; ils ne sont pas publiés
   dans les indicateurs.
+- Les deux phrases qui dépendaient de ces calculs de contrôle (hiver : « ne résiste pas au décalage du secteur » ;
+  CAPE : « plus significative si l'on part de 1981 ») sont retirées de la synthèse : un texte qui dépend d'un résultat
+  doit être choisi par le code, et ces calculs ne sont pas automatisés. Ils restent ici, comme constats de relecture.
