@@ -491,7 +491,7 @@ Ce choix est fait avant toute lecture des données.
 
 ### Décisions demandées à Grég
 
-- **D-AA** : câble de Floride, téléchargement manuel des fichiers annuels par Grég, ou statut « sans donnée » en attendant le retour du serveur.
+- **D-AA — tranchée le 17/11/2026** : le site de l'AOML ne répond pas non plus depuis le poste de Grég. Câble de Floride en **« sans donnée »** tant que ni l'AOML ni l'archive NCEI (dépôts annuels, par ex. accession 0235235 pour 2020) ne sont joignables ; il reste dans le périmètre (N1).
 - **D-AB** : RAPID, formulaire rempli une fois par Grég et fichiers déposés dans `data/sources/rapid/` (nouvelle version environ une fois par an).
 - **D-AC** : critères N1-N7.
 
