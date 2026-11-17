@@ -34,7 +34,7 @@ jobs:
           path: data/raw
           key: raw-${{ github.run_id }}
           restore-keys: raw-
-      - name: Sonde P10 (démonstration, régression multiple : forçages et ENSO, aucun calcul)
+      - name: Sonde P10 (démonstration, régression multiple, forçages et ENSO, aucun calcul)
         run: python -m etl.probe.p10
       - name: Sonde P9 (Gulf Stream et AMOC, aucun indicateur)
         run: python -m etl.probe.p9
