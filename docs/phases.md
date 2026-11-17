@@ -15,7 +15,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
-| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : critères O1-O9 proposés le 17/11/2026, avant tout calcul | **ouverte** |
+| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul | **ouverte** |
 
 ## Journal P0
 
@@ -403,10 +403,16 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   (elle était déjà en « signal non établi »).
 - P3 close.
 
-## P10 — Démonstration de l'évolution du climat : cadrage proposé le 17/11/2026, avant tout calcul
+## P10 — Démonstration de l'évolution du climat : cadrage proposé et validé le 17/11/2026, avant tout calcul
 
 > **Demande de Grég du 17/11/2026** : créer un onglet « Démonstration de l'évolution du climat » regroupant les calculs
 > qui établissent l'évolution du climat et sa cause, et commencer par la régression multiple (P10.1).
+>
+> **Décisions de Grég du 17/11/2026, avant tout calcul** : D-AD organisation de l'onglet validée ; D-AE données et
+> méthode de P10.1 validées telles quelles (soleil compris) ; D-AF références R-O1 à R-O4 et **critères O1-O9 validés
+> tels quels** (fourchettes publiées, non élargies) ; D-AG « élevée » possible si O2 à O8 sont conformes pour les trois
+> jeux, la limite d'indépendance étant écrite sur la page ; D-AH affirmation `limite-attribution` de la synthèse
+> reformulée à la publication de P10.1, avec la relecture indépendante exigée par M6.
 
 ### Pourquoi une phase à part
 
@@ -510,7 +516,7 @@ satisfait mais qu'un autre critère échoue ; « signal non établi » si O3 éc
 - Avant 1950, le Niño 3.4 de HadISST repose sur peu de mesures.
 - HadCRUT5, GISTEMP et Berkeley partagent l'essentiel de leurs stations : leur accord ne vaut pas trois preuves (S1).
 
-### Décisions demandées à Grég
+### Décisions demandées à Grég (tranchées le 17/11/2026, voir en tête de section)
 
 - **D-AD** : organisation de l'onglet (P10.1 à P10.5, dans cet ordre, chacune cadrée séparément).
 - **D-AE** : données et méthode de P10.1 (ERF IGCC 2025, Niño 3.4 HadISST à climatologie mobile, décalages fixés,
