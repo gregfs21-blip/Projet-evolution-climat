@@ -221,7 +221,41 @@ def pass3() -> list[str]:
 PASS = 3
 
 
+def rapid_files() -> list[str]:
+    """Lecture des fichiers RAPID déposés par Grég (data/sources/rapid) : dimensions, variables, unités, période,
+    statistiques simples. Aucun indicateur calculé."""
+    import netCDF4
+    import numpy as np
+    out = []
+    for path in sorted((ROOT / "data" / "sources" / "rapid").glob("*.nc")):
+        out.append(f"## {path.name} ({path.stat().st_size / 1e6:.1f} Mo)")
+        with netCDF4.Dataset(path) as ds:
+            out.append("dimensions : " + ", ".join(f"{k}={len(v)}" for k, v in ds.dimensions.items()))
+            for attr in ds.ncattrs():
+                out.append(f"  {attr} : {str(getattr(ds, attr))[:240]}")
+            for name, var in ds.variables.items():
+                out.append(f"  {name} {var.dimensions} {var.shape} [{getattr(var, 'units', '')}] "
+                           f"{getattr(var, 'long_name', '')}")
+                try:
+                    a = np.ma.filled(var[:].astype(float), np.nan)
+                    if "since" in str(getattr(var, "units", "")):
+                        d = netCDF4.num2date(np.nanmin(a), var.units), netCDF4.num2date(np.nanmax(a), var.units)
+                        step = np.nanmedian(np.diff(a)) if a.ndim == 1 and a.size > 1 else float("nan")
+                        out.append(f"    {d[0]} → {d[1]} ; pas médian {step:.3g} {var.units.split()[0]}")
+                    else:
+                        out.append(f"    min {np.nanmin(a):.4g}, moyenne {np.nanmean(a):.4g}, max {np.nanmax(a):.4g}, "
+                                   f"absents {int(np.isnan(a).sum())}")
+                        if a.ndim == 1 and a.size <= 60:
+                            out.append(f"    {list(np.round(a, 1))}")
+                except Exception as exc:  # noqa: BLE001
+                    out.append(f"    lecture : {type(exc).__name__} {exc}")
+    return out
+
+
 def main() -> int:
+    if (ROOT / "data" / "sources" / "rapid").exists():
+        md = ["# Sonde P9 — fichiers RAPID déposés (généré)", "", "```", *rapid_files(), "```"]
+        (ROOT / "docs" / "sonde-p9d.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     if PASS == 3:
         now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
         md = ["# Sonde P9 — contrôle du câble de Floride (généré)", "", f"Généré le {now}.", "", "```", *pass3(), "```"]
