@@ -11,9 +11,11 @@ import {
   validationReportSchema,
   coverageSchema,
   departmentMapSchema,
+  demonstrationSchema,
   synthesisSchema,
   type Coverage,
   type DepartmentMap,
+  type Demonstration,
   type Indicator,
   type Manifest,
   type Scale,
@@ -86,4 +88,10 @@ export function getSynthesis(): Synthesis | undefined {
 export function getDepartmentMap(name = "carte-departements"): DepartmentMap | undefined {
   if (!existsSync(join(DATA_DIR, `${name}.json`))) return undefined;
   return load(`${name}.json`, departmentMapSchema);
+}
+
+/** Démonstration de l'évolution du climat (P10). Absente = page d'attente, jamais de valeur par défaut. */
+export function getDemonstration(): Demonstration | undefined {
+  if (!existsSync(join(DATA_DIR, "demonstration.json"))) return undefined;
+  return load("demonstration.json", demonstrationSchema);
 }

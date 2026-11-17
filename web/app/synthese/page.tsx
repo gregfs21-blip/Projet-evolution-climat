@@ -113,7 +113,12 @@ export default function SynthesePage() {
           Chaque affirmation est générée à partir des indicateurs publiés : aucun chiffre n&apos;est écrit à la main, et
           la synthèse suit les mises à jour. Sa confiance est celle du plus faible des indicateurs qui la fondent ; un
           accord entre jeux de données qui partagent leurs mesures ne la relève pas. Une tendance « non détectée » ne veut
-          pas dire « stable ». L&apos;étude décrit le climat observé et n&apos;attribue pas de cause.
+          pas dire « stable ». La synthèse décrit le climat observé ; la part humaine du réchauffement mondial est
+          estimée à part, dans l&apos;onglet{" "}
+          <Link href="/demonstration" className="underline underline-offset-2">
+            Démonstration
+          </Link>
+          .
         </p>
         <nav aria-label="Sections" className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           {syn.sections.map((s) => (

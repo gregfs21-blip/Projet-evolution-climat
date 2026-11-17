@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p8",
-  "generated_at": "2026-11-17T14:10:43Z",
+  "generated_at": "2026-11-17T21:38:30Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
@@ -132,7 +132,7 @@
       "kind": "critère",
       "status": "❌ non conforme",
       "satisfied": false,
-      "detail": "affirmations non relues ou modifiées depuis leur relecture : lacune-gulf-stream-monde"
+      "detail": "affirmations non relues ou modifiées depuis leur relecture : lacune-gulf-stream-monde, limite-attribution"
     },
     {
       "name": "M7 section exploratoire (P7)",

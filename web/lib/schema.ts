@@ -364,3 +364,156 @@ export const synthesisSchema = z.strictObject({
     .min(1),
 });
 export type Synthesis = z.infer<typeof synthesisSchema>;
+
+// ---------------------------------------------------------------- Démonstration (P10)
+// Miroir de Demonstration (etl/schema.py). Résultats produits par etl/demonstration.py ; le site les affiche tels quels.
+const estimateSchema = z.strictObject({
+  value: z.number(),
+  ci_low: z.number().nullable(),
+  ci_high: z.number().nullable(),
+});
+export type Estimate = z.infer<typeof estimateSchema>;
+
+const coefficientSchema = z
+  .strictObject({
+    name: z.string().regex(SLUG),
+    label: z.string().min(1),
+    unit: z.string().min(1),
+    value: z.number(),
+    ci_low: z.number(),
+    ci_high: z.number(),
+    p_value: z.number().min(0).max(1),
+  })
+  .refine((c) => c.ci_low <= c.value && c.value <= c.ci_high, "coefficient hors de son intervalle");
+export type Coefficient = z.infer<typeof coefficientSchema>;
+
+const attributionSchema = z.strictObject({
+  window: periodSchema,
+  baseline: periodSchema,
+  anthropogenic: estimateSchema,
+  natural: estimateSchema,
+  observed: z.number().nullable(),
+  reference_anthropogenic: estimateSchema,
+  reference_natural: estimateSchema,
+  reference_source: z.string().min(1),
+});
+export type Attribution = z.infer<typeof attributionSchema>;
+
+const robustnessCaseSchema = z.strictObject({
+  group: z.enum(["decalages", "forcage", "sous-periode"]),
+  label: z.string().min(1),
+  period: periodSchema,
+  beta_anthro: estimateSchema,
+  attributable: z.number(),
+  tcr: z.number(),
+  rho: z.number().gt(-1).lt(1),
+  r2: z.number().max(1),
+  in_range: z.boolean(),
+});
+export type RobustnessCase = z.infer<typeof robustnessCaseSchema>;
+
+const regressionSeriesSchema = z
+  .strictObject({
+    years: z.array(z.number().int()).min(10),
+    observed: z.array(z.number()),
+    fitted: z.array(z.number()),
+    adjusted: z.array(z.number()),
+    anthropogenic: z.array(z.number()),
+    volcanic: z.array(z.number()),
+    solar: z.array(z.number()),
+    enso: z.array(z.number()),
+    observed_rebased: z.array(z.number()),
+  })
+  .refine(
+    (s) =>
+      [s.observed, s.fitted, s.adjusted, s.anthropogenic, s.volcanic, s.solar, s.enso, s.observed_rebased].every(
+        (a) => a.length === s.years.length,
+      ),
+    "séries de longueurs différentes",
+  )
+  .refine((s) => s.years.every((y, i) => i === 0 || y === s.years[i - 1]! + 1), "années non consécutives");
+export type RegressionSeries = z.infer<typeof regressionSeriesSchema>;
+
+const regressionDatasetSchema = z.strictObject({
+  id: z.string().regex(SLUG),
+  indicator_id: z.string().regex(SLUG),
+  label: z.string().min(1),
+  period: periodSchema,
+  n: z.number().int().min(10),
+  method: z.string().min(1),
+  rho: z.number().gt(-1).lt(1),
+  r2: z.number().max(1),
+  residual_sd: z.number().min(0),
+  coefficients: z.array(coefficientSchema).min(1),
+  coefficients_ols: z.array(coefficientSchema).min(1),
+  vif: z.record(z.string(), z.number()),
+  tcr: estimateSchema,
+  attributions: z.array(attributionSchema).min(1),
+  trend_observed: trendSchema,
+  trend_adjusted: trendSchema,
+  residual_trend_p: z.number().min(0).max(1),
+  robustness: z.array(robustnessCaseSchema),
+  series: regressionSeriesSchema,
+});
+export type RegressionDataset = z.infer<typeof regressionDatasetSchema>;
+
+const criterionSchema = z.strictObject({
+  id: z.string().regex(/^O[0-9]+$/),
+  label: z.string().min(1),
+  satisfied: z.boolean(),
+  detail: z.string().min(1),
+});
+
+const regressionSchema = z
+  .strictObject({
+    question: z.string().min(1),
+    model: z.string().min(1),
+    finding: z.string().min(1),
+    confidence: confidenceSchema,
+    confidence_reason: z.string().min(1),
+    method_note: z.string().min(1),
+    limitations: z.array(z.string()).min(1),
+    inputs: z
+      .array(
+        z.strictObject({
+          name: z.string().min(1),
+          url: z.string().regex(/^https?:\/\//),
+          license: z.string().min(1),
+          note: z.string().nullable(),
+        }),
+      )
+      .min(1),
+    enso_oni_correlation: z.number().min(-1).max(1),
+    datasets: z.array(regressionDatasetSchema).min(1),
+    criteria: z.array(criterionSchema).min(1),
+    script: z.string().min(1),
+    etl_version: z.string().min(1),
+    extracted_at: isoDate,
+  })
+  .refine((r) => {
+    const ok = new Map(r.criteria.map((c) => [c.id, c.satisfied]));
+    const core = [2, 3, 4, 5, 6, 7, 8].every((i) => ok.get(`O${i}`) === true);
+    const expected = core ? "elevee" : ok.get("O3") ? "moyenne" : "non_etabli";
+    return r.confidence === expected;
+  }, "régression : confiance incohérente avec les critères (règle D-AG)");
+export type Regression = z.infer<typeof regressionSchema>;
+
+export const demonstrationSchema = z.strictObject({
+  schema_version: z.literal("1.0"),
+  generated_at: isoDate,
+  analyses: z
+    .array(
+      z
+        .strictObject({
+          id: z.string().regex(SLUG),
+          phase: z.string().regex(/^p10\.[0-9]+$/),
+          title: z.string().min(1),
+          question: z.string().min(1),
+          status: z.enum(["publie", "prevu"]),
+          regression: regressionSchema.nullable(),
+        })
+        .refine((a) => (a.status === "publie") === (a.regression !== null), "« publie » si et seulement si un résultat est fourni"),
+    )
+    .min(1),
+});
+export type Demonstration = z.infer<typeof demonstrationSchema>;

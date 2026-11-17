@@ -543,6 +543,8 @@ class RobustnessCase(_Strict):
     beta_anthro: Estimate
     attributable: float = Field(description="Réchauffement attribué de la fenêtre de contrôle (O8), °C")
     tcr: float = Field(description="Réponse transitoire implicite, °C")
+    rho: float = Field(gt=-1, lt=1, description="Autocorrélation AR(1) estimée : proche de 1, le modèle n'ajuste plus")
+    r2: float = Field(le=1)
     in_range: bool
 
 

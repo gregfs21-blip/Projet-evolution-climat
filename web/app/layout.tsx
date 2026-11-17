@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { TabBar, TopNav, type IconName, type NavItem } from "@/components/NavLinks";
 import SearchBox from "@/components/SearchBox";
-import { getManifest, listIndicators } from "@/lib/data";
+import { getDemonstration, getManifest, listIndicators } from "@/lib/data";
 import { fmtDateTime, SCALE_LABELS } from "@/lib/format";
 import { anomalyColor } from "@/lib/heat";
 import { SCALES, type Scale } from "@/lib/schema";
@@ -28,6 +28,12 @@ function nav(): { tabs: NavItem[]; more: NavItem[] } {
   return {
     tabs: [{ href: "/", label: "Accueil", soon: null, icon: "home" }, ...scales],
     more: [
+      {
+        href: "/demonstration",
+        label: "Démonstration",
+        soon: getDemonstration()?.analyses.some((a) => a.status === "publie") ? null : "P10",
+        icon: "proof",
+      },
       { href: "/couverture", label: "Couverture", soon: null, icon: "grid" },
       { href: "/synthese", label: "Synthèse", soon: null, icon: "doc" },
       { href: "/methode", label: "Méthode", soon: null, icon: "ruler" },

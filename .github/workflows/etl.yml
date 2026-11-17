@@ -56,6 +56,8 @@ jobs:
         run: python -m etl.carte
       - name: Synthèse (P8)
         run: python -m etl.synthese
+      - name: Démonstration (P10)
+        run: python -m etl.demonstration
       - run: python -m pytest etl/tests -q
       - run: python -m etl.validate
       - name: Validation de phase (critères docs/phases.md)
@@ -70,6 +72,7 @@ jobs:
           python -m etl.validation.p7
           python -m etl.validation.p8
           python -m etl.validation.p9
+          python -m etl.validation.p10
 
       - name: Publication des résultats
         run: |

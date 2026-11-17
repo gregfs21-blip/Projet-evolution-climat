@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 from etl.context import PROCESSED_DIR
-from etl.schema import Coverage, DepartmentMap, Indicator, Manifest, Synthesis, ValidationReport
+from etl.schema import Coverage, Demonstration, DepartmentMap, Indicator, Manifest, Synthesis, ValidationReport
 
 
 def validate(out_dir: Path = PROCESSED_DIR) -> list[str]:
@@ -60,6 +60,12 @@ def validate(out_dir: Path = PROCESSED_DIR) -> list[str]:
             Synthesis.model_validate_json(syn.read_text(encoding="utf-8"))
         except Exception as exc:  # noqa: BLE001
             errors.append(f"synthese.json invalide : {exc}")
+    demo = out_dir / "demonstration.json"
+    if demo.exists():
+        try:
+            Demonstration.model_validate_json(demo.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"demonstration.json invalide : {exc}")
     for carte in sorted(out_dir.glob("carte-departements*.json")):
         try:
             DepartmentMap.model_validate_json(carte.read_text(encoding="utf-8"))

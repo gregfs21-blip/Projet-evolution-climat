@@ -753,7 +753,9 @@ sections:
           - id: limite-attribution
             kind: lacune
             text: >-
-              L'étude ne fait aucune attribution : elle ne calcule pas la part humaine des évolutions qu'elle décrit.
+              La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. Seule la température mondiale
+              fait l'objet d'une attribution, dans l'onglet Démonstration (régression multiple) ; rien n'est attribué
+              pour la Gironde, la France ni les autres variables.
           - id: contexte-attribution
             kind: contexte
             text: >-

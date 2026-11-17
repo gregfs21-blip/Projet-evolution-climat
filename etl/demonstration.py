@@ -267,6 +267,7 @@ def dataset_result(key: str, iid: str, label: str, temp: dict[int, float], best:
         v, lo, hi = r.fit.combination({"anthropique": 1.0})
         return RobustnessCase(group=group, label=lab, period=Period(start=r.years[0], end=r.years[-1]),
                               beta_anthro=est(v, lo, hi, nd=4), attributable=round(a, 3), tcr=round(v * F2X, 2),
+                              rho=round(r.fit.rho, 3), r2=round(r.fit.r2, 3),
                               in_range=in_range(a, WINDOWS[1][1][1:]) and extra_ok)
 
     for le in ENSO_LAGS:
@@ -408,17 +409,22 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
     att = {a.window.start: a for a in main.attributions}
     a16 = att[2016]
     coef = {c.name: c for c in main.coefficients}
+    to, ta = main.trend_observed, main.trend_adjusted
+    narrower = (ta.slope_ci_high - ta.slope_ci_low) < (to.slope_ci_high - to.slope_ci_low)
+    same = all(ck["O3"][0] and ck["O4"][0] for _, ck in checks)
     finding = (
         f"Sur {main.period.start}-{main.period.end} ({main.label}), le forçage anthropique est détecté "
         f"(p {_p(coef['anthropique'].p_value)}). Il explique un réchauffement de {_f(a16.anthropogenic.value, 2)} °C "
         f"[{_f(a16.anthropogenic.ci_low, 2)} ; {_f(a16.anthropogenic.ci_high, 2)}] entre 1850-1900 et 2016-2025, "
         f"pour {_f(a16.reference_anthropogenic.value, 2)} °C [{_f(a16.reference_anthropogenic.ci_low, 1)} ; "
         f"{_f(a16.reference_anthropogenic.ci_high, 1)}] selon l'IGCC 2025 ; les volcans et le soleil comptent pour "
-        f"{_f(a16.natural.value, 2, True)} °C. Une fois ENSO, volcans et soleil retirés, la tendance "
-        f"{main.trend_observed.period.start}-{main.trend_observed.period.end} passe de "
-        f"{_f(main.trend_observed.slope_per_decade, 3)} à {_f(main.trend_adjusted.slope_per_decade, 3)} °C par "
-        f"décennie, avec moins de bruit autour de la droite. Les trois jeux de températures concluent "
-        + ("de même." if all(ck["O3"][0] and ck["O4"][0] for _, ck in checks) else "différemment : voir les critères.")
+        f"{_f(a16.natural.value, 2, True)} °C. Une fois ENSO, volcans et soleil retirés, la pente "
+        f"{to.period.start}-{to.period.end} passe de {_f(to.slope_per_decade, 3)} [{_f(to.slope_ci_low, 3)} ; "
+        f"{_f(to.slope_ci_high, 3)}] à {_f(ta.slope_per_decade, 3)} [{_f(ta.slope_ci_low, 3)} ; "
+        f"{_f(ta.slope_ci_high, 3)}] °C par décennie"
+        + (" : le réchauffement de fond est du même ordre, mieux cerné. " if narrower else ". ")
+        + ("Les trois jeux de températures concluent de même (détection et attribution)." if same
+           else "Les trois jeux de températures ne concluent pas de même : voir les critères.")
     )
 
     reg = Regression(

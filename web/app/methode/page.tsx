@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { CONFIDENCE_LABELS } from "@/lib/format";
 
@@ -58,6 +59,21 @@ export default function MethodePage() {
           test est donc refait sur les résidus, après retrait de la tendance. Une rupture n&apos;est dite établie que
           si elle y résiste et ne coïncide pas (à ±1 an) avec une rupture d&apos;homogénéité corrigée par
           Météo-France.
+        </p>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold">Démonstration : croiser les séries</h2>
+        <p>
+          Les tendances décrivent ce qui change ; elles ne disent pas pourquoi. L&apos;onglet{" "}
+          <Link href="/demonstration" className="underline underline-offset-2">
+            Démonstration
+          </Link>{" "}
+          croise plusieurs séries au moyen d&apos;un modèle explicite, jamais d&apos;une corrélation brute entre deux
+          courbes qui montent. La première analyse décompose la température mondiale en contributions du forçage
+          d&apos;origine humaine, des volcans, du soleil et d&apos;El Niño, par une régression multiple dont les erreurs
+          sont autocorrélées (méthode de Prais-Winsten). Ses critères et ses références sont fixés avant le calcul,
+          comme pour les autres phases.
         </p>
       </section>
 
