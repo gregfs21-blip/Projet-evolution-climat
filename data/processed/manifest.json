@@ -1,7 +1,7 @@
 {
  "schema_version": "1.5",
- "generated_at": "2026-11-07T11:38:05Z",
- "etl_version": "0.1.0+local",
+ "generated_at": "2026-11-17T14:05:58Z",
+ "etl_version": "0.1.0+01d9a2d",
  "indicators": [
   {
    "id": "tn-annuelle-gironde",
@@ -4600,6 +4600,167 @@
    "place": {
     "id": "gironde-era5",
     "name": "Gironde (ERA5, 44,2-45,6° N, 1,3° O-0,4° E)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "amoc-debit-monde",
+   "scale": "monde",
+   "title": "Débit de la circulation de retournement atlantique (AMOC) à 26,5° N",
+   "unit": "Sv",
+   "path": "monde/amoc-debit-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Exploratoire — Gulf Stream et AMOC",
+   "variable": {
+    "id": "amoc-debit",
+    "code": "AMOC",
+    "label": "débit de la circulation de retournement atlantique à 26,5° N",
+    "theme": "amoc",
+    "theme_label": "Débit de la circulation atlantique (AMOC)",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Atlantique, 26,5° N",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "amoc-profondeur-monde",
+   "scale": "monde",
+   "title": "Profondeur du maximum de la circulation de retournement atlantique à 26,5° N",
+   "unit": "m",
+   "path": "monde/amoc-profondeur-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Exploratoire — Gulf Stream et AMOC",
+   "variable": {
+    "id": "amoc-profondeur",
+    "code": "Prof. max",
+    "label": "profondeur du maximum de la circulation de retournement à 26,5° N",
+    "theme": "amoc-profondeur",
+    "theme_label": "Profondeur de la circulation atlantique (AMOC)",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Atlantique, 26,5° N",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "amoc-chaleur-monde",
+   "scale": "monde",
+   "title": "Transport de chaleur vers le nord dans l'Atlantique à 26,5° N",
+   "unit": "PW",
+   "path": "monde/amoc-chaleur-monde.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Exploratoire — Gulf Stream et AMOC",
+   "variable": {
+    "id": "amoc-chaleur",
+    "code": "Chaleur",
+    "label": "transport de chaleur vers le nord à 26,5° N",
+    "theme": "amoc-chaleur",
+    "theme_label": "Transport de chaleur de l'Atlantique",
+    "order": 0
+   },
+   "place": {
+    "id": "monde",
+    "name": "Atlantique, 26,5° N",
+    "kind": "composite"
+   }
+  },
+  {
+   "id": "temperature-0700-gulf-stream",
+   "scale": "monde",
+   "title": "Température de l'océan entre 0 et 700 m — Région du Gulf Stream (Caesar et al., 2018)",
+   "unit": "°C",
+   "path": "monde/temperature-0700-gulf-stream.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Exploratoire — Gulf Stream et AMOC",
+   "variable": {
+    "id": "temperature-0700",
+    "code": "T 0-700 m",
+    "label": "température moyenne de l'océan entre 0 et 700 m",
+    "theme": "temperature-atlantique",
+    "theme_label": "Température de l'Atlantique Nord (0-700 m)",
+    "order": 0
+   },
+   "place": {
+    "id": "gulf-stream",
+    "name": "Région du Gulf Stream (Caesar et al., 2018)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "temperature-0700-gyre-subpolaire",
+   "scale": "monde",
+   "title": "Température de l'océan entre 0 et 700 m — Gyre subpolaire (Caesar et al., 2018)",
+   "unit": "°C",
+   "path": "monde/temperature-0700-gyre-subpolaire.json",
+   "confidence": "faible",
+   "is_demo": false,
+   "group": "Exploratoire — Gulf Stream et AMOC",
+   "variable": {
+    "id": "temperature-0700",
+    "code": "T 0-700 m",
+    "label": "température moyenne de l'océan entre 0 et 700 m",
+    "theme": "temperature-atlantique",
+    "theme_label": "Température de l'Atlantique Nord (0-700 m)",
+    "order": 0
+   },
+   "place": {
+    "id": "gyre-subpolaire",
+    "name": "Gyre subpolaire (Caesar et al., 2018)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "salinite-0700-gulf-stream",
+   "scale": "monde",
+   "title": "Salinité de l'océan entre 0 et 700 m — Région du Gulf Stream (Caesar et al., 2018)",
+   "unit": "psu",
+   "path": "monde/salinite-0700-gulf-stream.json",
+   "confidence": "moyenne",
+   "is_demo": false,
+   "group": "Exploratoire — Gulf Stream et AMOC",
+   "variable": {
+    "id": "salinite-0700",
+    "code": "S 0-700 m",
+    "label": "salinité moyenne de l'océan entre 0 et 700 m",
+    "theme": "salinite-atlantique",
+    "theme_label": "Salinité de l'Atlantique Nord (0-700 m)",
+    "order": 0
+   },
+   "place": {
+    "id": "gulf-stream",
+    "name": "Région du Gulf Stream (Caesar et al., 2018)",
+    "kind": "station"
+   }
+  },
+  {
+   "id": "salinite-0700-gyre-subpolaire",
+   "scale": "monde",
+   "title": "Salinité de l'océan entre 0 et 700 m — Gyre subpolaire (Caesar et al., 2018)",
+   "unit": "psu",
+   "path": "monde/salinite-0700-gyre-subpolaire.json",
+   "confidence": "non_etabli",
+   "is_demo": false,
+   "group": "Exploratoire — Gulf Stream et AMOC",
+   "variable": {
+    "id": "salinite-0700",
+    "code": "S 0-700 m",
+    "label": "salinité moyenne de l'océan entre 0 et 700 m",
+    "theme": "salinite-atlantique",
+    "theme_label": "Salinité de l'Atlantique Nord (0-700 m)",
+    "order": 0
+   },
+   "place": {
+    "id": "gyre-subpolaire",
+    "name": "Gyre subpolaire (Caesar et al., 2018)",
     "kind": "station"
    }
   }

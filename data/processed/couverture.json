@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-07T11:38:06Z",
+ "generated_at": "2026-11-17T14:05:58Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -1100,6 +1100,68 @@
        "id": "ph-ocean-hot",
        "title": "pH de surface de l'océan à la station ALOHA (Hawaï)",
        "confidence": "elevee"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "gulf-stream",
+   "label": "Gulf Stream (débit au détroit de Floride)",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "sans-donnee",
+     "source": "Câble du détroit de Floride, NOAA AOML (quotidien depuis 1982)",
+     "note": "Serveur de la NOAA et archive NCEI inaccessibles depuis le 17/11/2026 ; contrôle d'accès chaque semaine (décision D-AA, P9).",
+     "indicators": []
+    }
+   ]
+  },
+  {
+   "id": "amoc",
+   "label": "Circulation de retournement atlantique (AMOC), dont le Gulf Stream est la branche ouest",
+   "cells": [
+    {
+     "scale": "monde",
+     "status": "publie",
+     "source": "RAPID 26,5° N (débit, profondeur du maximum, chaleur, depuis 2004) ; EN4 Met Office (température et salinité 0-700 m, zones de Caesar et al. 2018)",
+     "note": "Exploratoire (P9) : débit, profondeur et chaleur plafonnés à « signal non établi ».",
+     "indicators": [
+      {
+       "id": "amoc-debit-monde",
+       "title": "Débit de la circulation de retournement atlantique (AMOC) à 26,5° N",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "amoc-profondeur-monde",
+       "title": "Profondeur du maximum de la circulation de retournement atlantique à 26,5° N",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "amoc-chaleur-monde",
+       "title": "Transport de chaleur vers le nord dans l'Atlantique à 26,5° N",
+       "confidence": "non_etabli"
+      },
+      {
+       "id": "temperature-0700-gulf-stream",
+       "title": "Température de l'océan entre 0 et 700 m — Région du Gulf Stream (Caesar et al., 2018)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "temperature-0700-gyre-subpolaire",
+       "title": "Température de l'océan entre 0 et 700 m — Gyre subpolaire (Caesar et al., 2018)",
+       "confidence": "faible"
+      },
+      {
+       "id": "salinite-0700-gulf-stream",
+       "title": "Salinité de l'océan entre 0 et 700 m — Région du Gulf Stream (Caesar et al., 2018)",
+       "confidence": "moyenne"
+      },
+      {
+       "id": "salinite-0700-gyre-subpolaire",
+       "title": "Salinité de l'océan entre 0 et 700 m — Gyre subpolaire (Caesar et al., 2018)",
+       "confidence": "non_etabli"
       }
      ]
     }

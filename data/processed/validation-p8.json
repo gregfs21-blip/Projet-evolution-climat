@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "phase": "p8",
-  "generated_at": "2026-11-07T11:38:09Z",
-  "closure_ok": true,
-  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "generated_at": "2026-11-17T14:10:43Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
     "ace-monde",
     "aerosols-monde",
@@ -109,9 +109,9 @@
     {
       "name": "M3 couverture",
       "kind": "critère",
-      "status": "✅ conforme",
-      "satisfied": true,
-      "detail": "chaque case publiée de la couverture a au moins une affirmation à son échelle"
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "cases sans affirmation : amoc / monde"
     },
     {
       "name": "M4 comparaisons sur période commune (S3)",
@@ -130,9 +130,9 @@
     {
       "name": "M6 relecture indépendante",
       "kind": "critère",
-      "status": "✅ conforme",
-      "satisfied": true,
-      "detail": "relecture close, 83 affirmations relues dans leur rédaction actuelle (docs/relecture-p8.md)"
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "affirmations non relues ou modifiées depuis leur relecture : lacune-gulf-stream-monde"
     },
     {
       "name": "M7 section exploratoire (P7)",
@@ -202,7 +202,7 @@
       "kind": "info",
       "status": "ℹ️ information",
       "satisfied": true,
-      "detail": "absence 18, acceleration 2, comparaison 8, contexte 4, information 8, lacune 11, signal 32"
+      "detail": "absence 18, acceleration 2, comparaison 8, contexte 4, information 8, lacune 12, signal 32"
     }
   ]
 }

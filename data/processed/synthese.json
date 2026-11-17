@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-07T11:38:08Z",
+ "generated_at": "2026-11-17T14:06:15Z",
  "sections": [
   {
    "id": "gironde",
@@ -1563,6 +1563,15 @@
         "foudre"
        ],
        "text": "Impact de foudre — Monde : sans donnée ouverte. Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance.",
+       "indicators": []
+      },
+      {
+       "id": "lacune-gulf-stream-monde",
+       "kind": "lacune",
+       "params": [
+        "gulf-stream"
+       ],
+       "text": "Gulf Stream (débit au détroit de Floride) — Monde : sans donnée ouverte. Serveur de la NOAA et archive NCEI inaccessibles depuis le 17/11/2026 ; contrôle d'accès chaque semaine (décision D-AA, P9).",
        "indicators": []
       },
       {
