@@ -189,3 +189,37 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))
+
+
+# ---------------------------------------------------------------- lecture par l'ETL (P9)
+
+PAGE = "https://www.metoffice.gov.uk/hadobs/en4/"
+LICENSE = "Non Commercial Government Licence v2 (Met Office), citation Good et al. (2013)"
+SOURCE_NAME = "Met Office Hadley Centre — EN4.2.2, analyses objectives mensuelles (corrections g10)"
+N7_WEIGHT = 0.5
+MIN_MONTHS = 10
+COLUMNS = {"temperature": ("temperature_0_700", "poids_obs_temperature"),
+           "salinite": ("salinite_0_700", "poids_obs_salinite")}
+
+
+def load_zone(zone: str, quantity: str) -> tuple[dict[int, float], dict[int, float]]:
+    """Moyennes annuelles (année gardée si au moins 10 mois, N2) de la grandeur et du poids moyen des observations."""
+    col, wcol = COLUMNS[quantity]
+    vals: dict[int, list[float]] = {}
+    wts: dict[int, list[float]] = {}
+    with OUT.open(encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if r["zone"] == zone and r[col] not in ("", "nan"):
+                vals.setdefault(int(r["annee"]), []).append(float(r[col]))
+                wts.setdefault(int(r["annee"]), []).append(float(r[wcol]))
+    keep = [y for y, v in vals.items() if len(v) >= MIN_MONTHS]
+    return ({y: sum(vals[y]) / len(vals[y]) for y in keep}, {y: sum(wts[y]) / len(wts[y]) for y in keep})
+
+
+def n7_start(weights: dict[int, float], threshold: float = N7_WEIGHT) -> int | None:
+    """Critère N7 : première année à partir de laquelle le poids moyen des observations reste ≥ `threshold`."""
+    ys = sorted(weights)
+    for i, y in enumerate(ys):
+        if all(weights[k] >= threshold for k in ys[i:]):
+            return y
+    return None

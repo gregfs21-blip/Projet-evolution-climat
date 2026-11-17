@@ -35,6 +35,11 @@ themes:
   aerosols: Aérosols
   blocages: Blocages atmosphériques
   orages: Orages (indicateur indirect)
+  amoc: Débit de la circulation atlantique (AMOC)
+  amoc-profondeur: Profondeur de la circulation atlantique (AMOC)
+  amoc-chaleur: Transport de chaleur de l'Atlantique
+  temperature-atlantique: Température de l'Atlantique Nord (0-700 m)
+  salinite-atlantique: Salinité de l'Atlantique Nord (0-700 m)
 
 variables:
   tn: {code: TN, label: températures minimales, theme: temperature, order: 0}
@@ -119,3 +124,9 @@ variables:
   jours-blocage-ete: {code: Été, label: jours de blocage atlantique-européen en été, theme: blocages, order: 1}
   z500-europe: {code: Z500 Europe, label: géopotentiel 500 hPa moyen sur l'Atlantique-Europe, theme: geopotentiel, order: 1}
   cape: {code: CAPE, label: énergie de convection en été (CAPE), theme: orages, order: 0}
+# --- P9 (critères N1-N7 validés le 17/11/2026)
+  amoc-debit: {code: AMOC, label: "débit de la circulation de retournement atlantique à 26,5° N", theme: amoc, order: 0}
+  amoc-profondeur: {code: Prof. max, label: "profondeur du maximum de la circulation de retournement à 26,5° N", theme: amoc-profondeur, order: 0}
+  amoc-chaleur: {code: Chaleur, label: "transport de chaleur vers le nord à 26,5° N", theme: amoc-chaleur, order: 0}
+  temperature-0700: {code: T 0-700 m, label: "température moyenne de l'océan entre 0 et 700 m", theme: temperature-atlantique, order: 0}
+  salinite-0700: {code: S 0-700 m, label: "salinité moyenne de l'océan entre 0 et 700 m", theme: salinite-atlantique, order: 0}

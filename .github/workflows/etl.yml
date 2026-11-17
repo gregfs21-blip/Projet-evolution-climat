@@ -69,6 +69,7 @@ jobs:
           python -m etl.validation.p6
           python -m etl.validation.p7
           python -m etl.validation.p8
+          python -m etl.validation.p9
 
       - name: Publication des résultats
         run: |

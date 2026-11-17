@@ -43,3 +43,23 @@ class TestEN4(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRapidAndN7(unittest.TestCase):
+    def test_depth_of_max(self):
+        from etl.sources import rapid as R
+        depth = np.array([0.0, 500.0, 1000.0, 1500.0, 3000.0])
+        self.assertEqual(R.depth_of_max(np.array([0.0, 10.0, 17.0, 12.0, -5.0]), depth), 1000.0)
+        self.assertTrue(np.isnan(R.depth_of_max(np.array([np.nan] * 5), depth)))
+
+    def test_annual_needs_ten_months(self):
+        from etl.sources import rapid as R
+        months = {f"2004-{m:02d}": 15.0 for m in range(4, 13)} | {f"2005-{m:02d}": float(m) for m in range(1, 13)}
+        series, counts = R.annual(months)
+        self.assertEqual(counts, {2004: 9, 2005: 12})
+        self.assertEqual(series, {2005: 6.5})
+
+    def test_n7_start_requires_staying_above(self):
+        w = {1950: 0.6, 1951: 0.4, 1952: 0.55, 1953: 0.7, 1954: 0.49, 1955: 0.8, 1956: 0.9}
+        self.assertEqual(E.n7_start(w), 1955)
+        self.assertIsNone(E.n7_start({2000: 0.2}))

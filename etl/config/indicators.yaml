@@ -1485,3 +1485,33 @@ indicators:
     scale: gironde
     builder: etl.indicators.exploratoire:build_cape
     params: {}
+
+  # P9 — Gulf Stream et AMOC (critères N1-N7 validés le 17/11/2026, avant calcul) ; etl/indicators/gulf.py
+  - id: amoc-debit-monde
+    scale: monde
+    builder: etl.indicators.gulf:build_rapid
+    params: {quantity: debit}
+  - id: amoc-profondeur-monde
+    scale: monde
+    builder: etl.indicators.gulf:build_rapid
+    params: {quantity: profondeur}
+  - id: amoc-chaleur-monde
+    scale: monde
+    builder: etl.indicators.gulf:build_rapid
+    params: {quantity: chaleur}
+  - id: temperature-0700-gulf-stream
+    scale: monde
+    builder: etl.indicators.gulf:build_en4
+    params: {zone: gulf-stream, quantity: temperature}
+  - id: temperature-0700-gyre-subpolaire
+    scale: monde
+    builder: etl.indicators.gulf:build_en4
+    params: {zone: gyre-subpolaire, quantity: temperature}
+  - id: salinite-0700-gulf-stream
+    scale: monde
+    builder: etl.indicators.gulf:build_en4
+    params: {zone: gulf-stream, quantity: salinite}
+  - id: salinite-0700-gyre-subpolaire
+    scale: monde
+    builder: etl.indicators.gulf:build_en4
+    params: {zone: gyre-subpolaire, quantity: salinite}

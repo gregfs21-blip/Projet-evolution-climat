@@ -506,6 +506,11 @@ Ce choix est fait avant toute lecture des données.
   moyenne ») et **la fonction de courant par profondeur** (`stream_depth_1m`, 307 niveaux de 0 à 5 995 m) : la
   profondeur du maximum se calcule sur ce fichier, `RAPID_gridded_v2024-2.nc` n'est pas nécessaire. Avec N2
   (au moins 10 mois), 2004 (9 mois) est exclue ; 2024 (11 mois) est gardée.
+- **Transport de chaleur à 26,5° N** (`heat_trans_1m`, PW) ajouté le 17/11/2026 à la demande de Grég, avant tout calcul :
+  hors périmètre N1, même traitement que le débit (moyenne annuelle, N2) et même plafond « signal non établi ».
+- **Indicateurs construits** (`etl/indicators/gulf.py`, sources `etl/sources/rapid.py` et `etl/sources/en4.py`),
+  validation automatique `etl/validation/p9.py` → `docs/validation-p9-resultats.md`. Affichage : famille
+  « Gulf Stream et AMOC » de la page Monde. Débit du câble déclaré « sans donnée » dans la couverture.
 
 ## P8 — Synthèse : cadrage proposé et validé le 02/11/2026, avant toute rédaction et tout calcul
 

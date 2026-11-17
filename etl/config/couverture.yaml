@@ -108,6 +108,16 @@ parametres:
     echelles:
       monde: {statut: prevu, variables: [ph-ocean], source: "Station ALOHA, Hawaii Ocean Time-series, depuis 1988"}
 
+  - id: gulf-stream
+    label: Gulf Stream (débit au détroit de Floride)
+    echelles:
+      monde: {statut: sans-donnee, source: "Câble du détroit de Floride, NOAA AOML (quotidien depuis 1982)", note: "Serveur de la NOAA et archive NCEI inaccessibles depuis le 17/11/2026 ; contrôle d'accès chaque semaine (décision D-AA, P9)."}
+
+  - id: amoc
+    label: Circulation de retournement atlantique (AMOC), dont le Gulf Stream est la branche ouest
+    echelles:
+      monde: {statut: prevu, variables: [amoc-debit, amoc-profondeur, amoc-chaleur, temperature-0700, salinite-0700], source: "RAPID 26,5° N (débit, profondeur du maximum, chaleur, depuis 2004) ; EN4 Met Office (température et salinité 0-700 m, zones de Caesar et al. 2018)", note: "Exploratoire (P9) : débit, profondeur et chaleur plafonnés à « signal non établi »."}
+
   - id: ges
     label: Concentration des gaz à effet de serre (CO₂, méthane, protoxyde d'azote)
     echelles:

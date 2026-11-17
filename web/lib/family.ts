@@ -189,6 +189,7 @@ export function siblings(ind: Indicator): { variables: Sibling[]; places: Siblin
 const FAMILIES = [
   { id: "temperatures", label: "Températures", themes: ["temperature", "temperature-globale", "extremes-temperature", "altitude"] },
   { id: "oceans", label: "Océans et glaces", themes: ["temperature-mer", "chaleur-ocean", "niveau-mer", "banquise", "acidification"] },
+  { id: "gulf-stream", label: "Gulf Stream et AMOC", themes: ["amoc", "amoc-profondeur", "amoc-chaleur", "temperature-atlantique", "salinite-atlantique"] },
   { id: "eau", label: "Eau", themes: ["precipitations", "pluies-intenses", "secheresse"] },
   { id: "atmosphere", label: "Atmosphère", themes: ["ensoleillement", "humidite", "pression", "vent", "orages", "geopotentiel", "ouragans", "jet-stream", "blocages", "enso"] },
   { id: "gaz-energie", label: "Gaz et énergie", themes: ["ges", "aerosols", "ozone", "bilan-energetique", "puits-carbone"] },
