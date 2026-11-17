@@ -447,16 +447,53 @@ Ce choix est fait avant toute lecture des données.
 - **Empreinte de surface** : affaiblissement d'environ 3 ± 1 Sv depuis le milieu du XXe siècle d'après les
   températures de surface (Caesar et al., 2018), indice indirect lui-même discuté.
 
+### Constat de la sonde (17/11/2026, `docs/sonde-p9.md` et `docs/sonde-p9b.md`)
+
+- **Câble de Floride : inaccessible en automatique.** Le serveur de la NOAA AOML refuse la connexion chiffrée depuis
+  GitHub Actions (échec de négociation TLS, même en mode de compatibilité) et renvoie 403 en HTTP ; l'archive NCEI de
+  la même série répond 503. La page est aussi redirigée vers un site temporaire de l'AOML. Aucune donnée lue.
+- **RAPID : version v2024-2 (avril 2004 → 2024)**, fichiers `RAPID_transports_v2024-2.nc` (débits) et
+  `RAPID_gridded_v2024-2.nc` (profils, pour la profondeur du maximum). Téléchargement sur rapid.ac.uk **derrière un
+  formulaire d'adresse e-mail** ; la page BODC de la même version ne donne pas de lien direct sans compte. Aucune
+  donnée téléchargée par la sonde.
+- **Zones de Caesar et al. (2018) retrouvées** (PIK) : gyre subpolaire, 744 mailles de 1°, 42,5-65,5° N,
+  63,5-13,5° O ; région du Gulf Stream, 199 mailles, 35,5-47,5° N, 74,5-45,5° O. **Elles remplacent les boîtes
+  de repli**, conformément au choix fait avant la sonde.
+- **EN4.2.2 accessible** : 127 archives annuelles (1900 → 2026), 250 à 315 Mo chacune (environ 35 Go au total,
+  8 s pour 314 Mo), 12 fichiers mensuels, grille 1°, 42 niveaux dont 24 entre 5 et 657 m (le suivant est à 800 m),
+  température en kelvins et salinité sans unité, avec incertitude et **poids des observations** par maille.
+  Licence **Non Commercial Government Licence** : usage non commercial avec citation, compatible avec le site.
+- **Limite d'EN4** : là où il n'y a pas de mesures, l'analyse revient vers sa valeur de fond. Avant 1950, la
+  salinité sous la surface dans ces zones est très peu mesurée ; une tendance sur 1900-2025 serait en partie celle du
+  fond, pas de l'océan. D'où le critère N7.
+
+### Choix de mise en œuvre proposés, fixés avant tout calcul
+
+- **Couche 0-700 m** : moyenne pondérée par l'épaisseur des niveaux EN4 (`depth_bnds`), niveaux 1 à 24, le
+  dernier coupé à 700 m ; moyenne des mailles de la zone pondérée par le cosinus de la latitude ; moyenne annuelle
+  des 12 mois.
+- **Profondeur du maximum** (RAPID) : profondeur où la fonction de courant est maximale, sur chaque profil, puis
+  moyenne annuelle.
+- **Débits** : moyennes annuelles des valeurs publiées, sans recalcul.
+- **Tendances** : pente de Sen et test de Hamed-Rao, comme le reste du site.
+
 ### Critères proposés (N1-N6, à valider après la sonde)
 
 | # | Critère | Seuil proposé |
 |---|---|---|
-| N1 | Exhaustivité | Les 7 séries du périmètre, ou une absence justifiée par la sonde |
+| N1 | Exhaustivité | Les 7 séries du périmètre ; le câble est déclaré « sans donnée » tant qu'aucune route d'accès n'existe, sans être retiré du périmètre |
 | N2 | Complétude | Année retenue si au moins 10 mois de données (câble : au moins 300 jours) |
 | N3 | Plausibilité | Moyenne du câble sur toute la série dans 32 ± 1 Sv ; moyenne RAPID dans 17 ± 1,5 Sv ; profondeur du maximum entre 700 et 1 300 m |
 | N4 | Correction géomagnétique | Le câble publié est corrigé de la dérive séculaire (Volkov et al., 2024) ; sinon avertissement automatique sur la page et confiance inchangée (déjà plafonnée) |
 | N5 | Robustesse | Même signe de tendance avec et sans les années mesurées autrement que par le câble (depuis novembre 2023), en information |
 | N6 | Technique | Tests, CI, contrat, pages |
+| N7 | Couverture d'observations (EN4) | Tendance calculée à partir de la première année après laquelle le poids moyen des observations de la zone reste au moins égal à 0,5 ; seuil fixé avant lecture des températures et salinités, série complète affichée en grisé avant cette année |
+
+### Décisions demandées à Grég
+
+- **D-AA** : câble de Floride, téléchargement manuel des fichiers annuels par Grég, ou statut « sans donnée » en attendant le retour du serveur.
+- **D-AB** : RAPID, formulaire rempli une fois par Grég et fichiers déposés dans `data/sources/rapid/` (nouvelle version environ une fois par an).
+- **D-AC** : critères N1-N7.
 
 ## P8 — Synthèse : cadrage proposé et validé le 02/11/2026, avant toute rédaction et tout calcul
 
