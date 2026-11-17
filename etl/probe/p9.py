@@ -157,7 +157,54 @@ def en4() -> list[str]:
     return out
 
 
+def pass2() -> list[str]:
+    """2e passage (17/11/2026) : routes de repli pour le câble, archive BODC de RAPID, grille du Gulf Stream."""
+    import ssl
+    import subprocess
+    out = ["### Câble : TLS de www.aoml.noaa.gov"]
+    for args in (["curl", "-sS", "-o", "/dev/null", "-w", "%{http_code} %{size_download} o %{url_effective}", "-L",
+                  "https://www.aoml.noaa.gov/phod/floridacurrent/FC_cable_transport_2024.dat"],
+                 ["curl", "-sS", "-o", "/dev/null", "-w", "%{http_code} %{size_download} o", "-L",
+                  "http://www.aoml.noaa.gov/phod/floridacurrent/FC_cable_transport_2024.dat"]):
+        r = subprocess.run(args, capture_output=True, text=True, timeout=120)
+        out.append(f"{' '.join(args[-1:])} → {r.stdout.strip()} {r.stderr.strip()[:200]}")
+    ctx = ssl.create_default_context()
+    ctx.set_ciphers("DEFAULT:@SECLEVEL=1")
+    try:
+        req = urllib.request.Request("https://www.aoml.noaa.gov/phod/floridacurrent/FC_cable_transport_2024.dat",
+                                     headers=UA)
+        with urllib.request.urlopen(req, timeout=120, context=ctx) as r:
+            body = r.read(2_000_000).decode("utf-8", "replace").splitlines()
+            out.append(f"urllib SECLEVEL=1 → {r.status} ; {len(body)} lignes ; {body[:4]} … {body[-2:]}")
+    except Exception as exc:  # noqa: BLE001
+        out.append(f"urllib SECLEVEL=1 → {type(exc).__name__} {exc}")
+    out.append("### Câble : archive NCEI (accession AOML-WBTS)")
+    for url in ("https://www.ncei.noaa.gov/archive/accession/AOML-WBTS",
+                "https://www.ncei.noaa.gov/data/oceans/ncei/archive/data/0087879/",
+                "https://www.ncei.noaa.gov/archive/accession/0087879"):
+        out += page(url, r"\.(dat|nc|txt|asc|csv|tar|gz|zip)$|data/|accession/0", words=("2023", "2024", "secular"))
+    out.append("### RAPID : archive BODC de la version v2024-2")
+    out += page("https://www.bodc.ac.uk/data/published_data_library/catalogue/10.5285/5c39bf4e-5140-5546-e063-7086abc027bc/",
+                r"download|\.nc|\.zip|licen|zip", words=("licen", "download", "registration", "log in"))
+    out.append("### Grille du Gulf Stream (Caesar et al., 2018)")
+    for name in ("gulfstream_grid.txt", "sg_grid.txt"):
+        st, _, data, _ = get("https://www.pik-potsdam.de/~caesar/AMOC_slowdown/" + name, limit=5_000_000)
+        rows = [r.split() for r in data.decode("latin-1").splitlines() if r.strip() and not r.startswith("#")]
+        nums = [(float(a), float(b)) for a, b, *_ in rows]
+        la, lo = zip(*nums) if nums else ((), ())
+        out.append(f"{name} → {st} ; {len(nums)} mailles ; lat {min(la, default=None)} → {max(la, default=None)} ; "
+                   f"lon {min(lo, default=None)} → {max(lo, default=None)}")
+    return out
+
+
+PASS = 2
+
+
 def main() -> int:
+    if PASS == 2:
+        md = ["# Sonde P9 — 2e passage : routes de repli (généré)", "", "```", *pass2(), "```"]
+        (ROOT / "docs" / "sonde-p9b.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+        return 0
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P9 — Gulf Stream et AMOC (généré)", "",
           f"Généré par `python -m etl.probe.p9` le {now}. Aucun indicateur calculé."]
