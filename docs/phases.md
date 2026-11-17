@@ -501,6 +501,11 @@ Ce choix est fait avant toute lecture des données.
   mensuelles de zone et les poids d'observation (`data/sources/en4/en4-zones.csv`), aucune tendance.
 - **Câble de Floride** : contrôle d'accès hebdomadaire (`python -m etl.probe.p9`, rapport `docs/sonde-p9c.md`) par une
   tâche planifiée du mercredi ; elle prévient Grég dès qu'un fichier annuel est lisible et s'arrête alors.
+- **RAPID** : `RAPID_transports_v2024-2.nc` déposé par Grég (lecture : `docs/sonde-p9d.md`). Mensuel d'avril 2004 à
+  novembre 2024 (248 mois). Il contient le débit de l'AMOC (`amoc_depth_1m`, « maximum de la fonction de courant
+  moyenne ») et **la fonction de courant par profondeur** (`stream_depth_1m`, 307 niveaux de 0 à 5 995 m) : la
+  profondeur du maximum se calcule sur ce fichier, `RAPID_gridded_v2024-2.nc` n'est pas nécessaire. Avec N2
+  (au moins 10 mois), 2004 (9 mois) est exclue ; 2024 (11 mois) est gardée.
 
 ## P8 — Synthèse : cadrage proposé et validé le 02/11/2026, avant toute rédaction et tout calcul
 

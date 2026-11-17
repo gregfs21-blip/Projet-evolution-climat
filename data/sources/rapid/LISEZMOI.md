@@ -4,7 +4,8 @@ Fichiers téléchargés par Grég sur https://rapid.ac.uk/data/data-download (fo
 **v2024-2** (avril 2004 → 2024), puis déposés ici tels quels.
 
 - `RAPID_transports_v2024-2.nc` : débits (déposé le 17/11/2026).
-- `RAPID_gridded_v2024-2.nc` : profils, pour la profondeur du maximum (en attente).
+- `RAPID_gridded_v2024-2.nc` : **inutile** (constat de la sonde du 17/11/2026, `docs/sonde-p9d.md`) : le fichier des
+  débits contient déjà la fonction de courant par profondeur (`stream_depth_1m`, 307 niveaux de 0 à 5 995 m).
 
 Citation : Moat B.I. ; Petit T. ; Smeed D.A. ; Rayner D. ; Johns W.E. ; Smith R. ; Volkov D. ; Elipot S. ;
 Baringer M.O. et al., RAPID-MOCHA-WBTS array at 26N from 2004 to 2024 (v2024-2), BODC, doi:10.5285/5c39bf4e-5140-5546-e063-7086abc027bc.
