@@ -15,6 +15,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
+| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : critères O1-O9 proposés le 17/11/2026, avant tout calcul | **ouverte** |
 
 ## Journal P0
 
@@ -401,6 +402,124 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P10 — Démonstration de l'évolution du climat : cadrage proposé le 17/11/2026, avant tout calcul
+
+> **Demande de Grég du 17/11/2026** : créer un onglet « Démonstration de l'évolution du climat » regroupant les calculs
+> qui établissent l'évolution du climat et sa cause, et commencer par la régression multiple (P10.1).
+
+### Pourquoi une phase à part
+
+P1 à P9 décrivent des évolutions observées ; la synthèse (règle S4) n'attribue aucune cause. P10 répond à la question
+suivante : *ce qui change est-il réel, et d'où vient-il ?* Elle croise plusieurs séries, ce qu'aucun indicateur ne fait
+seul. Une corrélation entre deux séries qui montent toutes les deux ne prouve rien : chaque analyse de P10 repose donc
+sur un modèle physique explicite ou sur un test qui en tient compte, jamais sur une corrélation brute.
+
+Contenu prévu de l'onglet `/demonstration` (une analyse = une sous-phase, cadrée et validée séparément, dans cet ordre) :
+- **P10.1** régression multiple : température mondiale = forçage anthropique + ENSO + volcans + soleil (ci-dessous) ;
+- **P10.2** valeurs extrêmes non stationnaires en Gironde (période de retour d'une canicule hier et aujourd'hui) ;
+- **P10.3** facteur d'amplification régional (Gironde, France contre monde) ;
+- **P10.4** contrôles de cohérence physique (Clausius-Clapeyron, bilan du niveau marin, troposphère contre stratosphère) ;
+- **P10.5** modèle énergétique simple, validé en rétroprévision, puis projeté selon les scénarios SSP.
+
+### P10.1 — Régression multiple : constat de la sonde (17/11/2026, `docs/sonde-p10.md`)
+
+- **Forçages radiatifs effectifs (ERF)** : *Indicators of Global Climate Change 2025* (Forster et al., 2026, ESSD 18,
+  3889-3933), dépôt `ClimateIndicator/data`, étiquette `v2026.06.02`, archivé sur Zenodo (doi 10.5281/zenodo.20499280),
+  CC BY 4.0. Fichier `data/effective_radiative_forcing/ERF_best_aggregates.csv`, annuel **1750-2025**, W/m², colonnes
+  `anthro` (total anthropique), `volcanic`, `solar`, `total` et les composantes (CO₂, aérosols…). Bornes à 5 % et 95 %
+  dans `ERF_p05_aggregates.csv` et `ERF_p95_aggregates.csv`. Contrôle de lecture : en 2025, 3,1035 + 0,1049 + 0,1573
+  = 3,3657 = `total`.
+- **Réchauffement attribué publié** (même dépôt, `data/anthropogenic_warming/Assessment-Update-2025_GMST_headlines.csv`,
+  évaluation IGCC 2025, par rapport à 1850-1900) : 2010-2019 **1,07 [0,9 ; 1,3] °C** d'origine humaine, naturel
+  **0,05 [−0,1 ; 0,2] °C** ; 2016-2025 **1,24 [1,0 ; 1,5] °C** d'origine humaine, naturel **0,04 [−0,1 ; 0,2] °C**.
+- **ENSO long** : Niño 3.4 calculé sur HadISST1.1 par la NOAA PSL, mensuel depuis janvier 1870. Le fichier des
+  anomalies (`nino34.long.anom.data`, base 1981-2010) est complet jusqu'en 2025 ; le fichier des valeurs absolues
+  s'arrête en août 2025. Le Niño 3.4 ERSSTv5 (CPC) ne commence qu'en 1950 ; l'ONI déjà publié sur le site sert de
+  contrôle.
+- **Températures mondiales** : HadCRUT5 (1850-2025), GISTEMP v4 (1880-2025), Berkeley Earth (1850-2024), déjà
+  publiées par P6, lues telles quelles dans `data/processed/monde/`.
+
+### P10.1 — Méthode proposée (fixée avant tout calcul)
+
+Modèle annuel, pour chaque jeu de températures T :
+
+**T(a) = c + βₐ·A(a) + βᵥ·V(a) + βₛ·S(a) + βₑ·E(a) + ε(a)**, ε autorégressif d'ordre 1.
+
+- **A** : ERF anthropique totale de l'année (`anthro`). Pas de décalage : l'inertie thermique de l'océan est
+  absorbée dans βₐ, qui mesure une réponse transitoire.
+- **V** : ERF volcanique, **décalée de 6 mois** : V(a) = ½·`volcanic`(a) + ½·`volcanic`(a − 1).
+- **S** : ERF solaire de l'année (décalage d'un mois, négligeable au pas annuel).
+- **E** : indice ENSO, **décalé de 3 mois** : moyenne de l'indice d'octobre de l'année a − 1 à septembre de l'année a.
+  Indice = anomalie Niño 3.4 HadISST1.1 moins sa climatologie mobile de 30 ans, mois par mois (années a − 15 à a + 14,
+  fenêtre décalée pour rester entière aux deux bouts de la série). Raison : le Niño 3.4 brut se réchauffe avec le reste
+  de l'océan ; sans ce retrait, l'indice ENSO capterait une part de la tendance et fausserait βₐ. C'est le principe de
+  l'ONI de la NOAA (bases de 30 ans glissantes).
+- Décalages repris de Foster et Rahmstorf (2011, ERL 6, 044022) : ENSO 2 à 4 mois, volcans 5 à 7 mois, soleil 1 mois
+  pour la surface. Fixés ici, non ajustés aux données ; leur effet est mesuré (critère O8).
+- **Période** : de la première année où tout est disponible (1871 ; GISTEMP 1880) à la dernière année complète de
+  chaque jeu, sans aucune valeur complétée.
+- **Estimation** : moindres carrés généralisés à erreurs AR(1), méthode de Prais-Winsten itérée (`etl/stats/regression.py`) ;
+  intervalles à 95 % et p sur une loi de Student à n − k − 1 degrés de liberté. Publiés pour information : moindres
+  carrés ordinaires avec erreurs de Newey-West, facteurs d'inflation de la variance.
+- **Résultats publiés** : coefficients et intervalles ; **réchauffement attribué** = βₐ × [moyenne de A sur la fenêtre −
+  moyenne de A sur 1850-1900], pour 2010-2019 et 2016-2025 ; contribution naturelle forcée = βᵥ·ΔV + βₛ·ΔS sur les mêmes
+  fenêtres ; **réponse transitoire implicite** βₐ × 3,93 W/m² (forçage d'un doublement du CO₂, GIEC AR6, ch. 7) ;
+  température **ajustée** = T − (contributions ENSO, volcanique et solaire, centrées sur la période), et ses pentes de
+  Sen 1979-fin de série brute et ajustée ; part de variance expliquée ; décomposition année par année.
+
+### P10.1 — Références proposées
+
+| # | Énoncé publié | Source | Contrôle |
+|---|---|---|---|
+| R-O1 | Réchauffement d'origine humaine 2016-2025 / 1850-1900 : 1,24 [1,0 ; 1,5] °C | IGCC 2025 (Forster et al., 2026), fichier ci-dessus | estimation centrale dans **[1,0 ; 1,5]** |
+| R-O2 | Même grandeur, 2010-2019 : 1,07 [0,9 ; 1,3] °C (GIEC AR6 : 1,07, probable 0,8 à 1,3) | idem ; GIEC AR6 GT1, SPM A.1.3 | dans **[0,9 ; 1,3]** |
+| R-O3 | Contribution naturelle forcée : [−0,1 ; 0,2] °C pour les deux fenêtres | IGCC 2025 | dans **[−0,1 ; 0,2]** |
+| R-O4 | Réponse climatique transitoire : 1,8 °C, très probablement 1,2 à 2,4 °C | GIEC AR6 GT1, ch. 7 | dans **[1,2 ; 2,4]** |
+| — | Tendance ajustée en surface 1979-2010 : 0,170 à 0,175 °C/décennie | Foster et Rahmstorf (2011) | information (versions de données différentes) |
+
+**Limite d'indépendance** : l'IGCC calcule son réchauffement attribué avec les mêmes forçages et des températures qui
+partagent nos stations. Un accord vaut recoupement par une méthode différente, pas preuve indépendante (comme ERA5 en P1).
+
+### P10.1 — Critères proposés (O1-O9)
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| O1 | Exhaustivité | Les 3 jeux de températures traités ; toute exclusion justifiée par écrit |
+| O2 | Données d'entrée | `anthro` + `volcanic` + `solar` = `total` à 0,01 W/m² près chaque année ; aucun mois ENSO manquant sur la période ; corrélation entre l'indice ENSO (moyenne janvier-décembre) et l'ONI publié, 1951-dernière année commune : **r ≥ 0,95** |
+| O3 | Détection | βₐ > 0 avec p < 0,05, pour chaque jeu |
+| O4 | Attribution | Réchauffement attribué dans R-O1 et R-O2, pour chaque jeu |
+| O5 | Part naturelle | Contribution naturelle forcée dans R-O3, pour chaque jeu |
+| O6 | Plausibilité physique | Réponse transitoire implicite dans R-O4 ; βₑ > 0 et βᵥ > 0 avec p < 0,05 (signe de βₛ publié sans exigence : le signal solaire est faible) |
+| O7 | Résidus | Pas de tendance dans les résidus (Hamed-Rao, p ≥ 0,05) ; ρ publié |
+| O8 | Robustesse | Le réchauffement attribué 2016-2025 reste dans R-O1 : (a) pour les 9 combinaisons de décalages ENSO 2, 3, 4 mois × volcans 0, 6, 12 mois ; (b) avec le forçage anthropique à 5 % et à 95 % (réponse transitoire implicite publiée pour chacun) ; (c) sur 1951-fin avec l'ONI à la place de l'indice HadISST, et βₐ dont l'intervalle recoupe celui de la période complète |
+| O9 | Technique | Tests et CI verts, contrat à jour, onglet déployé |
+
+**Règle de confiance proposée** : « élevée » si O2 à O8 sont satisfaits pour les trois jeux ; « moyenne » si O3 est
+satisfait mais qu'un autre critère échoue ; « signal non établi » si O3 échoue.
+
+### P10.1 — Limites assumées d'avance
+
+- Régression statistique, pas modèle physique : la réponse à un forçage bref (volcan) est amortie par l'océan, βᵥ est
+  donc plus petit que βₐ ; c'est attendu et ne dit pas que les volcans « comptent moins » par W/m².
+- Incertitude des forçages (surtout des aérosols) propagée seulement par les bornes à 5 et 95 % (O8 b), qui ne forment
+  pas des trajectoires cohérentes.
+- Les erreurs AR(1) ne représentent pas toute la variabilité multidécennale (Atlantique, Pacifique) : les intervalles
+  peuvent être trop étroits. Mesuré sur données simulées : couverture réelle de 92 à 94 % pour un intervalle nominal
+  de 95 % (`etl/tests/test_p10.py`).
+- Avant 1950, le Niño 3.4 de HadISST repose sur peu de mesures.
+- HadCRUT5, GISTEMP et Berkeley partagent l'essentiel de leurs stations : leur accord ne vaut pas trois preuves (S1).
+
+### Décisions demandées à Grég
+
+- **D-AD** : organisation de l'onglet (P10.1 à P10.5, dans cet ordre, chacune cadrée séparément).
+- **D-AE** : données et méthode de P10.1 (ERF IGCC 2025, Niño 3.4 HadISST à climatologie mobile, décalages fixés,
+  Prais-Winsten AR(1)).
+- **D-AF** : références R-O1 à R-O4 et critères O1-O9.
+- **D-AG** : règle de confiance (« élevée » possible malgré la limite d'indépendance, ou plafond à « moyenne »).
+- **D-AH** : la synthèse dit aujourd'hui « L'étude ne fait aucune attribution » (affirmation `limite-attribution`) ;
+  à la publication de P10.1, elle devient fausse. Proposition : la reformuler en renvoyant à l'onglet, avec la
+  relecture indépendante exigée par M6.
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 
