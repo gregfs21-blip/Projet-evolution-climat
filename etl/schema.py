@@ -486,3 +486,159 @@ class Synthesis(_Strict):
     schema_version: Literal["1.0"] = SYNTHESIS_SCHEMA_VERSION
     generated_at: datetime
     sections: list[SynthesisSection] = Field(min_length=1)
+
+
+# ---------------------------------------------------------------- Démonstration (P10)
+# data/processed/demonstration.json : analyses qui croisent plusieurs séries pour établir l'évolution du climat et sa
+# cause (onglet « Démonstration »). Produit par etl/demonstration.py ; le site affiche les résultats tels quels.
+# Une analyse non encore cadrée est déclarée « prevu », sans résultat.
+
+DEMONSTRATION_SCHEMA_VERSION = "1.0"
+
+
+class InputSource(_Strict):
+    name: str = Field(min_length=1)
+    url: str = Field(pattern=r"^https?://")
+    license: str = Field(min_length=1)
+    note: str | None = None
+
+
+class Coefficient(_Strict):
+    name: str = Field(pattern=SLUG)
+    label: str = Field(min_length=1)
+    unit: str = Field(min_length=1)
+    value: float
+    ci_low: float
+    ci_high: float
+    p_value: float = Field(ge=0, le=1)
+
+    @model_validator(mode="after")
+    def _ordered(self) -> "Coefficient":
+        if not self.ci_low <= self.value <= self.ci_high:
+            raise ValueError(f"coefficient {self.name} : valeur hors de son intervalle")
+        return self
+
+
+class Estimate(_Strict):
+    value: float
+    ci_low: float | None = None
+    ci_high: float | None = None
+
+
+class Attribution(_Strict):
+    window: Period
+    baseline: Period
+    anthropogenic: Estimate = Field(description="βₐ × (moyenne de A sur la fenêtre − moyenne sur la base), °C")
+    natural: Estimate = Field(description="Contribution naturelle forcée (volcans + soleil), °C")
+    observed: float | None = Field(default=None, description="Écart observé entre les deux périodes, si le jeu les couvre")
+    reference_anthropogenic: Estimate
+    reference_natural: Estimate
+    reference_source: str = Field(min_length=1)
+
+
+class RobustnessCase(_Strict):
+    group: Literal["decalages", "forcage", "sous-periode"]
+    label: str = Field(min_length=1)
+    period: Period
+    beta_anthro: Estimate
+    attributable: float = Field(description="Réchauffement attribué de la fenêtre de contrôle (O8), °C")
+    tcr: float = Field(description="Réponse transitoire implicite, °C")
+    in_range: bool
+
+
+class RegressionSeries(_Strict):
+    years: list[int] = Field(min_length=10)
+    observed: list[float]
+    fitted: list[float]
+    adjusted: list[float] = Field(description="Observé moins ENSO, volcans et soleil (centrés sur la période)")
+    anthropogenic: list[float] = Field(description="Contribution anthropique, relative à la base 1850-1900")
+    volcanic: list[float]
+    solar: list[float]
+    enso: list[float]
+    observed_rebased: list[float] = Field(description="Observé exprimé par rapport au niveau 1850-1900 estimé par le modèle")
+
+    @model_validator(mode="after")
+    def _lengths(self) -> "RegressionSeries":
+        n = len(self.years)
+        for f in ("observed", "fitted", "adjusted", "anthropogenic", "volcanic", "solar", "enso", "observed_rebased"):
+            if len(getattr(self, f)) != n:
+                raise ValueError(f"série {f} de longueur différente des années")
+        if any(b != a + 1 for a, b in zip(self.years, self.years[1:])):
+            raise ValueError("années non consécutives")
+        return self
+
+
+class RegressionDataset(_Strict):
+    id: str = Field(pattern=SLUG)
+    indicator_id: str = Field(pattern=SLUG)
+    label: str = Field(min_length=1)
+    period: Period
+    n: int = Field(ge=10)
+    method: str = Field(min_length=1)
+    rho: float = Field(gt=-1, lt=1)
+    r2: float = Field(le=1)
+    residual_sd: float = Field(ge=0)
+    coefficients: list[Coefficient] = Field(min_length=1)
+    coefficients_ols: list[Coefficient] = Field(min_length=1, description="MCO + Newey-West, pour information")
+    vif: dict[str, float]
+    tcr: Estimate
+    attributions: list[Attribution] = Field(min_length=1)
+    trend_observed: Trend
+    trend_adjusted: Trend
+    residual_trend_p: float = Field(ge=0, le=1)
+    robustness: list[RobustnessCase]
+    series: RegressionSeries
+
+
+class Criterion(_Strict):
+    id: str = Field(pattern=r"^O[0-9]+$")
+    label: str = Field(min_length=1)
+    satisfied: bool
+    detail: str = Field(min_length=1)
+
+
+class Regression(_Strict):
+    question: str = Field(min_length=1)
+    model: str = Field(min_length=1)
+    finding: str = Field(min_length=1)
+    confidence: Confidence
+    confidence_reason: str = Field(min_length=1)
+    method_note: str = Field(min_length=1)
+    limitations: list[str] = Field(min_length=1)
+    inputs: list[InputSource] = Field(min_length=1)
+    enso_oni_correlation: float = Field(ge=-1, le=1)
+    datasets: list[RegressionDataset] = Field(min_length=1)
+    criteria: list[Criterion] = Field(min_length=1)
+    script: str = Field(min_length=1)
+    etl_version: str = Field(min_length=1)
+    extracted_at: datetime
+
+    @model_validator(mode="after")
+    def _confidence(self) -> "Regression":
+        ok = {c.id: c.satisfied for c in self.criteria}
+        core = [ok.get(f"O{i}", False) for i in range(2, 9)]
+        expected = "elevee" if all(core) else ("moyenne" if ok.get("O3") else "non_etabli")
+        if self.confidence != expected:
+            raise ValueError(f"régression : confiance {self.confidence} incohérente avec les critères (attendu {expected}, D-AG)")
+        return self
+
+
+class DemonstrationAnalysis(_Strict):
+    id: str = Field(pattern=SLUG)
+    phase: str = Field(pattern=r"^p10\.[0-9]+$")
+    title: str = Field(min_length=1)
+    question: str = Field(min_length=1)
+    status: Literal["publie", "prevu"]
+    regression: Regression | None = None
+
+    @model_validator(mode="after")
+    def _coherent(self) -> "DemonstrationAnalysis":
+        if (self.status == "publie") != (self.regression is not None):
+            raise ValueError(f"{self.id} : « publie » si et seulement si un résultat est fourni")
+        return self
+
+
+class Demonstration(_Strict):
+    schema_version: Literal["1.0"] = DEMONSTRATION_SCHEMA_VERSION
+    generated_at: datetime
+    analyses: list[DemonstrationAnalysis] = Field(min_length=1)

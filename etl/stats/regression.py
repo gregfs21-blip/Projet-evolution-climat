@@ -26,6 +26,7 @@ class Fit:
     method: str
     names: list[str]          # constante en premier
     coef: np.ndarray
+    cov: np.ndarray           # matrice de covariance des coefficients
     se: np.ndarray
     dof: int
     rho: float                # autocorrélation d'ordre 1 des résidus (AR(1) estimé, ou résidus MCO)
@@ -45,6 +46,15 @@ class Fit:
     def get(self, name: str) -> tuple[float, float]:
         i = self.names.index(name)
         return float(self.coef[i]), float(self.se[i])
+
+    def combination(self, weights: dict[str, float], alpha: float = 0.05) -> tuple[float, float, float]:
+        """Combinaison linéaire Σ wᵢ·βᵢ : (valeur, borne basse, borne haute), covariance des coefficients comprise."""
+        g = np.zeros(len(self.coef))
+        for name, w in weights.items():
+            g[self.names.index(name)] = w
+        value = float(g @ self.coef)
+        half = float(stats.t.ppf(1 - alpha / 2, self.dof) * np.sqrt(g @ self.cov @ g))
+        return value, value - half, value + half
 
 
 def _design(X: np.ndarray) -> np.ndarray:
@@ -101,7 +111,7 @@ def prais_winsten(y, X, names: list[str]) -> Fit:
     sigma2 = float(us @ us) / dof
     cov = sigma2 * np.linalg.inv(Xs.T @ Xs)
     fitted = Xc @ beta
-    return Fit("Prais-Winsten AR(1) itéré", ["constante", *names], beta, np.sqrt(np.diag(cov)), dof, rho,
+    return Fit("Prais-Winsten AR(1) itéré", ["constante", *names], beta, cov, np.sqrt(np.diag(cov)), dof, rho,
                y - fitted, fitted, _r2(y, fitted), it)
 
 
@@ -134,7 +144,7 @@ def ols_newey_west(y, X, names: list[str], lag: int | None = None) -> Fit:
     bread = np.linalg.inv(Xc.T @ Xc)
     cov = bread @ S @ bread * n / (n - k)
     fitted = Xc @ beta
-    return Fit(f"MCO, erreurs de Newey-West (décalage {L})", ["constante", *names], beta, np.sqrt(np.diag(cov)),
+    return Fit(f"MCO, erreurs de Newey-West (décalage {L})", ["constante", *names], beta, cov, np.sqrt(np.diag(cov)),
                n - k, lag1(e), e, fitted, _r2(y, fitted), 0)
 
 

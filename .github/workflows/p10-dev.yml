@@ -1,0 +1,35 @@
+# TEMPORAIRE (branche p10) : affiche les fichiers d'entrée de P10.1 dans le journal, pour un calcul local identique.
+# À supprimer avant la fusion dans main.
+name: P10 dev (entrées)
+
+on:
+  push:
+    branches: [p10]
+    paths:
+      - ".github/workflows/p10-dev.yml"
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -r etl/requirements.txt
+      - name: Téléchargement et affichage des entrées
+        run: |
+          python - <<'PY'
+          import base64, gzip
+          from etl.context import RAW_DIR
+          from etl.sources import globaux as G, igcc as I
+          for src in (I.ERF["best"], I.ERF["p05"], I.ERF["p95"], I.NINO, G.SOURCES["oni"]):
+              G.fetch(src, RAW_DIR)
+              key = src.cache or src.id
+              data = (RAW_DIR / "globaux" / f"{key}.txt").read_bytes()
+              b = base64.b64encode(gzip.compress(data)).decode()
+              print(f"=====BEGIN {key} {len(data)}")
+              for i in range(0, len(b), 3000):
+                  print("DATA", b[i:i + 3000])
+              print(f"=====END {key}")
+          PY
