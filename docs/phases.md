@@ -14,6 +14,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | **close le 31/10/2026** |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
+| P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-Z du 17/11/2026 ; critères N1-N6 proposés, à valider après la sonde | **ouverte** (sonde en cours) |
 
 ## Journal P0
 
@@ -400,6 +401,62 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
+
+> **Demande de Grég du 17/11/2026** : ajouter le Gulf Stream à la section Monde, avec quatre grandeurs : débit,
+> salinité, température, profondeur. **Décisions de Grég du 17/11/2026, avant toute donnée** : D-W profondeur =
+> **profondeur du maximum de l'AMOC** ; D-X température et salinité dans **les deux zones** (Gulf Stream et gyre
+> subpolaire) ; D-Y couche **0-700 m** ; D-Z confiance **mixte** (débit et profondeur plafonnés à « signal non
+> établi », température et salinité au plus « moyenne »). Les critères N1-N6 restent à valider après la sonde.
+
+### Pourquoi ce cadrage
+
+- **Profondeur** : dans le détroit de Floride, le Gulf Stream est enfermé par un fond de moins de 800 m ; sa
+  profondeur ne peut pas y évoluer. La grandeur mesurable est la profondeur à laquelle la fonction de courant de
+  retournement est maximale à 26,5° N (RAPID, environ 1 000 m).
+- **Débit** : deux mesures directes, toutes deux trop courtes ou contestées pour une tendance climatique :
+  câble du détroit de Floride (Gulf Stream, quotidien depuis 1982, environ 32 Sv, câble en panne depuis
+  novembre 2023, relais par une autre méthode) ; réseau RAPID (AMOC entière à 26,5° N, depuis avril 2004,
+  environ 17 Sv).
+- **Température et salinité** : aucune série « du Gulf Stream » n'est publiée telle quelle ; elles sont calculées
+  sur deux zones. Le Gulf Stream (le courant lui-même) et le gyre subpolaire au sud du Groenland, où un
+  ralentissement de l'AMOC laisse son empreinte (refroidissement relatif, Caesar et al., 2018).
+
+### Périmètre proposé
+
+| Grandeur | Série | Source | Période |
+|---|---|---|---|
+| Débit | Gulf Stream dans le détroit de Floride (27° N), moyenne annuelle | NOAA AOML, câble (Western Boundary Time Series) | 1982 → |
+| Débit | AMOC à 26,5° N, moyenne annuelle | RAPID-MOCHA-WBTS (NOC, NOAA, Université de Miami) | 2004 → |
+| Profondeur | Profondeur du maximum de la fonction de courant à 26,5° N, moyenne annuelle | RAPID (fonction de courant par profondeur) | 2004 → |
+| Température | Température moyenne 0-700 m, zone Gulf Stream et zone gyre subpolaire | EN4.2.2 (Met Office), analyses objectives mensuelles | 1900 → |
+| Salinité | Salinité moyenne 0-700 m, mêmes zones | EN4.2.2 | 1900 → |
+
+Zones : **grilles publiées par Caesar et al. (2018)** pour le gyre subpolaire et la région du Gulf Stream, si la sonde
+les retrouve (fichiers `sg_grid.txt` et `gs_grid.txt`) ; à défaut, boîtes 46-61° N, 55-20° O et 35-42° N, 75-50° O.
+Ce choix est fait avant toute lecture des données.
+
+### Références proposées (à confirmer par la sonde)
+
+- **Débit moyen du câble** : 32 Sv (AOML ; Volkov et al., 2024).
+- **Débit moyen de l'AMOC** : environ 17 Sv ; 18,3 → 15,9 Sv entre 2004 et 2018 (Bryden, 2021).
+- **Tendance du Gulf Stream, contradictoire** : baisse d'environ 4 % en 40 ans (Piecuch et Beal, 2023) ; état stable
+  une fois le câble corrigé de la dérive séculaire du champ géomagnétique (Volkov et al., 2024).
+- **AMOC au XXe siècle** : confiance « faible » dans une baisse (GIEC AR6, groupe I).
+- **Empreinte de surface** : affaiblissement d'environ 3 ± 1 Sv depuis le milieu du XXe siècle d'après les
+  températures de surface (Caesar et al., 2018), indice indirect lui-même discuté.
+
+### Critères proposés (N1-N6, à valider après la sonde)
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| N1 | Exhaustivité | Les 7 séries du périmètre, ou une absence justifiée par la sonde |
+| N2 | Complétude | Année retenue si au moins 10 mois de données (câble : au moins 300 jours) |
+| N3 | Plausibilité | Moyenne du câble sur toute la série dans 32 ± 1 Sv ; moyenne RAPID dans 17 ± 1,5 Sv ; profondeur du maximum entre 700 et 1 300 m |
+| N4 | Correction géomagnétique | Le câble publié est corrigé de la dérive séculaire (Volkov et al., 2024) ; sinon avertissement automatique sur la page et confiance inchangée (déjà plafonnée) |
+| N5 | Robustesse | Même signe de tendance avec et sans les années mesurées autrement que par le câble (depuis novembre 2023), en information |
+| N6 | Technique | Tests, CI, contrat, pages |
 
 ## P8 — Synthèse : cadrage proposé et validé le 02/11/2026, avant toute rédaction et tout calcul
 
