@@ -197,10 +197,36 @@ def pass2() -> list[str]:
     return out
 
 
-PASS = 2
+def pass3() -> list[str]:
+    """Contrôle du câble de Floride (D-AA, 17/11/2026), relancé chaque semaine par une tâche planifiée tant que le
+    serveur de la NOAA AOML et l'archive NCEI ne répondent pas. « JOIGNABLE » seulement si un fichier annuel est lu."""
+    out, ok = [], []
+    for url in ("https://www.aoml.noaa.gov/phod/floridacurrent/data_access.php",
+                "https://www.aoml.noaa.gov/phod/floridacurrent/FC_cable_transport_2024.dat",
+                "http://www.aoml.noaa.gov/phod/floridacurrent/FC_cable_transport_2024.dat",
+                "https://www.ncei.noaa.gov/archive/accession/AOML-WBTS",
+                "https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/accession/details/235235",
+                "https://www.ncei.noaa.gov/data/oceans/ncei/archive/data/0235235/"):
+        st, final, data, _ = get(url, limit=5_000_000)
+        head = data[:300].decode("utf-8", "replace").replace("\n", " ")
+        out.append(f"{url} → {st} ({len(data)} o, URL finale {final}) : {head[:200]}")
+        if st == 200 and url.endswith(".dat") and len(data.splitlines()) > 300:
+            ok.append(url)
+        if st == 200 and "0235235" in url:
+            out += [f"  lien : {x}" for x in links(data, r"\.(dat|txt|asc|nc|tar|gz|zip)$|0235235/")[:20]]
+    verdict = "JOIGNABLE" if ok else "INACCESSIBLE"
+    return [f"verdict : {verdict}", *out]
+
+
+PASS = 3
 
 
 def main() -> int:
+    if PASS == 3:
+        now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
+        md = ["# Sonde P9 — contrôle du câble de Floride (généré)", "", f"Généré le {now}.", "", "```", *pass3(), "```"]
+        (ROOT / "docs" / "sonde-p9c.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+        return 0
     if PASS == 2:
         md = ["# Sonde P9 — 2e passage : routes de repli (généré)", "", "```", *pass2(), "```"]
         (ROOT / "docs" / "sonde-p9b.md").write_text("\n".join(md) + "\n", encoding="utf-8")

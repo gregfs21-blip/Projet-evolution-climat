@@ -14,7 +14,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P6 | Monde : GES, températures croisées, océans, niveau marin, cryosphère, ozone, ENSO, EEI (CERES), puits de carbone | critères K1-K8 validés le 31/10/2026 | **close le 31/10/2026** |
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
-| P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-Z du 17/11/2026 ; critères N1-N6 proposés, à valider après la sonde | **ouverte** (sonde en cours) |
+| P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
 
 ## Journal P0
 
@@ -492,8 +492,15 @@ Ce choix est fait avant toute lecture des données.
 ### Décisions demandées à Grég
 
 - **D-AA — tranchée le 17/11/2026** : le site de l'AOML ne répond pas non plus depuis le poste de Grég. Câble de Floride en **« sans donnée »** tant que ni l'AOML ni l'archive NCEI (dépôts annuels, par ex. accession 0235235 pour 2020) ne sont joignables ; il reste dans le périmètre (N1).
-- **D-AB** : RAPID, formulaire rempli une fois par Grég et fichiers déposés dans `data/sources/rapid/` (nouvelle version environ une fois par an).
-- **D-AC** : critères N1-N7.
+- **D-AB — accepté le 17/11/2026** : Grég remplit le formulaire RAPID et dépose `RAPID_transports_v2024-2.nc` et `RAPID_gridded_v2024-2.nc` dans `data/sources/rapid/` (à refaire à chaque nouvelle version, environ une fois par an).
+- **D-AC — critères N1-N7 validés le 17/11/2026**, avant tout calcul.
+
+### Suite du 17/11/2026
+
+- **Relevé EN4 lancé** (`etl/sources/en4.py`, workflow « EN4 ») selon les choix ci-dessus ; il n'écrit que les moyennes
+  mensuelles de zone et les poids d'observation (`data/sources/en4/en4-zones.csv`), aucune tendance.
+- **Câble de Floride** : contrôle d'accès hebdomadaire (`python -m etl.probe.p9`, rapport `docs/sonde-p9c.md`) par une
+  tâche planifiée du mercredi ; elle prévient Grég dès qu'un fichier annuel est lisible et s'arrête alors.
 
 ## P8 — Synthèse : cadrage proposé et validé le 02/11/2026, avant toute rédaction et tout calcul
 
