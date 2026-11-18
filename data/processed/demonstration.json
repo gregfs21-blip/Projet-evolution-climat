@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-18T09:05:50Z",
+ "generated_at": "2026-11-18T09:16:09Z",
  "analyses": [
   {
    "id": "regression-multiple",
@@ -5620,8 +5620,8 @@
      }
     ],
     "script": "etl/demonstration.py",
-    "etl_version": "0.1.0+local",
-    "extracted_at": "2026-11-18T09:05:50Z"
+    "etl_version": "0.1.0+d3afcef",
+    "extracted_at": "2026-11-18T09:16:07Z"
    }
   },
   {
