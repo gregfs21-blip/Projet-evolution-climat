@@ -90,6 +90,26 @@ def metar_cache() -> tuple[list[str], list[dict]]:
     return out, rows
 
 
+def stations(rows: list[dict]) -> list[str]:
+    """Noms des stations (le cache METAR n'en donne pas) et présence de quelques stations clés dans le cache."""
+    out = []
+    for url in ("https://aviationweather.gov/data/cache/stations.cache.json.gz",
+                "https://aviationweather.gov/api/data/stationinfo?ids=FYKT,UEEE,NZSP,LFBD&format=json"):
+        st, h, data, dt = get(url)
+        out += [f"GET {url} → {st} en {dt:.1f} s, {len(data)} o", f"en-têtes : {headers_line(h)}"]
+        if st == 200 and data:
+            try:
+                raw = gzip.decompress(data) if url.endswith(".gz") else data
+                js = json.loads(raw)
+                out.append(f"{len(js)} stations ; exemple : {json.dumps(js[0], ensure_ascii=False)[:400]}")
+            except Exception as exc:  # noqa: BLE001
+                out.append(f"lecture : {exc}")
+    ids = {r["station_id"] for r in rows}
+    for sid in ("NZSP", "NZCM", "FYKT", "KDRA", "OIZB", "UEEE", "LFBD", "BGSC"):
+        out.append(f"{sid} dans le cache METAR : {'oui' if sid in ids else 'non'}")
+    return out
+
+
 def metar_api() -> list[str]:
     st, h, data, dt = get(METAR_API)
     out = [f"GET {METAR_API} → {st} en {dt:.1f} s", f"en-têtes : {headers_line(h)}"]
@@ -151,6 +171,7 @@ def main() -> int:
         body = [f"échec : {type(exc).__name__} {exc}"]
     sections.append(("1. METAR mondiaux, fichier cache de l'AWC (NOAA)", body))
     for title, fn in (("2. API METAR de l'AWC (JSON)", metar_api),
+                      ("2 bis. Noms des stations", lambda: stations(rows)),
                       ("3. Open-Meteo, température actuelle du modèle", lambda: open_meteo(rows))):
         try:
             body = fn()
