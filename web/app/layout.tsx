@@ -34,6 +34,7 @@ function nav(): { tabs: NavItem[]; more: NavItem[] } {
         soon: getDemonstration()?.analyses.some((a) => a.status === "publie") ? null : "P10",
         icon: "proof",
       },
+      { href: "/instantane", label: "Instantané", soon: null, icon: "pulse" },
       { href: "/couverture", label: "Couverture", soon: null, icon: "grid" },
       { href: "/synthese", label: "Synthèse", soon: null, icon: "doc" },
       { href: "/methode", label: "Méthode", soon: null, icon: "ruler" },

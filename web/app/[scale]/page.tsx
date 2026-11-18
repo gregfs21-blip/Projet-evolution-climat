@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import ScaleView from "@/components/ScaleView";
@@ -37,5 +38,19 @@ export default async function ScalePage({ params }: { params: Params }) {
     );
   }
 
+  if (scale === "monde") {
+    return (
+      <>
+        <p className="mb-6 text-sm text-[var(--muted)]">
+          Les aérodromes les plus chauds et les plus froids en ce moment :{" "}
+          <Link href="/instantane" className="underline underline-offset-2">
+            Instantané
+          </Link>
+          .
+        </p>
+        <ScaleView scale={scale} />
+      </>
+    );
+  }
   return <ScaleView scale={scale} />;
 }

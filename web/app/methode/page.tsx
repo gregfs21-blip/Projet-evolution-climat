@@ -78,6 +78,19 @@ export default function MethodePage() {
       </section>
 
       <section className="space-y-3">
+        <h2 className="text-xl font-semibold">Instantané : la seule page en temps réel</h2>
+        <p>
+          Tout le site est calculé une fois par mois, sauf la page{" "}
+          <Link href="/instantane" className="underline underline-offset-2">
+            Instantané
+          </Link>
+          , régénérée au plus toutes les 10 minutes à partir des observations METAR des aérodromes du monde (NOAA). Elle
+          montre les extrêmes du moment, après un contrôle qualité qui écarte sans jamais corriger ; elle ne conserve rien
+          et ne mesure aucune tendance.
+        </p>
+      </section>
+
+      <section className="space-y-3">
         <h2 className="text-xl font-semibold">Niveaux de confiance</h2>
         <dl className="space-y-2">
           {(Object.keys(CONFIDENCE_RULES) as (keyof typeof CONFIDENCE_RULES)[]).map((k) => (

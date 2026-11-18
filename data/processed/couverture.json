@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-18T10:41:59Z",
+ "generated_at": "2026-11-18T12:47:31Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -1530,8 +1530,8 @@
     {
      "scale": "monde",
      "status": "instantane",
-     "source": "Open-Meteo sur une liste de villes",
-     "note": "Valeur du moment, pas une tendance : affichage à part.",
+     "source": "METAR mondiaux, NOAA Aviation Weather Center",
+     "note": "Valeur du moment, pas une tendance : page Instantané (P11), régénérée au plus toutes les 10 minutes ; extrême du réseau des aérodromes, pas de la Terre.",
      "indicators": []
     }
    ]
@@ -1543,8 +1543,8 @@
     {
      "scale": "monde",
      "status": "instantane",
-     "source": "Open-Meteo sur une liste de villes",
-     "note": "Valeur du moment, pas une tendance : affichage à part.",
+     "source": "METAR mondiaux, NOAA Aviation Weather Center",
+     "note": "Valeur du moment, pas une tendance : page Instantané (P11), régénérée au plus toutes les 10 minutes ; extrême du réseau des aérodromes, pas de la Terre.",
      "indicators": []
     }
    ]

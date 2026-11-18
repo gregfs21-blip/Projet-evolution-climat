@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-18T10:42:00Z",
+ "generated_at": "2026-11-18T12:47:32Z",
  "sections": [
   {
    "id": "gironde",
@@ -1687,7 +1687,7 @@
        "params": [
         "localite-chaude"
        ],
-       "text": "Localité la plus chaude à l'instant t — Monde : valeur instantanée, pas de série. Valeur du moment, pas une tendance : affichage à part.",
+       "text": "Localité la plus chaude à l'instant t — Monde : valeur instantanée, pas de série. Valeur du moment, pas une tendance : page Instantané (P11), régénérée au plus toutes les 10 minutes ; extrême du réseau des aérodromes, pas de la Terre.",
        "indicators": []
       },
       {
@@ -1696,7 +1696,7 @@
        "params": [
         "localite-froide"
        ],
-       "text": "Localité la plus froide à l'instant t — Monde : valeur instantanée, pas de série. Valeur du moment, pas une tendance : affichage à part.",
+       "text": "Localité la plus froide à l'instant t — Monde : valeur instantanée, pas de série. Valeur du moment, pas une tendance : page Instantané (P11), régénérée au plus toutes les 10 minutes ; extrême du réseau des aérodromes, pas de la Terre.",
        "indicators": []
       }
      ]

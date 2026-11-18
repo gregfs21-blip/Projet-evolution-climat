@@ -167,9 +167,9 @@ parametres:
   - id: localite-chaude
     label: Localité la plus chaude à l'instant t
     echelles:
-      monde: {statut: instantane, source: "Open-Meteo sur une liste de villes", note: "Valeur du moment, pas une tendance : affichage à part."}
+      monde: {statut: instantane, source: "METAR mondiaux, NOAA Aviation Weather Center", note: "Valeur du moment, pas une tendance : page Instantané (P11), régénérée au plus toutes les 10 minutes ; extrême du réseau des aérodromes, pas de la Terre."}
 
   - id: localite-froide
     label: Localité la plus froide à l'instant t
     echelles:
-      monde: {statut: instantane, source: "Open-Meteo sur une liste de villes", note: "Valeur du moment, pas une tendance : affichage à part."}
+      monde: {statut: instantane, source: "METAR mondiaux, NOAA Aviation Weather Center", note: "Valeur du moment, pas une tendance : page Instantané (P11), régénérée au plus toutes les 10 minutes ; extrême du réseau des aérodromes, pas de la Terre."}

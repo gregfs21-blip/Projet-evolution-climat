@@ -16,7 +16,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
 | P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI) | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2-P10.5 à cadrer) |
-| P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | critères Q1-Q5 proposés le 18/11/2026, avant tout développement | **ouverte** |
+| P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | décisions D-AJ à D-AL et critères Q1-Q5 validés le 18/11/2026, avant tout développement | **ouverte** |
 
 ## Journal P0
 
@@ -404,10 +404,15 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   (elle était déjà en « signal non établi »).
 - P3 close.
 
-## P11 — Localités la plus chaude et la plus froide à l'instant t : cadrage proposé le 18/11/2026
+## P11 — Localités la plus chaude et la plus froide à l'instant t : cadrage proposé et validé le 18/11/2026
 
 > **Demande de Grég du 18/11/2026** : intégrer les deux paramètres de sa liste de départ restés sans affichage
 > (couverture : statut « instantané », « affichage à part » jamais réalisé).
+>
+> **Décisions de Grég du 18/11/2026, avant tout développement** : D-AJ source METAR et exception à la règle « tout
+> pré-calculé » pour cette seule page, validées ; D-AK page dédiée « Instantané » (lien depuis la page Monde), avec
+> **Bordeaux-Mérignac (LFBD) en repère local** soumis au même contrôle qualité ; D-AL contrôle qualité et critères
+> Q1-Q5 validés tels quels (pas de contrôle de voisinage).
 
 ### Constat de la sonde (18/11/2026, `docs/sonde-p11.md`, depuis GitHub Actions)
 
@@ -452,7 +457,7 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
 | Q4 | Honnêteté | Libellé « parmi les N stations METAR », N compté ; limites de couverture affichées sur la page |
 | Q5 | Technique | Tests et CI verts ; page déployée ; panne de la source affichée comme telle (testé) |
 
-### Décisions demandées à Grég
+### Décisions demandées à Grég (tranchées le 18/11/2026, voir en tête de section)
 
 - **D-AJ** : source METAR et exception à la règle « tout pré-calculé » pour cette seule page.
 - **D-AK** : emplacement (page dédiée « Instantané » dans le menu, ou bloc sur la page Monde) et ajout éventuel de
