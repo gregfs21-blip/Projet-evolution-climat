@@ -16,6 +16,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
 | P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI) | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2-P10.5 à cadrer) |
+| P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | critères Q1-Q5 proposés le 18/11/2026, avant tout développement | **ouverte** |
 
 ## Journal P0
 
@@ -402,6 +403,61 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   non tranchée (capteur ou ERA5), **écart accepté**. La règle H5 s'applique : humidité ERA5 au plus « faible »
   (elle était déjà en « signal non établi »).
 - P3 close.
+
+## P11 — Localités la plus chaude et la plus froide à l'instant t : cadrage proposé le 18/11/2026
+
+> **Demande de Grég du 18/11/2026** : intégrer les deux paramètres de sa liste de départ restés sans affichage
+> (couverture : statut « instantané », « affichage à part » jamais réalisé).
+
+### Constat de la sonde (18/11/2026, `docs/sonde-p11.md`, depuis GitHub Actions)
+
+- **METAR mondiaux, NOAA Aviation Weather Center** : fichier `metars.cache.csv.gz` (257 ko), rafraîchi en continu
+  (`Last-Modified` à la minute), domaine public. 5 088 stations, dont 5 052 avec température ; âge des observations :
+  médiane 35 min, maximum 85 min (le fichier ne garde que la dernière heure et demie). Colonnes : METAR brut,
+  indicatif, heure, position, température, point de rosée, vent, etc. **Pas d'en-tête CORS** : lecture impossible
+  depuis le navigateur, il faut un serveur.
+- **Noms des stations** : `stations.cache.json.gz` (9 960 stations : nom, pays, altitude), même origine.
+- **Couverture** : 22 stations au sud de 60° S, 29 au nord de 70° N. Le pôle Sud (NZSP) ne publie qu'un METAR toutes
+  les 6 h et n'est donc pas dans le fichier à 11 h 55 UTC ; Vostok et l'intérieur de l'Antarctique, les plus froids du
+  globe, n'y sont jamais ; l'intérieur des déserts est clairsemé. Le résultat est l'aérodrome le plus chaud ou le plus
+  froid **du réseau METAR**, pas le point le plus chaud ou le plus froid de la Terre.
+- Exemple brut au moment de la sonde : +39 °C à Keetmanshoop (Namibie), −38 °C à Iakoutsk (Sibérie).
+- **Open-Meteo** (prévue par la couverture) : refus 429 depuis GitHub Actions (adresses partagées, comme le seraient
+  celles de Vercel) ; c'est en outre une sortie de modèle, pas une mesure. Écartée.
+
+### Proposition
+
+- **Source** : METAR de l'AWC (mesures réelles), noms par le fichier des stations.
+- **Architecture** : le site est aujourd'hui entièrement pré-calculé (« aucune page n'est rendue à la demande »). Un
+  affichage à l'instant t impose une exception : une seule page, régénérée côté serveur par Vercel au plus toutes les
+  10 minutes (régénération incrémentale), qui lit le fichier METAR, applique le contrôle qualité et affiche le
+  résultat. Rien n'est stocké, aucune tendance n'est calculée. Écarté : une tâche GitHub toutes les 30 minutes qui
+  committerait un JSON (48 commits et déploiements par jour) ; une lecture depuis le navigateur (pas de CORS).
+- **Contrôle qualité, fixé avant développement** : observation de moins de 2 h ; température entre −90 et +60 °C ;
+  point de rosée ≤ température ; pas d'indicateur de maintenance (« $ ») ; température du fichier identique au groupe
+  température du METAR brut ; station connue du fichier des stations. Une valeur exclue n'est jamais corrigée.
+- **Affichage** : les 5 stations les plus chaudes et les 5 plus froides (nom, pays, altitude, température, heure de
+  mesure, METAR brut), le nombre de stations retenues et exclues, l'heure de lecture, et les limites de couverture
+  écrites en clair. Si la source ne répond pas : message explicite et heure de la dernière lecture réussie, jamais une
+  valeur ancienne présentée comme actuelle.
+- **Hors synthèse** : ce n'est pas une tendance ; la synthèse continue de le dire (« valeur instantanée, pas de série »).
+
+### Critères proposés (Q1-Q5)
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| Q1 | Fraîcheur | Page régénérée au plus toutes les 10 min ; âge de chaque observation affichée ≤ 2 h ; heure de lecture affichée |
+| Q2 | Contrôle qualité | Chaque règle testée sur des METAR réels, cas acceptés et cas exclus |
+| Q3 | Cohérence | Pour chaque station affichée, température = groupe température du METAR brut (contrôle automatique, sinon exclusion) |
+| Q4 | Honnêteté | Libellé « parmi les N stations METAR », N compté ; limites de couverture affichées sur la page |
+| Q5 | Technique | Tests et CI verts ; page déployée ; panne de la source affichée comme telle (testé) |
+
+### Décisions demandées à Grég
+
+- **D-AJ** : source METAR et exception à la règle « tout pré-calculé » pour cette seule page.
+- **D-AK** : emplacement (page dédiée « Instantané » dans le menu, ou bloc sur la page Monde) et ajout éventuel de
+  Bordeaux-Mérignac comme repère.
+- **D-AL** : contrôle qualité et critères Q1-Q5.
 
 ## P10 — Démonstration de l'évolution du climat : cadrage proposé et validé le 17/11/2026, avant tout calcul
 
