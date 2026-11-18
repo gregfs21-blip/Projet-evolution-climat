@@ -32,7 +32,7 @@ function Charts({ d }: { d: RegressionDataset }) {
   const natural = useMemo(() => s.years.map((_, i) => s.volcanic[i]! + s.solar[i]!), [s]);
   const decomposition: Line[] = useMemo(
     () => [
-      { name: "Observé", values: s.observed_rebased, color: "--ink", width: 1.2, opacity: 0.8 },
+      { name: "Observé", values: s.observed_rebased, color: "--ink", width: 1, opacity: 0.45 },
       { name: "Modèle (somme des contributions)", values: model, color: "--accent", width: 2 },
       { name: "Contribution humaine", values: s.anthropogenic, color: "--warm", width: 2 },
       { name: "Volcans + soleil", values: natural, color: "--cold", width: 1.5 },
@@ -42,6 +42,8 @@ function Charts({ d }: { d: RegressionDataset }) {
   );
   const to = d.trend_observed;
   const ta = d.trend_adjusted;
+  const so = d.slope_observed;
+  const sa = d.slope_adjusted;
   const adjusted: Line[] = useMemo(
     () => [
       { name: "Observé", values: s.observed, color: "--muted", width: 1.2 },
@@ -55,7 +57,7 @@ function Charts({ d }: { d: RegressionDataset }) {
         sen: { start: ta.period.start, end: ta.period.end, fittedStart: ta.fitted_start, fittedEnd: ta.fitted_end },
       },
     ],
-    [s, to, ta],
+    [s, to.period.start, to.period.end, ta],
   );
   return (
     <div className="space-y-8">
@@ -63,7 +65,7 @@ function Charts({ d }: { d: RegressionDataset }) {
         title="Ce que le modèle reconstruit, année par année"
         note={
           <>
-            Écarts au niveau 1850-1900 estimé par le modèle. La courbe du modèle est la somme des quatre contributions ; l&apos;écart
+            Écarts au niveau {d.attributions[0]!.baseline.start}-{d.attributions[0]!.baseline.end} estimé par le modèle. La courbe du modèle est la somme des quatre contributions ; l&apos;écart
             avec l&apos;observé est le résidu (écart type {nf(d.residual_sd, 2)} °C, autocorrélation ρ = {nf(d.rho, 2)}). Part de la
             variance expliquée : {nf(d.r2 * 100, 0)} %.
           </>
@@ -75,11 +77,9 @@ function Charts({ d }: { d: RegressionDataset }) {
         title="La température une fois les facteurs naturels retirés"
         note={
           <>
-            Pente de Sen {to.period.start}-{to.period.end} : observée {nf(to.slope_per_decade, 3)} °C par décennie{" "}
-            {to.slope_ci_low !== null && to.slope_ci_high !== null && `[${nf(to.slope_ci_low, 3)} ; ${nf(to.slope_ci_high, 3)}]`}, ajustée{" "}
-            {nf(ta.slope_per_decade, 3)}{" "}
-            {ta.slope_ci_low !== null && ta.slope_ci_high !== null && `[${nf(ta.slope_ci_low, 3)} ; ${nf(ta.slope_ci_high, 3)}]`}. Écarts
-            dans la référence de {d.label}.
+            Pente de Sen {to.period.start}-{to.period.end} : observée {nf(so.value, 3)} °C par décennie {ci(so, 3)}, ajustée{" "}
+            {nf(sa.value, 3)} {ci(sa, 3)}. Intervalles de Sen non corrigés de l&apos;autocorrélation ; l&apos;incertitude des
+            contributions retirées n&apos;est pas propagée. Écarts dans la référence de {d.label}.
           </>
         }
       >
@@ -95,7 +95,9 @@ function Attributions({ d }: { d: RegressionDataset }) {
       <table className="w-full min-w-[34rem] text-left text-sm">
         <thead className="text-xs text-[var(--muted)]">
           <tr className="border-b border-[var(--rule)]">
-            <th className="py-1.5 pr-3 font-medium">Par rapport à 1850-1900</th>
+            <th className="py-1.5 pr-3 font-medium">
+              Par rapport à {d.attributions[0]!.baseline.start}-{d.attributions[0]!.baseline.end}
+            </th>
             <th className="py-1.5 pr-3 font-medium">Part humaine (ce calcul)</th>
             <th className="py-1.5 pr-3 font-medium">Part humaine (IGCC 2025)</th>
             <th className="py-1.5 pr-3 font-medium">Volcans + soleil</th>
@@ -132,7 +134,7 @@ function Attributions({ d }: { d: RegressionDataset }) {
   );
 }
 
-function Coefficients({ d }: { d: RegressionDataset }) {
+function Coefficients({ d, tcrRef }: { d: RegressionDataset; tcrRef: Estimate }) {
   const ols = new Map(d.coefficients_ols.map((c) => [c.name, c]));
   return (
     <div className="overflow-x-auto">
@@ -170,7 +172,8 @@ function Coefficients({ d }: { d: RegressionDataset }) {
       </table>
       <p className="mt-1 text-xs text-[var(--muted)]">
         {d.method}, {d.period.start}-{d.period.end} (n = {d.n}). Réponse transitoire implicite : <b>{nf(d.tcr.value)} °C</b> {ci(d.tcr)}{" "}
-        (GIEC AR6 : 1,8 °C, très probablement 1,2 à 2,4). Facteurs d&apos;inflation de la variance :{" "}
+        (GIEC AR6 : {nf(tcrRef.value, 1)} °C, très probablement {tcrRef.ci_low !== null && nf(tcrRef.ci_low, 1)} à{" "}
+        {tcrRef.ci_high !== null && nf(tcrRef.ci_high, 1)}). Facteurs d&apos;inflation de la variance :{" "}
         {Object.entries(d.vif)
           .map(([k, v]) => `${k} ${nf(v)}`)
           .join(", ")}{" "}
@@ -187,13 +190,17 @@ const GROUPS: Record<string, string> = {
 };
 
 function Robustness({ d }: { d: RegressionDataset }) {
+  const control = d.attributions[d.attributions.length - 1]!;
+  const ref = control.reference_anthropogenic;
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[36rem] text-left text-sm">
         <thead className="text-xs text-[var(--muted)]">
           <tr className="border-b border-[var(--rule)]">
             <th className="py-1.5 pr-3 font-medium">Variante</th>
-            <th className="py-1.5 pr-3 font-medium">Part humaine 2016-2025</th>
+            <th className="py-1.5 pr-3 font-medium">
+              Part humaine {control.window.start}-{control.window.end}
+            </th>
             <th className="py-1.5 pr-3 font-medium">Réponse transitoire</th>
             <th className="py-1.5 pr-3 font-medium">ρ</th>
             <th className="py-1.5 font-medium">R²</th>
@@ -218,8 +225,10 @@ function Robustness({ d }: { d: RegressionDataset }) {
         </tbody>
       </table>
       <p className="mt-1 text-xs text-[var(--muted)]">
-        ✓ : dans la fourchette de l&apos;IGCC 2025 [1,0 ; 1,5] °C (critère O8). Un ρ proche de 1 et un R² faible signalent une variante que les
-        observations n&apos;arrivent plus à ajuster.
+        ✓ : réchauffement attribué {control.window.start}-{control.window.end} dans la fourchette de l&apos;IGCC 2025 {ci(ref, 1)} °C ;
+        pour la sous-période, l&apos;intervalle de βₐ doit aussi recouper celui de la période complète (critère O8). Un ρ proche de 1 et
+        un R² faible signalent une variante qui n&apos;arrive plus à reproduire les observations (un R² négatif fait pire
+        qu&apos;une constante).
       </p>
     </div>
   );
@@ -238,7 +247,7 @@ export default function RegressionView({ reg }: { reg: Regression }) {
       </section>
       <section className="space-y-2">
         <h3 className="text-lg font-semibold">Les coefficients</h3>
-        <Coefficients d={d} />
+        <Coefficients d={d} tcrRef={reg.tcr_reference} />
       </section>
       <section className="space-y-2">
         <h3 className="text-lg font-semibold">Le résultat tient-il si l&apos;on change les choix ?</h3>

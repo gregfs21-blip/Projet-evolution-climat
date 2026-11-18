@@ -753,9 +753,10 @@ sections:
           - id: limite-attribution
             kind: lacune
             text: >-
-              La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. Seule la température mondiale
-              fait l'objet d'une attribution, dans l'onglet Démonstration (régression multiple) ; rien n'est attribué
-              pour la Gironde, la France ni les autres variables.
+              La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. L'étude n'attribue qu'une
+              grandeur : le réchauffement moyen de surface du globe (air et mer) par rapport à 1850-1900, dans l'onglet
+              Démonstration (régression multiple). Rien n'est attribué ni pour la Gironde, ni pour la France, ni pour
+              les autres variables, y compris la température de la mer et celle de la troposphère.
           - id: contexte-attribution
             kind: contexte
             text: >-

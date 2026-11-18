@@ -120,3 +120,25 @@ Vérification finale du 07/11/2026 : `exp-blocages-hiver` et `exp-cape` conforme
 
 Affirmations relues (contre-relecture P7, 07/11/2026) : monde-z500-europe#76d2d64b2d, exp-blocages-ete#913b8ce646, exp-blocages-methode#f9f5489b20, limite-europe#e49a347af5, limite-reanalyse#c9837a9c32, lacune-foudre-gironde#f2649a15b7
 Affirmations relues (vérification finale P7, 07/11/2026) : exp-blocages-hiver#6b7c01cb8e, exp-cape#cad95b7c94
+
+## Reformulation de `limite-attribution` à la publication de P10.1 (17-18/11/2026, décision D-AH)
+
+La publication de l'onglet Démonstration (régression multiple, P10.1) rendait fausse l'affirmation « L'étude ne fait
+aucune attribution ». Sa reformulation, ainsi que les textes de P10.1 (constat, méthode, limites, page, analyse
+`docs/validation-p10.md`), ont été relus par un agent séparé, qui ne les avait pas rédigés, en recalculant les chiffres
+à partir des entrées brutes. 21 signalements en première passe, tous traités :
+
+| | Signalement | Traitement |
+|---|---|---|
+| 1 | « Seule la température mondiale » ambigu (SST et troposphère publiées mais non attribuées ; c'est un réchauffement moyen par rapport à 1850-1900 qui est attribué) | Formulation du relecteur reprise mot pour mot |
+| 2 | Aucun garde-fou : P10.2, P10.3 et P10.5 rendront `limite-attribution` et `limite-projections` inexactes | Contrôle « D-AH cohérence de la synthèse » dans `etl/validation/p10.py` : échoue dès qu'une autre analyse est publiée |
+| 3-5 | Double arrondi (JSON à 3-4 décimales puis affichage) : plusieurs chiffres décalés d'une unité ; fichiers de validation non régénérés ; tableau de `validation-p10.md` faux | Valeurs en pleine précision dans le JSON, pentes de Sen recalculées sans arrondi, arrondi unique à l'affichage ; fichiers régénérés ; tableau corrigé |
+| 6-10 | `validation-p10.md` : « ± 0,09 » sans sens ; 0,56 au lieu de 0,55 ; Newey-West présenté comme « sans correction » ; « rejet par les observations » trop fort ; non-significativité confondue avec valeur faible | Corrigés |
+| 11-14 | Constat : intervalle statistique comparé à la fourchette IGCC sans préciser qu'il exclut l'incertitude des forçages ; raison de confiance opaque ; limite d'indépendance cachée dans un bloc replié ; intervalles de Sen non corrigés de l'autocorrélation | Corrigés (constat, raison de confiance détaillée, texte visible de la page, note de méthode) |
+| 15-21 | Formulations trop fortes ou imprécises ; chiffres de référence écrits à la main sur la page ; « gaz à effet de serre moins aérosols » ; licence HadISST incohérente ; k non défini | Corrigés ; références lues dans le JSON (`tcr_reference`, références d'attribution) |
+
+Contre-relecture : les 21 points sont confirmés corrigés. Trois remarques de style traitées (bruit flottant sur une
+pente, fourchette du coefficient solaire, verbe « explique » sur la page) ; une remarque facultative non appliquée
+(« la température de la mer prise seule »), qui imposerait une nouvelle relecture sans changer le sens.
+
+Affirmations relues (P10, 18/11/2026) : limite-attribution#254699f490

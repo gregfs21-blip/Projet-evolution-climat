@@ -140,11 +140,13 @@ export default function DemonstrationPage() {
                 <p className="text-sm text-[var(--muted)]">{reg.confidence_reason}</p>
                 <p className="text-sm leading-relaxed">
                   Principe : la température mondiale est décrite comme la somme de quatre influences, chacune multipliée par un
-                  coefficient que les données estiment. Le forçage d&apos;origine humaine (gaz à effet de serre moins aérosols),
+                  coefficient que les données estiment. Le forçage d&apos;origine humaine (surtout les gaz à effet de serre, moins
+                  l&apos;effet des aérosols),
                   les éruptions volcaniques, l&apos;activité du soleil, et El Niño / La Niña, qui déplace de la chaleur entre
                   l&apos;océan et l&apos;atmosphère sans en créer. Si le forçage humain n&apos;expliquait rien, son coefficient
-                  serait nul : c&apos;est ce que teste le critère O3. Le réchauffement qu&apos;il explique est ensuite comparé à
-                  l&apos;estimation de l&apos;IGCC, obtenue par d&apos;autres méthodes (critère O4).
+                  serait nul : c&apos;est ce que teste le critère O3. Le réchauffement que le modèle lui attribue est ensuite comparé à
+                  l&apos;estimation de l&apos;IGCC, obtenue par d&apos;autres méthodes mais à partir des mêmes forçages : un
+                  recoupement, pas une preuve indépendante (critère O4).
                 </p>
               </div>
               <RegressionView reg={reg} />

@@ -451,6 +451,8 @@ const regressionDatasetSchema = z.strictObject({
   attributions: z.array(attributionSchema).min(1),
   trend_observed: trendSchema,
   trend_adjusted: trendSchema,
+  slope_observed: estimateSchema,
+  slope_adjusted: estimateSchema,
   residual_trend_p: z.number().min(0).max(1),
   robustness: z.array(robustnessCaseSchema),
   series: regressionSeriesSchema,
@@ -484,6 +486,7 @@ const regressionSchema = z
       )
       .min(1),
     enso_oni_correlation: z.number().min(-1).max(1),
+    tcr_reference: estimateSchema,
     datasets: z.array(regressionDatasetSchema).min(1),
     criteria: z.array(criterionSchema).min(1),
     script: z.string().min(1),

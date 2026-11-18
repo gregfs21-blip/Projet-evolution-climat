@@ -178,8 +178,8 @@ def regress(temp: dict[int, float], inputs: Inputs, lag_e: int = LAG_ENSO, lag_v
 def coefficients(fit: R.Fit) -> list[Coefficient]:
     lo, hi = fit.ci(ALPHA)
     p = fit.p_values()
-    return [Coefficient(name=_slug(n), label=LABELS[n][0], unit=LABELS[n][1], value=round(float(fit.coef[i]), 4),
-                        ci_low=round(float(lo[i]), 4), ci_high=round(float(hi[i]), 4), p_value=round(float(p[i]), 6))
+    return [Coefficient(name=_slug(n), label=LABELS[n][0], unit=LABELS[n][1], value=float(fit.coef[i]),
+                        ci_low=float(lo[i]), ci_high=float(hi[i]), p_value=float(p[i]))
             for i, n in enumerate(fit.names)]
 
 
@@ -188,8 +188,9 @@ def _slug(name: str) -> str:
             "enso": "enso"}[name]
 
 
-def est(v: float, lo: float | None = None, hi: float | None = None, nd: int = 3) -> Estimate:
-    r = lambda x: None if x is None else round(float(x), nd) + 0.0  # noqa: E731
+def est(v: float, lo: float | None = None, hi: float | None = None) -> Estimate:
+    """Pleine précision : le texte (etl) et le site n'arrondissent qu'une fois, au moment de l'affichage."""
+    r = lambda x: None if x is None else float(x) + 0.0  # noqa: E731
     return Estimate(value=r(v), ci_low=r(lo), ci_high=r(hi))
 
 
@@ -243,21 +244,22 @@ def dataset_result(key: str, iid: str, label: str, temp: dict[int, float], best:
         w, bl = range(window[0], window[1] + 1), base
         observed = None
         if all(y in temp for y in w) and all(y in temp for y in bl):
-            observed = round(np.mean([temp[y] for y in w]) - np.mean([temp[y] for y in bl]), 3)
+            observed = float(np.mean([temp[y] for y in w]) - np.mean([temp[y] for y in bl]))
         attributions.append(Attribution(window=Period(start=window[0], end=window[1]),
                                         baseline=Period(start=BASELINE[0], end=BASELINE[1]),
                                         anthropogenic=est(a, a_lo, a_hi), natural=est(n_, n_lo, n_hi), observed=observed,
-                                        reference_anthropogenic=est(*ref_a, nd=2), reference_natural=est(*ref_n, nd=2),
+                                        reference_anthropogenic=est(*ref_a), reference_natural=est(*ref_n),
                                         reference_source=REFERENCE_SOURCE))
 
     ba, ba_lo, ba_hi = fit.combination({"anthropique": 1.0})
-    tcr = est(ba * F2X, ba_lo * F2X, ba_hi * F2X, nd=2)
+    tcr = est(ba * F2X, ba_lo * F2X, ba_hi * F2X)
 
     yr = [y for y in years if y >= TREND_START]
     idx = [years.index(y) for y in yr]
     t_obs = annual_trend(yr, [float(run.T[i]) for i in idx], label=f"{TREND_START}-{yr[-1]}, observée")
     t_adj = annual_trend(yr, [float(adjusted[i]) for i in idx], label=f"{TREND_START}-{yr[-1]}, ajustée")
     resid_p = annual_trend(years, [float(x) for x in fit.resid], label="résidus").p_value
+    slope_obs, slope_adj = sen_decade(yr, [run.T[i] for i in idx]), sen_decade(yr, [adjusted[i] for i in idx])
 
     # O8 — robustesse
     rob: list[RobustnessCase] = []
@@ -266,8 +268,8 @@ def dataset_result(key: str, iid: str, label: str, temp: dict[int, float], best:
         a = r.attributable(CONTROL)[0]
         v, lo, hi = r.fit.combination({"anthropique": 1.0})
         return RobustnessCase(group=group, label=lab, period=Period(start=r.years[0], end=r.years[-1]),
-                              beta_anthro=est(v, lo, hi, nd=4), attributable=round(a, 3), tcr=round(v * F2X, 2),
-                              rho=round(r.fit.rho, 3), r2=round(r.fit.r2, 3),
+                              beta_anthro=est(v, lo, hi), attributable=float(a), tcr=float(v * F2X),
+                              rho=float(r.fit.rho), r2=float(r.fit.r2),
                               in_range=in_range(a, WINDOWS[1][1][1:]) and extra_ok)
 
     for le in ENSO_LAGS:
@@ -283,11 +285,12 @@ def dataset_result(key: str, iid: str, label: str, temp: dict[int, float], best:
 
     ds = RegressionDataset(
         id=key, indicator_id=iid, label=label, period=Period(start=years[0], end=years[-1]), n=len(years),
-        method=fit.method, rho=round(fit.rho, 3), r2=round(fit.r2, 3),
-        residual_sd=round(float(np.std(fit.resid, ddof=len(fit.coef))), 3),
+        method=fit.method, rho=float(fit.rho), r2=float(fit.r2),
+        residual_sd=float(np.std(fit.resid, ddof=len(fit.coef))),
         coefficients=coefficients(fit), coefficients_ols=coefficients(ols),
-        vif={n: round(float(v), 2) for n, v in zip(NAMES, R.vif(run.X))},
+        vif={n: float(v) for n, v in zip(NAMES, R.vif(run.X))},
         tcr=tcr, attributions=attributions, trend_observed=t_obs, trend_adjusted=t_adj,
+        slope_observed=slope_obs, slope_adjusted=slope_adj,
         residual_trend_p=resid_p, robustness=rob,
         series=RegressionSeries(years=years, observed=_r(run.T), fitted=_r(fit.fitted), adjusted=_r(adjusted),
                                 anthropogenic=_r(ca), volcanic=_r(cv), solar=_r(cs), enso=_r(ce),
@@ -319,12 +322,27 @@ def dataset_result(key: str, iid: str, label: str, temp: dict[int, float], best:
     return ds, checks
 
 
+def sen_decade(years: list[int], values) -> Estimate:
+    """Pente de Sen et son intervalle à 95 % (scipy, comme etl/stats/trend.py), en °C/décennie, sans arrondi."""
+    from scipy import stats
+    slope, _, lo, hi = stats.theilslopes(np.asarray(values, float), np.asarray(years, float), alpha=1 - ALPHA)
+    # round(…, 12) : retire le bruit flottant du ×10 (0,2025 et non 0,20249999…), sans arrondi d'affichage.
+    return est(round(slope * 10, 12), round(lo * 10, 12), round(hi * 10, 12))
+
+
 def _r(a) -> list[float]:
     return [round(float(x), 4) + 0.0 for x in a]
 
 
 def _f(x: float, nd: int, sign: bool = False) -> str:
-    s = f"{x:+.{nd}f}" if sign else f"{x:.{nd}f}"
+    """Arrondi au plus proche, moitié vers l'extérieur, sur l'écriture décimale la plus courte du nombre : la même
+    règle que l'affichage du site (Intl.NumberFormat), pour qu'un chiffre cité dans le texte et dans un tableau soit
+    identique."""
+    from decimal import ROUND_HALF_UP, Decimal
+    q = Decimal(repr(float(x))).quantize(Decimal(1).scaleb(-nd), rounding=ROUND_HALF_UP)
+    if q == 0:
+        q = abs(q)
+    s = f"{q:+f}" if sign else f"{q:f}"
     return s.replace("-", "−").replace(".", ",")
 
 
@@ -400,8 +418,19 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
                                         "l'IGCC vaut recoupement par une autre méthode, pas preuve indépendante : "
                                         "les forçages sont communs.")
     elif ok["O3"]:
-        failed = ", ".join(c.id for c in criteria if not c.satisfied)
-        confidence, reason = "moyenne", f"Détection établie (O3), mais critère(s) non conforme(s) : {failed}."
+        failed = [c for c in criteria if not c.satisfied]
+        parts = []
+        for c in failed:
+            if c.id == "O8":
+                out = [f"{d.label} « {r.label} » {_f(r.attributable, 2)} °C" for d in datasets for r in d.robustness
+                       if not r.in_range]
+                parts.append(f"O8 (robustesse) : réchauffement attribué hors de [{_f(WINDOWS[1][1][1], 1)} ; "
+                             f"{_f(WINDOWS[1][1][2], 1)}] °C pour " + ", ".join(out))
+            else:
+                parts.append(f"{c.id} ({c.label.lower()})")
+        confidence, reason = "moyenne", ("Détection établie (O3), mais critère non conforme, d'où la confiance « moyenne » "
+                                         "(règle D-AG) : " + " ; ".join(parts) + ". Analyse de l'écart : "
+                                         "docs/validation-p10.md.")
     else:
         confidence, reason = "non_etabli", "Le forçage anthropique n'est pas détecté (O3) sur les trois jeux."
 
@@ -409,20 +438,21 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
     att = {a.window.start: a for a in main.attributions}
     a16 = att[2016]
     coef = {c.name: c for c in main.coefficients}
-    to, ta = main.trend_observed, main.trend_adjusted
-    narrower = (ta.slope_ci_high - ta.slope_ci_low) < (to.slope_ci_high - to.slope_ci_low)
+    so, sa = main.slope_observed, main.slope_adjusted
+    narrower = (sa.ci_high - sa.ci_low) < (so.ci_high - so.ci_low)
     same = all(ck["O3"][0] and ck["O4"][0] for _, ck in checks)
+    y0, y1 = main.trend_observed.period.start, main.trend_observed.period.end
     finding = (
         f"Sur {main.period.start}-{main.period.end} ({main.label}), le forçage anthropique est détecté "
-        f"(p {_p(coef['anthropique'].p_value)}). Il explique un réchauffement de {_f(a16.anthropogenic.value, 2)} °C "
-        f"[{_f(a16.anthropogenic.ci_low, 2)} ; {_f(a16.anthropogenic.ci_high, 2)}] entre 1850-1900 et 2016-2025, "
-        f"pour {_f(a16.reference_anthropogenic.value, 2)} °C [{_f(a16.reference_anthropogenic.ci_low, 1)} ; "
+        f"(p {_p(coef['anthropique'].p_value)}). Le modèle lui attribue un réchauffement de "
+        f"{_f(a16.anthropogenic.value, 2)} °C [{_f(a16.anthropogenic.ci_low, 2)} ; {_f(a16.anthropogenic.ci_high, 2)}] "
+        f"entre 1850-1900 et 2016-2025 (intervalle statistique seul, hors incertitude des forçages), pour "
+        f"{_f(a16.reference_anthropogenic.value, 2)} °C [{_f(a16.reference_anthropogenic.ci_low, 1)} ; "
         f"{_f(a16.reference_anthropogenic.ci_high, 1)}] selon l'IGCC 2025 ; les volcans et le soleil comptent pour "
-        f"{_f(a16.natural.value, 2, True)} °C. Une fois ENSO, volcans et soleil retirés, la pente "
-        f"{to.period.start}-{to.period.end} passe de {_f(to.slope_per_decade, 3)} [{_f(to.slope_ci_low, 3)} ; "
-        f"{_f(to.slope_ci_high, 3)}] à {_f(ta.slope_per_decade, 3)} [{_f(ta.slope_ci_low, 3)} ; "
-        f"{_f(ta.slope_ci_high, 3)}] °C par décennie"
-        + (" : le réchauffement de fond est du même ordre, mieux cerné. " if narrower else ". ")
+        f"{_f(a16.natural.value, 2, True)} °C. Une fois ENSO, volcans et soleil retirés, la pente {y0}-{y1} passe de "
+        f"{_f(so.value, 3)} [{_f(so.ci_low, 3)} ; {_f(so.ci_high, 3)}] à {_f(sa.value, 3)} [{_f(sa.ci_low, 3)} ; "
+        f"{_f(sa.ci_high, 3)}] °C par décennie"
+        + (" : le réchauffement de fond est du même ordre, avec un intervalle plus étroit. " if narrower else ". ")
         + ("Les trois jeux de températures concluent de même (détection et attribution)." if same
            else "Les trois jeux de températures ne concluent pas de même : voir les critères.")
     )
@@ -434,14 +464,17 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
         finding=finding, confidence=confidence, confidence_reason=reason,
         method_note=(
             "Régression multiple annuelle, moindres carrés généralisés à erreurs AR(1) (Prais-Winsten itéré), "
-            "intervalles à 95 % sur une loi de Student à n − k − 1 degrés de liberté. A : forçage radiatif effectif "
+            "intervalles à 95 % sur une loi de Student à n − k − 1 degrés de liberté (k = 5 coefficients, constante "
+            "comprise ; un degré de plus pour ρ). A : forçage radiatif effectif "
             "anthropique total ; V : forçage volcanique décalé de 6 mois ; S : forçage solaire (IGCC 2025, W/m²). "
             "E : Niño 3.4 de HadISST1.1 moins sa climatologie mobile de 30 ans, mois par mois, moyenné d'octobre à "
             "septembre (décalage de 3 mois). Décalages repris de Foster et Rahmstorf (2011), fixés avant calcul. "
             "Réchauffement attribué = βₐ × écart du forçage anthropique moyen entre la fenêtre et 1850-1900 ; "
             "réponse transitoire implicite = βₐ × 3,93 W/m² (doublement du CO₂, GIEC AR6). Température ajustée : "
             "observée moins les contributions ENSO, volcanique et solaire, centrées sur la période. Les pentes de la "
-            "température observée et ajustée sont des pentes de Sen, testées par Hamed-Rao comme partout sur le site."),
+            "température observée et ajustée sont des pentes de Sen, testées par Hamed-Rao comme partout sur le site ; "
+            "leur intervalle (scipy) n'est pas corrigé de l'autocorrélation, et l'incertitude des contributions "
+            "retirées n'est pas propagée à la température ajustée."),
         limitations=[
             "Régression statistique, pas modèle physique : l'inertie de l'océan est absorbée dans les coefficients. "
             "La réponse à un forçage bref (volcan) étant amortie, βᵥ est plus petit que βₐ ; c'est attendu.",
@@ -450,7 +483,8 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
             "Incertitude des forçages (surtout des aérosols) propagée seulement par les bornes à 5 et 95 % de l'IGCC, "
             "qui ne sont pas des trajectoires cohérentes. Les intervalles des coefficients ne la contiennent pas.",
             "Les erreurs AR(1) ne représentent pas toute la variabilité multidécennale (Atlantique, Pacifique) : sur "
-            "données simulées, un intervalle nominal de 95 % couvre la vraie valeur dans 92 à 94 % des cas.",
+            "données simulées au ρ estimé (environ 0,7), un intervalle nominal de 95 % couvre la vraie valeur dans "
+            "environ 92 % des cas.",
             "Avant 1950, le Niño 3.4 de HadISST repose sur peu de mesures ; la climatologie mobile de 30 ans retire "
             "aussi la variabilité de l'ENSO plus lente que 30 ans.",
             "HadCRUT5, GISTEMP et Berkeley partagent l'essentiel de leurs stations : leur accord ne vaut pas trois "
@@ -463,7 +497,7 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
                              "(meilleure estimation, bornes à 5 et 95 %)", url=I.PAGE,
                         license="CC BY 4.0", note=f"ClimateIndicator/data, étiquette {I.TAG}"),
             InputSource(name="NOAA PSL — Niño 3.4 calculé sur HadISST1.1, anomalies mensuelles depuis 1870",
-                        url=I.NINO_PAGE, license="Domaine public (NOAA) ; HadISST © Crown copyright, Met Office",
+                        url=I.NINO_PAGE, license=I.NINO.license,
                         note="anomalies 1981-2010 publiées, recentrées ici sur une climatologie mobile de 30 ans"),
             InputSource(name="NOAA CPC — ONI (contrôle O2, sous-période O8 c)",
                         url=G.SOURCES["oni"].page, license="Domaine public (NOAA)"),
@@ -471,7 +505,7 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
                           url=f"https://projet-evolution-climat.vercel.app/monde/{iid}", license="voir la page de l'indicateur")
               for _, iid, lab in DATASETS],
         ],
-        enso_oni_correlation=round(r_oni, 3), datasets=datasets, criteria=criteria, script=SCRIPT,
+        enso_oni_correlation=float(r_oni), tcr_reference=est(1.8, *TCR_RANGE), datasets=datasets, criteria=criteria, script=SCRIPT,
         etl_version=ctx.etl_version, extracted_at=ctx.extracted_at,
     )
     analyses = [DemonstrationAnalysis(id="regression-multiple", phase="p10.1",

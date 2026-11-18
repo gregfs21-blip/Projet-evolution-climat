@@ -220,3 +220,12 @@ class TestRegressionRun(unittest.TestCase):
         del temp[1950]
         with self.assertRaises(ValueError):
             D.regress(temp, self.inp)
+
+
+class TestFormat(unittest.TestCase):
+    def test_half_up_like_the_site(self):
+        self.assertEqual(D._f(0.1795, 3), "0,180")
+        self.assertEqual(D._f(1.115, 2), "1,12")
+        self.assertEqual(D._f(-0.32, 3), "−0,320")
+        self.assertEqual(D._f(-0.0004, 3, True), "+0,000")
+        self.assertEqual(D._f(0.0333, 2, True), "+0,03")

@@ -587,6 +587,8 @@ class RegressionDataset(_Strict):
     attributions: list[Attribution] = Field(min_length=1)
     trend_observed: Trend
     trend_adjusted: Trend
+    slope_observed: Estimate = Field(description="Pente de Sen observée, °C/décennie, pleine précision (affichage)")
+    slope_adjusted: Estimate = Field(description="Pente de Sen ajustée, °C/décennie, pleine précision (affichage)")
     residual_trend_p: float = Field(ge=0, le=1)
     robustness: list[RobustnessCase]
     series: RegressionSeries
@@ -609,6 +611,7 @@ class Regression(_Strict):
     limitations: list[str] = Field(min_length=1)
     inputs: list[InputSource] = Field(min_length=1)
     enso_oni_correlation: float = Field(ge=-1, le=1)
+    tcr_reference: Estimate = Field(description="Réponse climatique transitoire du GIEC AR6 (R-O4)")
     datasets: list[RegressionDataset] = Field(min_length=1)
     criteria: list[Criterion] = Field(min_length=1)
     script: str = Field(min_length=1)

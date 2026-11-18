@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-17T21:37:59Z",
+ "generated_at": "2026-11-18T09:05:50Z",
  "analyses": [
   {
    "id": "regression-multiple",
@@ -11,15 +11,15 @@
    "regression": {
     "question": "Une fois retirés El Niño, les volcans et le soleil, que reste-t-il du réchauffement mondial, et le forçage d'origine humaine l'explique-t-il ?",
     "model": "T = c + βₐ·A + βᵥ·V + βₛ·S + βₑ·E + ε, erreurs ε autorégressives d'ordre 1",
-    "finding": "Sur 1871-2025 (HadCRUT5), le forçage anthropique est détecté (p < 0,001). Il explique un réchauffement de 1,25 °C [1,11 ; 1,38] entre 1850-1900 et 2016-2025, pour 1,24 °C [1,0 ; 1,5] selon l'IGCC 2025 ; les volcans et le soleil comptent pour +0,03 °C. Une fois ENSO, volcans et soleil retirés, la pente 1979-2025 passe de 0,205 [0,179 ; 0,234] à 0,196 [0,179 ; 0,214] °C par décennie : le réchauffement de fond est du même ordre, mieux cerné. Les trois jeux de températures concluent de même (détection et attribution).",
+    "finding": "Sur 1871-2025 (HadCRUT5), le forçage anthropique est détecté (p < 0,001). Le modèle lui attribue un réchauffement de 1,25 °C [1,12 ; 1,38] entre 1850-1900 et 2016-2025 (intervalle statistique seul, hors incertitude des forçages), pour 1,24 °C [1,0 ; 1,5] selon l'IGCC 2025 ; les volcans et le soleil comptent pour +0,03 °C. Une fois ENSO, volcans et soleil retirés, la pente 1979-2025 passe de 0,205 [0,179 ; 0,234] à 0,196 [0,179 ; 0,214] °C par décennie : le réchauffement de fond est du même ordre, avec un intervalle plus étroit. Les trois jeux de températures concluent de même (détection et attribution).",
     "confidence": "moyenne",
-    "confidence_reason": "Détection établie (O3), mais critère(s) non conforme(s) : O8.",
-    "method_note": "Régression multiple annuelle, moindres carrés généralisés à erreurs AR(1) (Prais-Winsten itéré), intervalles à 95 % sur une loi de Student à n − k − 1 degrés de liberté. A : forçage radiatif effectif anthropique total ; V : forçage volcanique décalé de 6 mois ; S : forçage solaire (IGCC 2025, W/m²). E : Niño 3.4 de HadISST1.1 moins sa climatologie mobile de 30 ans, mois par mois, moyenné d'octobre à septembre (décalage de 3 mois). Décalages repris de Foster et Rahmstorf (2011), fixés avant calcul. Réchauffement attribué = βₐ × écart du forçage anthropique moyen entre la fenêtre et 1850-1900 ; réponse transitoire implicite = βₐ × 3,93 W/m² (doublement du CO₂, GIEC AR6). Température ajustée : observée moins les contributions ENSO, volcanique et solaire, centrées sur la période. Les pentes de la température observée et ajustée sont des pentes de Sen, testées par Hamed-Rao comme partout sur le site.",
+    "confidence_reason": "Détection établie (O3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AG) : O8 (robustesse) : réchauffement attribué hors de [1,0 ; 1,5] °C pour HadCRUT5 « Forçage anthropique à 5 % » 0,22 °C, GISTEMP v4 « Forçage anthropique à 5 % » 0,09 °C, Berkeley Earth « Forçage anthropique à 5 % » 0,09 °C. Analyse de l'écart : docs/validation-p10.md.",
+    "method_note": "Régression multiple annuelle, moindres carrés généralisés à erreurs AR(1) (Prais-Winsten itéré), intervalles à 95 % sur une loi de Student à n − k − 1 degrés de liberté (k = 5 coefficients, constante comprise ; un degré de plus pour ρ). A : forçage radiatif effectif anthropique total ; V : forçage volcanique décalé de 6 mois ; S : forçage solaire (IGCC 2025, W/m²). E : Niño 3.4 de HadISST1.1 moins sa climatologie mobile de 30 ans, mois par mois, moyenné d'octobre à septembre (décalage de 3 mois). Décalages repris de Foster et Rahmstorf (2011), fixés avant calcul. Réchauffement attribué = βₐ × écart du forçage anthropique moyen entre la fenêtre et 1850-1900 ; réponse transitoire implicite = βₐ × 3,93 W/m² (doublement du CO₂, GIEC AR6). Température ajustée : observée moins les contributions ENSO, volcanique et solaire, centrées sur la période. Les pentes de la température observée et ajustée sont des pentes de Sen, testées par Hamed-Rao comme partout sur le site ; leur intervalle (scipy) n'est pas corrigé de l'autocorrélation, et l'incertitude des contributions retirées n'est pas propagée à la température ajustée.",
     "limitations": [
      "Régression statistique, pas modèle physique : l'inertie de l'océan est absorbée dans les coefficients. La réponse à un forçage bref (volcan) étant amortie, βᵥ est plus petit que βₐ ; c'est attendu.",
      "L'IGCC calcule son réchauffement attribué avec les mêmes forçages et des températures qui partagent nos stations : l'accord vaut recoupement par une autre méthode, pas preuve indépendante.",
      "Incertitude des forçages (surtout des aérosols) propagée seulement par les bornes à 5 et 95 % de l'IGCC, qui ne sont pas des trajectoires cohérentes. Les intervalles des coefficients ne la contiennent pas.",
-     "Les erreurs AR(1) ne représentent pas toute la variabilité multidécennale (Atlantique, Pacifique) : sur données simulées, un intervalle nominal de 95 % couvre la vraie valeur dans 92 à 94 % des cas.",
+     "Les erreurs AR(1) ne représentent pas toute la variabilité multidécennale (Atlantique, Pacifique) : sur données simulées au ρ estimé (environ 0,7), un intervalle nominal de 95 % couvre la vraie valeur dans environ 92 % des cas.",
      "Avant 1950, le Niño 3.4 de HadISST repose sur peu de mesures ; la climatologie mobile de 30 ans retire aussi la variabilité de l'ENSO plus lente que 30 ans.",
      "HadCRUT5, GISTEMP et Berkeley partagent l'essentiel de leurs stations : leur accord ne vaut pas trois preuves (règle S1).",
      "Forçages figés sur l'édition IGCC 2025 (v2026.06.02) : en changer est une décision consignée, car les références changent avec elle."
@@ -34,7 +34,7 @@
      {
       "name": "NOAA PSL — Niño 3.4 calculé sur HadISST1.1, anomalies mensuelles depuis 1870",
       "url": "https://psl.noaa.gov/data/timeseries/month/Nino34/",
-      "license": "Domaine public (NOAA) ; HadISST © Crown copyright, Met Office",
+      "license": "Domaine public (NOAA) ; HadISST © Crown copyright, Met Office, usage non commercial",
       "note": "anomalies 1981-2010 publiées, recentrées ici sur une climatologie mobile de 30 ans"
      },
      {
@@ -62,7 +62,12 @@
       "note": null
      }
     ],
-    "enso_oni_correlation": 0.991,
+    "enso_oni_correlation": 0.9910040860677389,
+    "tcr_reference": {
+     "value": 1.8,
+     "ci_low": 1.2,
+     "ci_high": 2.4
+    },
     "datasets": [
      {
       "id": "hadcrut5",
@@ -74,54 +79,54 @@
       },
       "n": 155,
       "method": "Prais-Winsten AR(1) itéré",
-      "rho": 0.71,
-      "r2": 0.928,
-      "residual_sd": 0.112,
+      "rho": 0.7098463842377164,
+      "r2": 0.927588829268068,
+      "residual_sd": 0.11164335172430494,
       "coefficients": [
        {
         "name": "constante",
         "label": "Constante",
         "unit": "°C",
-        "value": -0.3703,
-        "ci_low": -0.4265,
-        "ci_high": -0.314,
-        "p_value": 0.0
+        "value": -0.37026813925148894,
+        "ci_low": -0.42654239378088155,
+        "ci_high": -0.31399388472209633,
+        "p_value": 2.610461326763977e-26
        },
        {
         "name": "anthropique",
         "label": "Forçage anthropique",
         "unit": "°C par W/m²",
-        "value": 0.4663,
-        "ci_low": 0.4169,
-        "ci_high": 0.5157,
-        "p_value": 0.0
+        "value": 0.4663016806631669,
+        "ci_low": 0.41691371899736485,
+        "ci_high": 0.515689642328969,
+        "p_value": 8.124325399649495e-41
        },
        {
         "name": "volcans",
         "label": "Forçage volcanique (décalé de 6 mois)",
         "unit": "°C par W/m²",
-        "value": 0.1358,
-        "ci_low": 0.074,
-        "ci_high": 0.1976,
-        "p_value": 0.000026
+        "value": 0.1357553458287798,
+        "ci_low": 0.0739570536662161,
+        "ci_high": 0.19755363799134348,
+        "p_value": 0.000026079593784068598
        },
        {
         "name": "soleil",
         "label": "Forçage solaire",
         "unit": "°C par W/m²",
-        "value": 0.1683,
-        "ci_low": -0.3195,
-        "ci_high": 0.6561,
-        "p_value": 0.496475
+        "value": 0.16829074455485937,
+        "ci_low": -0.3195121874255446,
+        "ci_high": 0.6560936765352634,
+        "p_value": 0.4964746652431601
        },
        {
         "name": "enso",
         "label": "ENSO, Niño 3.4 (décalé de 3 mois)",
         "unit": "°C par °C",
-        "value": 0.1172,
-        "ci_low": 0.0974,
-        "ci_high": 0.137,
-        "p_value": 0.0
+        "value": 0.11720337767542283,
+        "ci_low": 0.09738862863894948,
+        "ci_high": 0.13701812671189617,
+        "p_value": 8.297140379555321e-23
        }
       ],
       "coefficients_ols": [
@@ -129,58 +134,58 @@
         "name": "constante",
         "label": "Constante",
         "unit": "°C",
-        "value": -0.3695,
-        "ci_low": -0.4158,
-        "ci_high": -0.3233,
-        "p_value": 0.0
+        "value": -0.36952905216466914,
+        "ci_low": -0.415772746484023,
+        "ci_high": -0.32328535784531526,
+        "p_value": 1.0545154266791713e-33
        },
        {
         "name": "anthropique",
         "label": "Forçage anthropique",
         "unit": "°C par W/m²",
-        "value": 0.4627,
-        "ci_low": 0.4316,
-        "ci_high": 0.4937,
-        "p_value": 0.0
+        "value": 0.46266498001086737,
+        "ci_low": 0.43158112168830853,
+        "ci_high": 0.4937488383334262,
+        "p_value": 3.720487484162976e-64
        },
        {
         "name": "volcans",
         "label": "Forçage volcanique (décalé de 6 mois)",
         "unit": "°C par W/m²",
-        "value": 0.1433,
-        "ci_low": 0.1012,
-        "ci_high": 0.1853,
-        "p_value": 0.0
+        "value": 0.14329335773063737,
+        "ci_low": 0.10124112249337686,
+        "ci_high": 0.18534559296789788,
+        "p_value": 3.3126602786639404e-10
        },
        {
         "name": "soleil",
         "label": "Forçage solaire",
         "unit": "°C par W/m²",
-        "value": 0.5547,
-        "ci_low": 0.0689,
-        "ci_high": 1.0404,
-        "p_value": 0.025501
+        "value": 0.5546700562858838,
+        "ci_low": 0.06891626137122936,
+        "ci_high": 1.0404238512005384,
+        "p_value": 0.0255013377883563
        },
        {
         "name": "enso",
         "label": "ENSO, Niño 3.4 (décalé de 3 mois)",
         "unit": "°C par °C",
-        "value": 0.119,
-        "ci_low": 0.0872,
-        "ci_high": 0.1508,
-        "p_value": 0.0
+        "value": 0.1190104968899563,
+        "ci_low": 0.08722210559825724,
+        "ci_high": 0.15079888818165535,
+        "p_value": 9.153562807750597e-12
        }
       ],
       "vif": {
-       "anthropique": 1.03,
-       "volcans": 1.02,
-       "soleil": 1.03,
-       "enso": 1.01
+       "anthropique": 1.0255185812841259,
+       "volcans": 1.023538084439283,
+       "soleil": 1.0250427253024228,
+       "enso": 1.0103589760231046
       },
       "tcr": {
-       "value": 1.83,
-       "ci_low": 1.64,
-       "ci_high": 2.03
+       "value": 1.832565605006246,
+       "ci_low": 1.638470915659644,
+       "ci_high": 2.026660294352848
       },
       "attributions": [
        {
@@ -193,16 +198,16 @@
          "end": 1900
         },
         "anthropogenic": {
-         "value": 1.062,
-         "ci_low": 0.949,
-         "ci_high": 1.174
+         "value": 1.061837900877903,
+         "ci_low": 0.9493742068391611,
+         "ci_high": 1.174301594916645
         },
         "natural": {
-         "value": 0.035,
-         "ci_low": 0.019,
-         "ci_high": 0.051
+         "value": 0.03527067682300821,
+         "ci_low": 0.019372519849426437,
+         "ci_high": 0.051168833796589985
         },
-        "observed": 1.091,
+        "observed": 1.0914005882352942,
         "reference_anthropogenic": {
          "value": 1.07,
          "ci_low": 0.9,
@@ -225,16 +230,16 @@
          "end": 1900
         },
         "anthropogenic": {
-         "value": 1.247,
-         "ci_low": 1.115,
-         "ci_high": 1.379
+         "value": 1.247272346366738,
+         "ci_low": 1.115168514483549,
+         "ci_high": 1.3793761782499268
         },
         "natural": {
-         "value": 0.033,
-         "ci_low": 0.015,
-         "ci_high": 0.051
+         "value": 0.033049453540894266,
+         "ci_low": 0.015042454955997802,
+         "ci_high": 0.05105645212579073
         },
-        "observed": 1.295,
+        "observed": 1.295420588235294,
         "reference_anthropogenic": {
          "value": 1.24,
          "ci_low": 1.0,
@@ -282,6 +287,16 @@
        "alpha": 0.05,
        "p_value_classical": 0.0
       },
+      "slope_observed": {
+       "value": 0.204694444444,
+       "ci_low": 0.179481481481,
+       "ci_high": 0.234111111111
+      },
+      "slope_adjusted": {
+       "value": 0.196194399535,
+       "ci_low": 0.179427366244,
+       "ci_high": 0.213846077003
+      },
       "residual_trend_p": 0.316545,
       "robustness": [
        {
@@ -292,14 +307,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4705,
-         "ci_low": 0.4205,
-         "ci_high": 0.5204
+         "value": 0.4704545886519971,
+         "ci_low": 0.4205117224791764,
+         "ci_high": 0.5203974548248177
         },
-        "attributable": 1.258,
-        "tcr": 1.85,
-        "rho": 0.705,
-        "r2": 0.925,
+        "attributable": 1.2583806213446593,
+        "tcr": 1.8488865334023485,
+        "rho": 0.7045340066643975,
+        "r2": 0.9246618994387676,
         "in_range": true
        },
        {
@@ -310,14 +325,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4696,
-         "ci_low": 0.4204,
-         "ci_high": 0.5188
+         "value": 0.46957068231505866,
+         "ci_low": 0.420388059226338,
+         "ci_high": 0.5187533054037794
         },
-        "attributable": 1.256,
-        "tcr": 1.85,
-        "rho": 0.697,
-        "r2": 0.925,
+        "attributable": 1.256016332352019,
+        "tcr": 1.8454127814981807,
+        "rho": 0.6974353108838519,
+        "r2": 0.9253324328885041,
         "in_range": true
        },
        {
@@ -328,14 +343,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4717,
-         "ci_low": 0.4202,
-         "ci_high": 0.5232
+         "value": 0.47169182242368246,
+         "ci_low": 0.4202151719816421,
+         "ci_high": 0.5231684728657229
         },
-        "attributable": 1.262,
-        "tcr": 1.85,
-        "rho": 0.698,
-        "r2": 0.918,
+        "attributable": 1.2616899970844584,
+        "tcr": 1.8537488621250722,
+        "rho": 0.6977516891854846,
+        "r2": 0.918354723292668,
         "in_range": true
        },
        {
@@ -346,14 +361,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4669,
-         "ci_low": 0.4166,
-         "ci_high": 0.5172
+         "value": 0.4668938309576459,
+         "ci_low": 0.416584791245794,
+         "ci_high": 0.5172028706694979
         },
-        "attributable": 1.249,
-        "tcr": 1.83,
-        "rho": 0.72,
-        "r2": 0.927,
+        "attributable": 1.2488562409093142,
+        "tcr": 1.8348927556635486,
+        "rho": 0.7204484170523745,
+        "r2": 0.9273480571930384,
         "in_range": true
        },
        {
@@ -364,14 +379,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4663,
-         "ci_low": 0.4169,
-         "ci_high": 0.5157
+         "value": 0.4663016806631669,
+         "ci_low": 0.41691371899736485,
+         "ci_high": 0.515689642328969
         },
-        "attributable": 1.247,
-        "tcr": 1.83,
-        "rho": 0.71,
-        "r2": 0.928,
+        "attributable": 1.247272346366738,
+        "tcr": 1.832565605006246,
+        "rho": 0.7098463842377164,
+        "r2": 0.927588829268068,
         "in_range": true
        },
        {
@@ -382,14 +397,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4686,
-         "ci_low": 0.4167,
-         "ci_high": 0.5205
+         "value": 0.46859524450121404,
+         "ci_low": 0.41670432330662466,
+         "ci_high": 0.5204861656958034
         },
-        "attributable": 1.253,
-        "tcr": 1.84,
-        "rho": 0.709,
-        "r2": 0.92,
+        "attributable": 1.25340721327469,
+        "tcr": 1.8415793108897713,
+        "rho": 0.709275126829227,
+        "r2": 0.9199970316587953,
         "in_range": true
        },
        {
@@ -400,14 +415,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.464,
-         "ci_low": 0.4145,
-         "ci_high": 0.5134
+         "value": 0.4639786400351821,
+         "ci_low": 0.41451832533894994,
+         "ci_high": 0.5134389547314142
         },
-        "attributable": 1.241,
-        "tcr": 1.82,
-        "rho": 0.714,
-        "r2": 0.928,
+        "attributable": 1.2410586343967291,
+        "tcr": 1.8234360553382656,
+        "rho": 0.7141583504964426,
+        "r2": 0.928260278096491,
         "in_range": true
        },
        {
@@ -418,14 +433,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4638,
-         "ci_low": 0.4152,
-         "ci_high": 0.5123
+         "value": 0.46375916475873774,
+         "ci_low": 0.41524057912081236,
+         "ci_high": 0.5122777503966631
         },
-        "attributable": 1.24,
-        "tcr": 1.82,
-        "rho": 0.702,
-        "r2": 0.928,
+        "attributable": 1.2404715778743702,
+        "tcr": 1.8225735175018394,
+        "rho": 0.7019856222743117,
+        "r2": 0.928282702680139,
         "in_range": true
        },
        {
@@ -436,14 +451,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4662,
-         "ci_low": 0.4151,
-         "ci_high": 0.5173
+         "value": 0.46618636152955695,
+         "ci_low": 0.4150602811056997,
+         "ci_high": 0.5173124419534142
         },
-        "attributable": 1.247,
-        "tcr": 1.83,
-        "rho": 0.703,
-        "r2": 0.921,
+        "attributable": 1.246963888618625,
+        "tcr": 1.832112400811159,
+        "rho": 0.7025504258223211,
+        "r2": 0.9205887474415733,
         "in_range": true
        },
        {
@@ -454,14 +469,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.1007,
-         "ci_low": -0.0666,
-         "ci_high": 0.268
+         "value": 0.10072088752920755,
+         "ci_low": -0.06655683133060125,
+         "ci_high": 0.26799860638901635
         },
-        "attributable": 0.215,
-        "tcr": 0.4,
-        "rho": 0.985,
-        "r2": 0.176,
+        "attributable": 0.21542369106072973,
+        "tcr": 0.39583308798978567,
+        "rho": 0.9851267519265927,
+        "r2": 0.17603608544087934,
         "in_range": false
        },
        {
@@ -472,14 +487,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.3817,
-         "ci_low": 0.3453,
-         "ci_high": 0.418
+         "value": 0.3816521913121579,
+         "ci_low": 0.3453360229018445,
+         "ci_high": 0.41796835972247126
         },
-        "attributable": 1.255,
-        "tcr": 1.5,
-        "rho": 0.682,
-        "r2": 0.937,
+        "attributable": 1.254503756346858,
+        "tcr": 1.4998931118567806,
+        "rho": 0.682226258933488,
+        "r2": 0.9367236830377563,
         "in_range": true
        },
        {
@@ -490,14 +505,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4096,
-         "ci_low": 0.3897,
-         "ci_high": 0.4294
+         "value": 0.40955174416711165,
+         "ci_low": 0.38966702616702514,
+         "ci_high": 0.42943646216719816
         },
-        "attributable": 1.095,
-        "tcr": 1.61,
-        "rho": 0.134,
-        "r2": 0.971,
+        "attributable": 1.0954765682581704,
+        "tcr": 1.6095383545767488,
+        "rho": 0.1336911855904282,
+        "r2": 0.9714852708074115,
         "in_range": true
        }
       ],
@@ -1927,54 +1942,54 @@
       },
       "n": 146,
       "method": "Prais-Winsten AR(1) itéré",
-      "rho": 0.697,
-      "r2": 0.935,
-      "residual_sd": 0.103,
+      "rho": 0.6970399150596622,
+      "r2": 0.9349589498375537,
+      "residual_sd": 0.10331218302670336,
       "coefficients": [
        {
         "name": "constante",
         "label": "Constante",
         "unit": "°C",
-        "value": -0.3624,
-        "ci_low": -0.4155,
-        "ci_high": -0.3093,
-        "p_value": 0.0
+        "value": -0.3623914951021384,
+        "ci_low": -0.41553291561258765,
+        "ci_high": -0.3092500745916892,
+        "p_value": 4.4708072837489505e-27
        },
        {
         "name": "anthropique",
         "label": "Forçage anthropique",
         "unit": "°C par W/m²",
-        "value": 0.4469,
-        "ci_low": 0.4014,
-        "ci_high": 0.4924,
-        "p_value": 0.0
+        "value": 0.4469032032421813,
+        "ci_low": 0.40142312967717714,
+        "ci_high": 0.49238327680718547,
+        "p_value": 1.430842011688178e-41
        },
        {
         "name": "volcans",
         "label": "Forçage volcanique (décalé de 6 mois)",
         "unit": "°C par W/m²",
-        "value": 0.1328,
-        "ci_low": 0.0726,
-        "ci_high": 0.1929,
-        "p_value": 0.000025
+        "value": 0.13275342421349132,
+        "ci_low": 0.0725709259153215,
+        "ci_high": 0.19293592251166114,
+        "p_value": 0.00002492190437207981
        },
        {
         "name": "soleil",
         "label": "Forçage solaire",
         "unit": "°C par W/m²",
-        "value": 0.1863,
-        "ci_low": -0.2821,
-        "ci_high": 0.6547,
-        "p_value": 0.433023
+        "value": 0.18629039467143538,
+        "ci_low": -0.28211628224709917,
+        "ci_high": 0.6546970715899699,
+        "p_value": 0.4330232021767355
        },
        {
         "name": "enso",
         "label": "ENSO, Niño 3.4 (décalé de 3 mois)",
         "unit": "°C par °C",
-        "value": 0.1098,
-        "ci_low": 0.0903,
-        "ci_high": 0.1293,
-        "p_value": 0.0
+        "value": 0.10978881510548716,
+        "ci_low": 0.09025605026637173,
+        "ci_high": 0.12932157994460258,
+        "p_value": 5.8202209636980556e-21
        }
       ],
       "coefficients_ols": [
@@ -1982,58 +1997,58 @@
         "name": "constante",
         "label": "Constante",
         "unit": "°C",
-        "value": -0.3669,
-        "ci_low": -0.4115,
-        "ci_high": -0.3223,
-        "p_value": 0.0
+        "value": -0.3668592709684278,
+        "ci_low": -0.4114623600000079,
+        "ci_high": -0.3222561819368477,
+        "p_value": 3.822342530364541e-34
        },
        {
         "name": "anthropique",
         "label": "Forçage anthropique",
         "unit": "°C par W/m²",
-        "value": 0.451,
-        "ci_low": 0.4237,
-        "ci_high": 0.4784,
-        "p_value": 0.0
+        "value": 0.4510384981500206,
+        "ci_low": 0.4236934806812739,
+        "ci_high": 0.47838351561876735,
+        "p_value": 1.5186577409311942e-67
        },
        {
         "name": "volcans",
         "label": "Forçage volcanique (décalé de 6 mois)",
         "unit": "°C par W/m²",
-        "value": 0.111,
-        "ci_low": 0.0683,
-        "ci_high": 0.1538,
-        "p_value": 1e-6
+        "value": 0.11103811315097371,
+        "ci_low": 0.06826473163680838,
+        "ci_high": 0.15381149466513905,
+        "p_value": 9.324985139085785e-7
        },
        {
         "name": "soleil",
         "label": "Forçage solaire",
         "unit": "°C par W/m²",
-        "value": 0.4622,
-        "ci_low": 0.0041,
-        "ci_high": 0.9203,
-        "p_value": 0.048024
+        "value": 0.46217742071334966,
+        "ci_low": 0.004074311579068457,
+        "ci_high": 0.9202805298476309,
+        "p_value": 0.04802393611864267
        },
        {
         "name": "enso",
         "label": "ENSO, Niño 3.4 (décalé de 3 mois)",
         "unit": "°C par °C",
-        "value": 0.1113,
-        "ci_low": 0.0827,
-        "ci_high": 0.14,
-        "p_value": 0.0
+        "value": 0.11132367115113738,
+        "ci_low": 0.08269439573241469,
+        "ci_high": 0.13995294656986007,
+        "p_value": 2.330796214912823e-12
        }
       ],
       "vif": {
-       "anthropique": 1.02,
-       "volcans": 1.04,
-       "soleil": 1.03,
-       "enso": 1.02
+       "anthropique": 1.0223070041034177,
+       "volcans": 1.0374537083388549,
+       "soleil": 1.028591760604702,
+       "enso": 1.0206338842305955
       },
       "tcr": {
-       "value": 1.76,
-       "ci_low": 1.58,
-       "ci_high": 1.94
+       "value": 1.7563295887417727,
+       "ci_low": 1.5775928996313062,
+       "ci_high": 1.935066277852239
       },
       "attributions": [
        {
@@ -2046,14 +2061,14 @@
          "end": 1900
         },
         "anthropogenic": {
-         "value": 1.018,
-         "ci_low": 0.914,
-         "ci_high": 1.121
+         "value": 1.0176646984231479,
+         "ci_low": 0.9140998436335279,
+         "ci_high": 1.1212295532127678
         },
         "natural": {
-         "value": 0.035,
-         "ci_low": 0.019,
-         "ci_high": 0.05
+         "value": 0.0345398240970288,
+         "ci_low": 0.019072860409612244,
+         "ci_high": 0.05000678778444535
         },
         "observed": null,
         "reference_anthropogenic": {
@@ -2078,14 +2093,14 @@
          "end": 1900
         },
         "anthropogenic": {
-         "value": 1.195,
-         "ci_low": 1.074,
-         "ci_high": 1.317
+         "value": 1.1953849407403956,
+         "ci_low": 1.0737340001139761,
+         "ci_high": 1.317035881366815
         },
         "natural": {
-         "value": 0.033,
-         "ci_low": 0.016,
-         "ci_high": 0.05
+         "value": 0.03288312512640593,
+         "ci_low": 0.015590108317649287,
+         "ci_high": 0.050176141935162566
         },
         "observed": null,
         "reference_anthropogenic": {
@@ -2135,6 +2150,16 @@
        "alpha": 0.05,
        "p_value_classical": 0.0
       },
+      "slope_observed": {
+       "value": 0.202941176471,
+       "ci_low": 0.175,
+       "ci_high": 0.227586206897
+      },
+      "slope_adjusted": {
+       "value": 0.196953303356,
+       "ci_low": 0.177499727473,
+       "ci_high": 0.215027905964
+      },
       "residual_trend_p": 0.326209,
       "robustness": [
        {
@@ -2145,14 +2170,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4509,
-         "ci_low": 0.4058,
-         "ci_high": 0.496
+         "value": 0.4509219127863865,
+         "ci_low": 0.40581627484480487,
+         "ci_high": 0.4960275507279681
         },
-        "attributable": 1.206,
-        "tcr": 1.77,
-        "rho": 0.683,
-        "r2": 0.933,
+        "attributable": 1.2061342592404674,
+        "tcr": 1.772123117250499,
+        "rho": 0.6828551267913132,
+        "r2": 0.9331516826004134,
         "in_range": true
        },
        {
@@ -2163,14 +2188,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4502,
-         "ci_low": 0.4052,
-         "ci_high": 0.4953
+         "value": 0.4502426382327001,
+         "ci_low": 0.4051948896506231,
+         "ci_high": 0.4952903868147771
         },
-        "attributable": 1.204,
-        "tcr": 1.77,
-        "rho": 0.684,
-        "r2": 0.934,
+        "attributable": 1.204317323120489,
+        "tcr": 1.7694535682545116,
+        "rho": 0.6843249957870479,
+        "r2": 0.933692354963449,
         "in_range": true
        },
        {
@@ -2181,14 +2206,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4522,
-         "ci_low": 0.4074,
-         "ci_high": 0.4969
+         "value": 0.45216949900902054,
+         "ci_low": 0.407421291335031,
+         "ci_high": 0.49691770668301005
         },
-        "attributable": 1.209,
-        "tcr": 1.78,
-        "rho": 0.666,
-        "r2": 0.931,
+        "attributable": 1.2094713259072367,
+        "tcr": 1.7770261311054507,
+        "rho": 0.6664429517609495,
+        "r2": 0.9308938871879685,
         "in_range": true
        },
        {
@@ -2199,14 +2224,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4474,
-         "ci_low": 0.4016,
-         "ci_high": 0.4931
+         "value": 0.4473676776404373,
+         "ci_low": 0.4016370425823186,
+         "ci_high": 0.493098312698556
         },
-        "attributable": 1.197,
-        "tcr": 1.76,
-        "rho": 0.699,
-        "r2": 0.935,
+        "attributable": 1.1966273254380362,
+        "tcr": 1.7581549731269186,
+        "rho": 0.6994720641609871,
+        "r2": 0.9346589487473134,
         "in_range": true
        },
        {
@@ -2217,14 +2242,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4469,
-         "ci_low": 0.4014,
-         "ci_high": 0.4924
+         "value": 0.4469032032421813,
+         "ci_low": 0.40142312967717714,
+         "ci_high": 0.49238327680718547
         },
-        "attributable": 1.195,
-        "tcr": 1.76,
-        "rho": 0.697,
-        "r2": 0.935,
+        "attributable": 1.1953849407403956,
+        "tcr": 1.7563295887417727,
+        "rho": 0.6970399150596622,
+        "r2": 0.9349589498375537,
         "in_range": true
        },
        {
@@ -2235,14 +2260,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4494,
-         "ci_low": 0.4043,
-         "ci_high": 0.4945
+         "value": 0.44941425171854965,
+         "ci_low": 0.40433685580522516,
+         "ci_high": 0.49449164763187414
         },
-        "attributable": 1.202,
-        "tcr": 1.77,
-        "rho": 0.677,
-        "r2": 0.932,
+        "attributable": 1.202101539575095,
+        "tcr": 1.7661980092539002,
+        "rho": 0.6765628788141481,
+        "r2": 0.9318987261393541,
         "in_range": true
        },
        {
@@ -2253,14 +2278,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.445,
-         "ci_low": 0.3998,
-         "ci_high": 0.4903
+         "value": 0.44503894881521794,
+         "ci_low": 0.399798966333787,
+         "ci_high": 0.4902789312966489
         },
-        "attributable": 1.19,
-        "tcr": 1.75,
-        "rho": 0.693,
-        "r2": 0.935,
+        "attributable": 1.1903983985730238,
+        "tcr": 1.7490030688438065,
+        "rho": 0.6931484331045773,
+        "r2": 0.9347464331729118,
         "in_range": true
        },
        {
@@ -2271,14 +2296,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4448,
-         "ci_low": 0.4,
-         "ci_high": 0.4897
+         "value": 0.44483952120278814,
+         "ci_low": 0.3999561337772369,
+         "ci_high": 0.4897229086283394
         },
-        "attributable": 1.19,
-        "tcr": 1.75,
-        "rho": 0.689,
-        "r2": 0.935,
+        "attributable": 1.18986496591258,
+        "tcr": 1.7482193183269574,
+        "rho": 0.6886468564522021,
+        "r2": 0.9349502795025791,
         "in_range": true
        },
        {
@@ -2289,14 +2314,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4477,
-         "ci_low": 0.4032,
-         "ci_high": 0.4922
+         "value": 0.4476836346406899,
+         "ci_low": 0.4031826866765646,
+         "ci_high": 0.4921845826048152
         },
-        "attributable": 1.197,
-        "tcr": 1.76,
-        "rho": 0.668,
-        "r2": 0.932,
+        "attributable": 1.1974724530569107,
+        "tcr": 1.7593966841379114,
+        "rho": 0.6681574657818361,
+        "r2": 0.9318989247998684,
         "in_range": true
        },
        {
@@ -2307,14 +2332,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.0422,
-         "ci_low": -0.1174,
-         "ci_high": 0.2018
+         "value": 0.042209076811833654,
+         "ci_low": -0.11742379260513296,
+         "ci_high": 0.20184194622880025
         },
-        "attributable": 0.09,
-        "tcr": 0.17,
-        "rho": 0.99,
-        "r2": -0.158,
+        "attributable": 0.0902775516194124,
+        "tcr": 0.16588167187050626,
+        "rho": 0.9904075915699473,
+        "r2": -0.158106984472685,
         "in_range": false
        },
        {
@@ -2325,14 +2350,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.3705,
-         "ci_low": 0.3362,
-         "ci_high": 0.4048
+         "value": 0.37047086404051777,
+         "ci_low": 0.3361826232094977,
+         "ci_high": 0.4047591048715378
         },
-        "attributable": 1.218,
-        "tcr": 1.46,
-        "rho": 0.674,
-        "r2": 0.941,
+        "attributable": 1.2177503526391789,
+        "tcr": 1.4559504956792348,
+        "rho": 0.6741019705264,
+        "r2": 0.9413437349529329,
         "in_range": true
        },
        {
@@ -2343,14 +2368,14 @@
          "end": 2025
         },
         "beta_anthro": {
-         "value": 0.4052,
-         "ci_low": 0.3856,
-         "ci_high": 0.4249
+         "value": 0.40520576122851043,
+         "ci_low": 0.3855534883075432,
+         "ci_high": 0.42485803414947765
         },
-        "attributable": 1.084,
-        "tcr": 1.59,
-        "rho": 0.157,
-        "r2": 0.973,
+        "attributable": 1.0838518528391956,
+        "tcr": 1.592458641628046,
+        "rho": 0.1574283771783042,
+        "r2": 0.9726292862340534,
         "in_range": true
        }
       ],
@@ -3699,54 +3724,54 @@
       },
       "n": 154,
       "method": "Prais-Winsten AR(1) itéré",
-      "rho": 0.698,
-      "r2": 0.925,
-      "residual_sd": 0.117,
+      "rho": 0.6977691177517088,
+      "r2": 0.9247909793676002,
+      "residual_sd": 0.11702839898599715,
       "coefficients": [
        {
         "name": "constante",
         "label": "Constante",
         "unit": "°C",
-        "value": -0.4083,
-        "ci_low": -0.4662,
-        "ci_high": -0.3505,
-        "p_value": 0.0
+        "value": -0.4083262960849222,
+        "ci_low": -0.46616901670535354,
+        "ci_high": -0.3504835754644909,
+        "p_value": 9.156590041944519e-29
        },
        {
         "name": "anthropique",
         "label": "Forçage anthropique",
         "unit": "°C par W/m²",
-        "value": 0.4854,
-        "ci_low": 0.4332,
-        "ci_high": 0.5376,
-        "p_value": 0.0
+        "value": 0.4854094669467236,
+        "ci_low": 0.43323579470258655,
+        "ci_high": 0.5375831391908606,
+        "p_value": 4.7938554999132976e-40
        },
        {
         "name": "volcans",
         "label": "Forçage volcanique (décalé de 6 mois)",
         "unit": "°C par W/m²",
-        "value": 0.1378,
-        "ci_low": 0.0722,
-        "ci_high": 0.2034,
-        "p_value": 0.000056
+        "value": 0.1377970514995119,
+        "ci_low": 0.07217412916686688,
+        "ci_high": 0.20341997383215693,
+        "p_value": 0.00005598091556242028
        },
        {
         "name": "soleil",
         "label": "Forçage solaire",
         "unit": "°C par W/m²",
-        "value": 0.116,
-        "ci_low": -0.4009,
-        "ci_high": 0.6329,
-        "p_value": 0.658019
+        "value": 0.11601067453762995,
+        "ci_low": -0.40085039893320706,
+        "ci_high": 0.6328717480084669,
+        "p_value": 0.6580190922343577
        },
        {
         "name": "enso",
         "label": "ENSO, Niño 3.4 (décalé de 3 mois)",
         "unit": "°C par °C",
-        "value": 0.1192,
-        "ci_low": 0.0979,
-        "ci_high": 0.1405,
-        "p_value": 0.0
+        "value": 0.11922436136284761,
+        "ci_low": 0.09791051343669942,
+        "ci_high": 0.14053820928899582,
+        "p_value": 4.373704469670428e-21
        }
       ],
       "coefficients_ols": [
@@ -3754,58 +3779,58 @@
         "name": "constante",
         "label": "Constante",
         "unit": "°C",
-        "value": -0.4112,
-        "ci_low": -0.4589,
-        "ci_high": -0.3636,
-        "p_value": 0.0
+        "value": -0.4112095816539093,
+        "ci_low": -0.4588504844327749,
+        "ci_high": -0.36356867887504374,
+        "p_value": 7.504964378730829e-37
        },
        {
         "name": "anthropique",
         "label": "Forçage anthropique",
         "unit": "°C par W/m²",
-        "value": 0.4887,
-        "ci_low": 0.4542,
-        "ci_high": 0.5231,
-        "p_value": 0.0
+        "value": 0.4886517802221242,
+        "ci_low": 0.454167859827835,
+        "ci_high": 0.5231357006164133,
+        "p_value": 3.1348247214502535e-61
        },
        {
         "name": "volcans",
         "label": "Forçage volcanique (décalé de 6 mois)",
         "unit": "°C par W/m²",
-        "value": 0.1554,
-        "ci_low": 0.1073,
-        "ci_high": 0.2036,
-        "p_value": 0.0
+        "value": 0.15543382206376977,
+        "ci_low": 0.10726913321633418,
+        "ci_high": 0.20359851091120534,
+        "p_value": 2.1452798503299998e-9
        },
        {
         "name": "soleil",
         "label": "Forçage solaire",
         "unit": "°C par W/m²",
-        "value": 0.4598,
-        "ci_low": -0.0757,
-        "ci_high": 0.9952,
-        "p_value": 0.091845
+        "value": 0.4597719183402252,
+        "ci_low": -0.07569377079129153,
+        "ci_high": 0.995237607471742,
+        "p_value": 0.09184473616478524
        },
        {
         "name": "enso",
         "label": "ENSO, Niño 3.4 (décalé de 3 mois)",
         "unit": "°C par °C",
-        "value": 0.1211,
-        "ci_low": 0.0874,
-        "ci_high": 0.1548,
-        "p_value": 0.0
+        "value": 0.1211092880472915,
+        "ci_low": 0.08737483110853972,
+        "ci_high": 0.15484374498604328,
+        "p_value": 4.9015030997215073e-11
        }
       ],
       "vif": {
-       "anthropique": 1.02,
-       "volcans": 1.02,
-       "soleil": 1.02,
-       "enso": 1.01
+       "anthropique": 1.016219266018201,
+       "volcans": 1.02279968789254,
+       "soleil": 1.0154378350597684,
+       "enso": 1.0105889349201764
       },
       "tcr": {
-       "value": 1.91,
-       "ci_low": 1.7,
-       "ci_high": 2.11
+       "value": 1.9076592051006238,
+       "ci_low": 1.7026166731811652,
+       "ci_high": 2.1127017370200822
       },
       "attributions": [
        {
@@ -3818,16 +3843,16 @@
          "end": 1900
         },
         "anthropogenic": {
-         "value": 1.105,
-         "ci_low": 0.987,
-         "ci_high": 1.224
+         "value": 1.105349156614533,
+         "ci_low": 0.9865419875345992,
+         "ci_high": 1.224156325694467
         },
         "natural": {
-         "value": 0.036,
-         "ci_low": 0.019,
-         "ci_high": 0.053
+         "value": 0.035677288755500455,
+         "ci_low": 0.01879709516514521,
+         "ci_high": 0.0525574823458557
         },
-        "observed": 1.154,
+        "observed": 1.1535156862745097,
         "reference_anthropogenic": {
          "value": 1.07,
          "ci_low": 0.9,
@@ -3850,14 +3875,14 @@
          "end": 1900
         },
         "anthropogenic": {
-         "value": 1.298,
-         "ci_low": 1.159,
-         "ci_high": 1.438
+         "value": 1.298382205970657,
+         "ci_low": 1.158827103990399,
+         "ci_high": 1.4379373079509148
         },
         "natural": {
-         "value": 0.032,
-         "ci_low": 0.013,
-         "ci_high": 0.051
+         "value": 0.03212207457515008,
+         "ci_low": 0.013035591871266385,
+         "ci_high": 0.05120855727903378
         },
         "observed": null,
         "reference_anthropogenic": {
@@ -3907,6 +3932,16 @@
        "alpha": 0.05,
        "p_value_classical": 0.0
       },
+      "slope_observed": {
+       "value": 0.2025,
+       "ci_low": 0.178181818182,
+       "ci_high": 0.23
+      },
+      "slope_adjusted": {
+       "value": 0.197127556561,
+       "ci_low": 0.178111615726,
+       "ci_high": 0.212655101844
+      },
       "residual_trend_p": 0.176553,
       "robustness": [
        {
@@ -3917,14 +3952,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4899,
-         "ci_low": 0.4366,
-         "ci_high": 0.5431
+         "value": 0.4898724953604492,
+         "ci_low": 0.4366095763893926,
+         "ci_high": 0.5431354143315058
         },
-        "attributable": 1.31,
-        "tcr": 1.93,
-        "rho": 0.7,
-        "r2": 0.922,
+        "attributable": 1.3103199967879067,
+        "tcr": 1.9251989067665654,
+        "rho": 0.7001332574021621,
+        "r2": 0.9221584828273615,
         "in_range": true
        },
        {
@@ -3935,14 +3970,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4895,
-         "ci_low": 0.4374,
-         "ci_high": 0.5415
+         "value": 0.48947020706130473,
+         "ci_low": 0.43739674843193854,
+         "ci_high": 0.5415436656906709
         },
-        "attributable": 1.309,
-        "tcr": 1.92,
-        "rho": 0.689,
-        "r2": 0.923,
+        "attributable": 1.309243948616525,
+        "tcr": 1.9236179137509277,
+        "rho": 0.6890910604155033,
+        "r2": 0.9230216932236813,
         "in_range": true
        },
        {
@@ -3953,14 +3988,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4918,
-         "ci_low": 0.4364,
-         "ci_high": 0.5471
+         "value": 0.49179107803762784,
+         "ci_low": 0.4364475771917756,
+         "ci_high": 0.54713457888348
         },
-        "attributable": 1.315,
-        "tcr": 1.93,
-        "rho": 0.695,
-        "r2": 0.915,
+        "attributable": 1.3154518571622034,
+        "tcr": 1.9327389366878776,
+        "rho": 0.6951410520369408,
+        "r2": 0.9147748828080069,
         "in_range": true
        },
        {
@@ -3971,14 +4006,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4851,
-         "ci_low": 0.4316,
-         "ci_high": 0.5387
+         "value": 0.4851346181674372,
+         "ci_low": 0.43160799978321485,
+         "ci_high": 0.5386612365516595
         },
-        "attributable": 1.298,
-        "tcr": 1.91,
-        "rho": 0.712,
-        "r2": 0.924,
+        "attributable": 1.2976470353803449,
+        "tcr": 1.9065790493980281,
+        "rho": 0.7122113738836828,
+        "r2": 0.9243565790676723,
         "in_range": true
        },
        {
@@ -3989,14 +4024,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4854,
-         "ci_low": 0.4332,
-         "ci_high": 0.5376
+         "value": 0.4854094669467236,
+         "ci_low": 0.43323579470258655,
+         "ci_high": 0.5375831391908606
         },
-        "attributable": 1.298,
-        "tcr": 1.91,
-        "rho": 0.698,
-        "r2": 0.925,
+        "attributable": 1.298382205970657,
+        "tcr": 1.9076592051006238,
+        "rho": 0.6977691177517088,
+        "r2": 0.9247909793676002,
         "in_range": true
        },
        {
@@ -4007,14 +4042,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4878,
-         "ci_low": 0.4321,
-         "ci_high": 0.5435
+         "value": 0.4878017192824823,
+         "ci_low": 0.4320617982441575,
+         "ci_high": 0.5435416403208071
         },
-        "attributable": 1.305,
-        "tcr": 1.92,
-        "rho": 0.704,
-        "r2": 0.916,
+        "attributable": 1.3047810466947125,
+        "tcr": 1.9170607567801554,
+        "rho": 0.7037831329727241,
+        "r2": 0.9158825255136657,
         "in_range": true
        },
        {
@@ -4025,14 +4060,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4824,
-         "ci_low": 0.4296,
-         "ci_high": 0.5351
+         "value": 0.4823949559472144,
+         "ci_low": 0.42964917307533107,
+         "ci_high": 0.5351407388190977
         },
-        "attributable": 1.29,
-        "tcr": 1.9,
-        "rho": 0.705,
-        "r2": 0.925,
+        "attributable": 1.2903189362819032,
+        "tcr": 1.8958121768725527,
+        "rho": 0.7047105020274828,
+        "r2": 0.9247575432703321,
         "in_range": true
        },
        {
@@ -4043,14 +4078,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4832,
-         "ci_low": 0.4318,
-         "ci_high": 0.5345
+         "value": 0.48316735745478884,
+         "ci_low": 0.43178545086622855,
+         "ci_high": 0.5345492640433491
         },
-        "attributable": 1.292,
-        "tcr": 1.9,
-        "rho": 0.689,
-        "r2": 0.925,
+        "attributable": 1.2923849700978642,
+        "tcr": 1.8988477147973202,
+        "rho": 0.6888470457347403,
+        "r2": 0.9249969642233633,
         "in_range": true
        },
        {
@@ -4061,14 +4096,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4856,
-         "ci_low": 0.4305,
-         "ci_high": 0.5406
+         "value": 0.4855547320651575,
+         "ci_low": 0.4305262195276551,
+         "ci_high": 0.5405832446026598
         },
-        "attributable": 1.299,
-        "tcr": 1.91,
-        "rho": 0.696,
-        "r2": 0.916,
+        "attributable": 1.2987707637919723,
+        "tcr": 1.908230097016069,
+        "rho": 0.6962096517927411,
+        "r2": 0.9160193988959094,
         "in_range": true
        },
        {
@@ -4079,14 +4114,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.0407,
-         "ci_low": -0.1446,
-         "ci_high": 0.2261
+         "value": 0.04074201810196856,
+         "ci_low": -0.14459202433547327,
+         "ci_high": 0.2260760605394104
         },
-        "attributable": 0.087,
-        "tcr": 0.16,
-        "rho": 0.986,
-        "r2": 0.004,
+        "attributable": 0.08713977940518043,
+        "tcr": 0.16011613114073647,
+        "rho": 0.9864755804767099,
+        "r2": 0.003733368611059218,
         "in_range": false
        },
        {
@@ -4097,14 +4132,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.3964,
-         "ci_low": 0.3646,
-         "ci_high": 0.4281
+         "value": 0.3963783845282029,
+         "ci_low": 0.36463908388959515,
+         "ci_high": 0.42811768516681065
         },
-        "attributable": 1.303,
-        "tcr": 1.56,
-        "rho": 0.61,
-        "r2": 0.944,
+        "attributable": 1.302909255193078,
+        "tcr": 1.5577670511958375,
+        "rho": 0.6100295218668715,
+        "r2": 0.9444055554959421,
         "in_range": true
        },
        {
@@ -4115,14 +4150,14 @@
          "end": 2024
         },
         "beta_anthro": {
-         "value": 0.4172,
-         "ci_low": 0.3988,
-         "ci_high": 0.4356
+         "value": 0.4172189767911717,
+         "ci_low": 0.39883264506819005,
+         "ci_high": 0.43560530851415336
         },
-        "attributable": 1.116,
-        "tcr": 1.64,
-        "rho": 0.053,
-        "r2": 0.973,
+        "attributable": 1.1159850236674462,
+        "tcr": 1.6396705787893049,
+        "rho": 0.05284877831236043,
+        "r2": 0.9726349178198381,
         "in_range": true
        }
       ],
@@ -5557,7 +5592,7 @@
       "id": "O4",
       "label": "Attribution",
       "satisfied": true,
-      "detail": "HadCRUT5 ✓ 2010-2019 : 1,06 °C [0,95 ; 1,17], référence [0,9 ; 1,3] ; 2016-2025 : 1,25 °C [1,11 ; 1,38], référence [1,0 ; 1,5] | GISTEMP v4 ✓ 2010-2019 : 1,02 °C [0,91 ; 1,12], référence [0,9 ; 1,3] ; 2016-2025 : 1,20 °C [1,07 ; 1,32], référence [1,0 ; 1,5] | Berkeley Earth ✓ 2010-2019 : 1,10 °C [0,99 ; 1,22], référence [0,9 ; 1,3] ; 2016-2025 : 1,30 °C [1,16 ; 1,44], référence [1,0 ; 1,5]"
+      "detail": "HadCRUT5 ✓ 2010-2019 : 1,06 °C [0,95 ; 1,17], référence [0,9 ; 1,3] ; 2016-2025 : 1,25 °C [1,12 ; 1,38], référence [1,0 ; 1,5] | GISTEMP v4 ✓ 2010-2019 : 1,02 °C [0,91 ; 1,12], référence [0,9 ; 1,3] ; 2016-2025 : 1,20 °C [1,07 ; 1,32], référence [1,0 ; 1,5] | Berkeley Earth ✓ 2010-2019 : 1,11 °C [0,99 ; 1,22], référence [0,9 ; 1,3] ; 2016-2025 : 1,30 °C [1,16 ; 1,44], référence [1,0 ; 1,5]"
      },
      {
       "id": "O5",
@@ -5581,12 +5616,12 @@
       "id": "O8",
       "label": "Robustesse",
       "satisfied": false,
-      "detail": "HadCRUT5 ✗ réchauffement attribué 2016-2025 de 0,21 à 1,26 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | GISTEMP v4 ✗ réchauffement attribué 2016-2025 de 0,09 à 1,22 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | Berkeley Earth ✗ réchauffement attribué 2016-2025 de 0,09 à 1,31 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 %"
+      "detail": "HadCRUT5 ✗ réchauffement attribué 2016-2025 de 0,22 à 1,26 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | GISTEMP v4 ✗ réchauffement attribué 2016-2025 de 0,09 à 1,22 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | Berkeley Earth ✗ réchauffement attribué 2016-2025 de 0,09 à 1,32 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 %"
      }
     ],
     "script": "etl/demonstration.py",
     "etl_version": "0.1.0+local",
-    "extracted_at": "2026-11-17T21:37:59Z"
+    "extracted_at": "2026-11-18T09:05:50Z"
    }
   },
   {

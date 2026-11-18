@@ -527,6 +527,28 @@ satisfait mais qu'un autre critère échoue ; « signal non établi » si O3 éc
   à la publication de P10.1, elle devient fausse. Proposition : la reformuler en renvoyant à l'onglet, avec la
   relecture indépendante exigée par M6.
 
+### Journal P10
+
+- 17/11/2026 : sonde (`docs/sonde-p10.md`), cadrage, décisions D-AD à D-AH, critères O1-O9 validés avant tout calcul.
+- Précisions de mise en œuvre, prises en écrivant le code et avant le premier calcul : le fichier PSL des valeurs
+  absolues du Niño 3.4 s'arrêtant en août 2025, l'indice est construit sur le fichier des **anomalies** (complet jusqu'en
+  2025) ; retirer une climatologie mobile d'une anomalie à base fixe donne exactement le même indice. Températures lues
+  dans les JSON publiés ; ONI mensuel rattaché au mois central de chaque saison. Contrôle O2 de corrélation calculé sur
+  les moyennes janvier-décembre de l'indice et l'ONI annuel publié.
+- 17/11/2026, premier calcul (`etl/demonstration.py`, `docs/validation-p10.md`) : O1 à O7 conformes pour les trois
+  jeux ; réchauffement d'origine humaine 2016-2025 de 1,20 à 1,30 °C selon le jeu (IGCC 2025 : 1,24 [1,0 ; 1,5]) ;
+  réponse transitoire implicite de 1,76 à 1,91 °C. **O8 non conforme** sur la seule variante « forçage anthropique à
+  5 % » (0,09 à 0,22 °C) : l'estimateur AR(1) dégénère (ρ ≈ 0,99). Critère non modifié ; confiance « moyenne » (D-AG) ;
+  écart expliqué, en attente de la décision de Grég.
+- Mesure de couverture sur données simulées au ρ estimé (0,7) : environ 92 %, et non « 92 à 94 % » comme écrit au
+  cadrage (mesuré alors pour ρ de 0,3 à 0,6) ; limite publiée corrigée.
+- 18/11/2026, relecture indépendante (M6, D-AH) : 21 signalements, tous traités (`docs/relecture-p8.md`) ; dont un
+  défaut de double arrondi corrigé par un stockage en pleine précision, et un garde-fou : le contrôle « D-AH cohérence
+  de la synthèse » échoue dès qu'une autre analyse de l'onglet est publiée. Affirmation `limite-attribution`
+  reformulée et relue.
+- Constat hors P10 : la validation P8 était déjà non conforme sur `main` avant P10 (M3 : case `amoc / monde` sans
+  affirmation ; M6 : `lacune-gulf-stream-monde` non relue), à la suite de P9. Non traité ici.
+
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 
 > **Demande de Grég du 17/11/2026** : ajouter le Gulf Stream à la section Monde, avec quatre grandeurs : débit,

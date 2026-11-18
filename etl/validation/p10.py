@@ -17,6 +17,10 @@ from etl.schema import Demonstration, ValidationCheck, ValidationReport
 OUT = ROOT / "docs" / "validation-p10-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p10.json"
 ACCEPTED: dict[str, str] = {}   # écarts acceptés par Grég après calcul : aucun
+# Analyses de l'onglet dont la synthèse tient compte (affirmations `limite-attribution` et `limite-projections` de
+# etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.2 Gironde, P10.3 France, P10.5 projections) rend ces
+# affirmations à revoir : ce contrôle échoue jusqu'à leur reformulation, relue (M6), et la mise à jour de cette liste.
+SYNTHESIS_COVERS = {"p10.1"}
 
 
 def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
@@ -27,6 +31,16 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
         ok = c.satisfied or name in ACCEPTED
         status = "✅ conforme" if c.satisfied else (f"☑ {ACCEPTED[name]}" if name in ACCEPTED else "❌ non conforme")
         out.append(ValidationCheck(name=name, kind="critère", status=status, satisfied=ok, detail=c.detail))
+    published = sorted(a.phase for a in demo.analyses if a.status == "publie")
+    extra = [ph for ph in published if ph not in SYNTHESIS_COVERS]
+    out.append(ValidationCheck(
+        name="D-AH cohérence de la synthèse", kind="critère",
+        status="✅ conforme" if not extra else "❌ non conforme", satisfied=not extra,
+        detail=(f"analyses publiées : {', '.join(published)} ; la synthèse (limite-attribution, limite-projections) en "
+                "tient compte" if not extra else
+                f"analyses publiées que la synthèse ne prend pas en compte : {', '.join(extra)} ; reformuler "
+                "limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis "
+                "compléter SYNTHESIS_COVERS")))
     out.append(ValidationCheck(
         name="O9 technique", kind="info", status="ℹ️ information", satisfied=True,
         detail="Tests, contrat et construction de l'onglet vérifiés par la CI (ci.yml), hors de ce module, comme pour "
