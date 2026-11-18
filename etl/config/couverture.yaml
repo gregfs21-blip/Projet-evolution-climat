@@ -2,7 +2,8 @@
 # Le statut « publié » est calculé par l'ETL (un indicateur publié porte l'une des `variables` à cette échelle) ;
 # il ne se déclare jamais à la main. Les autres statuts sont déclarés ici :
 #   prevu        : source ouverte identifiée, indicateur à construire
-#   sans-donnee  : aucune série ouverte assez longue pour une tendance ; dit tel quel, pas masqué
+#   sans-donnee  : aucune série ouverte exploitable (inexistante, trop courte pour une tendance, ou inaccessible) ;
+#                  dit tel quel, pas masqué
 #   instantane   : valeur du moment, pas une tendance climatique (affichage temps réel)
 # L'ordre est celui des instructions du projet.
 
@@ -111,7 +112,7 @@ parametres:
   - id: gulf-stream
     label: Gulf Stream (débit au détroit de Floride)
     echelles:
-      monde: {statut: sans-donnee, source: "Câble du détroit de Floride, NOAA AOML (quotidien depuis 1982)", note: "Serveur de la NOAA et archive NCEI inaccessibles depuis le 17/11/2026 ; contrôle d'accès chaque semaine (décision D-AA, P9)."}
+      monde: {statut: sans-donnee, source: "Câble du détroit de Floride, NOAA AOML (quotidien depuis 1982)", note: "Série ouverte, mais non téléchargeable par la chaîne automatique : le serveur de la NOAA refuse la connexion chiffrée depuis GitHub Actions et l'archive NCEI ne répond pas (constaté depuis le 17/11/2026) ; contrôle d'accès chaque semaine (décision D-AA, P9). Le câble lui-même est en panne depuis novembre 2023, relayé par une autre méthode."}
 
   - id: amoc
     label: Circulation de retournement atlantique (AMOC), dont le Gulf Stream est la branche ouest

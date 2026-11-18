@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-18T09:15:46Z",
+ "generated_at": "2026-11-18T10:41:59Z",
  "parameters": [
   {
    "id": "catastrophes",
@@ -1113,7 +1113,7 @@
      "scale": "monde",
      "status": "sans-donnee",
      "source": "Câble du détroit de Floride, NOAA AOML (quotidien depuis 1982)",
-     "note": "Serveur de la NOAA et archive NCEI inaccessibles depuis le 17/11/2026 ; contrôle d'accès chaque semaine (décision D-AA, P9).",
+     "note": "Série ouverte, mais non téléchargeable par la chaîne automatique : le serveur de la NOAA refuse la connexion chiffrée depuis GitHub Actions et l'archive NCEI ne répond pas (constaté depuis le 17/11/2026) ; contrôle d'accès chaque semaine (décision D-AA, P9). Le câble lui-même est en panne depuis novembre 2023, relayé par une autre méthode.",
      "indicators": []
     }
    ]

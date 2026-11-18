@@ -512,13 +512,54 @@ sections:
               Sur 1979-1994, le trou s'était creusé de {trou-ozone-monde|alt_trends.0.slope_per_decade|+.1} millions de
               km² par décennie (tendance significative, mais l'indicateur est classé « signal non établi » dans son
               ensemble).
-    literals: [5]
+      - title: Gulf Stream et gyre subpolaire (P9)
+        claims:
+          - id: monde-gulf-stream
+            kind: signal
+            params: [amoc]
+            literals: [0, 700]
+            text: >-
+              Dans la région du Gulf Stream, la couche de 0 à 700 m se réchauffe de
+              {temperature-0700-gulf-stream|slope|+.2} °C par décennie
+              ({temperature-0700-gulf-stream|start}-{temperature-0700-gulf-stream|end}) et sa salinité augmente de
+              {salinite-0700-gulf-stream|slope|+.2} psu par décennie
+              ({salinite-0700-gulf-stream|start}-{salinite-0700-gulf-stream|end}), d'après les analyses EN4 ; chaque
+              tendance ne commence qu'avec les années assez couvertes par les mesures.
+          - id: monde-gyre-subpolaire
+            kind: absence
+            params: [amoc]
+            literals: [0, 700]
+            text: >-
+              Au sud du Groenland, dans le gyre subpolaire, ni la température de 0 à 700 m
+              ({temperature-0700-gyre-subpolaire|slope|+.2} °C par décennie,
+              {temperature-0700-gyre-subpolaire|start}-{temperature-0700-gyre-subpolaire|end},
+              p {temperature-0700-gyre-subpolaire|p|p}) ni la salinité ({salinite-0700-gyre-subpolaire|slope|+.3} psu
+              par décennie, {salinite-0700-gyre-subpolaire|start}-{salinite-0700-gyre-subpolaire|end},
+              p {salinite-0700-gyre-subpolaire|p|p}) ne montrent de
+              tendance détectée après correction de l'autocorrélation.
+          - id: contexte-empreinte-amoc
+            kind: contexte
+            text: >-
+              Caesar et al. (2018) proposent comme empreinte d'un ralentissement de l'AMOC un refroidissement de la
+              surface de l'océan au sud du Groenland et un réchauffement dans la région du Gulf Stream. Cette empreinte
+              porte sur la température de surface, pas sur la couche de 0 à 700 m ; l'étude ne la teste pas, et son
+              interprétation reste discutée.
+            literals: [0, 700]
+            source: {label: "Caesar et al., 2018, Nature 556, 191-196", url: "https://doi.org/10.1038/s41586-018-0006-5"}
+          - id: contexte-amoc-giec
+            kind: contexte
+            text: >-
+              Le GIEC juge faible la confiance dans un déclin de l'AMOC au XXe siècle, et très probable son
+              affaiblissement au XXIe siècle, pour tous les scénarios d'émissions.
+            source: {label: "GIEC AR6, groupe I : chapitres 2 et 9 (XXe siècle) ; résumé pour décideurs, C.3.4 (XXIe siècle)", url: "https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-9/"}
+    literals: [5, 0, 700]
     conclusion: >-
-      À l'échelle du globe, les mesures vont toutes dans le même sens : les gaz à effet de serre augmentent, la Terre
+      À l'échelle du globe, les mesures vont dans le même sens : les gaz à effet de serre augmentent, la Terre
       accumule de l'énergie, l'air, la surface de l'océan et ses couches jusqu'à 2000 m se réchauffent, la mer monte
-      et la banquise arctique recule. Les tendances de la circulation (jet stream) et du nombre d'ouragans, elles, ne
-      sont pas établies, l'indice El Niño ne permet pas d'en juger, et la hausse du rythme du réchauffement de l'air
-      n'est pas significative au seuil de 5 %.
+      et la banquise arctique recule. Au sud du Groenland, en revanche, aucune tendance n'est détectée dans la couche
+      de 0 à 700 m. Les tendances de la circulation (jet stream, et AMOC mesurée directement depuis
+      2004) et du nombre d'ouragans, elles, ne sont pas établies, l'indice El Niño ne permet pas d'en juger, et la
+      hausse du rythme du réchauffement de l'air n'est pas significative au seuil de 5 %.
 
   # ------------------------------------------------------------------ COMPARAISON DES ÉCHELLES
   - id: echelles
@@ -673,9 +714,9 @@ sections:
                 Pas d'accélération détectée en Gironde sur {acc:tm-gironde|start}-{acc:tm-gironde|end} (p
                 {acc:tm-gironde|p|p}).
 
-  # ------------------------------------------------------------------ EXPLORATOIRE (P7)
+  # ------------------------------------------------------------------ EXPLORATOIRE (P7, P9)
   - id: exploratoire
-    title: Exploratoire (P7)
+    title: Exploratoire (P7, P9)
     optional: true
     pending: >-
       En attente du relevé des blocages atlantiques (P7). Les indicateurs exploratoires (blocages, énergie de
@@ -683,7 +724,9 @@ sections:
     intro: >-
       Blocages et énergie de convection : leur confiance est plafonnée à « signal non établi » quel que soit le
       résultat du test, car leur définition ou leur lien avec le phénomène visé est trop fragile pour plus. Le Z500
-      Atlantique-Europe, issu de la même phase mais non plafonné, figure dans la section Monde.
+      Atlantique-Europe, issu de la même phase mais non plafonné, figure dans la section Monde. Les mesures directes
+      de la circulation atlantique (P9) sont plafonnées de la même façon, faute d'une série assez longue ; la
+      température et la salinité des zones du Gulf Stream et du gyre subpolaire figurent dans la section Monde.
     groups:
       - title: Blocages atmosphériques (Atlantique-Europe)
         claims:
@@ -715,6 +758,19 @@ sections:
               géopotentiel, et d'autres indices des blocages donnent d'autres fréquences. Décaler le secteur de 10°
               vers l'est ne change pas le signe des pentes sur 1976-2025 (contrôle L4), mais un seul décalage a été
               testé.
+      - title: Circulation de retournement atlantique (AMOC)
+        claims:
+          - id: exp-amoc
+            kind: absence
+            params: [amoc]
+            literals: ["26,5"]
+            text: >-
+              À 26,5° N (réseau RAPID), ni le débit de l'AMOC ({amoc-debit-monde|slope|+.2} Sv par décennie), ni la
+              profondeur de son maximum ({amoc-profondeur-monde|slope|+.0} m par décennie), ni le transport de chaleur
+              vers le nord ({amoc-chaleur-monde|slope|+.2} PW par décennie) ne montrent de tendance détectée sur
+              {amoc-debit-monde|start}-{amoc-debit-monde|end}. Ces mesures directes, qui ne commencent qu'en 2004,
+              sont trop courtes pour séparer une tendance de la variabilité naturelle, notamment d'une décennie à
+              l'autre.
       - title: Orages (indicateur indirect)
         claims:
           - id: exp-cape

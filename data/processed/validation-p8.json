@@ -1,12 +1,15 @@
 {
   "schema_version": "1.0",
   "phase": "p8",
-  "generated_at": "2026-11-18T09:20:29Z",
-  "closure_ok": false,
-  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "generated_at": "2026-11-18T10:42:15Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
     "ace-monde",
     "aerosols-monde",
+    "amoc-chaleur-monde",
+    "amoc-debit-monde",
+    "amoc-profondeur-monde",
     "banquise-antarctique-fevrier-monde",
     "banquise-arctique-septembre-monde",
     "bilan-hydrique-bordeaux-paulin",
@@ -68,6 +71,8 @@
     "rr-cumul-gironde",
     "rx1day-gironde",
     "rx5day-gironde",
+    "salinite-0700-gulf-stream",
+    "salinite-0700-gyre-subpolaire",
     "spei12-bordeaux-paulin",
     "spei12-cap-ferret",
     "spei12-cazaux",
@@ -76,6 +81,8 @@
     "sst-hadsst-monde",
     "t500-bordeaux-era5",
     "t850-bordeaux-era5",
+    "temperature-0700-gulf-stream",
+    "temperature-0700-gyre-subpolaire",
     "temperature-berkeley-monde",
     "temperature-hadcrut5-monde",
     "tlt-rss-monde",
@@ -104,14 +111,14 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "60 affirmations qualifiées selon S1, aucune règle S2 enfreinte"
+      "detail": "63 affirmations qualifiées selon S1, aucune règle S2 enfreinte"
     },
     {
       "name": "M3 couverture",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "cases sans affirmation : amoc / monde"
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "chaque case publiée de la couverture a au moins une affirmation à son échelle"
     },
     {
       "name": "M4 comparaisons sur période commune (S3)",
@@ -130,16 +137,16 @@
     {
       "name": "M6 relecture indépendante",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "affirmations non relues ou modifiées depuis leur relecture : lacune-gulf-stream-monde"
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "relecture close, 89 affirmations relues dans leur rédaction actuelle (docs/relecture-p8.md)"
     },
     {
       "name": "M7 section exploratoire (P7)",
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "4 affirmations, toutes plafonnées"
+      "detail": "5 affirmations, toutes plafonnées"
     },
     {
       "name": "Accélération gmsl",
@@ -202,7 +209,7 @@
       "kind": "info",
       "status": "ℹ️ information",
       "satisfied": true,
-      "detail": "absence 18, acceleration 2, comparaison 8, contexte 4, information 8, lacune 12, signal 32"
+      "detail": "absence 20, acceleration 2, comparaison 8, contexte 6, information 8, lacune 12, signal 33"
     }
   ]
 }

@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Couverture" };
 const STATUS: Record<CoverageCell["status"], { label: string; tone: string }> = {
   publie: { label: "Publié", tone: "border-[var(--good)] bg-[var(--good-soft)] text-[var(--good)]" },
   prevu: { label: "Prévu", tone: "border-[var(--rule)] text-[var(--muted)]" },
-  "sans-donnee": { label: "Sans donnée ouverte", tone: "border-[var(--warm)] bg-[var(--warm-soft)] text-[var(--warm)]" },
+  "sans-donnee": { label: "Sans donnée ouverte exploitable", tone: "border-[var(--warm)] bg-[var(--warm-soft)] text-[var(--warm)]" },
   instantane: { label: "Instantané, hors tendance", tone: "border-dashed border-[var(--accent)] text-[var(--accent)]" },
 };
 
@@ -57,7 +57,7 @@ export default function CouverturePage() {
         <p className="text-lg">
           <b className="font-mono">{count("publie")}</b> case{count("publie") > 1 ? "s" : ""} publiée{count("publie") > 1 ? "s" : ""} sur{" "}
           <b className="font-mono">{cells.length}</b> · {count("prevu")} prévue{count("prevu") > 1 ? "s" : ""} ·{" "}
-          {count("sans-donnee")} sans donnée ouverte · {count("instantane")} instantanée{count("instantane") > 1 ? "s" : ""}
+          {count("sans-donnee")} sans donnée ouverte exploitable · {count("instantane")} instantanée{count("instantane") > 1 ? "s" : ""}
         </p>
       </header>
       <div className="overflow-x-auto">

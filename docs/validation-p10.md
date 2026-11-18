@@ -53,9 +53,9 @@ mal avec les températures observées), sans le démontrer avec ce modèle à r�
 supposait que chaque borne publiée resterait ajustable ; ce n'est pas le cas pour la borne basse, qui n'est d'ailleurs
 pas une trajectoire cohérente (limite écrite d'avance).
 
-**Statut.** Critère non modifié. Écart expliqué, **en attente de la décision de Grég** (accepter l'écart, ou non). Selon
-la règle D-AG et la pratique du projet (P2b : un écart accepté clôt la phase mais ne relève pas la confiance), la
-confiance publiée reste « moyenne » tant qu'O8 n'est pas conforme au calcul.
+**Statut.** Critère non modifié. Écart expliqué et **accepté par Grég le 18/11/2026 (décision D-AI)**. Selon la règle
+D-AG et la pratique du projet (P2b : un écart accepté clôt la phase mais ne relève pas la confiance), P10.1 est close
+et la confiance publiée reste « moyenne » tant qu'O8 n'est pas conforme au calcul.
 
 ## Constats sans effet sur les critères
 

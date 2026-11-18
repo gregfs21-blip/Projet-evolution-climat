@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-18T09:20:31Z",
-  "closure_ok": false,
-  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "generated_at": "2026-11-18T10:42:15Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
     "oni-monde",
     "temperature-berkeley-monde",
@@ -63,8 +63,8 @@
     {
       "name": "O8 robustesse",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
+      "status": "☑ écart accepté par Grég le 18/11/2026 (D-AI) : seule la variante « forçage anthropique à 5 % » sort de la fourchette, l'estimateur AR(1) y dégénère (docs/validation-p10.md)",
+      "satisfied": true,
       "detail": "HadCRUT5 ✗ réchauffement attribué 2016-2025 de 0,22 à 1,26 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | GISTEMP v4 ✗ réchauffement attribué 2016-2025 de 0,09 à 1,22 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | Berkeley Earth ✗ réchauffement attribué 2016-2025 de 0,09 à 1,32 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 %"
     },
     {

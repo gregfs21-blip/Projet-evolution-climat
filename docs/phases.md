@@ -15,7 +15,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
-| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul | **ouverte** |
+| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI) | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2-P10.5 à cadrer) |
 
 ## Journal P0
 
@@ -546,8 +546,12 @@ satisfait mais qu'un autre critère échoue ; « signal non établi » si O3 éc
   défaut de double arrondi corrigé par un stockage en pleine précision, et un garde-fou : le contrôle « D-AH cohérence
   de la synthèse » échoue dès qu'une autre analyse de l'onglet est publiée. Affirmation `limite-attribution`
   reformulée et relue.
+- **18/11/2026, décision de Grég D-AI (après calcul)** : écart O8 (variante « forçage anthropique à 5 % ») accepté.
+  **P10.1 close** ; confiance « moyenne » inchangée (un écart accepté ne relève pas la confiance). P10.2 à P10.5 restent
+  à cadrer.
 - Constat hors P10 : la validation P8 était déjà non conforme sur `main` avant P10 (M3 : case `amoc / monde` sans
-  affirmation ; M6 : `lacune-gulf-stream-monde` non relue), à la suite de P9. Non traité ici.
+  affirmation ; M6 : `lacune-gulf-stream-monde` non relue), à la suite de P9. **Traité le 18/11/2026 à la demande de
+  Grég** (journal P8 ; `docs/relecture-p8.md`) : P8 de nouveau conforme.
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 
@@ -749,6 +753,15 @@ donnée ouverte ; géopotentiel monde prévu en P7 ; localités chaude et froide
   reste « sans donnée », la CAPE n'étant pas la foudre. Contre-relecture du 07/11 : deux phrases qui dépendaient de
   calculs de contrôle non automatisés retirées ; M6 compare désormais une empreinte du texte rédigé, de sorte qu'une
   affirmation reformulée doit être relue de nouveau, lacunes de la couverture comprises.
+- 18/11/2026, à la demande de Grég : P9 intégrée à la synthèse. Section Monde, groupe « Gulf Stream et gyre
+  subpolaire (P9) » (température et salinité 0-700 m, deux contextes externes : empreinte de Caesar et al., évaluation
+  du GIEC) ; section exploratoire « Exploratoire (P7, P9) », affirmation `exp-amoc` (débit, profondeur, chaleur à
+  26,5° N, plafonnés) ; conclusion Monde complétée. Le statut `sans-donnee` s'affiche désormais « sans donnée ouverte
+  exploitable » (série inexistante, trop courte ou inaccessible), car la série du câble de Floride est ouverte mais
+  non téléchargeable depuis GitHub Actions. Relecture indépendante et contre-relecture : M1-M7 conformes. Constat du
+  relecteur, à trancher par Grég : la page d'accès de l'AOML répond depuis d'autres clients que GitHub Actions et
+  propose des fichiers annuels jusqu'en 2026 ; le blocage paraît propre à la route GitHub Actions (échec TLS), ce que
+  la tâche hebdomadaire, qui ne teste que depuis GitHub Actions, ne peut pas voir.
 - 07/11/2026, décision de Grég : les blocages et le Z500 Atlantique-Europe sont **mis à jour chaque année**. Le
   workflow « Blocages » revient dans main, déclenché le 15 janvier (et à la main), sans déclenchement sur « push » ;
   il ne relève que les tranches incomplètes (la dernière tranche de 2 ans est relevée de nouveau quand l'année qui

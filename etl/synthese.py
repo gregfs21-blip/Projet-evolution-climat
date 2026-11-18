@@ -277,7 +277,7 @@ def coverage_gaps(cov: Coverage) -> list[tuple[str, str, str, str | None]]:
     for p in cov.parameters:
         for c in p.cells:
             if c.status != "publie":
-                status = {"prevu": "prévu", "sans-donnee": "sans donnée ouverte", "instantane": "valeur instantanée, pas de série"}[c.status]
+                status = {"prevu": "prévu", "sans-donnee": "sans donnée ouverte exploitable", "instantane": "valeur instantanée, pas de série"}[c.status]
                 out.append((p.id, f"{p.label} — {labels[c.scale]} : {status}.", c.scale, c.note))
     return out
 

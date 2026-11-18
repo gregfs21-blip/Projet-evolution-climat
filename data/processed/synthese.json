@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-18T09:16:06Z",
+ "generated_at": "2026-11-18T10:42:00Z",
  "sections": [
   {
    "id": "gironde",
@@ -1198,9 +1198,82 @@
        ]
       }
      ]
+    },
+    {
+     "title": "Gulf Stream et gyre subpolaire (P9)",
+     "claims": [
+      {
+       "id": "monde-gulf-stream",
+       "kind": "signal",
+       "params": [
+        "amoc"
+       ],
+       "text": "Dans la région du Gulf Stream, la couche de 0 à 700 m se réchauffe de +0,20 °C par décennie (1953-2025) et sa salinité augmente de +0,08 psu par décennie (1995-2025), d'après les analyses EN4 ; chaque tendance ne commence qu'avec les années assez couvertes par les mesures.",
+       "confidence": "moyenne",
+       "indicators": [
+        {
+         "id": "temperature-0700-gulf-stream",
+         "scale": "monde",
+         "title": "Température de l'océan entre 0 et 700 m — Région du Gulf Stream (Caesar et al., 2018)",
+         "confidence": "moyenne"
+        },
+        {
+         "id": "salinite-0700-gulf-stream",
+         "scale": "monde",
+         "title": "Salinité de l'océan entre 0 et 700 m — Région du Gulf Stream (Caesar et al., 2018)",
+         "confidence": "moyenne"
+        }
+       ]
+      },
+      {
+       "id": "monde-gyre-subpolaire",
+       "kind": "absence",
+       "params": [
+        "amoc"
+       ],
+       "text": "Au sud du Groenland, dans le gyre subpolaire, ni la température de 0 à 700 m (+0,04 °C par décennie, 1961-2025, p = 0,25) ni la salinité (−0,011 psu par décennie, 1996-2025, p = 0,24) ne montrent de tendance détectée après correction de l'autocorrélation.",
+       "confidence": "non_etabli",
+       "indicators": [
+        {
+         "id": "temperature-0700-gyre-subpolaire",
+         "scale": "monde",
+         "title": "Température de l'océan entre 0 et 700 m — Gyre subpolaire (Caesar et al., 2018)",
+         "confidence": "faible"
+        },
+        {
+         "id": "salinite-0700-gyre-subpolaire",
+         "scale": "monde",
+         "title": "Salinité de l'océan entre 0 et 700 m — Gyre subpolaire (Caesar et al., 2018)",
+         "confidence": "non_etabli"
+        }
+       ]
+      },
+      {
+       "id": "contexte-empreinte-amoc",
+       "kind": "contexte",
+       "params": [],
+       "text": "Caesar et al. (2018) proposent comme empreinte d'un ralentissement de l'AMOC un refroidissement de la surface de l'océan au sud du Groenland et un réchauffement dans la région du Gulf Stream. Cette empreinte porte sur la température de surface, pas sur la couche de 0 à 700 m ; l'étude ne la teste pas, et son interprétation reste discutée.",
+       "indicators": [],
+       "source": {
+        "label": "Caesar et al., 2018, Nature 556, 191-196",
+        "url": "https://doi.org/10.1038/s41586-018-0006-5"
+       }
+      },
+      {
+       "id": "contexte-amoc-giec",
+       "kind": "contexte",
+       "params": [],
+       "text": "Le GIEC juge faible la confiance dans un déclin de l'AMOC au XXe siècle, et très probable son affaiblissement au XXIe siècle, pour tous les scénarios d'émissions.",
+       "indicators": [],
+       "source": {
+        "label": "GIEC AR6, groupe I : chapitres 2 et 9 (XXe siècle) ; résumé pour décideurs, C.3.4 (XXIe siècle)",
+        "url": "https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-9/"
+       }
+      }
+     ]
     }
    ],
-   "conclusion": "À l'échelle du globe, les mesures vont toutes dans le même sens : les gaz à effet de serre augmentent, la Terre accumule de l'énergie, l'air, la surface de l'océan et ses couches jusqu'à 2000 m se réchauffent, la mer monte et la banquise arctique recule. Les tendances de la circulation (jet stream) et du nombre d'ouragans, elles, ne sont pas établies, l'indice El Niño ne permet pas d'en juger, et la hausse du rythme du réchauffement de l'air n'est pas significative au seuil de 5 %."
+   "conclusion": "À l'échelle du globe, les mesures vont dans le même sens : les gaz à effet de serre augmentent, la Terre accumule de l'énergie, l'air, la surface de l'océan et ses couches jusqu'à 2000 m se réchauffent, la mer monte et la banquise arctique recule. Au sud du Groenland, en revanche, aucune tendance n'est détectée dans la couche de 0 à 700 m. Les tendances de la circulation (jet stream, et AMOC mesurée directement depuis 2004) et du nombre d'ouragans, elles, ne sont pas établies, l'indice El Niño ne permet pas d'en juger, et la hausse du rythme du réchauffement de l'air n'est pas significative au seuil de 5 %."
   },
   {
    "id": "echelles",
@@ -1468,8 +1541,8 @@
   },
   {
    "id": "exploratoire",
-   "title": "Exploratoire (P7)",
-   "intro": "Blocages et énergie de convection : leur confiance est plafonnée à « signal non établi » quel que soit le résultat du test, car leur définition ou leur lien avec le phénomène visé est trop fragile pour plus. Le Z500 Atlantique-Europe, issu de la même phase mais non plafonné, figure dans la section Monde.",
+   "title": "Exploratoire (P7, P9)",
+   "intro": "Blocages et énergie de convection : leur confiance est plafonnée à « signal non établi » quel que soit le résultat du test, car leur définition ou leur lien avec le phénomène visé est trop fragile pour plus. Le Z500 Atlantique-Europe, issu de la même phase mais non plafonné, figure dans la section Monde. Les mesures directes de la circulation atlantique (P9) sont plafonnées de la même façon, faute d'une série assez longue ; la température et la salinité des zones du Gulf Stream et du gyre subpolaire figurent dans la section Monde.",
    "groups": [
     {
      "title": "Blocages atmosphériques (Atlantique-Europe)",
@@ -1520,6 +1593,40 @@
      ]
     },
     {
+     "title": "Circulation de retournement atlantique (AMOC)",
+     "claims": [
+      {
+       "id": "exp-amoc",
+       "kind": "absence",
+       "params": [
+        "amoc"
+       ],
+       "text": "À 26,5° N (réseau RAPID), ni le débit de l'AMOC (−0,72 Sv par décennie), ni la profondeur de son maximum (+7 m par décennie), ni le transport de chaleur vers le nord (−0,01 PW par décennie) ne montrent de tendance détectée sur 2005-2024. Ces mesures directes, qui ne commencent qu'en 2004, sont trop courtes pour séparer une tendance de la variabilité naturelle, notamment d'une décennie à l'autre.",
+       "confidence": "non_etabli",
+       "indicators": [
+        {
+         "id": "amoc-debit-monde",
+         "scale": "monde",
+         "title": "Débit de la circulation de retournement atlantique (AMOC) à 26,5° N",
+         "confidence": "non_etabli"
+        },
+        {
+         "id": "amoc-profondeur-monde",
+         "scale": "monde",
+         "title": "Profondeur du maximum de la circulation de retournement atlantique à 26,5° N",
+         "confidence": "non_etabli"
+        },
+        {
+         "id": "amoc-chaleur-monde",
+         "scale": "monde",
+         "title": "Transport de chaleur vers le nord dans l'Atlantique à 26,5° N",
+         "confidence": "non_etabli"
+        }
+       ]
+      }
+     ]
+    },
+    {
      "title": "Orages (indicateur indirect)",
      "claims": [
       {
@@ -1553,7 +1660,7 @@
        "params": [
         "foudre"
        ],
-       "text": "Impact de foudre — Gironde : sans donnée ouverte. Aucune série ouverte d'impacts de foudre assez longue pour une tendance (Météorage est privé ; la climatologie satellite NASA 1995-2014 est figée). Un indicateur indirect est publié en exploratoire, l'énergie de convection de l'été (CAPE), plafonné à « signal non établi » : ce n'est pas la foudre, la case reste donc « sans donnée ».",
+       "text": "Impact de foudre — Gironde : sans donnée ouverte exploitable. Aucune série ouverte d'impacts de foudre assez longue pour une tendance (Météorage est privé ; la climatologie satellite NASA 1995-2014 est figée). Un indicateur indirect est publié en exploratoire, l'énergie de convection de l'été (CAPE), plafonné à « signal non établi » : ce n'est pas la foudre, la case reste donc « sans donnée ».",
        "indicators": []
       },
       {
@@ -1562,7 +1669,7 @@
        "params": [
         "foudre"
        ],
-       "text": "Impact de foudre — Monde : sans donnée ouverte. Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance.",
+       "text": "Impact de foudre — Monde : sans donnée ouverte exploitable. Climatologies satellites (LIS/OTD) trop courtes ou figées pour une tendance.",
        "indicators": []
       },
       {
@@ -1571,7 +1678,7 @@
        "params": [
         "gulf-stream"
        ],
-       "text": "Gulf Stream (débit au détroit de Floride) — Monde : sans donnée ouverte. Serveur de la NOAA et archive NCEI inaccessibles depuis le 17/11/2026 ; contrôle d'accès chaque semaine (décision D-AA, P9).",
+       "text": "Gulf Stream (débit au détroit de Floride) — Monde : sans donnée ouverte exploitable. Série ouverte, mais non téléchargeable par la chaîne automatique : le serveur de la NOAA refuse la connexion chiffrée depuis GitHub Actions et l'archive NCEI ne répond pas (constaté depuis le 17/11/2026) ; contrôle d'accès chaque semaine (décision D-AA, P9). Le câble lui-même est en panne depuis novembre 2023, relayé par une autre méthode.",
        "indicators": []
       },
       {

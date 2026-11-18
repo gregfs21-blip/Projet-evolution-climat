@@ -142,3 +142,24 @@ pente, fourchette du coefficient solaire, verbe « explique » sur la page) ; un
 (« la température de la mer prise seule »), qui imposerait une nouvelle relecture sans changer le sens.
 
 Affirmations relues (P10, 18/11/2026) : limite-attribution#254699f490
+
+## Intégration de la P9 dans la synthèse (18/11/2026, demande de Grég)
+
+La validation P8 était non conforme depuis la P9 : M3 (case `amoc / monde` sans affirmation) et M6
+(`lacune-gulf-stream-monde` jamais relue). Ajouts : groupe « Gulf Stream et gyre subpolaire (P9) » de la section Monde
+(`monde-gulf-stream`, `monde-gyre-subpolaire`, `contexte-empreinte-amoc`, `contexte-amoc-giec`), affirmation `exp-amoc`
+de la section exploratoire (titre « Exploratoire (P7, P9) », intro complétée), conclusion Monde complétée. Relus par un
+agent séparé, qui ne les avait pas rédigés.
+
+| | Signalement | Traitement |
+|---|---|---|
+| 1 | Contexte GIEC : le constat sur le XXe siècle n'est pas dans le résumé pour décideurs cité | Source corrigée (chapitres 2 et 9 ; SPM C.3.4) ; « pour tous les scénarios d'émissions » ajouté |
+| 2-3 | Empreinte de Caesar et al. mal paraphrasée (refroidissement de surface au sud du Groenland, réchauffement du Gulf Stream), sans dire qu'elle porte sur la surface et non sur 0-700 m ; juxtaposée aux deux pentes, elle invitait à une comparaison hors S3 | Formulation du relecteur reprise |
+| 4 | « Sans donnée ouverte » faux pour le câble (série ouverte mais inaccessible) | Libellé du statut : « sans donnée ouverte exploitable » (définition élargie dans `couverture.yaml`, D-AA inchangée) ; note de la case reformulée, puis corrigée en contre-relecture : le blocage constaté est propre à GitHub Actions (le serveur de l'AOML répond à d'autres clients) |
+| 5 | `exp-amoc` : « variabilité d'une année à l'autre » trop étroit | « variabilité naturelle, notamment d'une décennie à l'autre » |
+| 6 | Conclusion Monde non mise à jour (gyre, AMOC) | Complétée ; « toutes » retiré en contre-relecture (contradiction avec l'exception) |
+| 7-8 | Titre du groupe ; p de la salinité du gyre absent | Corrigés |
+
+Les lacunes de la foudre changent avec le libellé du statut : relues, conformes.
+
+Affirmations relues (P9, 18/11/2026) : monde-gulf-stream#4cc9c1a2e8, monde-gyre-subpolaire#f33a7c4e60, contexte-empreinte-amoc#908be91cea, contexte-amoc-giec#fb1e0d13bd, exp-amoc#385eaf8402, lacune-gulf-stream-monde#ea82572732, lacune-foudre-gironde#b00cb7101a, lacune-foudre-monde#b1ce13a9d1

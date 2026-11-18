@@ -16,7 +16,12 @@ from etl.schema import Demonstration, ValidationCheck, ValidationReport
 
 OUT = ROOT / "docs" / "validation-p10-resultats.md"
 OUT_JSON = PROCESSED_DIR / "validation-p10.json"
-ACCEPTED: dict[str, str] = {}   # écarts acceptés par Grég après calcul : aucun
+# Écarts acceptés par Grég après calcul (docs/phases.md, journal P10). Un écart accepté clôt la sous-phase mais ne
+# relève pas la confiance (règle D-AG, pratique de P2b) : demonstration.json garde le résultat brut du critère.
+ACCEPTED: dict[str, str] = {
+    "O8 robustesse": "écart accepté par Grég le 18/11/2026 (D-AI) : seule la variante « forçage anthropique à 5 % » "
+                     "sort de la fourchette, l'estimateur AR(1) y dégénère (docs/validation-p10.md)",
+}
 # Analyses de l'onglet dont la synthèse tient compte (affirmations `limite-attribution` et `limite-projections` de
 # etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.2 Gironde, P10.3 France, P10.5 projections) rend ces
 # affirmations à revoir : ce contrôle échoue jusqu'à leur reformulation, relue (M6), et la mise à jour de cette liste.
