@@ -38,4 +38,9 @@ températures valides (12 % des stations, surtout nord-américaines). La modifie
 | Q4 | ✅ | « parmi les N stations retenues sur M » ; limites de couverture et d'altitude écrites sur la page |
 | Q5 | ✅ | Tests et CI verts (`npm test` dans `ci.yml`) ; panne de la source testée ; bandeau au-delà de 30 min |
 
+Essai en préversion Vercel le 18/11/2026 : page construite à 13 h 14 UTC, revisitée à 15 h 21 UTC sans visite
+entre-temps ; le premier visiteur a reçu l'ancienne page avec le bandeau « Cette lecture date de 127 minutes », et la
+visite suivante une page régénérée (lecture de 15 h 20 UTC). C'est le fonctionnement voulu de la régénération : une
+page ancienne n'est jamais présentée comme actuelle.
+
 P11 close le 18/11/2026.
