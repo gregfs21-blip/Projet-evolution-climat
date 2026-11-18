@@ -16,7 +16,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
 | P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI) | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2-P10.5 à cadrer) |
-| P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | décisions D-AJ à D-AL et critères Q1-Q5 validés le 18/11/2026, avant tout développement | **ouverte** |
+| P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | décisions D-AJ à D-AL et critères Q1-Q5 validés le 18/11/2026, avant tout développement ; Q1-Q5 conformes (`docs/validation-p11.md`) | **close** (18/11/2026) |
 
 ## Journal P0
 

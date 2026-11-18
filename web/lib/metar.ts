@@ -29,6 +29,7 @@ export type Observation = {
 
 export type Exclusion =
   | "sans température"
+  | "heure invalide"
   | "trop ancienne"
   | "hors bornes"
   | "point de rosée supérieur à la température"
@@ -38,6 +39,7 @@ export type Exclusion =
 
 export const EXCLUSIONS: Exclusion[] = [
   "sans température",
+  "heure invalide",
   "trop ancienne",
   "hors bornes",
   "point de rosée supérieur à la température",
@@ -141,7 +143,9 @@ export function check(row: Row, stations: Map<string, Station>, now: Date): Obse
   if (!Number.isFinite(temp)) return "sans température";
   const time = new Date(row.observation_time ?? "");
   const ageMin = (now.getTime() - time.getTime()) / 60000;
-  if (!Number.isFinite(ageMin) || ageMin > MAX_AGE_MIN || ageMin < -10) return "trop ancienne";
+  // Heure illisible ou de plus de 10 minutes dans le futur : motif distinct, pour ne pas la confondre avec l'âge.
+  if (!Number.isFinite(ageMin) || ageMin < -10) return "heure invalide";
+  if (ageMin > MAX_AGE_MIN) return "trop ancienne";
   if (temp < T_MIN || temp > T_MAX) return "hors bornes";
   const dew = row.dewpoint_c === undefined || row.dewpoint_c === "" ? null : Number(row.dewpoint_c);
   if (dew !== null && Number.isFinite(dew) && dew > temp + 0.05) return "point de rosée supérieur à la température";
@@ -169,7 +173,7 @@ export function stationIndex(json: unknown): Map<string, Station> {
   const out = new Map<string, Station>();
   if (!Array.isArray(json)) return out;
   for (const s of json as Record<string, unknown>[]) {
-    const key = (s.icaoId as string | null) ?? (s.id as string | null);
+    const key = (s.icaoId as string | null) || (s.id as string | null);
     if (!key) continue;
     out.set(key, {
       name: String(s.site ?? key),
@@ -234,4 +238,21 @@ export function snapshot(csv: string, stations: Map<string, Station>, now: Date,
 export function staleMinutes(readAt: string, now: Date): number | null {
   const age = (now.getTime() - new Date(readAt).getTime()) / 60000;
   return age > STALE_AFTER_MIN ? Math.round(age) : null;
+}
+
+/**
+ * Chargement de la page (critère Q5). Pendant la construction du site, une panne de la source ne doit pas bloquer le
+ * déploiement : on renvoie l'erreur pour afficher une page d'attente sans valeur. Pendant une régénération, l'erreur
+ * est relancée : Vercel garde alors la dernière page réussie, dont l'heure de lecture est affichée.
+ */
+export async function loadForPage(
+  load: () => Promise<Snapshot>,
+  phase: string | undefined,
+): Promise<{ snap: Snapshot; error: null } | { snap: null; error: string }> {
+  try {
+    return { snap: await load(), error: null };
+  } catch (e) {
+    if (phase !== "phase-production-build") throw e;
+    return { snap: null, error: e instanceof Error ? e.message : String(e) };
+  }
 }

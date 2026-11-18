@@ -163,3 +163,11 @@ agent séparé, qui ne les avait pas rédigés.
 Les lacunes de la foudre changent avec le libellé du statut : relues, conformes.
 
 Affirmations relues (P9, 18/11/2026) : monde-gulf-stream#4cc9c1a2e8, monde-gyre-subpolaire#f33a7c4e60, contexte-empreinte-amoc#908be91cea, contexte-amoc-giec#fb1e0d13bd, exp-amoc#385eaf8402, lacune-gulf-stream-monde#ea82572732, lacune-foudre-gironde#b00cb7101a, lacune-foudre-monde#b1ce13a9d1
+
+## Lacunes « localité la plus chaude / froide » mises à jour par la P11 (18/11/2026)
+
+La note de couverture des deux cases change (source METAR, page Instantané) ; les lacunes générées ont été relues par un
+agent séparé : exactes, sans sur-interprétation. La même relecture a porté sur le code et la page de la P11
+(`docs/validation-p11.md`).
+
+Affirmations relues (P11, 18/11/2026) : lacune-localite-chaude-monde#6fba07708d, lacune-localite-froide-monde#aa2c4baefa

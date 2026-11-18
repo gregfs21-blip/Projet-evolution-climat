@@ -6,6 +6,7 @@ import { test } from "node:test";
 import {
   bodyTemperature,
   check,
+  loadForPage,
   matchesRaw,
   parseCsv,
   remarkTemperature,
@@ -68,6 +69,8 @@ test("Q2 : observations réelles acceptées", () => {
 test("Q2 : chaque règle d'exclusion", () => {
   assert.equal(check({ ...R.fykt, temp_c: "" }, STATIONS, NOW), "sans température");
   assert.equal(check({ ...R.fykt, observation_time: "2026-11-18T09:50:00Z" }, STATIONS, NOW), "trop ancienne");
+  assert.equal(check({ ...R.fykt, observation_time: "2026-11-18T12:30:00Z" }, STATIONS, NOW), "heure invalide");
+  assert.equal(check({ ...R.fykt, observation_time: "n/a" }, STATIONS, NOW), "heure invalide");
   assert.equal(typeof check({ ...R.fykt, observation_time: "2026-11-18T09:55:00Z" }, STATIONS, NOW), "object"); // 2 h pile
   const hot = row("METAR XXXX 181100Z 00000KT 61/10 Q1010", "XXXX", "2026-11-18T11:00:00Z", 0, 0, 61, 10);
   assert.equal(check(hot, STATIONS, NOW), "hors bornes");
@@ -114,4 +117,20 @@ test("Q5 : lecture trop ancienne signalée", () => {
 
 test("parseCsv : guillemets doublés et fins de ligne CRLF", () => {
   assert.deepEqual(parseCsv('a,"b ""c"", d"\r\n1,2\r\n'), [["a", 'b "c", d'], ["1", "2"]]);
+});
+
+test("Q5 : panne de la source — page d'attente au déploiement, erreur relancée en régénération", async () => {
+  const down = async () => {
+    throw new Error("METAR : HTTP 503");
+  };
+  assert.deepEqual(await loadForPage(down, "phase-production-build"), { snap: null, error: "METAR : HTTP 503" });
+  await assert.rejects(loadForPage(down, undefined), /HTTP 503/);
+  const ok = await loadForPage(async () => snapshot(toCsv([R.fykt]), STATIONS, NOW), undefined);
+  assert.equal(ok.error, null);
+  assert.equal(ok.snap.hottest[0].id, "FYKT");
+});
+
+test("station connue par son identifiant quand l'indicatif OACI est vide", () => {
+  const idx = stationIndex([{ id: "FYKT", icaoId: "", site: "Keetmanshoop Arpt", country: "NA", elev: 1064 }]);
+  assert.equal(idx.get("FYKT")?.name, "Keetmanshoop Arpt");
 });

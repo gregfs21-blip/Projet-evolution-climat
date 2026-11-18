@@ -17,7 +17,7 @@ export default function StaleBanner({ readAt }: { readAt: string }) {
   if (stale === null) return null;
   return (
     <p role="status" className="rounded-lg border border-[var(--warm)] px-4 py-2 text-sm">
-      Ces valeurs datent de {stale} minutes : la source ne répond pas ou la page n&apos;a pas encore été régénérée.
+      Cette lecture date de {stale} minutes : la source ne répond pas ou la page n&apos;a pas encore été régénérée.
       Rechargez dans quelques instants.
     </p>
   );

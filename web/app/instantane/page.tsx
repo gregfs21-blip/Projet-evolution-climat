@@ -5,12 +5,14 @@
 // dont l'heure de lecture est affichée, et le bandeau signale qu'elle n'a pas été rafraîchie (critère Q5).
 import type { Metadata } from "next";
 import Link from "next/link";
+import { get as httpsGet } from "node:https";
 import { gunzipSync } from "node:zlib";
 
 import StaleBanner from "@/components/StaleBanner";
 import { fmtDateTime } from "@/lib/format";
 import {
   EXCLUSIONS,
+  loadForPage,
   MAX_AGE_MIN,
   REFERENCE_ID,
   snapshot,
@@ -29,21 +31,36 @@ const METAR_URL = "https://aviationweather.gov/data/cache/metars.cache.csv.gz";
 const STATIONS_URL = "https://aviationweather.gov/data/cache/stations.cache.json.gz";
 const SOURCE_PAGE = "https://aviationweather.gov/data/api/";
 
-function text(buf: ArrayBuffer): string {
-  const b = Buffer.from(buf);
-  // Fichiers gzip ; si un intermédiaire les a déjà décompressés, ils sont lus tels quels.
-  return (b[0] === 0x1f && b[1] === 0x8b ? gunzipSync(b) : b).toString("utf8");
+/**
+ * Téléchargement direct (module https de Node), hors du cache de données de Next.js : chaque régénération lit le
+ * fichier du moment, si bien que l'heure de lecture affichée est bien celle des données (critère Q1).
+ */
+function download(url: string): Promise<{ body: string; lastModified: string | null }> {
+  return new Promise((resolve, reject) => {
+    const req = httpsGet(url, { timeout: 20_000, headers: { "User-Agent": "projet-evolution-climat (page Instantané)" } }, (res) => {
+      if (res.statusCode !== 200) {
+        res.resume();
+        reject(new Error(`${url.split("/").pop()} : HTTP ${res.statusCode}`));
+        return;
+      }
+      const chunks: Buffer[] = [];
+      res.on("data", (c: Buffer) => chunks.push(c));
+      res.on("end", () => {
+        const b = Buffer.concat(chunks);
+        // Fichiers gzip ; s'ils arrivent déjà décompressés, ils sont lus tels quels.
+        const body = (b[0] === 0x1f && b[1] === 0x8b ? gunzipSync(b) : b).toString("utf8");
+        resolve({ body, lastModified: res.headers["last-modified"] ?? null });
+      });
+      res.on("error", reject);
+    });
+    req.on("timeout", () => req.destroy(new Error(`${url.split("/").pop()} : délai dépassé`)));
+    req.on("error", reject);
+  });
 }
 
 async function load(): Promise<Snapshot> {
-  const [m, s] = await Promise.all([
-    fetch(METAR_URL, { next: { revalidate: 600 } }),
-    fetch(STATIONS_URL, { next: { revalidate: 86400 } }),
-  ]);
-  if (!m.ok) throw new Error(`METAR : HTTP ${m.status}`);
-  if (!s.ok) throw new Error(`stations : HTTP ${s.status}`);
-  const stations = stationIndex(JSON.parse(text(await s.arrayBuffer())));
-  return snapshot(text(await m.arrayBuffer()), stations, new Date(), m.headers.get("last-modified"));
+  const [m, s] = await Promise.all([download(METAR_URL), download(STATIONS_URL)]);
+  return snapshot(m.body, stationIndex(JSON.parse(s.body)), new Date(), m.lastModified);
 }
 
 const region = new Intl.DisplayNames(["fr"], { type: "region" });
@@ -72,7 +89,8 @@ function Station({ o, rank, tone }: { o: Observation; rank?: number; tone: strin
           </div>
           <div className="text-xs text-[var(--muted)]">
             {country(o.country)} · {o.id}
-            {o.elev !== null ? ` · ${o.elev.toLocaleString("fr-FR")} m` : ""} · mesure de {utc(o.time)} UTC (il y a {o.ageMin} min)
+            {o.elev !== null ? ` · ${o.elev.toLocaleString("fr-FR")} m` : ""} · mesure de {utc(o.time)} UTC ({o.ageMin} min avant la
+            lecture)
           </div>
         </div>
         <div className={`shrink-0 text-2xl font-semibold tabular-nums ${tone}`}>{nf(o.temp)} °C</div>
@@ -85,23 +103,14 @@ function Station({ o, rank, tone }: { o: Observation; rank?: number; tone: strin
 function Unavailable({ error }: { error: string }) {
   return (
     <p className="rounded-lg border border-[var(--warm)] px-4 py-3 text-sm">
-      La source METAR de la NOAA n&apos;a pas répondu lors de la construction de cette page ({error}). Aucune valeur
+      La lecture de la source METAR de la NOAA a échoué lors de la construction de cette page ({error}). Aucune valeur
       n&apos;est affichée plutôt qu&apos;une valeur ancienne ; la page sera régénérée à la prochaine visite après 10 minutes.
     </p>
   );
 }
 
 export default async function InstantanePage() {
-  let snap: Snapshot | null = null;
-  let error: string | null = null;
-  try {
-    snap = await load();
-  } catch (e) {
-    // Pendant le déploiement, une panne de la source ne doit pas bloquer la construction du site : page d'attente.
-    // Pendant une régénération, l'erreur est relancée pour que Vercel garde la dernière page réussie.
-    if (process.env.NEXT_PHASE !== "phase-production-build") throw e;
-    error = e instanceof Error ? e.message : String(e);
-  }
+  const { snap, error } = await loadForPage(load, process.env.NEXT_PHASE);
 
   return (
     <article className="max-w-3xl space-y-8">
@@ -165,7 +174,8 @@ export default async function InstantanePage() {
         </summary>
         <div className="mt-3 space-y-3 leading-relaxed">
           <p>
-            Une observation est écartée, jamais corrigée, si elle date de plus de {MAX_AGE_MIN / 60} heures, si sa
+            Une observation est écartée, jamais corrigée, si son heure est illisible ou dans le futur, si elle date de
+            plus de {MAX_AGE_MIN / 60} heures, si sa
             température sort de {T_MIN} à +{T_MAX} °C, si son point de rosée dépasse sa température, si la station signale
             une maintenance, si la température du fichier diffère de celle du message METAR brut, ou si la station est
             inconnue. Une station n&apos;est comptée qu&apos;une fois, avec sa mesure la plus récente.
@@ -182,11 +192,11 @@ export default async function InstantanePage() {
           )}
           <p>
             Ce sont les extrêmes <b>du réseau METAR</b>, pas ceux de la Terre. Le réseau couvre les aérodromes : il est
-            dense en Europe et en Amérique du Nord, clairsemé dans les déserts, et ne contient ni l&apos;intérieur de
-            l&apos;Antarctique (Vostok, plateau), où l&apos;on mesure les froids les plus intenses ; le pôle Sud y
-            figure seulement quand son dernier message a moins d&apos;une heure et demie. Les mesures sont celles des
-            stations, à leur altitude : un aérodrome d&apos;altitude paraît plus froid sans que la masse d&apos;air le
-            soit.
+            dense en Europe et en Amérique du Nord, clairsemé dans les déserts, et ne contient pas l&apos;intérieur de
+            l&apos;Antarctique (Vostok et le plateau), où l&apos;on mesure les froids les plus intenses, sauf le pôle Sud,
+            présent seulement quand son dernier message a moins d&apos;une heure et demie. Les mesures sont celles des
+            stations, à leur altitude : un aérodrome d&apos;altitude est plus froid du seul fait de son altitude, et le
+            classement ne corrige pas l&apos;altitude.
           </p>
           <p className="text-xs text-[var(--muted)]">
             Source :{" "}
