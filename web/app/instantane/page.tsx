@@ -183,8 +183,8 @@ export default async function InstantanePage() {
           <p>
             Ce sont les extrêmes <b>du réseau METAR</b>, pas ceux de la Terre. Le réseau couvre les aérodromes : il est
             dense en Europe et en Amérique du Nord, clairsemé dans les déserts, et ne contient ni l&apos;intérieur de
-            l&apos;Antarctique (Vostok, plateau), où l&apos;on mesure les froids les plus intenses, ni le pôle Sud, qui
-            ne publie qu&apos;un message toutes les six heures et sort souvent du fichier. Les mesures sont celles des
+            l&apos;Antarctique (Vostok, plateau), où l&apos;on mesure les froids les plus intenses ; le pôle Sud y
+            figure seulement quand son dernier message a moins d&apos;une heure et demie. Les mesures sont celles des
             stations, à leur altitude : un aérodrome d&apos;altitude paraît plus froid sans que la masse d&apos;air le
             soit.
           </p>

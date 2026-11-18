@@ -422,8 +422,9 @@ Analyse : `docs/validation-p3.md`. Six critères conformes ; R8 retrouvée de ju
   indicatif, heure, position, température, point de rosée, vent, etc. **Pas d'en-tête CORS** : lecture impossible
   depuis le navigateur, il faut un serveur.
 - **Noms des stations** : `stations.cache.json.gz` (9 960 stations : nom, pays, altitude), même origine.
-- **Couverture** : 22 stations au sud de 60° S, 29 au nord de 70° N. Le pôle Sud (NZSP) ne publie qu'un METAR toutes
-  les 6 h et n'est donc pas dans le fichier à 11 h 55 UTC ; Vostok et l'intérieur de l'Antarctique, les plus froids du
+- **Couverture** : 22 stations au sud de 60° S, 29 au nord de 70° N. Le pôle Sud (NZSP) n'était pas dans le fichier
+  à 11 h 55 UTC (dernier message à 6 h UTC) ; il y figurait à 12 h 48 (message de 11 h 50) : sa présence dépend de
+  l'heure de son dernier message, et « toutes les 6 h » était une lecture trop rapide de la sonde ; Vostok et l'intérieur de l'Antarctique, les plus froids du
   globe, n'y sont jamais ; l'intérieur des déserts est clairsemé. Le résultat est l'aérodrome le plus chaud ou le plus
   froid **du réseau METAR**, pas le point le plus chaud ou le plus froid de la Terre.
 - Exemple brut au moment de la sonde : +39 °C à Keetmanshoop (Namibie), −38 °C à Iakoutsk (Sibérie).
