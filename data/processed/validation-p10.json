@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-19T11:27:19Z",
+  "generated_at": "2026-11-19T13:11:56Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
@@ -108,28 +108,28 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "α = 3,94 [2,39 ; 5,14] °C par °C ; rapport de vraisemblance p < 0,001"
+      "detail": "α = 3,94 [2,39 ; 5,13] °C par °C ; rapport de vraisemblance p < 0,001"
     },
     {
       "name": "P10.2 X4 plausibilité",
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "intervalle de α [2,39 ; 5,14] contre la référence [2,5 ; 4,2]"
+      "detail": "intervalle de α [2,39 ; 5,13] contre la référence [2,5 ; 4,2]"
     },
     {
       "name": "P10.2 X5 robustesse",
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "Covariable HadCRUT5 : α = 3,86, rapport de probabilité du record infini, période de retour du record aujourd'hui 11,5 ans ✓ ; Années homogénéisées seules (1953-2022) : α = 3,64, rapport de probabilité du record infini, période de retour du record aujourd'hui 15,8 ans ✓ ; Sans l'année 2025 : α = 3,73, rapport de probabilité du record infini, période de retour du record aujourd'hui 14,7 ans ✓ ; Indice TX3x (moyenne de TX sur 3 jours) : α = 3,89, rapport de probabilité du record infini, période de retour du record aujourd'hui 7,0 ans ✓"
+      "detail": "Covariable HadCRUT5 : α = 3,86, rapport de probabilité du record infini, période de retour du record aujourd'hui 11,5 ans ✓ ; Années homogénéisées seules (1953-2022) : α = 3,64, rapport de probabilité du record infini, période de retour du record aujourd'hui 15,7 ans ✓ ; Sans l'année 2025 : α = 3,73, rapport de probabilité du record infini, période de retour du record aujourd'hui 14,7 ans ✓ ; Indice TX3x (moyenne de TX sur 3 jours) : α = 3,88, rapport de probabilité du record infini, période de retour du record aujourd'hui 7,0 ans ✓"
     },
     {
       "name": "P10.2 X6 cohérence régionale",
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "Cap-Ferret 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,80 [2,39 ; 5,31] ✓ ; Cazaux 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,92 [2,64 ; 5,27] ✓ ; Villenave-d'Ornon 1953-2025 (72 années, manquantes : 2002, brutes : 2023, 2024, 2025) : α = 3,63 [1,98 ; 4,60] ✓ ; Bordeaux-Paulin 1962-2025 (64 années, brutes : 2023, 2024, 2025) : α = 3,79 [2,06 ; 5,15] ✓"
+      "detail": "Cap-Ferret 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,80 [2,39 ; 5,31] ✓ ; Cazaux 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,92 [2,64 ; 5,28] ✓ ; Villenave-d'Ornon 1953-2025 (72 années, manquantes : 2002, brutes : 2023, 2024, 2025) : α = 3,63 [1,98 ; 4,60] ✓ ; Bordeaux-Paulin 1962-2025 (64 années, brutes : 2023, 2024, 2025) : α = 3,79 [2,06 ; 5,15] ✓"
     },
     {
       "name": "P10.2 X7 technique",
