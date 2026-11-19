@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-19T07:00:12Z",
-  "closure_ok": false,
-  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "generated_at": "2026-11-19T11:27:19Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
     "oni-monde",
     "temperature-berkeley-monde",
@@ -71,9 +71,9 @@
     {
       "name": "D-AH cohérence de la synthèse",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "analyses publiées que la synthèse ne prend pas en compte : p10.2 ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS"
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "analyses publiées : p10.1, p10.2 ; la synthèse (limite-attribution, limite-projections) en tient compte"
     },
     {
       "name": "O9 technique",
@@ -101,7 +101,7 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "ξ = −0,31 (bornes −0,5 et +0,2) ; Kolmogorov-Smirnov p = 0,73 (seuil 0,05) ; 0 tirage(s) bootstrap sans convergence sur 1000"
+      "detail": "ajustement central convergé ; ξ = −0,31 (bornes −0,5 et +0,2) ; Kolmogorov-Smirnov p = 0,73 (seuil 0,05) ; 0 tirage(s) bootstrap écarté(s) sur 1 000 (échec ou optimiseur sans convergence déclarée)"
     },
     {
       "name": "P10.2 X3 détection",
@@ -122,14 +122,14 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "Covariable HadCRUT5 : α = 3,86, rapport de probabilité du record infini ✓ ; Années homogénéisées seules (1953-2022) : α = 3,64, rapport de probabilité du record infini ✓ ; Sans l'année 2025 : α = 3,73, rapport de probabilité du record infini ✓ ; Indice TX3x (moyenne de TX sur 3 jours) : α = 3,89, rapport de probabilité du record infini ✓"
+      "detail": "Covariable HadCRUT5 : α = 3,86, rapport de probabilité du record infini, période de retour du record aujourd'hui 11,5 ans ✓ ; Années homogénéisées seules (1953-2022) : α = 3,64, rapport de probabilité du record infini, période de retour du record aujourd'hui 15,8 ans ✓ ; Sans l'année 2025 : α = 3,73, rapport de probabilité du record infini, période de retour du record aujourd'hui 14,7 ans ✓ ; Indice TX3x (moyenne de TX sur 3 jours) : α = 3,89, rapport de probabilité du record infini, période de retour du record aujourd'hui 7,0 ans ✓"
     },
     {
       "name": "P10.2 X6 cohérence régionale",
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "Cap-Ferret 1953-2025 : α = 3,80 [2,39 ; 5,31] ✓ ; Cazaux 1953-2025 : α = 3,92 [2,64 ; 5,27] ✓ ; Villenave-d'Ornon 1953-2025 : α = 3,63 [1,98 ; 4,60] ✓ ; Bordeaux-Paulin 1962-2025 : α = 3,79 [2,06 ; 5,15] ✓"
+      "detail": "Cap-Ferret 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,80 [2,39 ; 5,31] ✓ ; Cazaux 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,92 [2,64 ; 5,27] ✓ ; Villenave-d'Ornon 1953-2025 (72 années, manquantes : 2002, brutes : 2023, 2024, 2025) : α = 3,63 [1,98 ; 4,60] ✓ ; Bordeaux-Paulin 1962-2025 (64 années, brutes : 2023, 2024, 2025) : α = 3,79 [2,06 ; 5,15] ✓"
     },
     {
       "name": "P10.2 X7 technique",

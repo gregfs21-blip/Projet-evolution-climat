@@ -39,6 +39,7 @@ class GevFit:
     xi: float
     loglik: float
     stationary: bool
+    converged: bool = True   # l'optimiseur retenu a déclaré sa convergence
 
     def mu(self, g: float | np.ndarray) -> float | np.ndarray:
         return self.mu0 + self.alpha * np.asarray(g)
@@ -86,13 +87,16 @@ def fit(x, g, stationary: bool = False) -> GevFit:
         raise ValueError("GEV : l'ajustement ne converge pas")
     p = best.x
     if stationary:
-        return GevFit(float(p[0]), 0.0, float(np.exp(p[1])), float(p[2]), -float(best.fun), True)
-    return GevFit(float(p[0]), float(p[1]), float(np.exp(p[2])), float(p[3]), -float(best.fun), False)
+        return GevFit(float(p[0]), 0.0, float(np.exp(p[1])), float(p[2]), -float(best.fun), True, bool(best.success))
+    return GevFit(float(p[0]), float(p[1]), float(np.exp(p[2])), float(p[3]), -float(best.fun), False,
+                  bool(best.success))
 
 
 def likelihood_ratio_p(x, g) -> float:
     """Test du rapport de vraisemblance, H0 : α = 0 (χ² à 1 degré de liberté)."""
     full, null = fit(x, g), fit(x, g, stationary=True)
+    if not (full.converged and null.converged):
+        raise ValueError("GEV : rapport de vraisemblance sur un ajustement sans convergence déclarée")
     stat = max(0.0, 2 * (full.loglik - null.loglik))
     return float(stats.chi2.sf(stat, 1))
 
@@ -108,7 +112,8 @@ def ks_p(f: GevFit, x, g) -> float:
 def bootstrap(x, g, n: int, seed: int, stat) -> tuple[np.ndarray, int]:
     """Rééchantillonne les années avec remise, réajuste, applique `stat(fit)` (scalaire ou tableau).
 
-    Renvoie (tableau des statistiques, nombre d'ajustements qui n'ont pas convergé, écartés)."""
+    Renvoie (tableau des statistiques, nombre de tirages écartés : ajustement en échec ou optimiseur sans
+    convergence déclarée)."""
     x = np.asarray(x, float)
     g = np.asarray(g, float)
     rng = np.random.default_rng(seed)
@@ -116,9 +121,14 @@ def bootstrap(x, g, n: int, seed: int, stat) -> tuple[np.ndarray, int]:
     for _ in range(n):
         i = rng.integers(0, len(x), len(x))
         try:
-            out.append(np.asarray(stat(fit(x[i], g[i])), float))
+            ff = fit(x[i], g[i])
         except ValueError:
             failed += 1
+            continue
+        if not ff.converged:
+            failed += 1
+            continue
+        out.append(np.asarray(stat(ff), float))
     return np.array(out), failed
 
 

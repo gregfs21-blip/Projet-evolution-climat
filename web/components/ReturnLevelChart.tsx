@@ -18,6 +18,7 @@ export default function ReturnLevelChart({
   pastLabel,
   todayLabel,
   marker,
+  ciLabel,
   label,
 }: {
   curve: GevCurve;
@@ -25,6 +26,8 @@ export default function ReturnLevelChart({
   todayLabel: string;
   /** Valeur observée remarquable (ligne horizontale), ex. le record. */
   marker?: { value: number; label: string };
+  /** Niveau des intervalles, déjà mis en forme (ex. « 95 % »). */
+  ciLabel: string;
   label: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,6 +46,9 @@ export default function ReturnLevelChart({
         const warm = cssVar("--warm");
         const cold = cssVar("--cold");
         const P = curve.periods;
+        const all = [...P, ...curve.obs_periods];
+        const xMin = 10 ** Math.floor(Math.log10(Math.min(...all)));
+        const xMax = 10 ** Math.ceil(Math.log10(Math.max(...all)));
         // Bande = borne basse (transparente) + écart haut − bas empilé et rempli.
         const band = (low: number[], high: number[], color: string, stack: string) => [
           {
@@ -99,8 +105,8 @@ export default function ReturnLevelChart({
             },
             xAxis: {
               type: "log" as const,
-              min: 1,
-              max: 1000,
+              min: xMin,
+              max: xMax,
               name: "ans",
               nameLocation: "end" as const,
               nameTextStyle: { color: muted },
@@ -159,8 +165,8 @@ export default function ReturnLevelChart({
   }, [curve, pastLabel, todayLabel, marker]);
 
   const legend: { name: string; color: string; kind: "line" | "dot" | "ring" }[] = [
-    { name: `${todayLabel} (bande : intervalle à 95 %)`, color: "--warm", kind: "line" },
-    { name: `${pastLabel} (bande : intervalle à 95 %)`, color: "--cold", kind: "line" },
+    { name: `${todayLabel} (bande : intervalle à ${ciLabel})`, color: "--warm", kind: "line" },
+    { name: `${pastLabel} (bande : intervalle à ${ciLabel})`, color: "--cold", kind: "line" },
     { name: "Années observées, ramenées au climat d'aujourd'hui", color: "--warm", kind: "dot" },
     { name: "Les mêmes, ramenées au climat passé", color: "--cold", kind: "ring" },
   ];

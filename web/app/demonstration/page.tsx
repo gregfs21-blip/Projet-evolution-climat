@@ -107,7 +107,7 @@ export default function DemonstrationPage() {
           Les pages Gironde, France et Monde décrivent ce qui change, série par série. Cet onglet croise les séries pour
           répondre à deux questions de plus : ce changement est-il réel, et d&apos;où vient-il ? Deux courbes qui montent
           ensemble ne prouvent rien, puisque n&apos;importe quelle grandeur qui augmente avec le temps leur est
-          « corrélée ». Chaque analyse repose donc sur un modèle explicite des causes, des critères fixés avant le calcul et
+          « corrélée ». Chaque analyse repose donc sur un modèle explicite, des critères fixés avant le calcul et
           une comparaison avec des estimations publiées.
         </p>
         <ol className="space-y-1 text-sm">
@@ -183,11 +183,12 @@ export default function DemonstrationPage() {
                   Principe : une moyenne qui monte ne dit pas comment évoluent les extrêmes, qui comptent pour la santé, les
                   cultures et les réseaux. On prend la journée la plus chaude de chaque année et on décrit sa loi de probabilité
                   par une loi des valeurs extrêmes dont la position suit la température mondiale. Si la chaleur extrême de
-                  Bordeaux ne dépendait pas du réchauffement mondial, le coefficient α serait nul : c&apos;est ce que teste le
-                  critère X3. La loi ajustée permet ensuite de comparer, pour un même événement, sa fréquence dans le climat de{" "}
-                  {x.past_year} et dans celui de {x.today_year}. L&apos;analyse établit un lien avec le réchauffement mondial ; elle
-                  ne dit pas, à elle seule, que ce réchauffement est d&apos;origine humaine : c&apos;est l&apos;objet de la régression
-                  ci-dessus.
+                  Bordeaux n&apos;avait pas évolué avec le réchauffement mondial, le coefficient α serait nul : c&apos;est ce que
+                  teste le critère X3. Un α positif établit une évolution commune ; il ne dit pas quelle part revient à des
+                  facteurs qui ont changé en même temps (urbanisation, aérosols, circulation atmosphérique). La loi ajustée permet
+                  ensuite de comparer, pour un même événement, sa fréquence dans le climat de {x.past_year} et dans celui de{" "}
+                  {x.today_year}. La régression ci-dessus porte sur la seule moyenne mondiale : ses conclusions sur la part
+                  humaine ne se transposent pas aux maxima de Bordeaux.
                 </p>
               </div>
               <ExtremesView x={x} />

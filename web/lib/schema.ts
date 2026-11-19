@@ -505,6 +505,7 @@ const unboundedSchema = z.strictObject({
   ci_low: z.number().nullable(),
   ci_high: z.number().nullable(),
   undefined_draws: z.number().int().min(0),
+  infinite_draws: z.number().int().min(0),
 });
 export type Unbounded = z.infer<typeof unboundedSchema>;
 
@@ -563,8 +564,14 @@ const extremeVariantSchema = z.strictObject({
   xi: z.number(),
   probability_ratio: z.number().nullable(),
   probability_ratio_status: z.enum(["fini", "infini", "indefini", "sans_objet"]),
+  return_period_today: z.number().nullable(),
   ok: z.boolean(),
-}).refine((v) => (v.probability_ratio !== null) === (v.probability_ratio_status === "fini"), "variante : rapport de probabilité incohérent avec son statut");
+})
+  .refine((v) => (v.probability_ratio !== null) === (v.probability_ratio_status === "fini"), "variante : rapport de probabilité incohérent avec son statut")
+  .refine(
+    (v) => (v.return_period_today !== null) === (v.probability_ratio_status === "fini" || v.probability_ratio_status === "infini"),
+    "variante : période de retour incohérente avec le statut",
+  );
 export type ExtremeVariant = z.infer<typeof extremeVariantSchema>;
 
 const extremesSchema = z
@@ -584,6 +591,9 @@ const extremesSchema = z
     covariate: z.string().min(1),
     today_year: z.number().int(),
     past_year: z.number().int(),
+    preindustrial_period: periodSchema,
+    past_return_period: z.number().gt(1),
+    ci_level: z.number().gt(0).lt(1),
     g_today: z.number(),
     g_past: z.number(),
     g_preindustrial: z.number(),

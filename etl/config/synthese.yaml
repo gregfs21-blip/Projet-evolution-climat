@@ -813,9 +813,10 @@ sections:
               grandeur : le réchauffement moyen de surface du globe (air et mer) par rapport à 1850-1900, dans l'onglet
               Démonstration (régression multiple). Rien n'est attribué ni pour la Gironde, ni pour la France, ni pour
               les autres variables, y compris la température de la mer et celle de la troposphère. Le même onglet relie
-              la journée la plus chaude de l'année à Bordeaux-Mérignac au réchauffement mondial (loi des valeurs
-              extrêmes) : ce lien ne dit ni quelle part de ce réchauffement est d'origine humaine, ni quelle part
-              revient à des effets locaux qui ont évolué en même temps, comme l'urbanisation.
+              la loi du maximum annuel de la température maximale quotidienne à Bordeaux-Mérignac au réchauffement
+              mondial (loi des valeurs extrêmes, climat de 1960 contre celui de 2025). Ce lien ne dit pas quelle part
+              de la hausse de ces maxima est d'origine humaine : il inclut tout ce qui a évolué en même temps, effets
+              locaux (urbanisation) ou régionaux (aérosols, circulation atmosphérique).
           - id: contexte-attribution
             kind: contexte
             text: >-

@@ -57,6 +57,18 @@ class TestGev(unittest.TestCase):
         self.assertIsNone(u.ci_high)
         self.assertEqual(u.ci_low, 10.0)
         self.assertEqual(u.undefined_draws, 1)
+        self.assertEqual(u.infinite_draws, 50)
+        with self.assertRaises(ValueError):           # 0/0 au centre : jamais affiché comme ∞
+            E.unbounded(np.nan, s)
+        with self.assertRaises(ValueError):           # aucun tirage défini
+            E.unbounded(2.0, np.array([np.nan, np.nan]))
+
+    def test_shared_number_rule(self):
+        self.assertEqual(E._n(4.5698), "4,6")
+        self.assertEqual(E._n(19.505), "19,5")
+        self.assertEqual(E._n(75.896), "75,9")
+        self.assertEqual(E._n(538.2), "538")
+        self.assertEqual(E._n(2821.76), "2\u202f822")
 
     def test_bootstrap_is_reproducible(self):
         g = np.linspace(0, 1, 40)

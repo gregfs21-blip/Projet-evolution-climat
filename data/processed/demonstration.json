@@ -5635,14 +5635,14 @@
    "extremes": {
     "question": "Une forte chaleur qui revenait tous les 20 ans dans le climat de 1960 à Bordeaux revient-elle plus souvent aujourd'hui, et de combien les maxima ont-ils augmenté par degré de réchauffement mondial ?",
     "model": "TXx(a) ~ GEV(μ₀ + α·G(a), σ, ξ), G = température mondiale lissée sur 4 ans",
-    "finding": "À Bordeaux-Mérignac, sur 1953-2025, la journée la plus chaude de l'année gagne 3,9 °C [2,4 ; 5,1] par degré de réchauffement mondial. Le monde s'étant réchauffé de 1,10 °C entre 1960 et 2025 (moyennes sur 4 ans, GISTEMP), une chaleur qui revenait tous les 20 ans en 1960 (37,7 °C) revient aujourd'hui en moyenne tous les 1,2 ans, et une chaleur de rareté donnée est 4,3 °C [2,6 ; 5,6] plus forte. Le record du 11 août 2025 (41,6 °C) a une période de retour d'environ 12 ans [5 ans ; 76 ans] dans le climat d'aujourd'hui. Dans le climat de 1960, il dépassait la borne supérieure de la loi ajustée : il y était pratiquement impossible (période de retour d'au moins 538 ans et probabilité multipliée par au moins 27, bornes basses des intervalles).",
+    "finding": "À Bordeaux-Mérignac, sur 1953-2025, la journée la plus chaude de l'année gagne 3,9 °C [2,4 ; 5,1] par degré de réchauffement mondial. Le monde s'étant réchauffé de 1,10 °C entre 1960 et 2025 (moyennes sur 4 ans, GISTEMP), une chaleur qui revenait tous les 20 ans en 1960 (37,7 °C) revient aujourd'hui en moyenne tous les 1,2 an [1,0 ; 2,4], soit une probabilité annuelle d'environ 80 %. Dans ce modèle, qui décale la loi sans la déformer, toute chaleur de rareté donnée est 4,3 °C [2,6 ; 5,6] plus forte qu'en 1960. Le record du 11 août 2025 (41,6 °C) a une période de retour d'environ 11,5 ans [4,6 ; 75,9] dans le climat d'aujourd'hui. Dans le climat de 1960, il aurait dépassé la borne supérieure de la loi ajustée : il y aurait été pratiquement impossible selon le modèle (779 tirages sur 1 000 le placent au-delà de cette borne). Bornes basses des intervalles à 95 % : période de retour 538 ans, probabilité multipliée par 26,9.",
     "confidence": "elevee",
     "confidence_reason": "Critères X1 à X6 conformes (règle D-AO). L'analyse relie les maxima au réchauffement mondial ; elle n'en attribue pas la cause.",
-    "method_note": "Maximum annuel de la température maximale quotidienne (TXx) à Bordeaux-Mérignac : années homogénéisées (correction mensuelle B de la phase P2a) prolongées par les années brutes postérieures, autorisées parce que corrigé et brut coïncident depuis la dernière rupture. Loi généralisée des valeurs extrêmes dont la position suit la température mondiale GISTEMP v4 lissée sur 4 ans (années a − 3 à a), échelle et forme constantes, ajustée par maximum de vraisemblance (protocole du World Weather Attribution, Philip et al., 2020). Intervalles à 95 % par rééchantillonnage des années (1000 tirages). Climats comparés : 2025 contre 1960, et pour information contre la moyenne 1880-1900. Une période de retour « infinie » signifie que la valeur dépasse la borne supérieure de la loi ajustée pour ce climat (forme ξ négative).",
+    "method_note": "Maximum annuel de la température maximale quotidienne (TXx) à Bordeaux-Mérignac : années homogénéisées (correction mensuelle B de la phase P2a) prolongées par les années brutes postérieures, autorisées parce que corrigé et brut ne diffèrent pas de plus de 0,05 °C depuis la dernière rupture (seuil 0,1 °C, même règle pour les autres postes). Loi généralisée des valeurs extrêmes dont la position suit la température mondiale GISTEMP v4 lissée sur 4 ans (années a − 3 à a), échelle et forme constantes, ajustée par maximum de vraisemblance (protocole du World Weather Attribution, Philip et al., 2020). Intervalles à 95 % par rééchantillonnage des années (1 000 tirages). Climats comparés : 2025 contre 1960, et pour information contre la moyenne 1880-1900. Une période de retour « infinie » signifie que la valeur dépasse la borne supérieure de la loi ajustée pour ce climat (forme ξ négative).",
     "limitations": [
      "La covariable représente tout ce qui suit le réchauffement mondial (gaz à effet de serre, aérosols, changements de circulation) : l'analyse relie les maxima au réchauffement mondial, elle n'attribue pas leur cause à l'homme, ce qui demanderait des modèles de climat.",
      "Une seule station principale ; quatre autres postes de Gironde servent de contrôle, mais partagent le même climat régional et ne sont pas indépendants.",
-     "Le record de 2025 a été choisi après coup et figure dans l'ajustement : la variante sans 2025 mesure ce biais de sélection.",
+     "Le record de 2025 a été choisi après coup et figure dans l'ajustement, ce qui le fait paraître moins rare : sans 2025, la période de retour du record aujourd'hui passe de 11,5 ans à 14,7 ans. La conclusion qualitative (au-delà de la borne de 1960) n'en dépend pas.",
      "Les longues périodes de retour extrapolent la loi au-delà des 73 années observées ; la borne supérieure de la loi (ξ < 0) est mal connue, d'où des intervalles très larges, parfois infinis.",
      "La correction B décale chaque mois sans corriger la forme de la distribution quotidienne ; Mérignac est un aéroport en lisière d'agglomération, un effet urbain lent n'est pas exclu.",
      "Le rééchantillonnage suppose les années indépendantes."
@@ -5677,6 +5677,12 @@
     "covariate": "GISTEMP v4, moyenne glissante sur 4 ans",
     "today_year": 2025,
     "past_year": 1960,
+    "preindustrial_period": {
+     "start": 1880,
+     "end": 1900
+    },
+    "past_return_period": 20.0,
+    "ci_level": 0.95,
     "g_today": 1.0303,
     "g_past": -0.0697,
     "g_preindustrial": -0.3173190476190476,
@@ -5709,7 +5715,7 @@
     "events": [
      {
       "id": "record-2025",
-      "label": "Record de 2025 (2025-08-11)",
+      "label": "Record du 11 août 2025",
       "value": {
        "value": 41.6,
        "ci_low": null,
@@ -5720,31 +5726,36 @@
        "value": 11.533729717330427,
        "ci_low": 4.5698090904045285,
        "ci_high": 75.89615812348573,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 1
       },
       "return_period_past": {
        "value": null,
        "ci_low": 538.2085288163971,
        "ci_high": null,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 779
       },
       "return_period_preindustrial": {
        "value": null,
        "ci_low": 1320.539765119389,
        "ci_high": null,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 847
       },
       "probability_ratio": {
        "value": null,
        "ci_low": 26.931193651619928,
        "ci_high": null,
-       "undefined_draws": 1
+       "undefined_draws": 1,
+       "infinite_draws": 778
       },
       "probability_ratio_preindustrial": {
        "value": null,
        "ci_low": 56.78866074332914,
        "ci_high": null,
-       "undefined_draws": 1
+       "undefined_draws": 1,
+       "infinite_draws": 846
       },
       "intensity_change": {
        "value": 4.332791278730897,
@@ -5770,31 +5781,36 @@
        "value": 1.246755058815229,
        "ci_low": 1.0251898679130165,
        "ci_high": 2.3605553360603944,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 0
       },
       "return_period_past": {
        "value": 20.0,
        "ci_low": 20.0,
        "ci_high": 20.0,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 0
       },
       "return_period_preindustrial": {
        "value": 118.26355620012113,
        "ci_low": 37.05194133203092,
        "ci_high": 2821.763713041049,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 13
       },
       "probability_ratio": {
        "value": 16.04164335134575,
        "ci_low": 8.366593057794281,
        "ci_high": 19.505136858800356,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 0
       },
       "probability_ratio_preindustrial": {
        "value": 94.8570895012089,
        "ci_low": 16.473437575919114,
        "ci_high": 2362.428920291125,
-       "undefined_draws": 0
+       "undefined_draws": 0,
+       "infinite_draws": 13
       },
       "intensity_change": {
        "value": 4.332791278730897,
@@ -6499,6 +6515,7 @@
       "xi": -0.2993610613541188,
       "probability_ratio": null,
       "probability_ratio_status": "infini",
+      "return_period_today": 11.497725313619659,
       "ok": true
      },
      {
@@ -6517,6 +6534,7 @@
       "xi": -0.2924561558103259,
       "probability_ratio": null,
       "probability_ratio_status": "infini",
+      "return_period_today": 15.755060607423935,
       "ok": true
      },
      {
@@ -6535,6 +6553,7 @@
       "xi": -0.29674463622758984,
       "probability_ratio": null,
       "probability_ratio_status": "infini",
+      "return_period_today": 14.700820278088363,
       "ok": true
      },
      {
@@ -6553,6 +6572,7 @@
       "xi": -0.2870770660879006,
       "probability_ratio": null,
       "probability_ratio_status": "infini",
+      "return_period_today": 7.011378568508692,
       "ok": true
      },
      {
@@ -6571,6 +6591,7 @@
       "xi": -0.16280487027287338,
       "probability_ratio": null,
       "probability_ratio_status": "sans_objet",
+      "return_period_today": null,
       "ok": true
      },
      {
@@ -6589,6 +6610,7 @@
       "xi": -0.2036328056283368,
       "probability_ratio": null,
       "probability_ratio_status": "sans_objet",
+      "return_period_today": null,
       "ok": true
      },
      {
@@ -6607,6 +6629,7 @@
       "xi": -0.40874899483107413,
       "probability_ratio": null,
       "probability_ratio_status": "sans_objet",
+      "return_period_today": null,
       "ok": true
      },
      {
@@ -6625,6 +6648,7 @@
       "xi": -0.34103485796850797,
       "probability_ratio": null,
       "probability_ratio_status": "sans_objet",
+      "return_period_today": null,
       "ok": true
      }
     ],
@@ -6639,7 +6663,7 @@
       "id": "X2",
       "label": "Ajustement",
       "satisfied": true,
-      "detail": "ξ = −0,31 (bornes −0,5 et +0,2) ; Kolmogorov-Smirnov p = 0,73 (seuil 0,05) ; 0 tirage(s) bootstrap sans convergence sur 1000"
+      "detail": "ajustement central convergé ; ξ = −0,31 (bornes −0,5 et +0,2) ; Kolmogorov-Smirnov p = 0,73 (seuil 0,05) ; 0 tirage(s) bootstrap écarté(s) sur 1 000 (échec ou optimiseur sans convergence déclarée)"
      },
      {
       "id": "X3",
@@ -6657,18 +6681,18 @@
       "id": "X5",
       "label": "Robustesse",
       "satisfied": true,
-      "detail": "Covariable HadCRUT5 : α = 3,86, rapport de probabilité du record infini ✓ ; Années homogénéisées seules (1953-2022) : α = 3,64, rapport de probabilité du record infini ✓ ; Sans l'année 2025 : α = 3,73, rapport de probabilité du record infini ✓ ; Indice TX3x (moyenne de TX sur 3 jours) : α = 3,89, rapport de probabilité du record infini ✓"
+      "detail": "Covariable HadCRUT5 : α = 3,86, rapport de probabilité du record infini, période de retour du record aujourd'hui 11,5 ans ✓ ; Années homogénéisées seules (1953-2022) : α = 3,64, rapport de probabilité du record infini, période de retour du record aujourd'hui 15,8 ans ✓ ; Sans l'année 2025 : α = 3,73, rapport de probabilité du record infini, période de retour du record aujourd'hui 14,7 ans ✓ ; Indice TX3x (moyenne de TX sur 3 jours) : α = 3,89, rapport de probabilité du record infini, période de retour du record aujourd'hui 7,0 ans ✓"
      },
      {
       "id": "X6",
       "label": "Cohérence régionale",
       "satisfied": true,
-      "detail": "Cap-Ferret 1953-2025 : α = 3,80 [2,39 ; 5,31] ✓ ; Cazaux 1953-2025 : α = 3,92 [2,64 ; 5,27] ✓ ; Villenave-d'Ornon 1953-2025 : α = 3,63 [1,98 ; 4,60] ✓ ; Bordeaux-Paulin 1962-2025 : α = 3,79 [2,06 ; 5,15] ✓"
+      "detail": "Cap-Ferret 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,80 [2,39 ; 5,31] ✓ ; Cazaux 1953-2025 (73 années, brutes : 2023, 2024, 2025) : α = 3,92 [2,64 ; 5,27] ✓ ; Villenave-d'Ornon 1953-2025 (72 années, manquantes : 2002, brutes : 2023, 2024, 2025) : α = 3,63 [1,98 ; 4,60] ✓ ; Bordeaux-Paulin 1962-2025 (64 années, brutes : 2023, 2024, 2025) : α = 3,79 [2,06 ; 5,15] ✓"
      }
     ],
     "script": "etl/demo_extremes.py",
     "etl_version": "local",
-    "extracted_at": "2026-11-19T06:53:33.644115Z"
+    "extracted_at": "2026-11-19T11:17:55.863467Z"
    }
   },
   {

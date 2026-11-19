@@ -15,7 +15,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
-| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI) | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2-P10.5 à cadrer) |
+| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 valeurs extrêmes non stationnaires en Gironde ; P10.3 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI). P10.2 : D-AM à D-AO et critères X1-X7 validés le 19/11/2026, avant tout ajustement | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2 close le 19/11/2026, confiance « élevée » ; P10.3-P10.5 à cadrer) |
 | P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | décisions D-AJ à D-AL et critères Q1-Q5 validés le 18/11/2026, avant tout développement ; Q1-Q5 conformes (`docs/validation-p11.md`) | **close** (18/11/2026) |
 
 ## Journal P0
@@ -693,6 +693,19 @@ devra être reformulée et relue (M6) avant la fusion.
 - Constat hors P10 : la validation P8 était déjà non conforme sur `main` avant P10 (M3 : case `amoc / monde` sans
   affirmation ; M6 : `lacune-gulf-stream-monde` non relue), à la suite de P9. **Traité le 18/11/2026 à la demande de
   Grég** (journal P8 ; `docs/relecture-p8.md`) : P8 de nouveau conforme.
+- 19/11/2026, P10.2 : sonde (`docs/sonde-p10b.md`), cadrage, décisions D-AM à D-AO et critères X1-X7 validés par Grég
+  avant tout ajustement.
+- 19/11/2026, P10.2, calcul (`etl/demo_extremes.py`, `etl/stats/gev.py`, `docs/validation-p10.md`) : α = 3,94
+  [2,39 ; 5,14] °C de TXx par °C de réchauffement mondial ; la chaleur de retour 20 ans en 1960 (37,7 °C) revient
+  tous les 1,2 an en 2025 ; le record du 11/08/2025 (41,6 °C) a une période de retour de 11,5 ans aujourd'hui et
+  dépasse la borne supérieure de la loi de 1960. **X1 à X6 conformes, confiance « élevée »** (D-AO).
+- Précisions de mise en œuvre, prises en écrivant le code, sans effet sur les critères : la règle de prolongation
+  brute de X1 s'applique aussi aux quatre postes de contrôle (X6) ; un tirage bootstrap dont l'optimiseur ne déclare
+  pas sa convergence est écarté et compté (aucun sur 1 000).
+- 19/11/2026, relecture indépendante (M6, D-AH) : 14 signalements, tous traités (`docs/relecture-p8.md`), dont la
+  page qui laissait enchaîner P10.1 et P10.2 en une attribution humaine de la chaleur bordelaise, et le constat qui
+  présentait des percentiles bootstrap comme des minimums. `limite-attribution` reformulée et relue ;
+  `limite-projections` relue, inchangée (P10.2 ne contient aucune projection). **P10.2 close.**
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 

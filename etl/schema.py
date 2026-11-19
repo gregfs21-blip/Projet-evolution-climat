@@ -636,6 +636,7 @@ class Unbounded(_Strict):
     ci_low: float | None
     ci_high: float | None
     undefined_draws: int = Field(default=0, ge=0)
+    infinite_draws: int = Field(default=0, ge=0, description="Tirages bootstrap de valeur infinie")
 
 
 class ExtremeEvent(_Strict):
@@ -682,12 +683,16 @@ class ExtremeVariant(_Strict):
     xi: float
     probability_ratio: float | None = Field(description="Rapport de probabilité du record (estimation centrale, sans intervalle), s'il est fini")
     probability_ratio_status: Literal["fini", "infini", "indefini", "sans_objet"]
+    return_period_today: float | None = Field(
+        description="Période de retour du record dans le climat d'aujourd'hui (estimation centrale) ; null si sans objet ou indéfini")
     ok: bool
 
     @model_validator(mode="after")
     def _pr(self) -> "ExtremeVariant":
         if (self.probability_ratio is not None) != (self.probability_ratio_status == "fini"):
             raise ValueError(f"variante {self.label} : rapport de probabilité incohérent avec son statut")
+        if (self.return_period_today is not None) != (self.probability_ratio_status in ("fini", "infini")):
+            raise ValueError(f"variante {self.label} : période de retour incohérente avec le statut")
         return self
 
 
@@ -707,6 +712,9 @@ class Extremes(_Strict):
     covariate: str = Field(min_length=1)
     today_year: int
     past_year: int
+    preindustrial_period: Period
+    past_return_period: float = Field(gt=1, description="Période de retour de l'événement « N ans en 1960 »")
+    ci_level: float = Field(gt=0, lt=1, description="Niveau des intervalles bootstrap")
     g_today: float
     g_past: float
     g_preindustrial: float

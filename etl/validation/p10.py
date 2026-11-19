@@ -23,9 +23,10 @@ ACCEPTED: dict[str, str] = {
                      "sort de la fourchette, l'estimateur AR(1) y dégénère (docs/validation-p10.md)",
 }
 # Analyses de l'onglet dont la synthèse tient compte (affirmations `limite-attribution` et `limite-projections` de
-# etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.2 Gironde, P10.3 France, P10.5 projections) rend ces
-# affirmations à revoir : ce contrôle échoue jusqu'à leur reformulation, relue (M6), et la mise à jour de cette liste.
-SYNTHESIS_COVERS = {"p10.1"}
+# etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.3 France, P10.4, P10.5 projections) rend ces
+# affirmations à revoir : ce contrôle échoue jusqu'à leur reformulation, relue (M6), et la mise à jour de cette liste
+# (P10.2 ajoutée le 19/11/2026 après relecture, docs/relecture-p8.md).
+SYNTHESIS_COVERS = {"p10.1", "p10.2"}
 
 
 def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:

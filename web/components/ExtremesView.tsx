@@ -11,26 +11,35 @@ const nf = (v: number, d = 1, sign = false) =>
 const ci = (e: Estimate, d = 1) => (e.ci_low !== null && e.ci_high !== null ? `[${nf(e.ci_low, d)} ; ${nf(e.ci_high, d)}]` : "");
 const pv = (p: number) => (p < 0.001 ? "< 0,001" : nf(p, 3));
 
-/** Nombre sans infini : 1 décimale sous 10, entier au-delà. */
-const num = (v: number) => nf(v, v < 10 ? 1 : 0);
+/** Règle unique des périodes de retour et rapports de probabilité (identique au constat, etl/demo_extremes.py `_n`) :
+ *  une décimale sous 100, entier au-delà. */
+const num = (v: number) => nf(v, Math.round(v * 10) / 10 < 100 ? 1 : 0); // arrondir d'abord : 99,96 → « 100 »
+/** Pourcentage, une décimale au plus (2,5 %, 95 %). */
+const pct = (l: number) => `${(l * 100).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`;
+/** Durée en années : singulier sous 2 (« 1,2 an »). */
+const yrs = (v: number) => `${num(v)} ${v < 2 ? "an" : "ans"}`;
 const inf = (v: number | null) => (v === null ? "∞" : num(v));
 
-function Unb({ u, unit = "" }: { u: Unbounded; unit?: string }) {
+function Unb({ u, years = false, draws }: { u: Unbounded; years?: boolean; draws: number }) {
   const fixed = u.value !== null && u.ci_low === u.value && u.ci_high === u.value;
   return (
     <>
       <b>
-        {inf(u.value)}
-        {u.value !== null && unit}
+        {u.value !== null && years ? yrs(u.value) : inf(u.value)}
       </b>
-      {!fixed && (u.ci_low !== null || u.ci_high !== null || u.value === null) && (
+      {!fixed && (
         <span className="text-xs text-[var(--muted)]">
           {" "}
           [{inf(u.ci_low)} ; {inf(u.ci_high)}]
         </span>
       )}
       {fixed && <span className="text-xs text-[var(--muted)]"> (par construction)</span>}
-      {u.undefined_draws > 0 && <span className="text-xs text-[var(--muted)]"> · {u.undefined_draws} tirage(s) indéfini(s)</span>}
+      {u.infinite_draws > 0 && (
+        <span className="block text-xs text-[var(--muted)]">
+          ∞ dans {u.infinite_draws.toLocaleString("fr-FR")} tirage{u.infinite_draws > 1 ? "s" : ""} sur {(draws - u.undefined_draws).toLocaleString("fr-FR")}
+          {u.undefined_draws > 0 && ` (${u.undefined_draws} indéfini${u.undefined_draws > 1 ? "s" : ""}, écarté${u.undefined_draws > 1 ? "s" : ""})`}
+        </span>
+      )}
     </>
   );
 }
@@ -46,17 +55,19 @@ function Figure({ title, children, note }: { title: string; children: React.Reac
 }
 
 function Events({ x }: { x: Extremes }) {
+  const d = x.n_boot - x.n_failed;
+  const pre = `${x.preindustrial_period.start}-${x.preindustrial_period.end}`;
   const rows: { label: string; cell: (e: ExtremeEvent) => React.ReactNode }[] = [
     { label: "Intensité", cell: (e) => <><b>{nf(e.value.value)} °C</b> <span className="text-xs text-[var(--muted)]">{ci(e.value)}</span></> },
-    { label: `Période de retour en ${x.today_year}`, cell: (e) => <Unb u={e.return_period_today} unit=" ans" /> },
-    { label: `Période de retour en ${x.past_year}`, cell: (e) => <Unb u={e.return_period_past} unit=" ans" /> },
-    { label: `Probabilité ${x.today_year} / ${x.past_year}`, cell: (e) => <Unb u={e.probability_ratio} /> },
+    { label: `Période de retour en ${x.today_year}`, cell: (e) => <Unb u={e.return_period_today} years draws={d} /> },
+    { label: `Période de retour en ${x.past_year}`, cell: (e) => <Unb u={e.return_period_past} years draws={d} /> },
+    { label: `Probabilité ${x.today_year} / ${x.past_year}`, cell: (e) => <Unb u={e.probability_ratio} draws={d} /> },
     {
       label: `À rareté égale, écart ${x.today_year} − ${x.past_year}`,
       cell: (e) => <><b>{nf(e.intensity_change.value, 1, true)} °C</b> <span className="text-xs text-[var(--muted)]">{ci(e.intensity_change)}</span></>,
     },
-    { label: "Période de retour en 1880-1900 (information)", cell: (e) => <Unb u={e.return_period_preindustrial} unit=" ans" /> },
-    { label: `Probabilité ${x.today_year} / 1880-1900 (information)`, cell: (e) => <Unb u={e.probability_ratio_preindustrial} /> },
+    { label: `Période de retour en ${pre} (information)`, cell: (e) => <Unb u={e.return_period_preindustrial} years draws={d} /> },
+    { label: `Probabilité ${x.today_year} / ${pre} (information)`, cell: (e) => <Unb u={e.probability_ratio_preindustrial} draws={d} /> },
   ];
   return (
     <div className="overflow-x-auto">
@@ -85,9 +96,12 @@ function Events({ x }: { x: Extremes }) {
         </tbody>
       </table>
       <p className="mt-1 text-xs leading-relaxed text-[var(--muted)]">
-        Intervalles à 95 % par rééchantillonnage des années ({x.n_boot.toLocaleString("fr-FR")} tirages). « ∞ » : la valeur dépasse la
-        borne supérieure de la loi ajustée pour ce climat, elle y est impossible selon le modèle ; un rapport de probabilité infini en
-        découle. Les périodes de retour longues sont des extrapolations (voir les limites).
+        Intervalles à {pct(x.ci_level)} par rééchantillonnage des années ({d.toLocaleString("fr-FR")} tirages retenus sur{" "}
+        {x.n_boot.toLocaleString("fr-FR")}). « ∞ » en valeur centrale : l&apos;événement dépasse la borne supérieure de la loi ajustée
+        pour ce climat, il y est impossible selon le modèle, d&apos;où un rapport de probabilité infini. « ∞ » en borne
+        d&apos;intervalle : au moins {pct((1 - x.ci_level) / 2)} des tirages placent l&apos;événement au-delà de cette borne. Un tirage
+        « indéfini » donne 0/0 (événement au-delà de la borne dans les deux climats) ; il est écarté de l&apos;intervalle. Les
+        périodes de retour longues sont des extrapolations (voir les limites).
       </p>
     </div>
   );
@@ -95,6 +109,7 @@ function Events({ x }: { x: Extremes }) {
 
 function Variants({ x }: { x: Extremes }) {
   const record = x.events.find((e) => e.date !== null) ?? x.events[0]!;
+  const d = x.n_boot - x.n_failed;
   const groups = [
     { id: "robustesse" as const, title: "Variantes de calcul (critère X5)" },
     { id: "station" as const, title: "Autres postes de Gironde (critère X6)" },
@@ -108,6 +123,7 @@ function Variants({ x }: { x: Extremes }) {
             <th className="py-1.5 pr-3 font-medium">Années</th>
             <th className="py-1.5 pr-3 font-medium">α (°C par °C)</th>
             <th className="py-1.5 pr-3 font-medium">ξ</th>
+            <th className="py-1.5 pr-3 font-medium">Période de retour du record en {x.today_year}</th>
             <th className="py-1.5 pr-3 font-medium">Rapport de probabilité du record</th>
             <th className="py-1.5 font-medium" />
           </tr>
@@ -122,15 +138,14 @@ function Variants({ x }: { x: Extremes }) {
               <b>{nf(x.alpha.value, 2)}</b> <span className="text-xs text-[var(--muted)]">{ci(x.alpha, 2)}</span>
             </td>
             <td className="py-1.5 pr-3">{nf(x.xi.value, 2)}</td>
-            <td className="py-1.5 pr-3">
-              <Unb u={record.probability_ratio} />
-            </td>
+            <td className="py-1.5 pr-3">{record.return_period_today.value === null ? "∞" : yrs(record.return_period_today.value)}</td>
+            <td className="py-1.5 pr-3">{inf(record.probability_ratio.value)}</td>
             <td />
           </tr>
           {groups.map((g) => (
             <Fragment key={g.id}>
               <tr>
-                <td colSpan={6} className="pt-3 pb-1 text-xs font-semibold text-[var(--muted)]">
+                <td colSpan={7} className="pt-3 pb-1 text-xs font-semibold text-[var(--muted)]">
                   {g.title}
                 </td>
               </tr>
@@ -146,6 +161,7 @@ function Variants({ x }: { x: Extremes }) {
                       {nf(v.alpha.value, 2)} <span className="text-xs text-[var(--muted)]">{ci(v.alpha, 2)}</span>
                     </td>
                     <td className="py-1.5 pr-3">{nf(v.xi, 2)}</td>
+                    <td className="py-1.5 pr-3">{v.return_period_today === null ? <span className="text-[var(--muted)]">—</span> : yrs(v.return_period_today)}</td>
                     <td className="py-1.5 pr-3">
                       {v.probability_ratio_status === "fini" ? (
                         num(v.probability_ratio!)
@@ -165,7 +181,7 @@ function Variants({ x }: { x: Extremes }) {
         </tbody>
       </table>
       <p className="mt-1 text-xs leading-relaxed text-[var(--muted)]">
-        Variantes : estimations centrales, sans rééchantillonnage ; conformes si α &gt; 0 et rapport de probabilité du record &gt; 1
+        Toutes les lignes : estimations centrales (intervalles de la référence dans le tableau des événements). Variantes : conformes si α &gt; 0 et rapport de probabilité du record &gt; 1
         (pour TX3x, le record est la valeur TX3x de {x.today_year}). Autres postes : α &gt; 0 et intervalle recouvrant celui de
         la station de référence. Référence publiée pour α : {x.reference_source}.
       </p>
@@ -222,6 +238,7 @@ export default function ExtremesView({ x }: { x: Extremes }) {
           pastLabel={`Climat de ${x.past_year}`}
           todayLabel={`Climat de ${x.today_year}`}
           marker={record ? { value: record.value.value, label: `record ${nf(record.value.value)} °C` } : undefined}
+          ciLabel={pct(x.ci_level)}
           label={`Niveaux de retour de la température maximale annuelle à ${x.station}`}
         />
       </Figure>
@@ -243,8 +260,14 @@ export default function ExtremesView({ x }: { x: Extremes }) {
           height="h-[280px] sm:h-[340px]"
           lines={[
             { name: "Maximum observé de l'année", values: s.values, color: "--ink", width: 1.2, opacity: 0.7 },
-            { name: "Valeur la plus probable (position μ de la loi)", values: s.mu, color: "--accent", width: 2 },
-            { name: "Niveau de retour 20 ans de l'année", values: s.level20, color: "--warm", width: 2, dashed: true },
+            { name: "Position μ de la loi (dépassée près de 2 années sur 3)", values: s.mu, color: "--accent", width: 2 },
+            {
+              name: `Niveau de retour ${nf(x.past_return_period, 0)} ans de l'année`,
+              values: s.level20,
+              color: "--warm",
+              width: 2,
+              dashed: true,
+            },
           ]}
         />
       </Figure>

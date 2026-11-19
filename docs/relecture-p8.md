@@ -171,3 +171,36 @@ agent séparé : exactes, sans sur-interprétation. La même relecture a porté 
 (`docs/validation-p11.md`).
 
 Affirmations relues (P11, 18/11/2026) : lacune-localite-chaude-monde#6fba07708d, lacune-localite-froide-monde#aa2c4baefa
+
+## P10.2 — valeurs extrêmes en Gironde (19/11/2026, garde-fou D-AH)
+
+Publier P10.2 rendait `limite-attribution` incomplète. Relecture par un agent séparé, qui n'avait rien rédigé, de
+l'affirmation reformulée, du constat et des textes générés (`data/processed/demonstration.json`), de la page
+(`web/app/demonstration/page.tsx`, `ExtremesView.tsx`, `ReturnLevelChart.tsx`), de `docs/validation-p10.md` et des
+points du code qui pèsent sur les chiffres. Le relecteur a réajusté la loi et refait le bootstrap (graine 1002) :
+chiffres reproduits.
+
+| | Signalement | Traitement |
+|---|---|---|
+| 1 | Page : « si la chaleur ne dépendait pas du réchauffement mondial, α serait nul » confond évolution commune et dépendance ; le renvoi à P10.1 invitait à conclure à une chaleur bordelaise d'origine humaine | Formulation du relecteur reprise : évolution commune, facteurs concomitants (urbanisation, aérosols, circulation), la régression mondiale ne se transpose pas |
+| 2 | Constat : « au moins 538 ans », « au moins 27 » présentent des percentiles à 2,5 % comme des minimums ; indicatif pour un contrefactuel | Conditionnel ; nombre de tirages au-delà de la borne publié (779 sur 1 000) ; « bornes basses des intervalles à 95 % » |
+| 3 | `limite-attribution` : « ce réchauffement » ambigu ; effets régionaux omis ; indice imprécis | Proposition du relecteur reprise |
+| 4 | « Valeur la plus probable (position μ) » faux : μ n'est pas le mode | « Position μ de la loi (dépassée près de 2 années sur 3) » |
+| 5 | « La variante sans 2025 mesure ce biais » sans rien publier | Période de retour du record aujourd'hui publiée pour chaque variante ; limitation chiffrée (11,5 → 14,7 ans) |
+| 6 | Validation : part des tirages infinis non donnée ; G 1880-1900 présenté comme lissé | Corrigés |
+| 7 | « Sans convergence » mesuré nulle part | Convergence déclarée de l'optimiseur contrôlée (ajustement central, ajustement stationnaire du test X3, tirages) ; libellé exact |
+| 8 | Valeurs écrites en dur (1880-1900, 20 ans, 95 %, axe, 73, « quatre ») | Champs `preindustrial_period`, `past_return_period`, `ci_level` ; axe et textes tirés des données |
+| 9 | Arrondis différents entre constat et tableau | Règle unique (une décimale sous 100, entier au-delà, après arrondi), partagée par l'ETL et la page |
+| 10 | Sens de « ∞ » en borne d'intervalle et tirage indéfini non expliqués ; ∞ et 0/0 confondus | Note réécrite ; nombre de tirages infinis affiché ; erreur levée si une valeur centrale ou tous les tirages sont indéfinis |
+| 11 | « Corrigé et brut coïncident » inexact ; prolongation brute des autres postes non contrôlée ; Villenave à 72 ans | « à 0,05 °C près » ; même seuil appliqué dans le code aux quatre postes ; années, manquantes et brutes dans X6 |
+| 12 | Écart d'intensité identique à toute rareté par hypothèse ; intervalle de 1,2 an absent | Dit dans le constat ; intervalle et probabilité annuelle (≈ 80 %) ajoutés |
+| 13 | En-tête « modèle explicite des causes » faux pour P10.2 | « modèle explicite » |
+| 14 | `limite-projections` | Inchangée : P10.2 compare deux climats observés, sans projection |
+
+Contre-relecture : corrections confirmées ; un défaut introduit (« au moins 3 % » pour 2,5 %, arrondi entier) et des
+défauts latents (99,96 affiché « 100,0 », phrase agrammaticale si la période de retour devenait infinie, robustesse
+affirmée sans condition, milliers, convergence de l'ajustement stationnaire et tirages écartés des autres postes non
+suivis) : tous corrigés. Singulier « 1,2 an » retenu partout. `limite-attribution` et `limite-projections` déclarées
+relues dans leur rédaction actuelle.
+
+Affirmations relues (P10.2, 19/11/2026) : limite-attribution#c24c5413be, limite-projections#31ccce92d2

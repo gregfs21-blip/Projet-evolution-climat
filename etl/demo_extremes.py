@@ -145,12 +145,17 @@ def rp(p: float) -> float:
 
 
 def unbounded(central: float, samples: np.ndarray) -> Unbounded:
+    """null = +∞. Les tirages indéfinis (0/0) sont comptés et écartés ; une valeur centrale indéfinie ou l'absence
+    de tout tirage défini lèvent une erreur (sinon « ∞ » serait affiché à tort)."""
     s = np.asarray(samples, float)
     undefined = int(np.sum(np.isnan(s)))
     s = s[~np.isnan(s)]
-    lo, hi = gev.interval(s) if len(s) else (np.nan, np.nan)
-    f = lambda v: None if (v is None or not np.isfinite(v)) else float(v)  # noqa: E731
-    return Unbounded(value=f(central), ci_low=f(lo), ci_high=f(hi), undefined_draws=undefined)
+    if np.isnan(central) or not len(s):
+        raise ValueError("P10.2 : grandeur indéfinie (0/0) pour l'estimation centrale ou pour tous les tirages")
+    lo, hi = gev.interval(s)
+    f = lambda v: None if np.isinf(v) else float(v)  # noqa: E731
+    return Unbounded(value=f(central), ci_low=f(lo), ci_high=f(hi), undefined_draws=undefined,
+                     infinite_draws=int(np.sum(np.isinf(s))))
 
 
 def est(central: float, samples: np.ndarray | None = None) -> Estimate:
@@ -196,7 +201,7 @@ def analyse(main: StationMaxima, others: list[StationMaxima], gis: dict[int, flo
     k = len(PERIODS)
 
     events = [
-        ExtremeEvent(id="record-2025", label=f"Record de {EVENT_YEAR} ({rec_date})", value=est(rec), date=rec_date,
+        ExtremeEvent(id="record-2025", label=f"Record du {_date(rec_date)}", value=est(rec), date=rec_date,
                      return_period_today=unbounded(central[3], col(3)), return_period_past=unbounded(central[4], col(4)),
                      return_period_preindustrial=unbounded(central[5], col(5)),
                      probability_ratio=unbounded(central[6], col(6)),
@@ -205,7 +210,8 @@ def analyse(main: StationMaxima, others: list[StationMaxima], gis: dict[int, flo
         ExtremeEvent(id="vingt-ans-1960", label=f"Chaleur de période de retour {N_PAST} ans en {PAST_YEAR}",
                      value=est(central[10], col(10)), date=None,
                      return_period_today=unbounded(central[11], col(11)),
-                     return_period_past=Unbounded(value=float(N_PAST), ci_low=float(N_PAST), ci_high=float(N_PAST)),
+                     return_period_past=Unbounded(value=float(N_PAST), ci_low=float(N_PAST), ci_high=float(N_PAST),
+                                                  undefined_draws=0, infinite_draws=0),
                      return_period_preindustrial=unbounded(central[12], col(12)),
                      probability_ratio=unbounded(central[13], col(13)),
                      probability_ratio_preindustrial=unbounded(central[14], col(14)),
@@ -238,12 +244,13 @@ def analyse(main: StationMaxima, others: list[StationMaxima], gis: dict[int, flo
         ys, xv, gv = arrays(vals, cov)
         ff = gev.fit(xv, gv)
         p = None if event is None else pr(ff.exceedance(event, cov[EVENT_YEAR]), ff.exceedance(event, cov[PAST_YEAR]))
-        ok = ff.alpha > 0 and (p is None or (not np.isnan(p) and p > 1))
+        ok = ff.converged and ff.alpha > 0 and (p is None or (not np.isnan(p) and p > 1))
         status = "sans_objet" if p is None else "indefini" if np.isnan(p) else "infini" if np.isinf(p) else "fini"
+        t_now = rp(ff.exceedance(event, cov[EVENT_YEAR])) if status in ("fini", "infini") else None
         return ExtremeVariant(group=group, label=label, period=Period(start=ys[0], end=ys[-1]), n=len(ys),
                               alpha=est(ff.alpha), xi=float(ff.xi),
                               probability_ratio=float(p) if status == "fini" else None,
-                              probability_ratio_status=status, ok=bool(ok))
+                              probability_ratio_status=status, return_period_today=t_now, ok=bool(ok))
 
     variants.append(variant("Covariable HadCRUT5", values, GH, rec))
     hom_only, _ = main.series(extend=False)
@@ -256,17 +263,20 @@ def analyse(main: StationMaxima, others: list[StationMaxima], gis: dict[int, flo
     a_lo, a_hi = gev.interval(col(0))
     station_rows = []
     for st in others:
-        vals, _ = st.series()
+        # Même règle que X1 : prolongation brute seulement si corrigé et brut concordent après la dernière rupture.
+        extend = st.ext_diff() <= MAX_EXT_DIFF
+        vals, st_raw = st.series(extend=extend)
         ys, xs, gs = arrays(vals, G)
         ff = gev.fit(xs, gs)
-        bs, _ = gev.bootstrap(xs, gs, n_boot, SEED, lambda q: q.alpha)
+        bs, st_failed = gev.bootstrap(xs, gs, n_boot, SEED, lambda q: q.alpha)
         lo, hi = gev.interval(bs)
-        ok = ff.alpha > 0 and lo <= a_hi and a_lo <= hi
-        station_rows.append((st, ff, lo, hi, ok))
+        ok = ff.converged and ff.alpha > 0 and lo <= a_hi and a_lo <= hi
+        missing = [y for y in range(ys[0], ys[-1] + 1) if y not in vals]
+        station_rows.append((st, ff, lo, hi, ok, extend, st_raw, missing, st_failed))
         variants.append(ExtremeVariant(group="station", label=st.name, period=Period(start=ys[0], end=ys[-1]),
                                        n=len(ys), alpha=Estimate(value=ff.alpha, ci_low=lo, ci_high=hi),
                                        xi=float(ff.xi), probability_ratio=None,
-                                       probability_ratio_status="sans_objet", ok=bool(ok)))
+                                       probability_ratio_status="sans_objet", return_period_today=None, ok=bool(ok)))
 
     gaps = [y for y in range(START, years[-1] + 1) if y not in values]
     return {
@@ -287,23 +297,30 @@ def _f(x: float, nd: int, sign: bool = False) -> str:
     return fmt(x, nd, sign)
 
 
-def _rp(u: Unbounded, nd: int = 0) -> str:
-    def one(v):
-        if v is None:
-            return "infinie"
-        return f"{_f(v, nd)} ans" if v < 10_000 else "plus de 10 000 ans"
-    return one(u.value)
+def _n(v: float) -> str:
+    """Règle unique des périodes de retour et rapports de probabilité (identique à la page) : une décimale sous 100,
+    entier au-delà, milliers séparés par une espace insécable fine."""
+    if float(_f(v, 1).replace(",", ".").replace("−", "-")) < 100:   # arrondir d'abord : 99,96 → « 100 »
+        return _f(v, 1)
+    return _int(int(_f(v, 0)))
+
+
+def _int(n: int) -> str:
+    t = str(int(n))
+    return "\u202f".join([t[max(0, i - 3):i] for i in range(len(t), 0, -3)][::-1])
+
+
+def _rp(v: float | None) -> str:
+    return "infinie" if v is None else f"{_n(v)} {'an' if v < 2 else 'ans'}"   # 1,2 an : singulier sous 2
 
 
 def _ratio(u: Unbounded) -> str:
-    if u.value is None:
-        return "infini"
-    return _f(u.value, 0 if u.value >= 10 else 1)
+    return "infini" if u.value is None else _n(u.value)
 
 
 def _variant_ratio(v: ExtremeVariant) -> str:
     if v.probability_ratio_status == "fini":
-        return _f(v.probability_ratio, 0 if v.probability_ratio >= 10 else 1)
+        return _n(v.probability_ratio)
     return {"infini": "infini", "indefini": "indéfini (0/0)", "sans_objet": "—"}[v.probability_ratio_status]
 
 
@@ -319,10 +336,13 @@ def build(main: StationMaxima, others: list[StationMaxima], gis: dict[int, float
                          f"{'aucune manquante' if not r['gaps'] else 'manquantes : ' + ', '.join(map(str, r['gaps']))} ; "
                          f"années brutes {', '.join(map(str, r['raw_years'])) or 'aucune'} ; écart maximal |corrigé − brut| "
                          f"après la rupture de {main.last_break_regime} : {_f(r['ext_diff'], 2)} °C (seuil {_f(MAX_EXT_DIFF, 1)})"),
-        Criterion(id="X2", label="Ajustement", satisfied=XI_RANGE[0] <= f.xi <= XI_RANGE[1] and r["ks"] >= KS_MIN,
-                  detail=f"ξ = {_f(f.xi, 2)} (bornes {_f(XI_RANGE[0], 1)} et {_f(XI_RANGE[1], 1, True)}) ; "
+        Criterion(id="X2", label="Ajustement",
+                  satisfied=f.converged and XI_RANGE[0] <= f.xi <= XI_RANGE[1] and r["ks"] >= KS_MIN,
+                  detail=f"ajustement central {'convergé' if f.converged else 'SANS convergence déclarée'} ; "
+                         f"ξ = {_f(f.xi, 2)} (bornes {_f(XI_RANGE[0], 1)} et {_f(XI_RANGE[1], 1, True)}) ; "
                          f"Kolmogorov-Smirnov p = {_f(r['ks'], 2)} (seuil {_f(KS_MIN, 2)}) ; "
-                         f"{r['failed']} tirage(s) bootstrap sans convergence sur {n_boot}"),
+                         f"{r['failed']} tirage(s) bootstrap écarté(s) sur {_int(n_boot)} (échec ou optimiseur sans "
+                         "convergence déclarée)"),
         Criterion(id="X3", label="Détection", satisfied=f.alpha > 0 and r["lrt"] < ALPHA_LEVEL and a_lo > 0,
                   detail=f"α = {_f(f.alpha, 2)} [{_f(a_lo, 2)} ; {_f(a_hi, 2)}] °C par °C ; rapport de vraisemblance "
                          f"p {'< 0,001' if r['lrt'] < 0.001 else '= ' + _f(r['lrt'], 3)}"),
@@ -331,12 +351,22 @@ def build(main: StationMaxima, others: list[StationMaxima], gis: dict[int, float
                          f"[{_f(REFERENCE[1], 1)} ; {_f(REFERENCE[2], 1)}]"),
         Criterion(id="X5", label="Robustesse", satisfied=all(v.ok for v in r["variants"] if v.group == "robustesse"),
                   detail=" ; ".join(f"{v.label} : α = {_f(v.alpha.value, 2)}, rapport de probabilité du record "
-                                    f"{_variant_ratio(v)} {'✓' if v.ok else '✗'}"
+                                    f"{_variant_ratio(v)}"
+                                    + (f", période de retour du record aujourd'hui {_rp(v.return_period_today)}"
+                                       if v.probability_ratio_status in ("fini", "infini") else "")
+                                    + f" {'✓' if v.ok else '✗'}"
                                     for v in r["variants"] if v.group == "robustesse")),
         Criterion(id="X6", label="Cohérence régionale", satisfied=all(v.ok for v in r["variants"] if v.group == "station"),
-                  detail=" ; ".join(f"{v.label} {v.period.start}-{v.period.end} : α = {_f(v.alpha.value, 2)} "
-                                    f"[{_f(v.alpha.ci_low, 2)} ; {_f(v.alpha.ci_high, 2)}] {'✓' if v.ok else '✗'}"
-                                    for v in r["variants"] if v.group == "station")),
+                  detail=" ; ".join(
+                      f"{st.name} {v.period.start}-{v.period.end} ({v.n} années"
+                      + (f", manquantes : {', '.join(map(str, miss))}" if miss else "")
+                      + (f", brutes : {', '.join(map(str, sraw))}" if sraw else "")
+                      + ("" if ext else ", sans prolongation brute (écart corrigé − brut au-delà du seuil)")
+                      + (f", {nf} tirage(s) bootstrap écarté(s)" if nf else "")
+                      + f") : α = {_f(v.alpha.value, 2)} [{_f(v.alpha.ci_low, 2)} ; {_f(v.alpha.ci_high, 2)}] "
+                      f"{'✓' if v.ok else '✗'}"
+                      for v, (st, _ff, _lo, _hi, _ok, ext, sraw, miss, nf) in
+                      zip([v for v in r["variants"] if v.group == "station"], r["station_rows"]))),
     ]
     ok = {c.id: c.satisfied for c in criteria}
     if all(ok[f"X{i}"] for i in range(1, 7)):
@@ -350,30 +380,43 @@ def build(main: StationMaxima, others: list[StationMaxima], gis: dict[int, float
         confidence, reason = "non_etabli", "La hausse des maxima avec le réchauffement mondial n'est pas détectée (X3)."
 
     g_txt = _f(r["g_now"] - r["g_past"], 2)
-    pr_rec = ev_rec.probability_ratio
-    if ev_rec.return_period_past.value is None:
-        past_txt = (f"Dans le climat de {PAST_YEAR}, il dépassait la borne supérieure de la loi ajustée : il y était "
-                    "pratiquement impossible")
-        if pr_rec.ci_low is not None:
-            past_txt += (f" (période de retour d'au moins {_f(ev_rec.return_period_past.ci_low, 0)} ans et "
-                         f"probabilité multipliée par au moins {_f(pr_rec.ci_low, 0)}, bornes basses des intervalles)")
+    pr_rec, t_past = ev_rec.probability_ratio, ev_rec.return_period_past
+    n_def = n_boot - r["failed"] - t_past.undefined_draws
+    if t_past.value is None:
+        past_txt = (f"Dans le climat de {PAST_YEAR}, il aurait dépassé la borne supérieure de la loi ajustée : il y "
+                    f"aurait été pratiquement impossible selon le modèle ({_int(t_past.infinite_draws)} tirages sur "
+                    f"{_int(n_def)} le placent au-delà de cette borne)")
+        if t_past.ci_low is not None and pr_rec.ci_low is not None:
+            past_txt += (f". Bornes basses des intervalles à 95 % : période de retour {_rp(t_past.ci_low)}, "
+                         f"probabilité multipliée par {_n(pr_rec.ci_low)}")
         past_txt += "."
     else:
-        past_txt = (f"Dans le climat de {PAST_YEAR}, sa période de retour était de {_rp(ev_rec.return_period_past)} : "
-                    f"il est devenu {_ratio(pr_rec)} fois plus probable.")
+        past_txt = (f"Dans le climat de {PAST_YEAR}, sa période de retour aurait été de {_rp(t_past.value)} "
+                    f"[{_rp(t_past.ci_low)} ; {_rp(t_past.ci_high)}] : il est devenu {_ratio(pr_rec)} fois plus "
+                    "probable.")
+    t20 = ev_20.return_period_today
+    t20_txt = (f"revient aujourd'hui en moyenne tous les {_rp(t20.value)} [{_n(t20.ci_low)} ; {_n(t20.ci_high)}], "
+               f"soit une probabilité annuelle d'environ {_f(100 / t20.value, 0)} %" if t20.value is not None
+               else "ne revient plus du tout aujourd'hui selon le modèle")
+    t_rec = ev_rec.return_period_today
     finding = (
         f"À {main.name}, sur {r['years'][0]}-{r['years'][-1]}, la journée la plus chaude de l'année gagne "
         f"{_f(f.alpha, 1)} °C [{_f(a_lo, 1)} ; {_f(a_hi, 1)}] par degré de réchauffement mondial. Le monde s'étant "
         f"réchauffé de {g_txt} °C entre {PAST_YEAR} et {EVENT_YEAR} (moyennes sur 4 ans, GISTEMP), une chaleur qui "
-        f"revenait tous les {N_PAST} ans en {PAST_YEAR} ({_f(ev_20.value.value, 1)} °C) revient aujourd'hui en moyenne "
-        f"tous les {_rp(ev_20.return_period_today, 1)}, et une chaleur de rareté donnée est "
+        f"revenait tous les {N_PAST} ans en {PAST_YEAR} ({_f(ev_20.value.value, 1)} °C) {t20_txt}. Dans ce modèle, qui décale la loi sans la déformer, toute chaleur de rareté donnée est "
         f"{_f(ev_rec.intensity_change.value, 1)} °C [{_f(ev_rec.intensity_change.ci_low, 1)} ; "
-        f"{_f(ev_rec.intensity_change.ci_high, 1)}] plus forte. Le record du {_date(ev_rec.date)} "
-        f"({_f(ev_rec.value.value, 1)} °C) a une période de retour d'environ {_rp(ev_rec.return_period_today)} "
-        f"[{_rp(Unbounded(value=ev_rec.return_period_today.ci_low, ci_low=None, ci_high=None))} ; "
-        f"{_rp(Unbounded(value=ev_rec.return_period_today.ci_high, ci_low=None, ci_high=None))}] dans le climat "
-        f"d'aujourd'hui. " + past_txt
+        f"{_f(ev_rec.intensity_change.ci_high, 1)}] plus forte qu'en {PAST_YEAR}. Le record du {_date(ev_rec.date)} "
+        f"({_f(ev_rec.value.value, 1)} °C) a une période de retour d'environ {_rp(t_rec.value)} "
+        f"[{_n(t_rec.ci_low) if t_rec.ci_low is not None else '∞'} ; "
+        f"{_n(t_rec.ci_high) if t_rec.ci_high is not None else '∞'}] dans le climat d'aujourd'hui. " + past_txt
     )
+    noext = next((v for v in r["variants"] if v.label == f"Sans l'année {EVENT_YEAR}"), None)
+    robust_txt = (f" La conclusion qualitative (au-delà de la borne de {PAST_YEAR}) n'en dépend pas."
+                  if noext is not None and noext.probability_ratio_status == "infini"
+                  and ev_rec.return_period_past.value is None else "")
+    bias_txt = (f" : sans {EVENT_YEAR}, la période de retour du record aujourd'hui passe de {_rp(t_rec.value)} à "
+                f"{_rp(noext.return_period_today)}" if noext is not None and noext.return_period_today is not None
+                and t_rec.value is not None else "")
 
     return Extremes(
         question=(f"Une forte chaleur qui revenait tous les {N_PAST} ans dans le climat de {PAST_YEAR} à Bordeaux "
@@ -384,10 +427,11 @@ def build(main: StationMaxima, others: list[StationMaxima], gis: dict[int, float
         method_note=(
             "Maximum annuel de la température maximale quotidienne (TXx) à Bordeaux-Mérignac : années homogénéisées "
             "(correction mensuelle B de la phase P2a) prolongées par les années brutes postérieures, autorisées parce "
-            "que corrigé et brut coïncident depuis la dernière rupture. Loi généralisée des valeurs extrêmes dont la "
+            f"que corrigé et brut ne diffèrent pas de plus de {_f(r['ext_diff'], 2)} °C depuis la dernière rupture "
+            f"(seuil {_f(MAX_EXT_DIFF, 1)} °C, même règle pour les autres postes). Loi généralisée des valeurs extrêmes dont la "
             "position suit la température mondiale GISTEMP v4 lissée sur 4 ans (années a − 3 à a), échelle et forme "
             "constantes, ajustée par maximum de vraisemblance (protocole du World Weather Attribution, Philip et al., "
-            f"2020). Intervalles à 95 % par rééchantillonnage des années ({n_boot} tirages). Climats comparés : "
+            f"2020). Intervalles à 95 % par rééchantillonnage des années ({_int(n_boot)} tirages). Climats comparés : "
             f"{EVENT_YEAR} contre {PAST_YEAR}, et pour information contre la moyenne {PRE[0]}-{PRE[1]}. Une "
             "période de retour « infinie » signifie que la valeur dépasse la borne supérieure de la loi ajustée pour "
             "ce climat (forme ξ négative)."),
@@ -395,12 +439,12 @@ def build(main: StationMaxima, others: list[StationMaxima], gis: dict[int, float
             "La covariable représente tout ce qui suit le réchauffement mondial (gaz à effet de serre, aérosols, "
             "changements de circulation) : l'analyse relie les maxima au réchauffement mondial, elle n'attribue pas "
             "leur cause à l'homme, ce qui demanderait des modèles de climat.",
-            "Une seule station principale ; quatre autres postes de Gironde servent de contrôle, mais partagent le "
-            "même climat régional et ne sont pas indépendants.",
-            f"Le record de {EVENT_YEAR} a été choisi après coup et figure dans l'ajustement : la variante sans "
-            f"{EVENT_YEAR} mesure ce biais de sélection.",
-            "Les longues périodes de retour extrapolent la loi au-delà des 73 années observées ; la borne supérieure "
-            "de la loi (ξ < 0) est mal connue, d'où des intervalles très larges, parfois infinis.",
+            f"Une seule station principale ; {_count(len(others))} autres postes de Gironde servent de contrôle, mais "
+            "partagent le même climat régional et ne sont pas indépendants.",
+            f"Le record de {EVENT_YEAR} a été choisi après coup et figure dans l'ajustement, ce qui le fait paraître "
+            f"moins rare{bias_txt}.{robust_txt}",
+            f"Les longues périodes de retour extrapolent la loi au-delà des {len(r['years'])} années observées ; la "
+            "borne supérieure de la loi (ξ < 0) est mal connue, d'où des intervalles très larges, parfois infinis.",
             "La correction B décale chaque mois sans corriger la forme de la distribution quotidienne ; Mérignac est "
             "un aéroport en lisière d'agglomération, un effet urbain lent n'est pas exclu.",
             "Le rééchantillonnage suppose les années indépendantes.",
@@ -417,6 +461,7 @@ def build(main: StationMaxima, others: list[StationMaxima], gis: dict[int, float
         station=main.name, index_label="TXx, maximum annuel de la température maximale quotidienne",
         period=Period(start=r["years"][0], end=r["years"][-1]), n=len(r["years"]),
         covariate="GISTEMP v4, moyenne glissante sur 4 ans", today_year=EVENT_YEAR, past_year=PAST_YEAR,
+        preindustrial_period=Period(start=PRE[0], end=PRE[1]), past_return_period=float(N_PAST), ci_level=0.95,
         g_today=r["g_now"], g_past=r["g_past"], g_preindustrial=r["g_pre"], mu0=f.mu0,
         alpha=Estimate(value=f.alpha, ci_low=a_lo, ci_high=a_hi),
         sigma=Estimate(value=f.sigma, ci_low=r["sigma_ci"][0], ci_high=r["sigma_ci"][1]),
@@ -426,6 +471,10 @@ def build(main: StationMaxima, others: list[StationMaxima], gis: dict[int, float
         events=r["events"], curve=r["curve"], series=r["series"], variants=r["variants"], criteria=criteria,
         script="etl/demo_extremes.py", etl_version=ctx_version, extracted_at=extracted_at,
     )
+
+
+def _count(n: int) -> str:
+    return ("zéro", "un", "deux", "trois", "quatre", "cinq", "six")[n] if n <= 6 else str(n)
 
 
 MONTHS = ("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre",

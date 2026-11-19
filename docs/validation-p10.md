@@ -81,8 +81,10 @@ et la confiance publiée reste « moyenne » tant qu'O8 n'est pas conforme au ca
 ## P10.2 — valeurs extrêmes en Gironde
 
 Données, méthode, références et critères X1-X7 validés par Grég le 19/11/2026, avant tout ajustement (D-AM à D-AO,
-`docs/phases.md`). Calcul du 19/11/2026 : `etl/demo_extremes.py`, 1 000 tirages bootstrap, graine 1002. Chiffres
-arrondis une seule fois à partir de `data/processed/demonstration.json`.
+`docs/phases.md`). Calcul du 19/11/2026 : `etl/demo_extremes.py`, 1 000 tirages bootstrap, graine 1002, aucun tirage
+écarté (échec ou optimiseur sans convergence déclarée). Chiffres arrondis une seule fois à partir de
+`data/processed/demonstration.json` ; périodes de retour et rapports de probabilité avec une décimale sous 100, comme
+sur la page.
 
 ### Résultats
 
@@ -91,27 +93,29 @@ arrondis une seule fois à partir de `data/processed/demonstration.json`.
 | α, °C de TXx par °C de réchauffement mondial | 3,94 [2,39 ; 5,14] |
 | σ ; ξ | 1,75 [1,25 ; 2,12] ; −0,31 [−0,46 ; −0,04] |
 | Rapport de vraisemblance (contre la loi stationnaire) ; Kolmogorov-Smirnov | p < 0,001 ; p = 0,73 |
-| G (GISTEMP lissé 4 ans) : 1960 ; 2025 ; 1880-1900 | −0,07 ; 1,03 ; −0,32 °C |
-| Chaleur de retour 20 ans en 1960 | 37,7 [37,0 ; 38,4] °C, revient tous les 1,2 [1,0 ; 2,4] ans en 2025 ; probabilité × 16 [8,4 ; 19,5] |
-| Écart d'intensité à rareté égale, 2025 − 1960 | +4,3 [2,6 ; 5,6] °C (identique pour les deux événements : décalage pur) |
-| Record du 11/08/2025, 41,6 °C | période de retour 12 [5 ; 76] ans en 2025 ; au-delà de la borne supérieure en 1960 (période de retour ≥ 538 ans, rapport de probabilité ≥ 27, bornes basses) |
+| G, GISTEMP lissé sur 4 ans : 1960 ; 2025 | −0,07 ; 1,03 °C |
+| G de référence 1880-1900 (moyenne simple des 21 années) | −0,32 °C |
+| Chaleur de retour 20 ans en 1960 | 37,7 [37,0 ; 38,4] °C ; revient tous les 1,2 [1,0 ; 2,4] ans en 2025 ; probabilité × 16,0 [8,4 ; 19,5] |
+| Écart d'intensité à rareté égale, 2025 − 1960 | +4,3 [2,6 ; 5,6] °C (identique pour toutes les raretés : décalage pur) |
+| Record du 11/08/2025, 41,6 °C, climat de 2025 | période de retour 11,5 [4,6 ; 75,9] ans |
+| Le même, climat de 1960 | au-delà de la borne supérieure de la loi ajustée (40,0 °C) dans l'estimation centrale et dans 779 tirages sur 1 000 ; bornes basses des intervalles : période de retour 538 ans, rapport de probabilité 26,9 |
 
-Tous les critères X1 à X6 sont conformes ; confiance « élevée » (règle D-AO). Aucun tirage bootstrap sans convergence.
+Tous les critères X1 à X6 sont conformes ; confiance « élevée » (règle D-AO).
 
 ### Constats sans effet sur les critères
 
 - α central (3,94) est au-dessus du centre de la référence régionale (3,3) et du chiffre ERA5 de Vautard et al. (3,4),
   mais son intervalle recoupe [2,5 ; 4,2] (X4). Une station seule est plus bruitée qu'une moyenne régionale ; les
   quatre autres postes donnent 3,6 à 3,9. La valeur élevée n'est pas propre à Mérignac.
-- Le record de 2025 est choisi après coup et figure dans l'ajustement. Sans 2025, α vaut 3,73 et le record reste
-  au-delà de la borne supérieure de la loi de 1960 : la conclusion qualitative ne dépend pas de cette année.
-- Le rapport de probabilité du record est infini dans l'estimation centrale, et la borne haute de son intervalle aussi
-  (au moins 2,5 % des tirages le donnent infini) ; un tirage sur 1 000 donne 0/0 (record hors des deux lois) et est
-  écarté de l'intervalle. « Pratiquement impossible »
-  dans le climat de 1960 est une affirmation du modèle, qui dépend de la borne supérieure de la GEV, elle-même mal
-  connue (ξ entre −0,46 et −0,04) : les bornes basses publiées (538 ans, × 27) sont la lecture prudente.
-- Villenave-d'Ornon a ξ = −0,41, proche de la borne de X2 ; X2 ne porte que sur Mérignac, et α de ce poste
-  (3,63 [1,98 ; 4,60]) est cohérent.
+- Le record de 2025 est choisi après coup et figure dans l'ajustement. Sans 2025, α vaut 3,73, la période de retour du
+  record aujourd'hui passe de 11,5 à 14,7 ans, et le record reste au-delà de la borne supérieure de la loi de 1960 : la
+  conclusion qualitative ne dépend pas de cette année.
+- « Pratiquement impossible » dans le climat de 1960 est une affirmation du modèle : elle dépend de la borne supérieure
+  de la GEV, elle-même mal connue (ξ entre −0,46 et −0,04). 221 tirages sur 1 000 donnent une période de retour finie ;
+  les bornes basses publiées (538 ans, × 26,9) sont des percentiles à 2,5 %, pas des minimums certains. Un tirage donne
+  0/0 pour le rapport de probabilité (record au-delà de la borne dans les deux climats) et est écarté de son intervalle.
+- Villenave-d'Ornon : 72 années (2002 manquante) et ξ = −0,41, proche de la borne de X2 ; X2 ne porte que sur
+  Mérignac, et α de ce poste (3,63 [1,98 ; 4,60]) est cohérent. Les quatre postes sont prolongés en brut de 2023 à 2025
+  selon la règle de X1 (écart corrigé − brut après la dernière rupture au plus 0,1 °C), désormais vérifiée dans le code.
 - Le décalage pur (σ et ξ constants) fait que l'écart d'intensité est le même pour toutes les périodes de retour ; une
   variante où σ suit aussi G n'a pas été testée (hors cadrage).
-
