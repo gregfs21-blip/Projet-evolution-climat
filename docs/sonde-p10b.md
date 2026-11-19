@@ -1,6 +1,6 @@
 # Sonde P10.2 — maxima annuels de TX en Gironde (généré)
 
-Généré par `python -m etl.probe.p10b` le 19/11/2026 06:31 UTC. Aucun ajustement, aucune tendance.
+Généré par `python -m etl.probe.p10b` le 19/11/2026 12:56 UTC. Aucun ajustement, aucune tendance.
 
 ### Bordeaux-Paulin (33063001)
 
