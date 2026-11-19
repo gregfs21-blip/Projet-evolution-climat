@@ -589,6 +589,81 @@ satisfait mais qu'un autre critère échoue ; « signal non établi » si O3 éc
   à la publication de P10.1, elle devient fausse. Proposition : la reformuler en renvoyant à l'onglet, avec la
   relecture indépendante exigée par M6.
 
+### P10.2 — Valeurs extrêmes non stationnaires en Gironde : cadrage proposé le 19/11/2026, avant tout ajustement
+
+> **Demande de Grég du 19/11/2026** : réaliser P10.2, la suite de la démonstration.
+
+**Question** : une forte chaleur qui revenait tous les N ans dans le climat de 1960 à Bordeaux revient-elle plus
+souvent aujourd'hui, et de combien les maxima de chaleur ont-ils augmenté par degré de réchauffement mondial ?
+
+**Constat de la sonde** (19/11/2026, `docs/sonde-p10b.md`) : maximum annuel de TX (TXx) disponible pour cinq postes.
+Bordeaux-Mérignac : années complètes 1921-2025, homogénéisées (correction B de P2a) 1953-2022, dernière rupture
+corrigée par Météo-France en 2000 ; après 2000, TXx corrigé et brut ne diffèrent jamais de plus de 0,05 °C (même
+constat pour les quatre autres postes après leur dernière rupture). Records : 40,7 °C (2003), 41,2 °C (2019),
+40,5 °C (2022), **41,6 °C le 11/08/2025**. Les quatre autres postes : Bordeaux-Paulin (homogénéisé 1962-2022),
+Cap-Ferret, Cazaux et Villenave-d'Ornon (1953-2022).
+
+**Méthode proposée** (protocole du World Weather Attribution, Philip et al., 2020, ASCMO 6, 177-203) :
+
+- **Indice** : TXx à Bordeaux-Mérignac, **1953-2025** : années homogénéisées 1953-2022, prolongées par les valeurs
+  brutes 2023-2025, ce que la sonde autorise (après la dernière rupture, corrigé = brut à 0,05 °C près).
+- **Loi** : loi généralisée des valeurs extrêmes (GEV) dont la position suit le réchauffement mondial,
+  μ(a) = μ₀ + α·G(a), échelle σ et forme ξ constantes (« décalage » de la distribution, choix standard pour la
+  chaleur). Estimation par maximum de vraisemblance.
+- **Covariable** G : température mondiale GISTEMP v4 publiée sur le site, moyenne glissante sur 4 ans (années a − 3 à
+  a, aucune année future), pour filtrer El Niño.
+- **Climats comparés** : G de 2025 (« aujourd'hui ») contre G de 1960 ; pour information, contre la moyenne
+  1880-1900 de GISTEMP (proche du préindustriel).
+- **Événements** : (1) le record du 11/08/2025, 41,6 °C : période de retour aujourd'hui et en 1960, rapport de
+  probabilité, écart d'intensité ; (2) la chaleur de période de retour 20 ans dans le climat de 1960 : sa période de
+  retour aujourd'hui. L'événement (1) est inclus dans l'ajustement (pratique du WWA) ; la variante sans 2025 mesure
+  le biais de sélection.
+- **Incertitude** : rééchantillonnage des années (bootstrap non paramétrique, 1 000 tirages, graine fixe),
+  intervalles à 95 % par percentiles.
+- **Détection** : test du rapport de vraisemblance contre la GEV stationnaire (χ² à 1 degré de liberté).
+- **Résultats publiés** : α (°C de TXx par °C de réchauffement mondial) ; périodes de retour, rapports de probabilité
+  et écarts d'intensité avec leurs intervalles ; courbes niveau de retour / période de retour pour 1960 et aujourd'hui
+  avec les observations ; série TXx avec μ(a) et le niveau 20 ans.
+
+**Références proposées**
+
+| # | Énoncé publié | Source | Contrôle |
+|---|---|---|---|
+| R-X1 | En Europe de l'Ouest, le maximum des TX d'été s'est réchauffé 3,3 [2,5 ; 4,2] fois plus vite que la température mondiale (1950-2023) | Weather and Climate Dynamics 7, 439 (2026) | intervalle de α qui **recoupe [2,5 ; 4,2]** |
+| — | 3,4 °C par degré de réchauffement mondial (TXx, Europe de l'Ouest, 1950-2022, ERA5) | Vautard et al. (2023), Nature Communications 14, 6803 | information |
+| — | Canicule de juin 2019 en France : probabilité multipliée par au moins 5 | World Weather Attribution (2019) | information (autre indice : moyenne sur 3 jours de la température moyenne) |
+
+Les références portent sur une région et sur ERA5 : une station seule est plus bruitée, d'où un contrôle de
+recouvrement et non d'appartenance.
+
+**Critères proposés (X1-X7)**
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| X1 | Données | Aucune année manquante 1953-fin ; prolongation brute autorisée seulement si, après la dernière rupture, l'écart |TXx corrigé − brut| ne dépasse pas 0,1 °C |
+| X2 | Ajustement | Convergence du maximum de vraisemblance ; ξ entre −0,5 et +0,2 ; adéquation des probabilités transformées à une loi uniforme (Kolmogorov-Smirnov, p ≥ 0,05) |
+| X3 | Détection | α > 0, rapport de vraisemblance p < 0,05 et intervalle bootstrap de α excluant 0 |
+| X4 | Plausibilité | Intervalle de α recoupant R-X1 |
+| X5 | Robustesse | α > 0 et rapport de probabilité du record > 1 pour : covariable HadCRUT5 ; années homogénéisées seules (1953-2022) ; sans l'année 2025 ; indice TX3x (moyenne de TX sur 3 jours) |
+| X6 | Cohérence régionale | α > 0 pour Cap-Ferret, Cazaux, Villenave-d'Ornon et Bordeaux-Paulin, intervalles recoupant celui de Mérignac |
+| X7 | Technique | Tests et CI verts, contrat à jour, analyse publiée dans l'onglet |
+
+**Règle de confiance proposée** (comme D-AG) : « élevée » si X1 à X6 sont conformes ; « moyenne » si X3 l'est mais
+qu'un autre critère échoue ; « signal non établi » si X3 échoue.
+
+**Limites assumées d'avance** : une station, même si quatre autres servent de contrôle ; G représente tout ce qui suit
+le réchauffement mondial (gaz à effet de serre, aérosols, changements de circulation), pas la seule part humaine :
+l'analyse relie les maxima au réchauffement mondial, elle n'attribue pas leur cause ; extrapolation de la GEV au-delà
+de 73 ans pour les longues périodes de retour ; la correction B décale chaque mois sans corriger la forme de la
+distribution ; Mérignac est un aéroport en lisière d'agglomération (effet urbain possible) ; le bootstrap ignore une
+éventuelle dépendance d'une année à l'autre.
+
+**Conséquence pour la synthèse** : publier P10.2 déclenche le garde-fou D-AH. L'affirmation `limite-attribution`
+devra être reformulée et relue (M6) avant la fusion.
+
+**Décisions demandées à Grég** : D-AM (données, indice et méthode) ; D-AN (événements étudiés) ; D-AO (références,
+critères X1-X7 et règle de confiance).
+
 ### Journal P10
 
 - 17/11/2026 : sonde (`docs/sonde-p10.md`), cadrage, décisions D-AD à D-AH, critères O1-O9 validés avant tout calcul.
