@@ -33,3 +33,4 @@ Fichier généré par `python -m etl.validation.p10` à chaque exécution de l'E
 | P10.3 A6 cohérence | ✅ conforme | intervalle Gironde [1,75 ; 2,52] contre France [1,77 ; 2,56] ✓ | Bordeaux-Mérignac 1953-2024 : k = 2,19 [1,80 ; 2,58] ✓ ; Cap-Ferret 1953-2024 : k = 2,14 [1,76 ; 2,51] ✓ ; Cazaux 1953-2024 : k = 2,10 [1,71 ; 2,50] ✓ ; Villenave-d'Ornon 1953-2024 : k = 2,11 [1,69 ; 2,52] ✓ ; Bordeaux-Paulin 1962-2024 : k = 2,17 [1,73 ; 2,62] ✓ |
 | P10.3 A7 technique | ℹ️ information | Tests (etl/tests/test_p10c.py), contrat et construction de l'onglet vérifiés par la CI. |
 | Confiance P10.3 (règle D-AQ) | ℹ️ information | moyenne — Amplification établie (A3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AQ) : A2 (ajustement). Détail : docs/validation-p10.md. |
+| D-AH cohérence de cmp-terres-oceans | ✅ conforme | facteur contre les terres émergées, borne basse > 1 : France métropolitaine [1,28 ; 1,85] ; Gironde [1,27 ; 1,84] |

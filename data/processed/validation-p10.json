@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-19T14:14:45Z",
+  "generated_at": "2026-11-19T14:32:13Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
@@ -202,6 +202,13 @@
       "status": "ℹ️ information",
       "satisfied": true,
       "detail": "moyenne — Amplification établie (A3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AQ) : A2 (ajustement). Détail : docs/validation-p10.md."
+    },
+    {
+      "name": "D-AH cohérence de cmp-terres-oceans",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "facteur contre les terres émergées, borne basse > 1 : France métropolitaine [1,28 ; 1,85] ; Gironde [1,27 ; 1,84]"
     }
   ]
 }
