@@ -696,7 +696,7 @@ devra être reformulée et relue (M6) avant la fusion.
 - 19/11/2026, P10.2 : sonde (`docs/sonde-p10b.md`), cadrage, décisions D-AM à D-AO et critères X1-X7 validés par Grég
   avant tout ajustement.
 - 19/11/2026, P10.2, calcul (`etl/demo_extremes.py`, `etl/stats/gev.py`, `docs/validation-p10.md`) : α = 3,94
-  [2,39 ; 5,14] °C de TXx par °C de réchauffement mondial ; la chaleur de retour 20 ans en 1960 (37,7 °C) revient
+  [2,39 ; 5,13] °C de TXx par °C de réchauffement mondial ; la chaleur de retour 20 ans en 1960 (37,7 °C) revient
   tous les 1,2 an en 2025 ; le record du 11/08/2025 (41,6 °C) a une période de retour de 11,5 ans aujourd'hui et
   dépasse la borne supérieure de la loi de 1960. **X1 à X6 conformes, confiance « élevée »** (D-AO).
 - Précisions de mise en œuvre, prises en écrivant le code, sans effet sur les critères : la règle de prolongation

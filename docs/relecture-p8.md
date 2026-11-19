@@ -183,7 +183,7 @@ chiffres reproduits.
 | | Signalement | Traitement |
 |---|---|---|
 | 1 | Page : « si la chaleur ne dépendait pas du réchauffement mondial, α serait nul » confond évolution commune et dépendance ; le renvoi à P10.1 invitait à conclure à une chaleur bordelaise d'origine humaine | Formulation du relecteur reprise : évolution commune, facteurs concomitants (urbanisation, aérosols, circulation), la régression mondiale ne se transpose pas |
-| 2 | Constat : « au moins 538 ans », « au moins 27 » présentent des percentiles à 2,5 % comme des minimums ; indicatif pour un contrefactuel | Conditionnel ; nombre de tirages au-delà de la borne publié (779 sur 1 000) ; « bornes basses des intervalles à 95 % » |
+| 2 | Constat : « au moins 538 ans », « au moins 27 » présentent des percentiles à 2,5 % comme des minimums ; indicatif pour un contrefactuel | Conditionnel ; nombre de tirages au-delà de la borne publié (779 sur 1 000 au calcul relu, 780 au calcul officiel) ; « bornes basses des intervalles à 95 % » |
 | 3 | `limite-attribution` : « ce réchauffement » ambigu ; effets régionaux omis ; indice imprécis | Proposition du relecteur reprise |
 | 4 | « Valeur la plus probable (position μ) » faux : μ n'est pas le mode | « Position μ de la loi (dépassée près de 2 années sur 3) » |
 | 5 | « La variante sans 2025 mesure ce biais » sans rien publier | Période de retour du record aujourd'hui publiée pour chaque variante ; limitation chiffrée (11,5 → 14,7 ans) |
