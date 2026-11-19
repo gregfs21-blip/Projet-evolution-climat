@@ -150,18 +150,20 @@ Critères : A1, A3, A4, A5, A6 conformes ; **A2 non conforme** (Ljung-Box de la 
 ### Écart A2 : autocorrélation restante à 10 ans en Gironde
 
 Le test de Ljung-Box à 10 ans échoue pour la Gironde (p = 0,027 ; seuil 0,05) ; il passe pour la France (p = 0,09).
-L'échec tient à une seule autocorrélation des résidus blanchis, au décalage de 10 ans : −0,44 (−0,39 pour la France) ;
-les autres décalages de 1 à 12 ans restent entre −0,19 et +0,19. Le même test passe à 5 ans (p = 0,62), 15 ans
-(p = 0,08) et 20 ans (p = 0,09). Ce motif est dans la série régionale elle-même : sans aucune covariable, les résidus
-d'une tendance quadratique ont la même autocorrélation à 10 ans (−0,45). Il vient de paires d'années à 10 ans
-d'intervalle et d'écarts opposés (2000 et 2010, 1956 et 1966, 1980 et 1990, 2010 et 2020) : variabilité propre de la
-région ou hasard d'échantillonnage sur 72 ans, que le modèle AR(1) ne représente pas.
+L'échec tient à une seule autocorrélation des résidus blanchis (estimateur du test), au décalage de 10 ans : −0,37
+(−0,32 pour la France) ; les autres décalages de 1 à 12 ans restent entre −0,18 et +0,17 (France : entre −0,22 et
++0,13). Le même test passe à 5 ans (p = 0,62), 15 ans (p = 0,08) et 20 ans (p = 0,09). Ce motif est dans la série
+régionale elle-même : sans aucune covariable, les résidus d'une tendance quadratique ont la même autocorrélation à
+10 ans (−0,38). Il vient de paires d'années à 10 ans d'intervalle et d'écarts opposés (2000 et 2010, 1956 et 1966,
+1980 et 1990, 2010 et 2020) : variabilité propre de la région ou hasard d'échantillonnage sur 72 ans, que le modèle
+AR(1) ne représente pas.
 
 Effet sur la conclusion : un contrôle par moindres carrés ordinaires avec erreurs de Newey-West, qui ne suppose aucune
 forme d'autocorrélation, donne pour la Gironde k = 2,14 avec des intervalles [1,82 ; 2,45] (troncature 4 ans),
-[1,85 ; 2,43] (10 ans) et [1,87 ; 2,40] (15 ans) : la borne basse reste nettement au-dessus de 1, A3 tient. L'écart
-ne change pas le constat ; il signale que l'intervalle de Prais-Winsten repose sur une hypothèse (AR(1)) que les
-résidus ne respectent pas tout à fait. Critère non modifié ; décision d'accepter ou non l'écart laissée à Grég.
+[1,85 ; 2,43] (10 ans) et [1,87 ; 2,40] (15 ans) : la borne basse reste nettement au-dessus de 1, A3 tient. Le
+contrôle à 10 ans est désormais publié pour chaque facteur. L'écart ne change pas le constat ; il signale que
+l'intervalle de Prais-Winsten repose sur une hypothèse (AR(1)) que les résidus ne respectent pas tout à fait. Critère
+non modifié ; décision d'accepter ou non l'écart laissée à Grég.
 
 ### Constats sans effet sur les critères
 
@@ -171,15 +173,25 @@ résidus ne respectent pas tout à fait. Critère non modifié ; décision d'acc
   précision.
 - k France dépasse la borne haute de la fourchette de contrôle (2,0) ; seul son intervalle la recoupe (A4). La TRACC
   (rapport ≈ 1,33) compare des réchauffements cumulés jusqu'en 2030-2100 (France depuis 1900-1930, monde depuis
-  1850-1900) ; k mesure le rythme observé depuis
-  1959, gonflé en Europe par la baisse des aérosols depuis les années 1980 : la variante 1979-2024 donne 2,40 pour la
-  France. Ce rythme récent n'est pas une projection.
+  1850-1900) ; k mesure le rythme observé depuis 1959, probablement accru, selon la littérature, par la baisse des
+  aérosols en Europe depuis les années 1980 (non testé ici) : la variante 1979-2024 donne 2,40 pour la France. Ce
+  rythme récent n'est pas une projection.
 - Contre les seules terres émergées, les deux facteurs restent au-dessus de 1 (borne basse 1,28 et 1,27) : le contraste
   terres-océans explique une partie de l'amplification (terres ≈ 1,43 fois le monde), pas toute.
 - Le facteur d'été est plus élevé que celui d'hiver, mais leurs intervalles se recoupent : l'hiver, très variable,
-  laisse un intervalle d'environ ± 1. Ribes et al. (2022) attendent pour l'avenir un réchauffement d'été environ 30 %
-  au-dessus de la moyenne annuelle et d'hiver 15 % en dessous : même sens, non testé ici.
+  laisse un intervalle d'environ ± 1 (période 1960-2024 pour la France et 1954-2024 pour la Gironde : l'hiver de 1959
+  et de 1953 demanderait le mois de décembre précédent). Ribes et al. (2022, Earth System Dynamics 13, 1397, résumé)
+  attendent pour l'avenir un réchauffement d'hiver environ 15 % sous la moyenne annuelle et d'été environ 30 %
+  au-dessus : même sens, non testé ici.
 - Information « terres contre monde » : le premier calcul lissait les deux séries (autocorrélation des résidus 0,92,
   intervalle trop étroit) ; corrigé après le calcul en prenant CRUTEM5 annuel, comme les séries régionales (incohérence
-  de mise en œuvre sur une information sans critère ; 1,38 → 1,43). Son test de Ljung-Box échoue aussi (p = 0,01).
-- La Gironde suit la France : les cinq postes donnent 2,10 à 2,19, littoraux compris (Cap-Ferret 2,14).
+  de mise en œuvre sur une information sans critère ; 1,38 → 1,43). Son test de Ljung-Box échoue aussi (p = 0,01),
+  comme celui de la Gironde contre les terres (p = 0,03) ; la France contre les terres passe (p = 0,10). Les intervalles
+  de Newey-West publiés pour chaque facteur servent de contrôle.
+- La Gironde suit la France : les cinq postes donnent 2,10 à 2,19, littoraux compris (Cap-Ferret 2,14). Le contrôle A6
+  est peu indépendant : quatre de ces postes forment le composite ; seul Bordeaux-Paulin (2,17) est extérieur.
+- La variante « années homogénéisées seules » change trois choses à la fois : elle retire les années brutes, raccourcit
+  la période (sans 2022-2024, très chaudes) et, pour la France, prend la série publiée à 220 postes ; l'écart
+  2,16 → 2,01 mêle ces trois effets.
+- Relecture : l'entrée P10.2 du journal (« [2,39 ; 5,13] ») suit le calcul officiel (5,132), pas le calcul local
+  (5,135) ; « 1,2 an » est retenu partout.

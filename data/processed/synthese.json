@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-19T14:17:52Z",
+ "generated_at": "2026-11-19T14:49:28Z",
  "sections": [
   {
    "id": "gironde",
@@ -1350,7 +1350,7 @@
        "id": "cmp-terres-oceans",
        "kind": "contexte",
        "params": [],
-       "text": "Une partie de l'écart est attendue : la Gironde et la France sont des terres, la moyenne mondiale est à 70 % océanique, et les terres se réchauffent plus vite que l'océan (GIEC : 1,59 °C contre 0,88 °C sur 2011-2020 par rapport à 1850-1900). Ce contraste n'explique pas tout : mesurées contre la seule température des terres émergées (onglet Démonstration, amplification régionale), la France et la Gironde se réchauffent encore plus vite que la moyenne des terres.",
+       "text": "Une partie de l'écart est attendue : la Gironde et la France sont des terres, la moyenne mondiale est à 70 % océanique, et les terres se réchauffent plus vite que l'océan (GIEC : 1,59 °C contre 0,88 °C sur 2011-2020 par rapport à 1850-1900). Ce contraste n'explique pas tout : mesurées contre la seule température des terres émergées, la France (1959-2024) et la Gironde (1953-2024) se réchauffent encore plus vite que la moyenne des terres (résultat de l'étude, à titre d'information, sans critère : onglet Démonstration, amplification régionale).",
        "indicators": [],
        "source": {
         "label": "GIEC AR6, groupe I, résumé pour décideurs (A.1.2)",

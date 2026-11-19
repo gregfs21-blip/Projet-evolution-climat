@@ -756,6 +756,8 @@ class AmplificationFit(_Strict):
     rho: float = Field(gt=-1, lt=1)
     r2: float = Field(le=1)
     ljung_box_p: float = Field(ge=0, le=1)
+    k_newey_west: Estimate = Field(description="Contrôle : MCO avec erreurs de Newey-West (aucune forme d'autocorrélation supposée)")
+    newey_west_lag: int = Field(ge=1)
 
 
 class AmplificationSeries(_Strict):
@@ -808,6 +810,10 @@ class Amplification(_Strict):
     inputs: list[InputSource] = Field(min_length=1)
     covariate: str = Field(min_length=1)
     land_covariate: str = Field(min_length=1)
+    reference_period: Period = Field(description="Période de référence des anomalies")
+    ci_level: float = Field(gt=0, lt=1)
+    robustness_min: float = Field(description="Seuil de k des variantes (A5)")
+    station_min: float = Field(description="Seuil de k des postes (A6)")
     land_global: AmplificationFit
     land_reference: str = Field(min_length=1)
     scales: list[AmplificationScale] = Field(min_length=2, max_length=2)

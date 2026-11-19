@@ -793,7 +793,7 @@ informations retenues) ; D-AQ (références, critères A1-A7 et règle de confia
 - 19/11/2026, P10.3, calcul officiel (ETL sur la branche, `etl/demo_amplification.py`, `docs/validation-p10.md`) :
   k = 2,16 [1,77 ; 2,56] pour la France (1959-2024), 2,13 [1,75 ; 2,52] pour la Gironde (1953-2024) ; contre les seules
   terres, 1,56 et 1,55. A1, A3 à A6 conformes ; **A2 non conforme** (Ljung-Box de la Gironde, p = 0,03 : une
-  autocorrélation de −0,44 à 10 ans) ; confiance « moyenne » (D-AQ). Écart analysé : A3 tient avec des erreurs de
+  autocorrélation de −0,37 à 10 ans) ; confiance « moyenne » (D-AQ). Écart analysé : A3 tient avec des erreurs de
   Newey-West ([1,85 ; 2,43]) ; décision de Grég attendue.
 - Corrections après le calcul, sans effet sur les critères : l'information « terres contre monde » lissait les deux
   séries (résidus autocorrélés à 0,92) ; CRUTEM5 désormais annuel comme les séries régionales (1,38 → 1,43). Le constat

@@ -25,8 +25,7 @@ from etl.indicators import temperature as T
 from etl.schema import (Amplification, AmplificationFit, AmplificationScale, AmplificationSeries, AmplificationVariant,
                         Criterion, Estimate, InputSource, Period)
 from etl.sources import globaux as G
-from etl.stats.regression import prais_winsten
-from etl.stats.trend import annual_trend
+from etl.stats.regression import ols_newey_west, prais_winsten
 
 FRANCE_SPAN = (1959, 2024)
 FRANCE_HOM_END = 2021                 # fin du réseau constant homogénéisé de P5 (D-N), variante A5
@@ -37,6 +36,10 @@ MIN_YEARS = 60                        # A1
 RHO_MAX = 0.9                         # A2
 LB_LAGS = 10                          # A2 (Ljung-Box)
 LB_MIN = 0.05
+NW_LAG = 10                           # contrôle Newey-West (information), même horizon que Ljung-Box
+CI_LEVEL = 0.95
+ROB_MIN = 1.0                         # A5 : k > 1 pour chaque variante
+STATION_MIN = 0.0                     # A6 : k > 0 pour chaque poste
 REF_RANGE = (1.3, 2.0)                # R-A1 (A4)
 REF_SOURCE = ("TRACC (ministère de la Transition écologique) : + 4 °C en France pour + 3 °C mondial en 2100, "
               "+ 2 °C pour + 1,5 °C en 2030 (rapport ≈ 1,33) ; Copernicus (C3S) et OMM, European State of the Climate "
@@ -142,6 +145,11 @@ def gironde_seasons(raw_dir: Path) -> dict[str, Regional]:
     return out
 
 
+def station_count(out_dir: Path, path: str) -> int:
+    d = json.loads((out_dir / f"{path}.json").read_text(encoding="utf-8"))
+    return len({s["id"] for s in d.get("stations") or []})
+
+
 def published(out_dir: Path, path: str) -> tuple[dict[int, float], set[int]]:
     d = json.loads((out_dir / f"{path}.json").read_text(encoding="utf-8"))
     s = d["series"]
@@ -182,11 +190,14 @@ class KFit:
     lb_p: float
     fitted: list[float]
     cov: list[float]
+    nw: tuple[float, float, float]
 
     def model(self, label: str) -> AmplificationFit:
         return AmplificationFit(label=label, period=Period(start=self.years[0], end=self.years[-1]), n=len(self.years),
                                 k=Estimate(value=self.k, ci_low=self.lo, ci_high=self.hi), constant=self.c,
-                                rho=self.rho, r2=self.r2, ljung_box_p=self.lb_p)
+                                rho=self.rho, r2=self.r2, ljung_box_p=self.lb_p,
+                                k_newey_west=Estimate(value=self.nw[0], ci_low=self.nw[1], ci_high=self.nw[2]),
+                                newey_west_lag=NW_LAG)
 
 
 def fit_k(reg: dict[int, float], cov: dict[int, float], years: list[int] | None = None) -> KFit:
@@ -201,12 +212,14 @@ def fit_k(reg: dict[int, float], cov: dict[int, float], years: list[int] | None 
     x = np.array([cov[a] for a in ys])
     f = prais_winsten(y, x, ["G"])
     k, se = f.get("G")
-    lo, hi = f.ci()
+    lo, hi = f.ci(1 - CI_LEVEL)
     e = f.resid
     w = np.sqrt(1 - f.rho ** 2)
     u = np.concatenate([[w * e[0]], e[1:] - f.rho * e[:-1]])
+    nw = ols_newey_west(y, x, ["G"], lag=NW_LAG)
+    nlo, nhi = nw.ci(1 - CI_LEVEL)
     return KFit(ys, k, float(lo[1]), float(hi[1]), float(f.coef[0]), f.rho, f.r2, ljung_box_p(u),
-                [float(v) for v in f.fitted], [float(v) for v in x])
+                [float(v) for v in f.fitted], [float(v) for v in x], (float(nw.coef[1]), float(nlo[1]), float(nhi[1])))
 
 
 def overlap(a: tuple[float, float], b: tuple[float, float]) -> bool:
@@ -220,24 +233,26 @@ def contiguous_raw_tail(years: list[int], hom: set[int]) -> bool:
 
 
 def sen_ratio(reg: dict[int, float], glob: dict[int, float], years: list[int]) -> tuple[float, float, float]:
-    r = annual_trend(years, [reg[y] for y in years]).slope_per_decade
-    g = annual_trend(years, [glob[y] for y in years]).slope_per_decade
+    """Pentes de Sen (°C par décennie, pleine précision) et leur rapport."""
+    r = float(stats.theilslopes([reg[y] for y in years], years)[0]) * 10
+    g = float(stats.theilslopes([glob[y] for y in years], years)[0]) * 10
     return r, g, r / g
 
 
 def analyse(fr: Regional, fr_seasons: dict[str, Regional], fr_published: tuple[dict[int, float], set[int]],
+            fr_published_n: int,
             gi: tuple[dict[int, float], set[int]], gi_seasons: dict[str, Regional],
             stations: dict[str, dict[int, float]], gis: dict[int, float], had: dict[int, float],
-            berk: dict[int, float], land: dict[int, float]) -> dict:
+            berk: dict[int, float], land: dict[int, float], gi_stations: int = 4) -> dict:
     """Tout le calcul de P10.3, sans écriture."""
     Gs, Hs, Bs, Ls = E.smoothed(gis), E.smoothed(had), E.smoothed(berk), E.smoothed(land)
     gi_vals, gi_hom = gi
     scales = {
         "france": dict(label="France métropolitaine", vals=fr.values, hom=fr.hom, n_st=fr.stations,
-                       seasons=fr_seasons, hom_only=(fr_published[0], fr_published[1]),
+                       seasons=fr_seasons, hom_only=(fr_published[0], fr_published[1]), hom_network=fr_published_n,
                        source=f"composite LSH de {fr.stations} postes, moyenne des départements"),
-        "gironde": dict(label="Gironde", vals=gi_vals, hom=gi_hom, n_st=4, seasons=gi_seasons, hom_only=gi,
-                        source="composite LSH publié de 4 postes"),
+        "gironde": dict(label="Gironde", vals=gi_vals, hom=gi_hom, n_st=gi_stations, seasons=gi_seasons, hom_only=gi,
+                        source=f"composite LSH publié de {gi_stations} postes, moyenne à poids égal"),
     }
     out = {"scales": {}, "variants": [], "land_global": None}
     lg_years = [y for y in range(min(min(s["vals"]) for s in scales.values()),
@@ -260,17 +275,19 @@ def analyse(fr: Regional, fr_seasons: dict[str, Regional], fr_published: tuple[d
             ("Covariable Berkeley Earth", s["vals"], Bs, None),
             ("Température mondiale annuelle, non lissée", s["vals"], gis, None),
             (f"Sous-période {SUB_START}-{years[-1]}", s["vals"], Gs, [y for y in years if y >= SUB_START]),
-            (f"Années homogénéisées seules ({hom_years[0]}-{hom_years[-1]})", hv, Gs, hom_years),
+            ((f"Années homogénéisées seules (série publiée {hom_years[0]}-{hom_years[-1]}, réseau de "
+              f"{s['hom_network']} postes)" if sid == "france" else
+              f"Années homogénéisées seules ({hom_years[0]}-{hom_years[-1]})"), hv, Gs, hom_years),
         ):
             f = fit_k(reg, cov, ys)
             out["variants"].append(AmplificationVariant(
                 scale=sid, group="robustesse", label=label, period=Period(start=f.years[0], end=f.years[-1]),
-                n=len(f.years), k=Estimate(value=f.k, ci_low=f.lo, ci_high=f.hi), ok=bool(f.k > 1)))
+                n=len(f.years), k=Estimate(value=f.k, ci_low=f.lo, ci_high=f.hi), ok=bool(f.k > ROB_MIN)))
     gmain = out["scales"]["gironde"]["main"]
     for slug, name in STATIONS:
         vals = stations[slug]
         f = fit_k(vals, Gs)
-        ok = f.k > 0 and overlap((f.lo, f.hi), (gmain.lo, gmain.hi))
+        ok = f.k > STATION_MIN and overlap((f.lo, f.hi), (gmain.lo, gmain.hi))
         out["variants"].append(AmplificationVariant(
             scale="gironde", group="poste", label=name, period=Period(start=f.years[0], end=f.years[-1]),
             n=len(f.years), k=Estimate(value=f.k, ci_low=f.lo, ci_high=f.hi), ok=bool(ok)))
@@ -287,8 +304,8 @@ def _k(f: KFit, nd: int = 2) -> str:
 
 
 def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_seasons, stations, gis, had, berk,
-          land, ctx_version: str, extracted_at) -> Amplification:
-    r = analyse(fr, fr_seasons, fr_published, gi, gi_seasons, stations, gis, had, berk, land)
+          land, ctx_version: str, extracted_at, fr_published_n: int = 220, gi_stations: int = 4) -> Amplification:
+    r = analyse(fr, fr_seasons, fr_published, fr_published_n, gi, gi_seasons, stations, gis, had, berk, land, gi_stations)
     S = r["scales"]
     F_, Gi = S["france"], S["gironde"]
 
@@ -389,14 +406,17 @@ def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_se
                 rel = ("plus élevé en été qu'en hiver, sans que l'écart soit établi (intervalles qui se recoupent)"
                        if e.k > h.k else "plus élevé en hiver qu'en été, sans que l'écart soit établi (intervalles qui "
                        "se recoupent)")
-            parts.append(f"pour {name}, {_k(e)} en été et {_k(h)} en hiver : {rel}")
-        return "Saisons : " + " ; ".join(parts) + "."
+            parts.append(f"pour {name}, {_k(e)} en été ({e.years[0]}-{e.years[-1]}) et {_k(h)} en hiver "
+                         f"({h.years[0]}-{h.years[-1]}) : {rel}")
+        return "Saisons, en °C par °C mondial : " + " ; ".join(parts) + "."
 
     finding = (
-        f"Pour 1 °C de réchauffement mondial (GISTEMP, moyenne sur 4 ans), la France se réchauffe de {_k(fm)} °C sur "
-        f"{fm.years[0]}-{fm.years[-1]} et la Gironde de {_k(gm)} °C sur {gm.years[0]}-{gm.years[-1]} : "
+        f"Par °C de réchauffement mondial (GISTEMP, moyenne des 4 dernières années), la France se réchauffe de "
+        f"{_f(fm.k, 2)} °C [{_f(fm.lo, 2)} ; {_f(fm.hi, 2)}] (ajustement sur {fm.years[0]}-{fm.years[-1]}) et la "
+        f"Gironde de {_f(gm.k, 2)} °C [{_f(gm.lo, 2)} ; {_f(gm.hi, 2)}] (ajustement sur {gm.years[0]}-{gm.years[-1]}) : "
         f"{amp_sentence}. Sur {lg.years[0]}-{lg.years[-1]}, les terres émergées dans leur ensemble (CRUTEM5) se "
-        f"réchauffent de {_k(lg)} °C par °C mondial. {land_sentence} {season_sentence()}"
+        f"réchauffent de {_f(lg.k, 2)} °C [{_f(lg.lo, 2)} ; {_f(lg.hi, 2)}] par °C mondial. {land_sentence} "
+        f"{season_sentence()}"
     )
 
     def scale_model(sid: str) -> AmplificationScale:
@@ -422,19 +442,24 @@ def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_se
             "homogénéisées. Gironde : composite publié de 4 postes. G : GISTEMP v4 en moyenne glissante sur 4 ans "
             "(années a − 3 à a), qui retire l'essentiel d'El Niño : une covariable bruitée sous-estimerait k. "
             "Estimation par moindres carrés généralisés avec erreurs autorégressives d'ordre 1 (Prais-Winsten itéré), "
-            "intervalles à 95 %. Contrôle : même modèle contre la température moyenne des terres émergées (CRUTEM5). "
-            "Saisons : anomalie de la saison contre le même G annuel. Rapport des pentes : pentes de Sen de la série "
-            "régionale et de GISTEMP annuel sur la même période."),
+            "intervalles à 95 % ; contrôle par moindres carrés ordinaires avec erreurs de Newey-West (décalage "
+            f"{NW_LAG} ans), qui ne supposent aucune forme d'autocorrélation. Contrôle « terres » (information) : séries "
+            "régionales contre CRUTEM5 lissé sur 4 ans de la même façon ; terres contre monde : CRUTEM5 annuel contre "
+            "GISTEMP lissé. Saisons : anomalie de la saison contre le même G annuel lissé (l'hiver de l'année a compte "
+            "décembre a − 1). Rapport des pentes : pentes de Sen de la série régionale et de GISTEMP annuel sur la "
+            "même période."),
         limitations=[
             "k est un rapport observé, pas une réponse forcée : il contient le contraste terres-océans, la baisse des "
             "aérosols européens depuis les années 1980, les changements de circulation et la variabilité propre de la "
-            "région ; il n'attribue aucune cause, et la régression mondiale ci-dessus ne se transpose pas à la France.",
+            "région ; il n'attribue aucune cause, et la régression mondiale ci-dessus ne se transpose ni à la France ni "
+            "à la Gironde.",
             f"k peut dépendre de la période : la variante {SUB_START}-fin le mesure.",
             f"France : années {FRANCE_HOM_END + 1}-{FRANCE_SPAN[1]} en partie non homogénéisées ; Gironde : "
-            f"{', '.join(map(str, Gi['raw']))} non homogénéisées ; la variante « années homogénéisées seules » mesure "
-            "leur effet.",
-            "La Gironde ne compte que quatre postes au composite, dont trois proches du littoral ou du bassin "
-            "d'Arcachon.",
+            f"{', '.join(map(str, Gi['raw']))} non homogénéisées ; la variante « années homogénéisées seules » en donne "
+            "une borne, mêlée à l'effet de la période raccourcie (et, pour la France, du réseau de la série publiée).",
+            f"La Gironde ne compte que {_count(Gi['n_st'])} postes au composite, dont deux littoraux (Cap-Ferret, "
+            "Cazaux) ; le contrôle par poste (A6) n'est guère indépendant, puisque quatre des cinq postes sont ceux du "
+            "composite (seul Bordeaux-Paulin est extérieur).",
             "Les références ne mesurent pas exactement k (périodes, bases et méthodes différentes) : le contrôle A4 est "
             "un recoupement avec une fourchette, pas une comparaison à une valeur.",
         ],
@@ -447,6 +472,7 @@ def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_se
             InputSource(name=CRUTEM5.name, url=CRUTEM5.page, license=CRUTEM5.license, note="contrôle « terres », sans critère"),
         ],
         covariate="GISTEMP v4, moyenne glissante sur 4 ans", land_covariate="CRUTEM5, moyenne glissante sur 4 ans",
+        reference_period=Period(start=BASE[0], end=BASE[1]), ci_level=CI_LEVEL, robustness_min=ROB_MIN, station_min=STATION_MIN,
         land_global=lg.model("Terres émergées (CRUTEM5) contre le monde (GISTEMP)"), land_reference=LAND_REF,
         scales=[scale_model("france"), scale_model("gironde")], variants=r["variants"],
         reference_low=REF_RANGE[0], reference_high=REF_RANGE[1], reference_source=REF_SOURCE,
@@ -454,9 +480,15 @@ def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_se
     )
 
 
+def _count(n: int) -> str:
+    return ("zéro", "un", "deux", "trois", "quatre", "cinq", "six")[n] if n <= 6 else str(n)
+
+
 def load_and_build(out_dir: Path, raw_dir: Path, ctx_version: str, extracted_at) -> Amplification:
     fr, fr_seasons = france(raw_dir)
     stations = {slug: published(out_dir, f"gironde/tm-annuelle-{slug}")[0] for slug, _ in STATIONS}
     return build(fr, fr_seasons, published(out_dir, "france/tm-france"), published(out_dir, "gironde/tm-annuelle-gironde"),
                  gironde_seasons(raw_dir), stations, E.published(out_dir, E.GISTEMP), E.published(out_dir, E.HADCRUT),
-                 E.published(out_dir, BERKELEY), load_land(raw_dir), ctx_version, extracted_at)
+                 E.published(out_dir, BERKELEY), load_land(raw_dir), ctx_version, extracted_at,
+                 fr_published_n=station_count(out_dir, "france/tm-france"),
+                 gi_stations=station_count(out_dir, "gironde/tm-annuelle-gironde"))

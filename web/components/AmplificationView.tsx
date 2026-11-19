@@ -13,6 +13,7 @@ const nf = (v: number, d = 2, sign = false) =>
   v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d, signDisplay: sign ? "always" : "auto" });
 const ci = (e: Estimate, d = 2) => (e.ci_low !== null && e.ci_high !== null ? `[${nf(e.ci_low, d)} ; ${nf(e.ci_high, d)}]` : "");
 const per = (f: AmplificationFit) => `${f.period.start}-${f.period.end}`;
+const pct = (l: number) => `${(l * 100).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`;
 
 function K({ e }: { e: Estimate }) {
   return (
@@ -61,7 +62,7 @@ function Charts({ s, a }: { s: AmplificationScale; a: Amplification }) {
         title={`${s.label} : observé et c + k·G, année par année`}
         note={
           <>
-            Anomalies par rapport à 1961-1990. L&apos;écart entre les deux courbes est la variabilité propre de la région
+            Anomalies par rapport à {a.reference_period.start}-{a.reference_period.end}. L&apos;écart entre les deux courbes est la variabilité propre de la région
             (autocorrélation ρ = {nf(f.rho)}, part de la variance expliquée {nf(f.r2 * 100, 0)} %).
           </>
         }
@@ -82,18 +83,29 @@ function Charts({ s, a }: { s: AmplificationScale; a: Amplification }) {
 }
 
 function Factors({ a }: { a: Amplification }) {
+  const s0 = a.scales[0]!;
+  const withPeriod = (f: AmplificationFit, ref: AmplificationFit) => (
+    <>
+      <K e={f.k} />
+      {per(f) !== per(ref) && <span className="block text-xs text-[var(--muted)]">{per(f)}</span>}
+    </>
+  );
   const rows: { label: string; cell: (s: AmplificationScale) => React.ReactNode }[] = [
     { label: "Contre le monde (k principal)", cell: (s) => <K e={s.fit.k} /> },
-    { label: "Contre les terres émergées (CRUTEM5)", cell: (s) => <K e={s.land.k} /> },
-    { label: "Été (juin-août), contre le monde", cell: (s) => <K e={s.summer.k} /> },
-    { label: "Hiver (décembre-février), contre le monde", cell: (s) => <K e={s.winter.k} /> },
+    {
+      label: `Même k, erreurs de Newey-West (contrôle, décalage ${s0.fit.newey_west_lag} ans)`,
+      cell: (s) => <K e={s.fit.k_newey_west} />,
+    },
+    { label: `Contre les terres émergées (${a.land_covariate})`, cell: (s) => <K e={s.land.k} /> },
+    { label: `${s0.summer.label[0]!.toUpperCase()}${s0.summer.label.slice(1)}, contre le monde`, cell: (s) => withPeriod(s.summer, s.fit) },
+    { label: `${s0.winter.label[0]!.toUpperCase()}${s0.winter.label.slice(1)}, contre le monde`, cell: (s) => withPeriod(s.winter, s.fit) },
     {
       label: "Rapport des pentes de Sen (régionale / mondiale)",
       cell: (s) => (
         <>
           <b>{nf(s.slope_ratio)}</b>{" "}
           <span className="text-xs text-[var(--muted)]">
-            {nf(s.slope_regional, 2)} / {nf(s.slope_global, 2)} °C par décennie
+            {nf(s.slope_regional, 3)} / {nf(s.slope_global, 3)} °C par décennie
           </span>
         </>
       ),
@@ -128,8 +140,8 @@ function Factors({ a }: { a: Amplification }) {
       <p className="mt-1 text-xs leading-relaxed text-[var(--muted)]">
         Seul le facteur contre le monde est soumis aux critères ; les autres lignes sont des informations. Sur{" "}
         {per(a.land_global)}, les terres émergées dans leur ensemble se réchauffent de {nf(a.land_global.k.value)}{" "}
-        {ci(a.land_global.k)} °C par °C mondial ({a.land_reference}). Les saisons sont mesurées contre le même G annuel.
-        Intervalles à 95 %.
+        {ci(a.land_global.k)} °C par °C mondial ({a.land_reference}). Les saisons sont mesurées contre le même G annuel
+        lissé. Intervalles à {pct(a.ci_level)}.
       </p>
     </div>
   );
@@ -137,9 +149,13 @@ function Factors({ a }: { a: Amplification }) {
 
 function Variants({ a }: { a: Amplification }) {
   const label = (id: string) => a.scales.find((s) => s.id === id)?.label ?? id;
+  const min = (v: number) => v.toLocaleString("fr-FR");
   const groups = [
-    { key: "robustesse", title: "Variantes de calcul (critère A5 : k > 1)" },
-    { key: "poste", title: "Postes de Gironde (critère A6 : k > 0, intervalle recoupant celui du composite)" },
+    { key: "robustesse", title: `Variantes de calcul (critère A5 : k > ${min(a.robustness_min)})` },
+    {
+      key: "poste",
+      title: `Postes de Gironde (critère A6 : k > ${min(a.station_min)}, intervalle recoupant celui du composite)`,
+    },
   ] as const;
   return (
     <div className="overflow-x-auto">

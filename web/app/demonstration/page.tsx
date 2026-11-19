@@ -217,13 +217,14 @@ export default function DemonstrationPage() {
                 <p className="leading-relaxed">{x.finding}</p>
                 <p className="text-sm text-[var(--muted)]">{x.confidence_reason}</p>
                 <p className="text-sm leading-relaxed">
-                  Principe : chaque année, on compare l&apos;écart de température de la région à celui du monde. Le facteur k
-                  est la pente de la relation : 1 voudrait dire que la région suit la moyenne mondiale, 2 qu&apos;elle se
+                  Principe : chaque année, on compare l&apos;écart de température de la région à celui du monde, pris en
+                  moyenne sur les quatre dernières années pour effacer l&apos;essentiel d&apos;El Niño. Le facteur k est la
+                  pente de la relation : 1 voudrait dire que la région suit la moyenne mondiale, 2 qu&apos;elle se
                   réchauffe deux fois plus. Le critère A3 exige que k dépasse 1 avec une marge statistique. La moyenne
                   mondiale mêle terres et océans, et les océans se réchauffent moins : le même calcul contre la seule
                   température des terres émergées dit quelle part de l&apos;écart tient à ce contraste. k est un rapport
                   observé : il ne dit pas pourquoi la région se réchauffe plus vite (aérosols, circulation, sols), et la
-                  régression ci-dessus, qui porte sur la moyenne mondiale, ne se transpose pas à la France.
+                  régression ci-dessus, qui porte sur la moyenne mondiale, ne se transpose ni à la France ni à la Gironde.
                 </p>
               </div>
               <AmplificationView a={x} />

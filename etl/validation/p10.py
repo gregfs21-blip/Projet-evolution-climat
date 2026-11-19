@@ -8,10 +8,13 @@ Usage : python -m etl.validation.p10   → docs/validation-p10-resultats.md et d
 
 from __future__ import annotations
 
+import json
+
 from datetime import datetime, timezone
 from pathlib import Path
 
 from etl.context import PROCESSED_DIR, ROOT
+from etl.demonstration import _f
 from etl.schema import Demonstration, ValidationCheck, ValidationReport
 
 OUT = ROOT / "docs" / "validation-p10-resultats.md"
@@ -87,12 +90,21 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
         # La synthèse (cmp-terres-oceans) affirme que la France et la Gironde se réchauffent plus vite que la moyenne
         # des terres : à revérifier à chaque calcul, sans quoi l'affirmation deviendrait fausse en silence (D-AH).
         lands = {s.label: s.land.k for s in amp.scales}
-        above = all(k.ci_low is not None and k.ci_low > 1 for k in lands.values())
+        periods = [f"{s.land.period.start}-{s.land.period.end}" for s in amp.scales]
+        syn_path = PROCESSED_DIR / "synthese.json"
+        claim = ""
+        if syn_path.exists():
+            syn = json.loads(syn_path.read_text(encoding="utf-8"))
+            claim = next((c["text"] for sec in syn["sections"] for g in sec["groups"] for c in g["claims"]
+                          if c["id"] == "cmp-terres-oceans"), "")
+        dated = all(p in claim for p in periods)
+        above = all(k.ci_low is not None and k.ci_low > 1 for k in lands.values()) and dated
         out.append(ValidationCheck(
             name="D-AH cohérence de cmp-terres-oceans", kind="critère",
             status="✅ conforme" if above else "❌ non conforme", satisfied=above,
             detail=("facteur contre les terres émergées, borne basse > 1 : " + " ; ".join(
-                f"{lab} [{k.ci_low:.2f} ; {k.ci_high:.2f}]".replace(".", ",") for lab, k in lands.items())
+                f"{lab} [{_f(k.ci_low, 2)} ; {_f(k.ci_high, 2)}]" for lab, k in lands.items())
+                + f" ; périodes citées dans l'affirmation ({', '.join(periods)}) {'présentes' if dated else 'ABSENTES'}"
                 + ("" if above else " — reformuler cmp-terres-oceans (etl/config/synthese.yaml) et la faire relire"))))
         inds |= {"temperature-gistemp-monde", "temperature-hadcrut5-monde", "temperature-berkeley-monde",
                  "tm-france", "tm-annuelle-gironde"}

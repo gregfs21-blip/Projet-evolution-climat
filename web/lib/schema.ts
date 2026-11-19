@@ -633,6 +633,8 @@ const amplificationFitSchema = z.strictObject({
   rho: z.number().gt(-1).lt(1),
   r2: z.number().max(1),
   ljung_box_p: z.number().min(0).max(1),
+  k_newey_west: estimateSchema,
+  newey_west_lag: z.number().int().min(1),
 });
 export type AmplificationFit = z.infer<typeof amplificationFitSchema>;
 
@@ -685,6 +687,10 @@ const amplificationSchema = z
     inputs: z.array(inputSourceSchema).min(1),
     covariate: z.string().min(1),
     land_covariate: z.string().min(1),
+    reference_period: periodSchema,
+    ci_level: z.number().gt(0).lt(1),
+    robustness_min: z.number(),
+    station_min: z.number(),
     land_global: amplificationFitSchema,
     land_reference: z.string().min(1),
     scales: z.array(amplificationScaleSchema).length(2),
