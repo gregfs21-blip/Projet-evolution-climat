@@ -1,6 +1,6 @@
 # Sonde P10 — régression multiple : forçages et ENSO (généré)
 
-Généré par `python -m etl.probe.p10` le 19/11/2026 12:57 UTC. Aucune régression, aucun indicateur calculé.
+Généré par `python -m etl.probe.p10` le 19/11/2026 13:45 UTC. Aucune régression, aucun indicateur calculé.
 
 ## 1. Dépôt ClimateIndicator/data (v2026.06.02) : racine
 
