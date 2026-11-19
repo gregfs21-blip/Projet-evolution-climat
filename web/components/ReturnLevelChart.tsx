@@ -111,7 +111,7 @@ export default function ReturnLevelChart({
               nameLocation: "end" as const,
               nameTextStyle: { color: muted },
               axisLine: { lineStyle: { color: rule } },
-              axisLabel: { color: muted },
+              axisLabel: { color: muted, formatter: (v: number) => v.toLocaleString("fr-FR") },
               splitLine: { lineStyle: { color: rule, type: "dashed" as const } },
             },
             yAxis: {

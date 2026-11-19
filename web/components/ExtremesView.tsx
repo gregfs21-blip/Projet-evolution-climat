@@ -25,7 +25,7 @@ function Unb({ u, years = false, draws }: { u: Unbounded; years?: boolean; draws
   return (
     <>
       <b>
-        {u.value !== null && years ? yrs(u.value) : inf(u.value)}
+        {fixed && Number.isInteger(u.value) ? `${u.value} ans` : u.value !== null && years ? yrs(u.value) : inf(u.value)}
       </b>
       {!fixed && (
         <span className="text-xs text-[var(--muted)]">
