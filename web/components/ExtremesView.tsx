@@ -49,7 +49,7 @@ function Figure({ title, children, note }: { title: string; children: React.Reac
     <figure className="space-y-2">
       <figcaption className="text-sm font-semibold">{title}</figcaption>
       {children}
-      {note && <p className="text-xs leading-relaxed text-[var(--muted)]">{note}</p>}
+      {note && <div className="text-xs leading-relaxed text-[var(--muted)]">{note}</div>}
     </figure>
   );
 }
@@ -102,6 +102,94 @@ function Events({ x }: { x: Extremes }) {
         d&apos;intervalle : au moins {pct((1 - x.ci_level) / 2)} des tirages placent l&apos;événement au-delà de cette borne. Un tirage
         « indéfini » donne 0/0 (événement au-delà de la borne dans les deux climats) ; il est écarté de l&apos;intervalle. Les
         périodes de retour longues sont des extrapolations (voir les limites).
+      </p>
+    </div>
+  );
+}
+
+/** Mode d'emploi du graphe des niveaux de retour. Chiffres repris du JSON (aucun calcul nouveau, sauf la borne
+ *  supérieure de la loi μ − σ/ξ, déduite des paramètres publiés, et des maxima de courbes déjà fournies). */
+function ReturnLevelGuide({ x }: { x: Extremes }) {
+  const c = x.curve;
+  const past = `${x.past_year}`;
+  const today = `${x.today_year}`;
+  const T = nf(x.past_return_period, 0);
+  const ref = x.events.find((e) => e.date === null);
+  const record = x.events.find((e) => e.date !== null);
+  const shift = ref?.intensity_change.value ?? record?.intensity_change.value ?? x.alpha.value * (x.g_today - x.g_past);
+  const nObs = c.obs_periods.length;
+  const maxObsT = Math.max(...c.obs_periods);
+  const bounded = x.xi.value < 0;
+  const bound = (g: number) => x.mu0 + x.alpha.value * g - x.sigma.value / x.xi.value;
+  const d = x.n_boot - x.n_failed;
+  const recPast = record?.return_period_past;
+  const recFiniteDraws = recPast ? d - recPast.undefined_draws - recPast.infinite_draws : 0;
+  const recDate = record?.date
+    ? new Date(record.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
+    : null;
+
+  return (
+    <div className="space-y-2 text-sm">
+      <p>
+        <b className="text-[var(--ink)]">Ce que montre le graphe.</b> Chaque été fournit une valeur : la journée la plus chaude de
+        l&apos;année. Le graphe répond à la question « jusqu&apos;où peut monter cette journée, selon sa rareté ? ». L&apos;axe
+        horizontal, logarithmique, est la période de retour T : un niveau de T ans a une chance sur T d&apos;être dépassé chaque
+        année (T = 1 : un pic d&apos;été banal ; T = 10 : 10 % par an ; T = 100 : 1 % par an). L&apos;axe vertical donne la
+        température correspondante. La courbe bleue est la loi ajustée pour le climat de {past}, la rouge la même loi pour le climat
+        de {today} ; les bandes sont les intervalles à {pct(x.ci_level)}.
+      </p>
+      <p>
+        <b className="text-[var(--ink)]">Les points.</b> Ce sont les {nObs} étés observés, chacun corrigé du réchauffement mondial
+        de son année pour être exprimé dans le climat de {today} (points pleins) ou de {past} (cercles), puis placé à sa période de
+        retour empirique (le plus chaud à environ {nf(maxObsT, 0)} ans). Rouges et bleus sont donc les mêmes données, décalées de{" "}
+        {nf(shift)} °C. Qu&apos;ils suivent les courbes montre que la loi décrit bien les observations (Kolmogorov-Smirnov, p ={" "}
+        {nf(x.ks_p, 2)}) ; ce n&apos;est pas une validation indépendante, puisque la correction utilise le α estimé par le même
+        ajustement.
+      </p>
+      {ref && (
+        <p>
+          <b className="text-[var(--ink)]">Deux lectures.</b> Verticalement, à rareté égale : la chaleur de période de retour {T} ans
+          passe de {nf(ref.value.value)} °C en {past} à {nf(ref.value.value + shift)} °C en {today}, soit {nf(shift, 1, true)} °C.
+          Horizontalement, à intensité égale : partir de {nf(ref.value.value)} °C sur la courbe bleue (T = {T} ans) et suivre
+          l&apos;horizontale jusqu&apos;à la courbe rouge, qu&apos;on croise à T ≈ {yrs(ref.return_period_today.value ?? NaN)}. Ce qui
+          arrivait une fois tous les {T} ans arrive aujourd&apos;hui environ{" "}
+          {Math.round(100 / (ref.return_period_today.value ?? Infinity))} % des étés.
+        </p>
+      )}
+      {record && recPast && (
+        <p>
+          <b className="text-[var(--ink)]">Le record.</b> La ligne pointillée ({nf(record.value.value)} °C
+          {recDate ? `, ${recDate}` : ""}) croise la courbe rouge vers{" "}
+          {record.return_period_today.value !== null ? yrs(record.return_period_today.value) : "l'infini"}.{" "}
+          {recPast.value === null && bounded
+            ? `La courbe bleue plafonne vers ${nf(bound(x.g_past))} °C et ne l'atteint jamais : dans le climat de ${past}, le modèle le juge impossible, d'où les « ∞ » du tableau « Deux événements, deux climats ».`
+            : recPast.value !== null
+              ? `Sur la courbe bleue, il correspond à une période de retour d'environ ${yrs(recPast.value)}.`
+              : ""}
+        </p>
+      )}
+      {bounded && (
+        <p>
+          <b className="text-[var(--ink)]">Pourquoi les courbes plafonnent.</b> La forme estimée est négative (ξ ={" "}
+          {nf(x.xi.value, 2)}) : la loi a une borne supérieure, environ {nf(bound(x.g_past))} °C dans le climat de {past} et{" "}
+          {nf(bound(x.g_today))} °C dans celui de {today}. C&apos;est physiquement plausible (l&apos;assèchement des sols et
+          l&apos;advection d&apos;air chaud ont des limites), mais cette borne est estimée sur {nObs} valeurs et reste mal connue.
+        </p>
+      )}
+      <p>
+        <b className="text-[var(--ink)]">Précautions.</b> L&apos;écart vertical est le même partout par construction : le modèle
+        décale la loi sans la déformer (échelle σ et forme ξ fixes), il ne peut donc pas montrer que les extrêmes s&apos;écartent
+        plus vite que les étés ordinaires.
+        {record && recPast && recPast.value === null && recFiniteDraws > 0 && (
+          <>
+            {" "}
+            « Impossible en {past} » se lit « au-delà de ce que les données permettent de quantifier » :{" "}
+            {recFiniteDraws.toLocaleString("fr-FR")} tirages sur {d.toLocaleString("fr-FR")} ne placent pas le record au-delà de la
+            borne, et la bande bleue monte jusqu&apos;à {nf(Math.max(...c.past_high))} °C.
+          </>
+        )}{" "}
+        Enfin, au-delà d&apos;environ {nf(maxObsT, 0)} ans il n&apos;y a plus d&apos;observation : les courbes sont des
+        extrapolations, d&apos;où les bandes qui s&apos;élargissent.
       </p>
     </div>
   );
@@ -225,13 +313,7 @@ export default function ExtremesView({ x }: { x: Extremes }) {
 
       <Figure
         title={`Niveaux de retour de ${x.index_label.split(",")[0]} à ${x.station}, climat de ${x.past_year} et climat de ${x.today_year}`}
-        note={
-          <>
-            Lecture : pour une période de retour donnée (axe horizontal, logarithmique), la courbe donne la chaleur atteinte en moyenne une
-            fois par période. L&apos;écart vertical entre les deux courbes est le gain d&apos;intensité à rareté égale ; l&apos;écart
-            horizontal, le changement de fréquence. Les courbes plafonnent parce que la loi ajustée a une borne supérieure (ξ &lt; 0).
-          </>
-        }
+        note={<ReturnLevelGuide x={x} />}
       >
         <ReturnLevelChart
           curve={x.curve}
