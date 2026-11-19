@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-19T14:32:13Z",
+  "generated_at": "2026-11-19T15:00:03Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
@@ -180,7 +180,7 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "France métropolitaine, Covariable HadCRUT5 : k = 2,11 ✓ | France métropolitaine, Covariable Berkeley Earth : k = 2,06 ✓ | France métropolitaine, Température mondiale annuelle, non lissée : k = 1,97 ✓ | France métropolitaine, Sous-période 1979-2024 : k = 2,40 ✓ | France métropolitaine, Années homogénéisées seules (1959-2021) : k = 2,01 ✓ | Gironde, Covariable HadCRUT5 : k = 2,11 ✓ | Gironde, Covariable Berkeley Earth : k = 2,06 ✓ | Gironde, Température mondiale annuelle, non lissée : k = 1,97 ✓ | Gironde, Sous-période 1979-2024 : k = 2,11 ✓ | Gironde, Années homogénéisées seules (1953-2022) : k = 2,11 ✓"
+      "detail": "France métropolitaine, Covariable HadCRUT5 : k = 2,11 ✓ | France métropolitaine, Covariable Berkeley Earth : k = 2,06 ✓ | France métropolitaine, Température mondiale annuelle, non lissée : k = 1,97 ✓ | France métropolitaine, Sous-période 1979-2024 : k = 2,40 ✓ | France métropolitaine, Années homogénéisées seules (série publiée 1959-2021, réseau de 220 postes) : k = 2,01 ✓ | Gironde, Covariable HadCRUT5 : k = 2,11 ✓ | Gironde, Covariable Berkeley Earth : k = 2,06 ✓ | Gironde, Température mondiale annuelle, non lissée : k = 1,97 ✓ | Gironde, Sous-période 1979-2024 : k = 2,11 ✓ | Gironde, Années homogénéisées seules (1953-2022) : k = 2,11 ✓"
     },
     {
       "name": "P10.3 A6 cohérence",
@@ -208,7 +208,7 @@
       "kind": "critère",
       "status": "✅ conforme",
       "satisfied": true,
-      "detail": "facteur contre les terres émergées, borne basse > 1 : France métropolitaine [1,28 ; 1,85] ; Gironde [1,27 ; 1,84]"
+      "detail": "facteur contre les terres émergées, borne basse > 1 : France métropolitaine [1,28 ; 1,85] ; Gironde [1,27 ; 1,84] ; périodes citées dans l'affirmation (1959-2024, 1953-2024) présentes"
     }
   ]
 }
