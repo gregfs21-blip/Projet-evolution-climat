@@ -70,6 +70,22 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
             name="Confiance P10.2 (règle D-AO)", kind="info", status="ℹ️ information", satisfied=True,
             detail=f"{ext.confidence} — {ext.confidence_reason}"))
         inds |= {"temperature-gistemp-monde", "temperature-hadcrut5-monde", "tx-annuelle-bordeaux-merignac"}
+    # P10.3 — amplification régionale (critères A1-A7, D-AQ)
+    amp = next((a.amplification for a in demo.analyses if a.phase == "p10.3" and a.amplification), None)
+    if amp is not None:
+        for c in amp.criteria:
+            name = f"P10.3 {c.id} {c.label.lower()}"
+            ok = c.satisfied or name in ACCEPTED
+            status = "✅ conforme" if c.satisfied else (f"☑ {ACCEPTED[name]}" if name in ACCEPTED else "❌ non conforme")
+            out.append(ValidationCheck(name=name, kind="critère", status=status, satisfied=ok, detail=c.detail))
+        out.append(ValidationCheck(
+            name="P10.3 A7 technique", kind="info", status="ℹ️ information", satisfied=True,
+            detail="Tests (etl/tests/test_p10c.py), contrat et construction de l'onglet vérifiés par la CI."))
+        out.append(ValidationCheck(
+            name="Confiance P10.3 (règle D-AQ)", kind="info", status="ℹ️ information", satisfied=True,
+            detail=f"{amp.confidence} — {amp.confidence_reason}"))
+        inds |= {"temperature-gistemp-monde", "temperature-hadcrut5-monde", "temperature-berkeley-monde",
+                 "tm-france", "tm-annuelle-gironde"}
     return out, sorted(inds)
 
 

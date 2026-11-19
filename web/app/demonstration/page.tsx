@@ -8,10 +8,11 @@ import RegressionView from "@/components/RegressionView";
 import ValidationBox from "@/components/ValidationBox";
 import { getDemonstration, getValidation } from "@/lib/data";
 import { fmtDateTime, REPO_URL } from "@/lib/format";
+import AmplificationView from "@/components/AmplificationView";
 import ExtremesView from "@/components/ExtremesView";
-import type { Extremes, Regression } from "@/lib/schema";
+import type { Amplification, Extremes, Regression } from "@/lib/schema";
 
-type Result = Regression | Extremes;
+type Result = Regression | Extremes | Amplification;
 
 export const metadata: Metadata = { title: "Démonstration" };
 
@@ -192,6 +193,40 @@ export default function DemonstrationPage() {
                 </p>
               </div>
               <ExtremesView x={x} />
+              <div className="max-w-3xl space-y-3">
+                <Criteria reg={x} />
+                <MethodAndLimits reg={x} />
+              </div>
+            </section>
+          );
+        })}
+
+      {demo.analyses
+        .filter((a) => a.status === "publie" && a.amplification)
+        .map((a) => {
+          const x = a.amplification!;
+          return (
+            <section key={a.id} id={a.id} className="scroll-mt-20 space-y-6">
+              <div className="max-w-3xl space-y-3">
+                <p className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase">{a.phase.toUpperCase()} · amplification régionale</p>
+                <h2 className="text-2xl font-semibold tracking-tight">{a.title}</h2>
+                <p className="text-[var(--muted)] italic">{a.question}</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <ConfidenceBadge level={x.confidence} />
+                </div>
+                <p className="leading-relaxed">{x.finding}</p>
+                <p className="text-sm text-[var(--muted)]">{x.confidence_reason}</p>
+                <p className="text-sm leading-relaxed">
+                  Principe : chaque année, on compare l&apos;écart de température de la région à celui du monde. Le facteur k
+                  est la pente de la relation : 1 voudrait dire que la région suit la moyenne mondiale, 2 qu&apos;elle se
+                  réchauffe deux fois plus. Le critère A3 exige que k dépasse 1 avec une marge statistique. La moyenne
+                  mondiale mêle terres et océans, et les océans se réchauffent moins : le même calcul contre la seule
+                  température des terres émergées dit quelle part de l&apos;écart tient à ce contraste. k est un rapport
+                  observé : il ne dit pas pourquoi la région se réchauffe plus vite (aérosols, circulation, sols), et la
+                  régression ci-dessus, qui porte sur la moyenne mondiale, ne se transpose pas à la France.
+                </p>
+              </div>
+              <AmplificationView a={x} />
               <div className="max-w-3xl space-y-3">
                 <Criteria reg={x} />
                 <MethodAndLimits reg={x} />

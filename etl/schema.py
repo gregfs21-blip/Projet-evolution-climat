@@ -747,6 +747,89 @@ class Extremes(_Strict):
         return self
 
 
+class AmplificationFit(_Strict):
+    label: str = Field(min_length=1)
+    period: Period
+    n: int = Field(ge=10)
+    k: Estimate = Field(description="°C régionaux par °C de la covariable, intervalle à 95 %")
+    constant: float
+    rho: float = Field(gt=-1, lt=1)
+    r2: float = Field(le=1)
+    ljung_box_p: float = Field(ge=0, le=1)
+
+
+class AmplificationSeries(_Strict):
+    years: list[int] = Field(min_length=10)
+    values: list[float] = Field(description="Anomalie régionale annuelle (°C, 1961-1990)")
+    fitted: list[float] = Field(description="c + k·G")
+    covariate: list[float] = Field(description="G, température mondiale lissée")
+    raw_years: list[int]
+
+    @model_validator(mode="after")
+    def _lengths(self) -> "AmplificationSeries":
+        if not (len(self.values) == len(self.fitted) == len(self.covariate) == len(self.years)):
+            raise ValueError("amplification : séries de longueurs différentes")
+        return self
+
+
+class AmplificationScale(_Strict):
+    id: Literal["france", "gironde"]
+    label: str = Field(min_length=1)
+    source: str = Field(min_length=1)
+    stations: int = Field(ge=1)
+    fit: AmplificationFit
+    land: AmplificationFit
+    summer: AmplificationFit
+    winter: AmplificationFit
+    slope_regional: float = Field(description="Pente de Sen régionale, °C par décennie")
+    slope_global: float = Field(description="Pente de Sen de GISTEMP annuel sur la même période, °C par décennie")
+    slope_ratio: float
+    series: AmplificationSeries
+
+
+class AmplificationVariant(_Strict):
+    scale: Literal["france", "gironde"]
+    group: Literal["robustesse", "poste"]
+    label: str = Field(min_length=1)
+    period: Period
+    n: int
+    k: Estimate
+    ok: bool
+
+
+class Amplification(_Strict):
+    question: str = Field(min_length=1)
+    model: str = Field(min_length=1)
+    finding: str = Field(min_length=1)
+    confidence: Confidence
+    confidence_reason: str = Field(min_length=1)
+    method_note: str = Field(min_length=1)
+    limitations: list[str] = Field(min_length=1)
+    inputs: list[InputSource] = Field(min_length=1)
+    covariate: str = Field(min_length=1)
+    land_covariate: str = Field(min_length=1)
+    land_global: AmplificationFit
+    land_reference: str = Field(min_length=1)
+    scales: list[AmplificationScale] = Field(min_length=2, max_length=2)
+    variants: list[AmplificationVariant]
+    reference_low: float
+    reference_high: float
+    reference_source: str = Field(min_length=1)
+    criteria: list[Criterion] = Field(min_length=1)
+    script: str = Field(min_length=1)
+    etl_version: str = Field(min_length=1)
+    extracted_at: datetime
+
+    @model_validator(mode="after")
+    def _confidence(self) -> "Amplification":
+        ok = {c.id: c.satisfied for c in self.criteria}
+        core = [ok.get(f"A{i}", False) for i in range(1, 7)]
+        expected = "elevee" if all(core) else ("moyenne" if ok.get("A3") else "non_etabli")
+        if self.confidence != expected:
+            raise ValueError(f"amplification : confiance {self.confidence} incohérente avec les critères (attendu {expected}, D-AQ)")
+        return self
+
+
 class DemonstrationAnalysis(_Strict):
     id: str = Field(pattern=SLUG)
     phase: str = Field(pattern=r"^p10\.[0-9]+$")
@@ -755,10 +838,11 @@ class DemonstrationAnalysis(_Strict):
     status: Literal["publie", "prevu"]
     regression: Regression | None = None
     extremes: Extremes | None = None
+    amplification: Amplification | None = None
 
     @model_validator(mode="after")
     def _coherent(self) -> "DemonstrationAnalysis":
-        results = sum(x is not None for x in (self.regression, self.extremes))
+        results = sum(x is not None for x in (self.regression, self.extremes, self.amplification))
         if results > 1 or (self.status == "publie") != (results == 1):
             raise ValueError(f"{self.id} : « publie » si et seulement si un seul résultat est fourni")
         return self

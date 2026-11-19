@@ -108,7 +108,7 @@
         "value": 0.1357553458287798,
         "ci_low": 0.0739570536662161,
         "ci_high": 0.19755363799134348,
-        "p_value": 0.000026079593784068598
+        "p_value": 2.6079593784068598e-05
        },
        {
         "name": "soleil",
@@ -1971,7 +1971,7 @@
         "value": 0.13275342421349132,
         "ci_low": 0.0725709259153215,
         "ci_high": 0.19293592251166114,
-        "p_value": 0.00002492190437207981
+        "p_value": 2.492190437207981e-05
        },
        {
         "name": "soleil",
@@ -2018,7 +2018,7 @@
         "value": 0.11103811315097371,
         "ci_low": 0.06826473163680838,
         "ci_high": 0.15381149466513905,
-        "p_value": 9.324985139085785e-7
+        "p_value": 9.324985139085785e-07
        },
        {
         "name": "soleil",
@@ -3753,7 +3753,7 @@
         "value": 0.1377970514995119,
         "ci_low": 0.07217412916686688,
         "ci_high": 0.20341997383215693,
-        "p_value": 0.00005598091556242028
+        "p_value": 5.598091556242028e-05
        },
        {
         "name": "soleil",
@@ -3800,7 +3800,7 @@
         "value": 0.15543382206376977,
         "ci_low": 0.10726913321633418,
         "ci_high": 0.20359851091120534,
-        "p_value": 2.1452798503299998e-9
+        "p_value": 2.1452798503299998e-09
        },
        {
         "name": "soleil",
@@ -5623,7 +5623,8 @@
     "etl_version": "0.1.0+1fb8608",
     "extracted_at": "2026-11-19T13:02:32Z"
    },
-   "extremes": null
+   "extremes": null,
+   "amplification": null
   },
   {
    "id": "extremes-gironde",
@@ -5702,7 +5703,7 @@
      "ci_low": -0.4653070455822718,
      "ci_high": -0.03934868482705604
     },
-    "lrt_p": 3.117875352346821e-9,
+    "lrt_p": 3.117875352346821e-09,
     "ks_p": 0.7335334347740174,
     "n_boot": 1000,
     "n_failed": 0,
@@ -6693,7 +6694,8 @@
     "script": "etl/demo_extremes.py",
     "etl_version": "0.1.0+1fb8608",
     "extracted_at": "2026-11-19T13:02:32Z"
-   }
+   },
+   "amplification": null
   },
   {
    "id": "amplification-regionale",
@@ -6702,7 +6704,8 @@
    "question": "De combien la Gironde et la France se réchauffent-elles pour 1 °C de réchauffement mondial ?",
    "status": "prevu",
    "regression": null,
-   "extremes": null
+   "extremes": null,
+   "amplification": null
   },
   {
    "id": "coherence-physique",
@@ -6711,7 +6714,8 @@
    "question": "Les variables évoluent-elles comme la physique le prévoit (humidité, niveau marin, stratosphère) ?",
    "status": "prevu",
    "regression": null,
-   "extremes": null
+   "extremes": null,
+   "amplification": null
   },
   {
    "id": "modele-energetique",
@@ -6720,7 +6724,8 @@
    "question": "Un modèle simple, validé sur le passé, que prévoit-il selon les scénarios d'émissions ?",
    "status": "prevu",
    "regression": null,
-   "extremes": null
+   "extremes": null,
+   "amplification": null
   }
  ]
 }

@@ -624,6 +624,87 @@ const extremesSchema = z
   }, "extrêmes : confiance incohérente avec les critères (règle D-AO)");
 export type Extremes = z.infer<typeof extremesSchema>;
 
+const amplificationFitSchema = z.strictObject({
+  label: z.string().min(1),
+  period: periodSchema,
+  n: z.number().int().min(10),
+  k: estimateSchema,
+  constant: z.number(),
+  rho: z.number().gt(-1).lt(1),
+  r2: z.number().max(1),
+  ljung_box_p: z.number().min(0).max(1),
+});
+export type AmplificationFit = z.infer<typeof amplificationFitSchema>;
+
+const amplificationSeriesSchema = z
+  .strictObject({
+    years: z.array(z.number().int()).min(10),
+    values: z.array(z.number()),
+    fitted: z.array(z.number()),
+    covariate: z.array(z.number()),
+    raw_years: z.array(z.number().int()),
+  })
+  .refine((s) => [s.values, s.fitted, s.covariate].every((a) => a.length === s.years.length), "amplification : séries de longueurs différentes");
+
+const amplificationScaleSchema = z.strictObject({
+  id: z.enum(["france", "gironde"]),
+  label: z.string().min(1),
+  source: z.string().min(1),
+  stations: z.number().int().min(1),
+  fit: amplificationFitSchema,
+  land: amplificationFitSchema,
+  summer: amplificationFitSchema,
+  winter: amplificationFitSchema,
+  slope_regional: z.number(),
+  slope_global: z.number(),
+  slope_ratio: z.number(),
+  series: amplificationSeriesSchema,
+});
+export type AmplificationScale = z.infer<typeof amplificationScaleSchema>;
+
+const amplificationVariantSchema = z.strictObject({
+  scale: z.enum(["france", "gironde"]),
+  group: z.enum(["robustesse", "poste"]),
+  label: z.string().min(1),
+  period: periodSchema,
+  n: z.number().int(),
+  k: estimateSchema,
+  ok: z.boolean(),
+});
+export type AmplificationVariant = z.infer<typeof amplificationVariantSchema>;
+
+const amplificationSchema = z
+  .strictObject({
+    question: z.string().min(1),
+    model: z.string().min(1),
+    finding: z.string().min(1),
+    confidence: confidenceSchema,
+    confidence_reason: z.string().min(1),
+    method_note: z.string().min(1),
+    limitations: z.array(z.string()).min(1),
+    inputs: z.array(inputSourceSchema).min(1),
+    covariate: z.string().min(1),
+    land_covariate: z.string().min(1),
+    land_global: amplificationFitSchema,
+    land_reference: z.string().min(1),
+    scales: z.array(amplificationScaleSchema).length(2),
+    variants: z.array(amplificationVariantSchema),
+    reference_low: z.number(),
+    reference_high: z.number(),
+    reference_source: z.string().min(1),
+    criteria: z.array(criterionSchema).min(1),
+    script: z.string().min(1),
+    etl_version: z.string().min(1),
+    extracted_at: isoDate,
+  })
+  .refine((r) => {
+    const ok = new Map(r.criteria.map((c) => [c.id, c.satisfied]));
+    const core = [1, 2, 3, 4, 5, 6].every((i) => ok.get(`A${i}`) === true);
+    const expected = core ? "elevee" : ok.get("A3") ? "moyenne" : "non_etabli";
+    return r.confidence === expected;
+  }, "amplification : confiance incohérente avec les critères (règle D-AQ)");
+export type Amplification = z.infer<typeof amplificationSchema>;
+
 export const demonstrationSchema = z.strictObject({
   schema_version: z.literal("1.0"),
   generated_at: isoDate,
@@ -638,9 +719,10 @@ export const demonstrationSchema = z.strictObject({
           status: z.enum(["publie", "prevu"]),
           regression: regressionSchema.nullable(),
           extremes: extremesSchema.nullable(),
+          amplification: amplificationSchema.nullable(),
         })
         .refine((a) => {
-          const results = [a.regression, a.extremes].filter((x) => x !== null).length;
+          const results = [a.regression, a.extremes, a.amplification].filter((x) => x !== null).length;
           return results <= 1 && (a.status === "publie") === (results === 1);
         }, "« publie » si et seulement si un seul résultat est fourni"),
     )
