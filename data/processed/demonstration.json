@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-19T13:08:29Z",
+ "generated_at": "2026-11-19T14:11:10Z",
  "analyses": [
   {
    "id": "regression-multiple",
@@ -108,7 +108,7 @@
         "value": 0.1357553458287798,
         "ci_low": 0.0739570536662161,
         "ci_high": 0.19755363799134348,
-        "p_value": 2.6079593784068598e-05
+        "p_value": 0.000026079593784068598
        },
        {
         "name": "soleil",
@@ -1971,7 +1971,7 @@
         "value": 0.13275342421349132,
         "ci_low": 0.0725709259153215,
         "ci_high": 0.19293592251166114,
-        "p_value": 2.492190437207981e-05
+        "p_value": 0.00002492190437207981
        },
        {
         "name": "soleil",
@@ -2018,7 +2018,7 @@
         "value": 0.11103811315097371,
         "ci_low": 0.06826473163680838,
         "ci_high": 0.15381149466513905,
-        "p_value": 9.324985139085785e-07
+        "p_value": 9.324985139085785e-7
        },
        {
         "name": "soleil",
@@ -3753,7 +3753,7 @@
         "value": 0.1377970514995119,
         "ci_low": 0.07217412916686688,
         "ci_high": 0.20341997383215693,
-        "p_value": 5.598091556242028e-05
+        "p_value": 0.00005598091556242028
        },
        {
         "name": "soleil",
@@ -3800,7 +3800,7 @@
         "value": 0.15543382206376977,
         "ci_low": 0.10726913321633418,
         "ci_high": 0.20359851091120534,
-        "p_value": 2.1452798503299998e-09
+        "p_value": 2.1452798503299998e-9
        },
        {
         "name": "soleil",
@@ -5620,8 +5620,8 @@
      }
     ],
     "script": "etl/demonstration.py",
-    "etl_version": "0.1.0+1fb8608",
-    "extracted_at": "2026-11-19T13:02:32Z"
+    "etl_version": "0.1.0+0de6d3e",
+    "extracted_at": "2026-11-19T14:03:48Z"
    },
    "extremes": null,
    "amplification": null
@@ -5703,7 +5703,7 @@
      "ci_low": -0.4653070455822718,
      "ci_high": -0.03934868482705604
     },
-    "lrt_p": 3.117875352346821e-09,
+    "lrt_p": 3.117875352346821e-9,
     "ks_p": 0.7335334347740174,
     "n_boot": 1000,
     "n_failed": 0,
@@ -6692,20 +6692,1097 @@
      }
     ],
     "script": "etl/demo_extremes.py",
-    "etl_version": "0.1.0+1fb8608",
-    "extracted_at": "2026-11-19T13:02:32Z"
+    "etl_version": "0.1.0+0de6d3e",
+    "extracted_at": "2026-11-19T14:03:48Z"
    },
    "amplification": null
   },
   {
    "id": "amplification-regionale",
    "phase": "p10.3",
-   "title": "Amplification régionale",
-   "question": "De combien la Gironde et la France se réchauffent-elles pour 1 °C de réchauffement mondial ?",
-   "status": "prevu",
+   "title": "La France et la Gironde se réchauffent-elles plus vite que le monde ?",
+   "question": "Pour 1 °C de réchauffement mondial, de combien la France et la Gironde se réchauffent-elles ?",
+   "status": "publie",
    "regression": null,
    "extremes": null,
-   "amplification": null
+   "amplification": {
+    "question": "Pour 1 °C de réchauffement mondial, de combien la France et la Gironde se réchauffent-elles ?",
+    "model": "T_rég(a) = c + k·G(a) + u(a), u AR(1) ; G = température mondiale lissée sur 4 ans",
+    "finding": "Pour 1 °C de réchauffement mondial (GISTEMP, moyenne sur 4 ans), la France se réchauffe de 2,16 [1,77 ; 2,56] °C sur 1959-2024 et la Gironde de 2,13 [1,75 ; 2,52] °C sur 1953-2024 : la France se réchauffe plus vite que le monde, la Gironde se réchauffe plus vite que le monde. Sur la même période, les terres émergées dans leur ensemble (CRUTEM5) se réchauffent de 1,38 [1,29 ; 1,47] °C par °C mondial. Mesurés contre elles, les facteurs valent, pour la France : 1,56 [1,28 ; 1,85], au-dessus de 1 : le contraste terres-océans n'explique qu'une partie de son écart avec le monde ; pour la Gironde : 1,55 [1,27 ; 1,84], au-dessus de 1 : le contraste terres-océans n'explique qu'une partie de son écart avec le monde. Le facteur de la France est de 2,76 en été et de 1,91 en hiver ; celui de la Gironde de 2,62 et de 1,58.",
+    "confidence": "moyenne",
+    "confidence_reason": "Amplification établie (A3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AQ) : A2 (ajustement). Détail : docs/validation-p10.md.",
+    "method_note": "Anomalies annuelles de température moyenne (TM) par rapport à 1961-1990. France : composite des séries homogénéisées de Météo-France (LSH), 217 postes du réseau de la phase P5 complets jusqu'en 2024, moyenne des départements ; années postérieures à 2021 en partie non homogénéisées. Gironde : composite publié de 4 postes. G : GISTEMP v4 en moyenne glissante sur 4 ans (années a − 3 à a), qui retire l'essentiel d'El Niño : une covariable bruitée sous-estimerait k. Estimation par moindres carrés généralisés avec erreurs autorégressives d'ordre 1 (Prais-Winsten itéré), intervalles à 95 %. Contrôle : même modèle contre la température moyenne des terres émergées (CRUTEM5). Saisons : anomalie de la saison contre le même G annuel. Rapport des pentes : pentes de Sen de la série régionale et de GISTEMP annuel sur la même période.",
+    "limitations": [
+     "k est un rapport observé, pas une réponse forcée : il contient le contraste terres-océans, la baisse des aérosols européens depuis les années 1980, les changements de circulation et la variabilité propre de la région ; il n'attribue aucune cause, et la régression mondiale ci-dessus ne se transpose pas à la France.",
+     "k peut dépendre de la période : la variante 1979-fin le mesure.",
+     "France : années 2022-2024 en partie non homogénéisées ; Gironde : 2023, 2024 non homogénéisées ; la variante « années homogénéisées seules » mesure leur effet.",
+     "La Gironde ne compte que quatre postes au composite, dont trois proches du littoral ou du bassin d'Arcachon.",
+     "Les références ne mesurent pas exactement k (périodes, bases et méthodes différentes) : le contrôle A4 est un recoupement avec une fourchette, pas une comparaison à une valeur."
+    ],
+    "inputs": [
+     {
+      "name": "Météo-France — Longues Séries Homogénéisées (LSH), TN et TX mensuelles",
+      "url": "https://www.data.gouv.fr/datasets/6569b2c4f1937611d4c8b1a3",
+      "license": "Licence Ouverte 2.0 (Etalab)",
+      "note": "France : 217 postes ; Gironde : composite et postes publiés sur le site"
+     },
+     {
+      "name": "GISTEMP v4, HadCRUT5, Berkeley Earth — température mondiale annuelle, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde",
+      "license": "voir les pages des indicateurs",
+      "note": null
+     },
+     {
+      "name": "Met Office Hadley Centre / CRU — CRUTEM5, température moyenne des terres émergées",
+      "url": "https://www.metoffice.gov.uk/hadobs/crutem5/",
+      "license": "Open Government Licence v3",
+      "note": "contrôle « terres », sans critère"
+     }
+    ],
+    "covariate": "GISTEMP v4, moyenne glissante sur 4 ans",
+    "land_covariate": "CRUTEM5, moyenne glissante sur 4 ans",
+    "land_global": {
+     "label": "Terres émergées (CRUTEM5) contre le monde (GISTEMP)",
+     "period": {
+      "start": 1953,
+      "end": 2024
+     },
+     "n": 72,
+     "k": {
+      "value": 1.3770350754372385,
+      "ci_low": 1.2890263880271335,
+      "ci_high": 1.4650437628473434
+     },
+     "constant": 0.032355385381752394,
+     "rho": 0.924321938260195,
+     "r2": 0.9882532222120365,
+     "ljung_box_p": 0.03189118382273704
+    },
+    "land_reference": "GIEC AR6 GT1, SPM A.1.2 : 2011-2020 contre 1850-1900, + 1,09 °C pour le globe, + 1,59 °C sur les terres, + 0,88 °C sur les océans",
+    "scales": [
+     {
+      "id": "france",
+      "label": "France métropolitaine",
+      "source": "composite LSH de 217 postes, moyenne des départements",
+      "stations": 217,
+      "fit": {
+       "label": "Contre le monde (GISTEMP lissé)",
+       "period": {
+        "start": 1959,
+        "end": 2024
+       },
+       "n": 66,
+       "k": {
+        "value": 2.1640114484165176,
+        "ci_low": 1.7705384727393105,
+        "ci_high": 2.5574844240937247
+       },
+       "constant": 0.09762893765649303,
+       "rho": 0.01813920714170685,
+       "r2": 0.6653421236845416,
+       "ljung_box_p": 0.0889664419808808
+      },
+      "land": {
+       "label": "Contre les terres émergées (CRUTEM5 lissé)",
+       "period": {
+        "start": 1959,
+        "end": 2024
+       },
+       "n": 66,
+       "k": {
+        "value": 1.5643909024230698,
+        "ci_low": 1.2827885089369462,
+        "ci_high": 1.8459932959091934
+       },
+       "constant": 0.06456903616663341,
+       "rho": 0.008424245892177839,
+       "r2": 0.6655085217949426,
+       "ljung_box_p": 0.10143848973954053
+      },
+      "summer": {
+       "label": "été (juin-août)",
+       "period": {
+        "start": 1959,
+        "end": 2024
+       },
+       "n": 66,
+       "k": {
+        "value": 2.759931600330106,
+        "ci_low": 2.210713874103717,
+        "ci_high": 3.309149326556495
+       },
+       "constant": 0.11056114302241676,
+       "rho": -0.06308431725678258,
+       "r2": 0.5853347937508604,
+       "ljung_box_p": 0.25308904996650056
+      },
+      "winter": {
+       "label": "hiver (décembre-février)",
+       "period": {
+        "start": 1960,
+        "end": 2024
+       },
+       "n": 65,
+       "k": {
+        "value": 1.9073834478234521,
+        "ci_low": 0.8352616866815858,
+        "ci_high": 2.9795052089653185
+       },
+       "constant": 0.04066225400539213,
+       "rho": 0.15514744434559946,
+       "r2": 0.21263229282387242,
+       "ljung_box_p": 0.24928083327403286
+      },
+      "slope_regional": 0.3766,
+      "slope_global": 0.175,
+      "slope_ratio": 2.152,
+      "series": {
+       "years": [
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979,
+        1980,
+        1981,
+        1982,
+        1983,
+        1984,
+        1985,
+        1986,
+        1987,
+        1988,
+        1989,
+        1990,
+        1991,
+        1992,
+        1993,
+        1994,
+        1995,
+        1996,
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+       ],
+       "values": [
+        0.8587,
+        0.0843,
+        0.8938,
+        -0.7365,
+        -1.0911,
+        -0.0013,
+        -0.4845,
+        0.2957,
+        0.1409,
+        -0.1856,
+        -0.2236,
+        -0.1373,
+        -0.1831,
+        -0.4842,
+        -0.2538,
+        0.064,
+        -0.0456,
+        0.2668,
+        0.0579,
+        -0.4762,
+        -0.3011,
+        -0.6199,
+        0.0713,
+        0.7945,
+        0.5363,
+        -0.1918,
+        -0.4651,
+        -0.1977,
+        -0.1244,
+        0.6984,
+        1.1775,
+        1.2057,
+        0.1669,
+        0.5663,
+        0.2345,
+        1.4898,
+        1.0291,
+        0.0018,
+        1.3067,
+        0.7085,
+        1.1507,
+        1.2992,
+        0.9177,
+        1.3546,
+        1.6402,
+        0.8099,
+        0.7873,
+        1.4603,
+        1.1525,
+        0.7745,
+        1.1331,
+        0.0258,
+        1.8516,
+        0.9806,
+        0.5415,
+        1.9353,
+        1.7106,
+        1.2925,
+        1.536,
+        2.0748,
+        1.8409,
+        2.3432,
+        1.1301,
+        2.7076,
+        2.6024,
+        2.1567
+       ],
+       "fitted": [
+        -0.14517314685584026,
+        -0.05320266029813825,
+        -0.047792631677096936,
+        -0.06402271754022085,
+        -0.05320266029813825,
+        -0.15058317547688158,
+        -0.24255366203458353,
+        -0.29124391962395524,
+        -0.3291141199712443,
+        -0.26419377651874876,
+        -0.17763331858208806,
+        -0.12894306099271638,
+        -0.16140323271896415,
+        -0.11271297512959247,
+        -0.05320266029813825,
+        -0.10730294650855118,
+        -0.06943274616126213,
+        -0.12894306099271638,
+        -0.11812300375063378,
+        -0.04238260305605565,
+        0.04958788350164634,
+        0.2443489138591329,
+        0.32008931455371104,
+        0.3579595149010001,
+        0.43910994421661953,
+        0.38500965800620657,
+        0.27680908558538064,
+        0.29844920006954584,
+        0.3038592286905871,
+        0.42828988697453685,
+        0.5094403162901563,
+        0.6555110890582714,
+        0.7042013466476429,
+        0.612230860089941,
+        0.5905907456057757,
+        0.5148503449111976,
+        0.5364904593953628,
+        0.5960007742268171,
+        0.7258414611318081,
+        0.8881423197630469,
+        0.8502721194157579,
+        0.8827322911420057,
+        0.9151924628682535,
+        0.9260125201103361,
+        1.055853207015327,
+        1.1315936077099051,
+        1.2127440370255245,
+        1.218154065646566,
+        1.239794180130731,
+        1.2452042087517723,
+        1.2343841515096896,
+        1.2776643804780201,
+        1.2506142373728133,
+        1.3101245522042677,
+        1.315534580825309,
+        1.331764666688433,
+        1.483245468077589,
+        1.6780064984350755,
+        1.8078471853400668,
+        1.8619474715504798,
+        1.9106377291398513,
+        1.9106377291398513,
+        1.8781775574136035,
+        1.8998176718977688,
+        2.0026082156975535,
+        2.1486789884656683
+       ],
+       "covariate": [
+        -0.11220000000000001,
+        -0.0697,
+        -0.0672,
+        -0.0747,
+        -0.0697,
+        -0.11470000000000001,
+        -0.1572,
+        -0.1797,
+        -0.19720000000000001,
+        -0.16720000000000002,
+        -0.1272,
+        -0.1047,
+        -0.1197,
+        -0.0972,
+        -0.0697,
+        -0.09469999999999999,
+        -0.0772,
+        -0.1047,
+        -0.0997,
+        -0.0647,
+        -0.022199999999999998,
+        0.0678,
+        0.1028,
+        0.1203,
+        0.1578,
+        0.1328,
+        0.0828,
+        0.0928,
+        0.0953,
+        0.1528,
+        0.1903,
+        0.25780000000000003,
+        0.2803,
+        0.2378,
+        0.2278,
+        0.1928,
+        0.2028,
+        0.2303,
+        0.2903,
+        0.3653,
+        0.3478,
+        0.3628,
+        0.3778,
+        0.38280000000000003,
+        0.44279999999999997,
+        0.4778,
+        0.5153,
+        0.5178,
+        0.5278,
+        0.5303,
+        0.5253,
+        0.5453,
+        0.5327999999999999,
+        0.5603,
+        0.5628,
+        0.5703,
+        0.6403,
+        0.7303,
+        0.7903,
+        0.8153,
+        0.8378,
+        0.8378,
+        0.8228,
+        0.8328,
+        0.8803,
+        0.9478
+       ],
+       "raw_years": [
+        2022,
+        2023,
+        2024
+       ]
+      }
+     },
+     {
+      "id": "gironde",
+      "label": "Gironde",
+      "source": "composite LSH publié de 4 postes",
+      "stations": 4,
+      "fit": {
+       "label": "Contre le monde (GISTEMP lissé)",
+       "period": {
+        "start": 1953,
+        "end": 2024
+       },
+       "n": 72,
+       "k": {
+        "value": 2.1332430161237017,
+        "ci_low": 1.7477345198675605,
+        "ci_high": 2.518751512379843
+       },
+       "constant": 0.08939819177612053,
+       "rho": 0.06700508654729624,
+       "r2": 0.6682820277221813,
+       "ljung_box_p": 0.02708728444284924
+      },
+      "land": {
+       "label": "Contre les terres émergées (CRUTEM5 lissé)",
+       "period": {
+        "start": 1953,
+        "end": 2024
+       },
+       "n": 72,
+       "k": {
+        "value": 1.552863226561945,
+        "ci_low": 1.265480952059979,
+        "ci_high": 1.8402455010639112
+       },
+       "constant": 0.04427644481384976,
+       "rho": 0.0744743313497593,
+       "r2": 0.6611879390730577,
+       "ljung_box_p": 0.03162943412501174
+      },
+      "summer": {
+       "label": "été (juin-août)",
+       "period": {
+        "start": 1953,
+        "end": 2024
+       },
+       "n": 72,
+       "k": {
+        "value": 2.617770810230303,
+        "ci_low": 2.115633181781016,
+        "ci_high": 3.11990843867959
+       },
+       "constant": 0.06719356749886887,
+       "rho": -0.10955202972026482,
+       "r2": 0.5583280238600979,
+       "ljung_box_p": 0.5738140240651423
+      },
+      "winter": {
+       "label": "hiver (décembre-février)",
+       "period": {
+        "start": 1954,
+        "end": 2024
+       },
+       "n": 71,
+       "k": {
+        "value": 1.5821510621990893,
+        "ci_low": 0.6849768225311978,
+        "ci_high": 2.4793253018669805
+       },
+       "constant": 0.05709274698816386,
+       "rho": 0.05295201961006841,
+       "r2": 0.16656579838637797,
+       "ljung_box_p": 0.2703519462347984
+      },
+      "slope_regional": 0.3386,
+      "slope_global": 0.1631,
+      "slope_ratio": 2.0760269773145312,
+      "series": {
+       "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979,
+        1980,
+        1981,
+        1982,
+        1983,
+        1984,
+        1985,
+        1986,
+        1987,
+        1988,
+        1989,
+        1990,
+        1991,
+        1992,
+        1993,
+        1994,
+        1995,
+        1996,
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+       ],
+       "values": [
+        -0.188,
+        -0.46,
+        0.212,
+        -1.388,
+        -0.153,
+        0.033,
+        0.806,
+        0.097,
+        0.837,
+        -0.647,
+        -0.886,
+        -0.208,
+        -0.319,
+        0.421,
+        -0.063,
+        0.13,
+        -0.295,
+        -0.167,
+        -0.408,
+        -0.753,
+        -0.46,
+        -0.182,
+        -0.269,
+        0.088,
+        -0.052,
+        -0.413,
+        -0.333,
+        -0.594,
+        0.43,
+        0.865,
+        0.527,
+        -0.125,
+        -0.385,
+        -0.051,
+        0.072,
+        0.66,
+        1.293,
+        1.286,
+        0.34,
+        0.311,
+        0.248,
+        1.372,
+        1.192,
+        0.483,
+        1.68,
+        0.815,
+        1.226,
+        1.283,
+        0.878,
+        1.355,
+        1.688,
+        0.721,
+        0.627,
+        1.452,
+        0.734,
+        0.583,
+        1.104,
+        0.129,
+        1.889,
+        0.844,
+        0.679,
+        1.965,
+        1.537,
+        1.396,
+        1.376,
+        1.803,
+        1.779,
+        2.28,
+        1.169,
+        2.789,
+        2.513,
+        1.905
+       ],
+       "fitted": [
+        -0.20328275003605134,
+        -0.18195031987481436,
+        -0.21928207265697913,
+        -0.3259442234631642,
+        -0.34194354608409194,
+        -0.24061450281821617,
+        -0.14995167463295883,
+        -0.05928884644770148,
+        -0.053955738907392206,
+        -0.06995506152832,
+        -0.05928884644770148,
+        -0.15528478217326808,
+        -0.24594761035852541,
+        -0.2939455782213087,
+        -0.3312773310034735,
+        -0.26728004051976245,
+        -0.18195031987481436,
+        -0.13395235201203104,
+        -0.16595099725388657,
+        -0.11795302939110326,
+        -0.05928884644770148,
+        -0.11261992185079402,
+        -0.07528816906862924,
+        -0.13395235201203104,
+        -0.12328613693141253,
+        -0.04862263136708296,
+        0.04204019681817436,
+        0.2340320682693075,
+        0.30869557383363705,
+        0.3460273266158018,
+        0.4260239397204406,
+        0.3726928643173481,
+        0.26603071351116303,
+        0.2873631436724,
+        0.2926962512127093,
+        0.4153577246398221,
+        0.49535433774446097,
+        0.6393482413328109,
+        0.6873462091955941,
+        0.5966833810103368,
+        0.5753509508490998,
+        0.5006874452847703,
+        0.5220198754460073,
+        0.5806840583894091,
+        0.7086786393568312,
+        0.8686718655661088,
+        0.8313401127839439,
+        0.8633387580257995,
+        0.8953374032676551,
+        0.9060036183482736,
+        1.0339981993156957,
+        1.1086617048800254,
+        1.1886583179846641,
+        1.1939914255249735,
+        1.2153238556862105,
+        1.2206569632265196,
+        1.2099907481459011,
+        1.252655608468375,
+        1.2259900707668288,
+        1.2846542537102308,
+        1.28998736125054,
+        1.3059866838714678,
+        1.4553136950001269,
+        1.64730556645126,
+        1.775300147418682,
+        1.8286312228217747,
+        1.8766291906845578,
+        1.8766291906845578,
+        1.8446305454427023,
+        1.8659629756039393,
+        1.967292018869815,
+        2.111285922458165
+       ],
+       "covariate": [
+        -0.1372,
+        -0.1272,
+        -0.1447,
+        -0.1947,
+        -0.2022,
+        -0.1547,
+        -0.11220000000000001,
+        -0.0697,
+        -0.0672,
+        -0.0747,
+        -0.0697,
+        -0.11470000000000001,
+        -0.1572,
+        -0.1797,
+        -0.19720000000000001,
+        -0.16720000000000002,
+        -0.1272,
+        -0.1047,
+        -0.1197,
+        -0.0972,
+        -0.0697,
+        -0.09469999999999999,
+        -0.0772,
+        -0.1047,
+        -0.0997,
+        -0.0647,
+        -0.022199999999999998,
+        0.0678,
+        0.1028,
+        0.1203,
+        0.1578,
+        0.1328,
+        0.0828,
+        0.0928,
+        0.0953,
+        0.1528,
+        0.1903,
+        0.25780000000000003,
+        0.2803,
+        0.2378,
+        0.2278,
+        0.1928,
+        0.2028,
+        0.2303,
+        0.2903,
+        0.3653,
+        0.3478,
+        0.3628,
+        0.3778,
+        0.38280000000000003,
+        0.44279999999999997,
+        0.4778,
+        0.5153,
+        0.5178,
+        0.5278,
+        0.5303,
+        0.5253,
+        0.5453,
+        0.5327999999999999,
+        0.5603,
+        0.5628,
+        0.5703,
+        0.6403,
+        0.7303,
+        0.7903,
+        0.8153,
+        0.8378,
+        0.8378,
+        0.8228,
+        0.8328,
+        0.8803,
+        0.9478
+       ],
+       "raw_years": [
+        2023,
+        2024
+       ]
+      }
+     }
+    ],
+    "variants": [
+     {
+      "scale": "france",
+      "group": "robustesse",
+      "label": "Covariable HadCRUT5",
+      "period": {
+       "start": 1959,
+       "end": 2024
+      },
+      "n": 66,
+      "k": {
+       "value": 2.106610613060079,
+       "ci_low": 1.721964500327,
+       "ci_high": 2.491256725793158
+      },
+      "ok": true
+     },
+     {
+      "scale": "france",
+      "group": "robustesse",
+      "label": "Covariable Berkeley Earth",
+      "period": {
+       "start": 1959,
+       "end": 2024
+      },
+      "n": 66,
+      "k": {
+       "value": 2.0618555591232433,
+       "ci_low": 1.6896783034010094,
+       "ci_high": 2.434032814845477
+      },
+      "ok": true
+     },
+     {
+      "scale": "france",
+      "group": "robustesse",
+      "label": "Température mondiale annuelle, non lissée",
+      "period": {
+       "start": 1959,
+       "end": 2024
+      },
+      "n": 66,
+      "k": {
+       "value": 1.9725674137293245,
+       "ci_low": 1.609058911233639,
+       "ci_high": 2.3360759162250098
+      },
+      "ok": true
+     },
+     {
+      "scale": "france",
+      "group": "robustesse",
+      "label": "Sous-période 1979-2024",
+      "period": {
+       "start": 1979,
+       "end": 2024
+      },
+      "n": 46,
+      "k": {
+       "value": 2.395786740759135,
+       "ci_low": 1.818903746097531,
+       "ci_high": 2.972669735420739
+      },
+      "ok": true
+     },
+     {
+      "scale": "france",
+      "group": "robustesse",
+      "label": "Années homogénéisées seules (1959-2021)",
+      "period": {
+       "start": 1959,
+       "end": 2021
+      },
+      "n": 63,
+      "k": {
+       "value": 2.010646683525007,
+       "ci_low": 1.5783898653048318,
+       "ci_high": 2.4429035017451826
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "robustesse",
+      "label": "Covariable HadCRUT5",
+      "period": {
+       "start": 1953,
+       "end": 2024
+      },
+      "n": 72,
+      "k": {
+       "value": 2.1086723671075838,
+       "ci_low": 1.725211170241169,
+       "ci_high": 2.4921335639739985
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "robustesse",
+      "label": "Covariable Berkeley Earth",
+      "period": {
+       "start": 1953,
+       "end": 2024
+      },
+      "n": 72,
+      "k": {
+       "value": 2.058413428821294,
+       "ci_low": 1.6917467139803883,
+       "ci_high": 2.4250801436621994
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "robustesse",
+      "label": "Température mondiale annuelle, non lissée",
+      "period": {
+       "start": 1953,
+       "end": 2024
+      },
+      "n": 72,
+      "k": {
+       "value": 1.9696428053463504,
+       "ci_low": 1.6287845825131064,
+       "ci_high": 2.3105010281795946
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "robustesse",
+      "label": "Sous-période 1979-2024",
+      "period": {
+       "start": 1979,
+       "end": 2024
+      },
+      "n": 46,
+      "k": {
+       "value": 2.1136859590084183,
+       "ci_low": 1.4732167016978635,
+       "ci_high": 2.7541552163189733
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "robustesse",
+      "label": "Années homogénéisées seules (1953-2022)",
+      "period": {
+       "start": 1953,
+       "end": 2022
+      },
+      "n": 70,
+      "k": {
+       "value": 2.110286119577373,
+       "ci_low": 1.7041341014142546,
+       "ci_high": 2.516438137740492
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "poste",
+      "label": "Bordeaux-Mérignac",
+      "period": {
+       "start": 1953,
+       "end": 2024
+      },
+      "n": 72,
+      "k": {
+       "value": 2.187750135716658,
+       "ci_low": 1.7994961977332549,
+       "ci_high": 2.5760040737000613
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "poste",
+      "label": "Cap-Ferret",
+      "period": {
+       "start": 1953,
+       "end": 2024
+      },
+      "n": 72,
+      "k": {
+       "value": 2.1354777678086365,
+       "ci_low": 1.7634184591536464,
+       "ci_high": 2.5075370764636267
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "poste",
+      "label": "Cazaux",
+      "period": {
+       "start": 1953,
+       "end": 2024
+      },
+      "n": 72,
+      "k": {
+       "value": 2.1038586343608885,
+       "ci_low": 1.7126372449237408,
+       "ci_high": 2.495080023798036
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "poste",
+      "label": "Villenave-d'Ornon",
+      "period": {
+       "start": 1953,
+       "end": 2024
+      },
+      "n": 72,
+      "k": {
+       "value": 2.1055899116334538,
+       "ci_low": 1.6909000238241465,
+       "ci_high": 2.5202797994427613
+      },
+      "ok": true
+     },
+     {
+      "scale": "gironde",
+      "group": "poste",
+      "label": "Bordeaux-Paulin",
+      "period": {
+       "start": 1962,
+       "end": 2024
+      },
+      "n": 63,
+      "k": {
+       "value": 2.172423800714135,
+       "ci_low": 1.7263430945597014,
+       "ci_high": 2.618504506868569
+      },
+      "ok": true
+     }
+    ],
+    "reference_low": 1.3,
+    "reference_high": 2.0,
+    "reference_source": "TRACC (ministère de la Transition écologique) : + 4 °C en France pour + 3 °C mondial en 2100, + 2 °C pour + 1,5 °C en 2030 (rapport ≈ 1,33) ; Copernicus (C3S) et OMM, European State of the Climate 2024 : l'Europe se réchauffe deux fois plus vite que la moyenne mondiale depuis les années 1980",
+    "criteria": [
+     {
+      "id": "A1",
+      "label": "Données",
+      "satisfied": true,
+      "detail": "France métropolitaine 1959-2024, 66 années, aucune manquante ; 217 postes à réseau constant ; années non homogénéisées 2022, 2023, 2024 | Gironde 1953-2024, 72 années, aucune manquante ; 4 postes à réseau constant ; années non homogénéisées 2023, 2024"
+     },
+     {
+      "id": "A2",
+      "label": "Ajustement",
+      "satisfied": false,
+      "detail": "France métropolitaine : ρ = 0,02, Ljung-Box (10 ans) p = 0,09 | Gironde : ρ = 0,07, Ljung-Box (10 ans) p = 0,03 (seuils : |ρ| < 0,9, p ≥ 0,05)"
+     },
+     {
+      "id": "A3",
+      "label": "Amplification",
+      "satisfied": true,
+      "detail": "France métropolitaine : k = 2,16 [1,77 ; 2,56] ✓ | Gironde : k = 2,13 [1,75 ; 2,52] ✓ (borne basse > 1)"
+     },
+     {
+      "id": "A4",
+      "label": "Plausibilité",
+      "satisfied": true,
+      "detail": "intervalle de k France [1,77 ; 2,56] contre la fourchette [1,3 ; 2,0]"
+     },
+     {
+      "id": "A5",
+      "label": "Robustesse",
+      "satisfied": true,
+      "detail": "France métropolitaine, Covariable HadCRUT5 : k = 2,11 ✓ | France métropolitaine, Covariable Berkeley Earth : k = 2,06 ✓ | France métropolitaine, Température mondiale annuelle, non lissée : k = 1,97 ✓ | France métropolitaine, Sous-période 1979-2024 : k = 2,40 ✓ | France métropolitaine, Années homogénéisées seules (1959-2021) : k = 2,01 ✓ | Gironde, Covariable HadCRUT5 : k = 2,11 ✓ | Gironde, Covariable Berkeley Earth : k = 2,06 ✓ | Gironde, Température mondiale annuelle, non lissée : k = 1,97 ✓ | Gironde, Sous-période 1979-2024 : k = 2,11 ✓ | Gironde, Années homogénéisées seules (1953-2022) : k = 2,11 ✓"
+     },
+     {
+      "id": "A6",
+      "label": "Cohérence",
+      "satisfied": true,
+      "detail": "intervalle Gironde [1,75 ; 2,52] contre France [1,77 ; 2,56] ✓ | Bordeaux-Mérignac 1953-2024 : k = 2,19 [1,80 ; 2,58] ✓ ; Cap-Ferret 1953-2024 : k = 2,14 [1,76 ; 2,51] ✓ ; Cazaux 1953-2024 : k = 2,10 [1,71 ; 2,50] ✓ ; Villenave-d'Ornon 1953-2024 : k = 2,11 [1,69 ; 2,52] ✓ ; Bordeaux-Paulin 1962-2024 : k = 2,17 [1,73 ; 2,62] ✓"
+     }
+    ],
+    "script": "etl/demo_amplification.py",
+    "etl_version": "0.1.0+0de6d3e",
+    "extracted_at": "2026-11-19T14:03:48Z"
+   }
   },
   {
    "id": "coherence-physique",

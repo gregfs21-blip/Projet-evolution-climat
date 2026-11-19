@@ -1,14 +1,16 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-19T13:11:56Z",
-  "closure_ok": true,
-  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "generated_at": "2026-11-19T14:14:45Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
     "oni-monde",
     "temperature-berkeley-monde",
     "temperature-gistemp-monde",
     "temperature-hadcrut5-monde",
+    "tm-annuelle-gironde",
+    "tm-france",
     "tx-annuelle-bordeaux-merignac"
   ],
   "checks": [
@@ -71,9 +73,9 @@
     {
       "name": "D-AH cohérence de la synthèse",
       "kind": "critère",
-      "status": "✅ conforme",
-      "satisfied": true,
-      "detail": "analyses publiées : p10.1, p10.2 ; la synthèse (limite-attribution, limite-projections) en tient compte"
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "analyses publiées que la synthèse ne prend pas en compte : p10.3 ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS"
     },
     {
       "name": "O9 technique",
@@ -144,6 +146,62 @@
       "status": "ℹ️ information",
       "satisfied": true,
       "detail": "elevee — Critères X1 à X6 conformes (règle D-AO). L'analyse relie les maxima au réchauffement mondial ; elle n'en attribue pas la cause."
+    },
+    {
+      "name": "P10.3 A1 données",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "France métropolitaine 1959-2024, 66 années, aucune manquante ; 217 postes à réseau constant ; années non homogénéisées 2022, 2023, 2024 | Gironde 1953-2024, 72 années, aucune manquante ; 4 postes à réseau constant ; années non homogénéisées 2023, 2024"
+    },
+    {
+      "name": "P10.3 A2 ajustement",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "France métropolitaine : ρ = 0,02, Ljung-Box (10 ans) p = 0,09 | Gironde : ρ = 0,07, Ljung-Box (10 ans) p = 0,03 (seuils : |ρ| < 0,9, p ≥ 0,05)"
+    },
+    {
+      "name": "P10.3 A3 amplification",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "France métropolitaine : k = 2,16 [1,77 ; 2,56] ✓ | Gironde : k = 2,13 [1,75 ; 2,52] ✓ (borne basse > 1)"
+    },
+    {
+      "name": "P10.3 A4 plausibilité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "intervalle de k France [1,77 ; 2,56] contre la fourchette [1,3 ; 2,0]"
+    },
+    {
+      "name": "P10.3 A5 robustesse",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "France métropolitaine, Covariable HadCRUT5 : k = 2,11 ✓ | France métropolitaine, Covariable Berkeley Earth : k = 2,06 ✓ | France métropolitaine, Température mondiale annuelle, non lissée : k = 1,97 ✓ | France métropolitaine, Sous-période 1979-2024 : k = 2,40 ✓ | France métropolitaine, Années homogénéisées seules (1959-2021) : k = 2,01 ✓ | Gironde, Covariable HadCRUT5 : k = 2,11 ✓ | Gironde, Covariable Berkeley Earth : k = 2,06 ✓ | Gironde, Température mondiale annuelle, non lissée : k = 1,97 ✓ | Gironde, Sous-période 1979-2024 : k = 2,11 ✓ | Gironde, Années homogénéisées seules (1953-2022) : k = 2,11 ✓"
+    },
+    {
+      "name": "P10.3 A6 cohérence",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "intervalle Gironde [1,75 ; 2,52] contre France [1,77 ; 2,56] ✓ | Bordeaux-Mérignac 1953-2024 : k = 2,19 [1,80 ; 2,58] ✓ ; Cap-Ferret 1953-2024 : k = 2,14 [1,76 ; 2,51] ✓ ; Cazaux 1953-2024 : k = 2,10 [1,71 ; 2,50] ✓ ; Villenave-d'Ornon 1953-2024 : k = 2,11 [1,69 ; 2,52] ✓ ; Bordeaux-Paulin 1962-2024 : k = 2,17 [1,73 ; 2,62] ✓"
+    },
+    {
+      "name": "P10.3 A7 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests (etl/tests/test_p10c.py), contrat et construction de l'onglet vérifiés par la CI."
+    },
+    {
+      "name": "Confiance P10.3 (règle D-AQ)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "moyenne — Amplification établie (A3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AQ) : A2 (ajustement). Détail : docs/validation-p10.md."
     }
   ]
 }
