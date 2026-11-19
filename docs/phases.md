@@ -668,6 +668,80 @@ devra être reformulée et relue (M6) avant la fusion.
 **Décisions demandées à Grég** (tranchées le 19/11/2026, voir en tête) : D-AM (données, indice et méthode) ; D-AN
 (événements étudiés) ; D-AO (références, critères X1-X7 et règle de confiance).
 
+### P10.3 — Amplification régionale : cadrage proposé le 19/11/2026, avant tout calcul
+
+> **Demande de Grég du 19/11/2026** : réaliser P10.3, la suite de la démonstration.
+
+**Question** : pour 1 °C de réchauffement mondial, de combien la France et la Gironde se réchauffent-elles, et ce
+facteur est-il significativement supérieur à 1 ?
+
+**Constat de la sonde** (19/11/2026, `docs/sonde-p10c.md`) :
+- Gironde : composite régional (4 postes LSH) et postes, 1953-2024 sans trou, homogénéisés jusqu'en 2022, années
+  2023-2024 brutes (déjà publiées ainsi) ; aucune donnée 2025 dans les fichiers LSH.
+- France : la série publiée (P5) s'arrête en 2021, fin de son réseau constant de 220 postes (D-N). Dans les fichiers LSH,
+  217 de ces postes ont 12 mois de TN et TX jusqu'en 2024 (219 en 2022) ; homogénéisés : 209 postes en 2022, 57 en
+  2023, aucun en 2024 ; rien en 2025. Une prolongation à 2024 est donc possible sur 217 postes, avec 2023-2024
+  essentiellement bruts.
+- Monde : GISTEMP v4 et HadCRUT5 jusqu'en 2025, Berkeley Earth jusqu'en 2024 (publiés). Températures des seules terres
+  émergées accessibles : CRUTEM5 (Met Office / CRU, jusqu'en 2025), Berkeley Earth terres (2024), NOAA terres (2025).
+
+**Méthode proposée** :
+- **Modèle** : T_rég(a) = c + k·G(a) + u(a), u autorégressif d'ordre 1 (Prais-Winsten itéré, code de P10.1), pour la
+  France et pour la Gironde. **k** est le facteur d'amplification ; son intervalle à 95 % vient de l'estimation.
+  T_rég : anomalie annuelle de TM publiée ; G : température mondiale GISTEMP v4 en moyenne glissante sur 4 ans (années
+  a − 3 à a, comme en P10.2), pour retirer l'essentiel d'El Niño, qui brouille G sans toucher la France de la même façon
+  (une covariable bruitée sous-estime k).
+- **Périodes** : Gironde 1953-2024 ; France 1959-2024 (réseau constant des 217 postes complets, 2022-2024 en partie
+  bruts, signalés) ou 1959-2021 (série publiée) : **décision D-AP**.
+- **Contrôle « terres contre océans »** (information, sans critère) : k mesuré contre la température des seules terres
+  émergées (CRUTEM5, nouvelle source). Les terres se réchauffent plus que la moyenne terre + océan (R-A2) : ce contrôle
+  dit quelle part de l'amplification tient à cet effet.
+- **Informations sans critère** (selon D-AP) : facteurs pour TX et TN ; facteurs d'été (juin-août) et d'hiver
+  (décembre-février) ; rapport des pentes de Sen sur la période commune.
+- **Résultats publiés** : k France et Gironde avec intervalles ; nuage de points (T_rég contre G) avec la droite ;
+  séries T_rég et c + k·G superposées ; tableau des variantes, des postes et des informations.
+
+**Références proposées**
+
+| # | Énoncé publié | Source | Usage |
+|---|---|---|---|
+| R-A1 | France : + 4 °C pour + 3 °C mondial en 2100, + 2 °C pour + 1,5 °C en 2030 (rapport ≈ 1,33, France contre 1900-1930, monde contre 1850-1900) | TRACC, ministère de la Transition écologique (inscrite au code de l'environnement en janvier 2026) | borne basse de la fourchette de contrôle |
+| R-A1 | Europe : réchauffement deux fois plus rapide que la moyenne mondiale depuis les années 1980 | Copernicus (C3S) et OMM, European State of the Climate 2024 | borne haute de la fourchette de contrôle |
+| — | France : + 2,2 °C en 2016-2025 depuis le début du XXe siècle ; Europe + 2,3 °C contre + 1,4 °C pour le monde | Météo-France, 23/10/2026 | information |
+| R-A2 | 2011-2020 contre 1850-1900 : + 1,09 °C pour le globe, + 1,59 °C sur les terres, + 0,88 °C sur les océans (rapport terres / globe ≈ 1,46) | GIEC AR6 GT1, SPM A.1.2 | interprétation du contrôle « terres » |
+
+Les références ne mesurent pas exactement k (périodes, bases et méthodes différentes) : d'où un contrôle de
+recouvrement avec une fourchette [1,3 ; 2,0], pas d'appartenance.
+
+**Critères proposés (A1-A7)**
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| A1 | Données | Aucune année manquante ; France : réseau constant, chaque année couverte par tous ses postes ; années brutes seulement en fin de série et signalées ; au moins 60 ans |
+| A2 | Ajustement | Estimation convergée ; autocorrélation ρ entre −0,9 et 0,9 (pas de dégénérescence, leçon de O8) ; résidus transformés sans autocorrélation restante (Ljung-Box à 10 ans, p ≥ 0,05) ; France et Gironde |
+| A3 | Amplification | Borne basse de l'intervalle à 95 % de k **supérieure à 1**, pour la France et pour la Gironde |
+| A4 | Plausibilité | Intervalle de k France recoupant [1,3 ; 2,0] (R-A1) |
+| A5 | Robustesse | k > 1 (valeur centrale), France et Gironde, pour : covariable HadCRUT5 ; covariable Berkeley Earth ; G annuel non lissé ; sous-période 1979-fin ; années homogénéisées seules |
+| A6 | Cohérence | Intervalle de k Gironde recoupant celui de la France ; k > 0 pour Mérignac, Cap-Ferret, Cazaux, Villenave-d'Ornon et Bordeaux-Paulin, intervalles recoupant celui du composite Gironde |
+| A7 | Technique | Tests et CI verts, contrat à jour, analyse publiée dans l'onglet |
+
+**Règle de confiance proposée** (comme D-AG et D-AO) : « élevée » si A1 à A6 sont conformes ; « moyenne » si A3 l'est
+mais qu'un autre critère échoue ; « signal non établi » si A3 échoue.
+
+**Limites assumées d'avance** : k est un rapport observé, pas une réponse forcée : il contient l'effet terres contre
+océans, la baisse des aérosols européens depuis les années 1980, les changements de circulation et la variabilité
+propre de la région ; il peut dépendre de la période (d'où la variante 1979-fin) ; il n'attribue aucune cause, et la
+régression mondiale de P10.1 ne se transpose pas à la France ; la Gironde ne compte que quelques postes, dont
+plusieurs littoraux ; les années brutes (Gironde 2023-2024, France 2022-2024 si D-AP le retient) ne sont pas
+homogénéisées.
+
+**Conséquence pour la synthèse** : publier P10.3 déclenche le garde-fou D-AH ; `limite-attribution` (qui dit que rien
+n'est attribué pour la France ni pour la Gironde) devra mentionner P10.3 sans en faire une attribution, puis être
+relue (M6) avant la fusion.
+
+**Décisions demandées à Grég** : D-AP (données, période France et informations retenues) ; D-AQ (références,
+critères A1-A7 et règle de confiance).
+
 ### Journal P10
 
 - 17/11/2026 : sonde (`docs/sonde-p10.md`), cadrage, décisions D-AD à D-AH, critères O1-O9 validés avant tout calcul.
