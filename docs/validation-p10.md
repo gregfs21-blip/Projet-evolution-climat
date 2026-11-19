@@ -1,11 +1,13 @@
-# Validation P10.1 — analyse des résultats et des écarts
+# Validation P10 — analyse des résultats et des écarts
+
+## P10.1 — régression multiple
 
 Critères O1-O9 et références R-O1 à R-O4 validés par Grég le 17/11/2026, avant tout calcul (`docs/phases.md`, P10).
 Mesures automatiques : `docs/validation-p10-resultats.md` (régénéré à chaque ETL). Ce document explique les écarts ; il
 ne modifie aucun critère. Chiffres arrondis une seule fois, à partir des valeurs en pleine précision de
 `data/processed/demonstration.json` (relecture du 18/11/2026, signalement n° 3).
 
-## Premier calcul (17-18/11/2026)
+### Premier calcul (17-18/11/2026)
 
 Entrées : ERF IGCC 2025 (`v2026.06.02`, 1750-2025), Niño 3.4 HadISST1.1 (anomalies complètes jusqu'en 2025),
 HadCRUT5 1871-2025, GISTEMP v4 1880-2025, Berkeley Earth 1871-2024, telles que publiées sur le site.
@@ -25,7 +27,7 @@ O1 à O7 conformes pour les trois jeux. ENSO (βₑ = 0,110 à 0,119 °C par °C
 très significatifs ; soleil non significatif (p = 0,43 à 0,66). Corrélation de l'indice ENSO avec l'ONI : r = 0,991.
 Facteurs d'inflation de la variance de 1,01 à 1,04 : les quatre termes ne se confondent pas.
 
-## Écart O8 (b) : forçage anthropique à 5 %
+### Écart O8 (b) : forçage anthropique à 5 %
 
 **Constat.** Avec la borne basse (5 %) du forçage anthropique de l'IGCC, le réchauffement attribué 2016-2025 tombe à
 0,22 °C (HadCRUT5), 0,09 °C (GISTEMP) et 0,09 °C (Berkeley), hors de [1,0 ; 1,5]. Les 9 combinaisons de décalages, la
@@ -57,7 +59,7 @@ pas une trajectoire cohérente (limite écrite d'avance).
 D-AG et la pratique du projet (P2b : un écart accepté clôt la phase mais ne relève pas la confiance), P10.1 est close
 et la confiance publiée reste « moyenne » tant qu'O8 n'est pas conforme au calcul.
 
-## Constats sans effet sur les critères
+### Constats sans effet sur les critères
 
 - Température ajustée : pente de Sen 1979-2025 de 0,196 [0,179 ; 0,214] °C/décennie (HadCRUT5) contre 0,205
   [0,179 ; 0,234] observée ; l'intervalle se resserre de plus d'un tiers (37 %). Ces intervalles de Sen ne sont pas
@@ -75,3 +77,41 @@ et la confiance publiée reste « moyenne » tant qu'O8 n'est pas conforme au ca
 - Contrôle MCO + Newey-West : coefficients voisins, sauf pour le soleil. Par MCO, même avec les erreurs de Newey-West
   (troncature à 4 ans, courte pour ρ ≈ 0,7), le soleil ressort significatif pour HadCRUT5 (0,55, p = 0,03) et GISTEMP
   (0,46, p = 0,048) ; l'estimation AR(1), qui modélise l'autocorrélation, donne 0,17 et 0,19 pour ces deux jeux (0,12 pour Berkeley ; p ≥ 0,43).
+
+## P10.2 — valeurs extrêmes en Gironde
+
+Données, méthode, références et critères X1-X7 validés par Grég le 19/11/2026, avant tout ajustement (D-AM à D-AO,
+`docs/phases.md`). Calcul du 19/11/2026 : `etl/demo_extremes.py`, 1 000 tirages bootstrap, graine 1002. Chiffres
+arrondis une seule fois à partir de `data/processed/demonstration.json`.
+
+### Résultats
+
+| Grandeur | Valeur [intervalle à 95 %] |
+|---|---|
+| α, °C de TXx par °C de réchauffement mondial | 3,94 [2,39 ; 5,14] |
+| σ ; ξ | 1,75 [1,25 ; 2,12] ; −0,31 [−0,46 ; −0,04] |
+| Rapport de vraisemblance (contre la loi stationnaire) ; Kolmogorov-Smirnov | p < 0,001 ; p = 0,73 |
+| G (GISTEMP lissé 4 ans) : 1960 ; 2025 ; 1880-1900 | −0,07 ; 1,03 ; −0,32 °C |
+| Chaleur de retour 20 ans en 1960 | 37,7 [37,0 ; 38,4] °C, revient tous les 1,2 [1,0 ; 2,4] ans en 2025 ; probabilité × 16 [8,4 ; 19,5] |
+| Écart d'intensité à rareté égale, 2025 − 1960 | +4,3 [2,6 ; 5,6] °C (identique pour les deux événements : décalage pur) |
+| Record du 11/08/2025, 41,6 °C | période de retour 12 [5 ; 76] ans en 2025 ; au-delà de la borne supérieure en 1960 (période de retour ≥ 538 ans, rapport de probabilité ≥ 27, bornes basses) |
+
+Tous les critères X1 à X6 sont conformes ; confiance « élevée » (règle D-AO). Aucun tirage bootstrap sans convergence.
+
+### Constats sans effet sur les critères
+
+- α central (3,94) est au-dessus du centre de la référence régionale (3,3) et du chiffre ERA5 de Vautard et al. (3,4),
+  mais son intervalle recoupe [2,5 ; 4,2] (X4). Une station seule est plus bruitée qu'une moyenne régionale ; les
+  quatre autres postes donnent 3,6 à 3,9. La valeur élevée n'est pas propre à Mérignac.
+- Le record de 2025 est choisi après coup et figure dans l'ajustement. Sans 2025, α vaut 3,73 et le record reste
+  au-delà de la borne supérieure de la loi de 1960 : la conclusion qualitative ne dépend pas de cette année.
+- Le rapport de probabilité du record est infini dans l'estimation centrale, et la borne haute de son intervalle aussi
+  (au moins 2,5 % des tirages le donnent infini) ; un tirage sur 1 000 donne 0/0 (record hors des deux lois) et est
+  écarté de l'intervalle. « Pratiquement impossible »
+  dans le climat de 1960 est une affirmation du modèle, qui dépend de la borne supérieure de la GEV, elle-même mal
+  connue (ξ entre −0,46 et −0,04) : les bornes basses publiées (538 ans, × 27) sont la lecture prudente.
+- Villenave-d'Ornon a ξ = −0,41, proche de la borne de X2 ; X2 ne porte que sur Mérignac, et α de ce poste
+  (3,63 [1,98 ; 4,60]) est cohérent.
+- Le décalage pur (σ et ξ constants) fait que l'écart d'intensité est le même pour toutes les périodes de retour ; une
+  variante où σ suit aussi G n'a pas été testée (hors cadrage).
+

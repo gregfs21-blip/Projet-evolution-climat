@@ -812,7 +812,10 @@ sections:
               La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. L'étude n'attribue qu'une
               grandeur : le réchauffement moyen de surface du globe (air et mer) par rapport à 1850-1900, dans l'onglet
               Démonstration (régression multiple). Rien n'est attribué ni pour la Gironde, ni pour la France, ni pour
-              les autres variables, y compris la température de la mer et celle de la troposphère.
+              les autres variables, y compris la température de la mer et celle de la troposphère. Le même onglet relie
+              la journée la plus chaude de l'année à Bordeaux-Mérignac au réchauffement mondial (loi des valeurs
+              extrêmes) : ce lien ne dit ni quelle part de ce réchauffement est d'origine humaine, ni quelle part
+              revient à des effets locaux qui ont évolué en même temps, comme l'urbanisation.
           - id: contexte-attribution
             kind: contexte
             text: >-

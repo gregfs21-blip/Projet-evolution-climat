@@ -26,12 +26,15 @@ export default function LinesChart({
   unit,
   label,
   height = "h-[320px] sm:h-[400px]",
+  signed = true,
 }: {
   years: number[];
   lines: Line[];
   unit: string;
   label: string;
   height?: string;
+  /** Signe « + » dans l'infobulle (anomalies) ; false pour des valeurs absolues. */
+  signed?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -76,7 +79,7 @@ export default function LinesChart({
               borderColor: rule,
               textStyle: { color: ink },
               valueFormatter: (v: unknown) =>
-                typeof v === "number" ? `${v.toLocaleString("fr-FR", { maximumFractionDigits: 2, signDisplay: "always" })} ${unit}` : "—",
+                typeof v === "number" ? `${v.toLocaleString("fr-FR", { maximumFractionDigits: 2, signDisplay: signed ? "always" : "auto" })} ${unit}` : "—",
             },
             xAxis: {
               type: "category" as const,
@@ -87,6 +90,7 @@ export default function LinesChart({
             },
             yAxis: {
               type: "value" as const,
+              scale: !signed,
               name: unit,
               nameTextStyle: { color: muted, align: "right" as const },
               axisLabel: { color: muted },
@@ -116,7 +120,7 @@ export default function LinesChart({
       disposed = true;
       cleanup();
     };
-  }, [years, lines, unit]);
+  }, [years, lines, unit, signed]);
 
   return (
     <div>

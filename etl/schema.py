@@ -595,7 +595,7 @@ class RegressionDataset(_Strict):
 
 
 class Criterion(_Strict):
-    id: str = Field(pattern=r"^O[0-9]+$")
+    id: str = Field(pattern=r"^[A-Z][0-9]+$")
     label: str = Field(min_length=1)
     satisfied: bool
     detail: str = Field(min_length=1)
@@ -628,6 +628,117 @@ class Regression(_Strict):
         return self
 
 
+class Unbounded(_Strict):
+    """Grandeur qui peut être infinie (période de retour d'une valeur hors de la loi, rapport de probabilités).
+
+    null = infini. `undefined_draws` : tirages bootstrap sans valeur définie (0/0), écartés de l'intervalle."""
+    value: float | None
+    ci_low: float | None
+    ci_high: float | None
+    undefined_draws: int = Field(default=0, ge=0)
+
+
+class ExtremeEvent(_Strict):
+    id: str = Field(pattern=SLUG)
+    label: str = Field(min_length=1)
+    value: Estimate = Field(description="Intensité de l'événement, °C")
+    date: str | None = None
+    return_period_today: Unbounded
+    return_period_past: Unbounded
+    return_period_preindustrial: Unbounded
+    probability_ratio: Unbounded = Field(description="Aujourd'hui / climat passé (1960)")
+    probability_ratio_preindustrial: Unbounded
+    intensity_change: Estimate = Field(description="Aujourd'hui − climat passé, °C")
+    intensity_change_preindustrial: Estimate
+
+
+class GevCurve(_Strict):
+    periods: list[float] = Field(min_length=5)
+    today: list[float]
+    today_low: list[float]
+    today_high: list[float]
+    past: list[float]
+    past_low: list[float]
+    past_high: list[float]
+    obs_periods: list[float] = Field(description="Périodes de retour empiriques (rang de Weibull)")
+    obs_today: list[float] = Field(description="Observations ramenées au climat d'aujourd'hui, triées")
+    obs_past: list[float] = Field(description="Observations ramenées au climat passé, triées")
+
+
+class ExtremeSeries(_Strict):
+    years: list[int] = Field(min_length=20)
+    values: list[float]
+    raw_years: list[int] = Field(description="Années prises brutes (prolongation après la dernière homogénéisation)")
+    mu: list[float]
+    level20: list[float]
+
+
+class ExtremeVariant(_Strict):
+    group: Literal["robustesse", "station"]
+    label: str = Field(min_length=1)
+    period: Period
+    n: int
+    alpha: Estimate
+    xi: float
+    probability_ratio: float | None = Field(description="Rapport de probabilité du record (estimation centrale, sans intervalle), s'il est fini")
+    probability_ratio_status: Literal["fini", "infini", "indefini", "sans_objet"]
+    ok: bool
+
+    @model_validator(mode="after")
+    def _pr(self) -> "ExtremeVariant":
+        if (self.probability_ratio is not None) != (self.probability_ratio_status == "fini"):
+            raise ValueError(f"variante {self.label} : rapport de probabilité incohérent avec son statut")
+        return self
+
+
+class Extremes(_Strict):
+    question: str = Field(min_length=1)
+    model: str = Field(min_length=1)
+    finding: str = Field(min_length=1)
+    confidence: Confidence
+    confidence_reason: str = Field(min_length=1)
+    method_note: str = Field(min_length=1)
+    limitations: list[str] = Field(min_length=1)
+    inputs: list[InputSource] = Field(min_length=1)
+    station: str = Field(min_length=1)
+    index_label: str = Field(min_length=1)
+    period: Period
+    n: int = Field(ge=20)
+    covariate: str = Field(min_length=1)
+    today_year: int
+    past_year: int
+    g_today: float
+    g_past: float
+    g_preindustrial: float
+    mu0: float
+    alpha: Estimate = Field(description="°C de maximum annuel par °C de réchauffement mondial")
+    sigma: Estimate
+    xi: Estimate
+    lrt_p: float = Field(ge=0, le=1)
+    ks_p: float = Field(ge=0, le=1)
+    n_boot: int
+    n_failed: int
+    reference: Estimate = Field(description="Fourchette de référence de α (R-X1)")
+    reference_source: str = Field(min_length=1)
+    events: list[ExtremeEvent] = Field(min_length=1)
+    curve: GevCurve
+    series: ExtremeSeries
+    variants: list[ExtremeVariant]
+    criteria: list[Criterion] = Field(min_length=1)
+    script: str = Field(min_length=1)
+    etl_version: str = Field(min_length=1)
+    extracted_at: datetime
+
+    @model_validator(mode="after")
+    def _confidence(self) -> "Extremes":
+        ok = {c.id: c.satisfied for c in self.criteria}
+        core = [ok.get(f"X{i}", False) for i in range(1, 7)]
+        expected = "elevee" if all(core) else ("moyenne" if ok.get("X3") else "non_etabli")
+        if self.confidence != expected:
+            raise ValueError(f"extrêmes : confiance {self.confidence} incohérente avec les critères (attendu {expected}, D-AO)")
+        return self
+
+
 class DemonstrationAnalysis(_Strict):
     id: str = Field(pattern=SLUG)
     phase: str = Field(pattern=r"^p10\.[0-9]+$")
@@ -635,11 +746,13 @@ class DemonstrationAnalysis(_Strict):
     question: str = Field(min_length=1)
     status: Literal["publie", "prevu"]
     regression: Regression | None = None
+    extremes: Extremes | None = None
 
     @model_validator(mode="after")
     def _coherent(self) -> "DemonstrationAnalysis":
-        if (self.status == "publie") != (self.regression is not None):
-            raise ValueError(f"{self.id} : « publie » si et seulement si un résultat est fourni")
+        results = sum(x is not None for x in (self.regression, self.extremes))
+        if results > 1 or (self.status == "publie") != (results == 1):
+            raise ValueError(f"{self.id} : « publie » si et seulement si un seul résultat est fourni")
         return self
 
 

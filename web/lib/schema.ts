@@ -460,10 +460,17 @@ const regressionDatasetSchema = z.strictObject({
 export type RegressionDataset = z.infer<typeof regressionDatasetSchema>;
 
 const criterionSchema = z.strictObject({
-  id: z.string().regex(/^O[0-9]+$/),
+  id: z.string().regex(/^[A-Z][0-9]+$/),
   label: z.string().min(1),
   satisfied: z.boolean(),
   detail: z.string().min(1),
+});
+
+const inputSourceSchema = z.strictObject({
+  name: z.string().min(1),
+  url: z.string().regex(/^https?:\/\//),
+  license: z.string().min(1),
+  note: z.string().nullable(),
 });
 
 const regressionSchema = z
@@ -475,16 +482,7 @@ const regressionSchema = z
     confidence_reason: z.string().min(1),
     method_note: z.string().min(1),
     limitations: z.array(z.string()).min(1),
-    inputs: z
-      .array(
-        z.strictObject({
-          name: z.string().min(1),
-          url: z.string().regex(/^https?:\/\//),
-          license: z.string().min(1),
-          note: z.string().nullable(),
-        }),
-      )
-      .min(1),
+    inputs: z.array(inputSourceSchema).min(1),
     enso_oni_correlation: z.number().min(-1).max(1),
     tcr_reference: estimateSchema,
     datasets: z.array(regressionDatasetSchema).min(1),
@@ -501,6 +499,121 @@ const regressionSchema = z
   }, "régression : confiance incohérente avec les critères (règle D-AG)");
 export type Regression = z.infer<typeof regressionSchema>;
 
+/** Grandeur qui peut être infinie : null = infini (période de retour hors de la loi, rapport de probabilités). */
+const unboundedSchema = z.strictObject({
+  value: z.number().nullable(),
+  ci_low: z.number().nullable(),
+  ci_high: z.number().nullable(),
+  undefined_draws: z.number().int().min(0),
+});
+export type Unbounded = z.infer<typeof unboundedSchema>;
+
+const extremeEventSchema = z.strictObject({
+  id: z.string().regex(SLUG),
+  label: z.string().min(1),
+  value: estimateSchema,
+  date: z.string().nullable(),
+  return_period_today: unboundedSchema,
+  return_period_past: unboundedSchema,
+  return_period_preindustrial: unboundedSchema,
+  probability_ratio: unboundedSchema,
+  probability_ratio_preindustrial: unboundedSchema,
+  intensity_change: estimateSchema,
+  intensity_change_preindustrial: estimateSchema,
+});
+export type ExtremeEvent = z.infer<typeof extremeEventSchema>;
+
+const gevCurveSchema = z
+  .strictObject({
+    periods: z.array(z.number()).min(5),
+    today: z.array(z.number()),
+    today_low: z.array(z.number()),
+    today_high: z.array(z.number()),
+    past: z.array(z.number()),
+    past_low: z.array(z.number()),
+    past_high: z.array(z.number()),
+    obs_periods: z.array(z.number()),
+    obs_today: z.array(z.number()),
+    obs_past: z.array(z.number()),
+  })
+  .refine(
+    (c) => [c.today, c.today_low, c.today_high, c.past, c.past_low, c.past_high].every((a) => a.length === c.periods.length),
+    "courbe : longueurs différentes",
+  )
+  .refine((c) => c.obs_today.length === c.obs_periods.length && c.obs_past.length === c.obs_periods.length, "courbe : observations de longueurs différentes");
+export type GevCurve = z.infer<typeof gevCurveSchema>;
+
+const extremeSeriesSchema = z
+  .strictObject({
+    years: z.array(z.number().int()).min(20),
+    values: z.array(z.number()),
+    raw_years: z.array(z.number().int()),
+    mu: z.array(z.number()),
+    level20: z.array(z.number()),
+  })
+  .refine((s) => [s.values, s.mu, s.level20].every((a) => a.length === s.years.length), "série : longueurs différentes");
+export type ExtremeSeries = z.infer<typeof extremeSeriesSchema>;
+
+const extremeVariantSchema = z.strictObject({
+  group: z.enum(["robustesse", "station"]),
+  label: z.string().min(1),
+  period: periodSchema,
+  n: z.number().int(),
+  alpha: estimateSchema,
+  xi: z.number(),
+  probability_ratio: z.number().nullable(),
+  probability_ratio_status: z.enum(["fini", "infini", "indefini", "sans_objet"]),
+  ok: z.boolean(),
+}).refine((v) => (v.probability_ratio !== null) === (v.probability_ratio_status === "fini"), "variante : rapport de probabilité incohérent avec son statut");
+export type ExtremeVariant = z.infer<typeof extremeVariantSchema>;
+
+const extremesSchema = z
+  .strictObject({
+    question: z.string().min(1),
+    model: z.string().min(1),
+    finding: z.string().min(1),
+    confidence: confidenceSchema,
+    confidence_reason: z.string().min(1),
+    method_note: z.string().min(1),
+    limitations: z.array(z.string()).min(1),
+    inputs: z.array(inputSourceSchema).min(1),
+    station: z.string().min(1),
+    index_label: z.string().min(1),
+    period: periodSchema,
+    n: z.number().int().min(20),
+    covariate: z.string().min(1),
+    today_year: z.number().int(),
+    past_year: z.number().int(),
+    g_today: z.number(),
+    g_past: z.number(),
+    g_preindustrial: z.number(),
+    mu0: z.number(),
+    alpha: estimateSchema,
+    sigma: estimateSchema,
+    xi: estimateSchema,
+    lrt_p: z.number().min(0).max(1),
+    ks_p: z.number().min(0).max(1),
+    n_boot: z.number().int(),
+    n_failed: z.number().int(),
+    reference: estimateSchema,
+    reference_source: z.string().min(1),
+    events: z.array(extremeEventSchema).min(1),
+    curve: gevCurveSchema,
+    series: extremeSeriesSchema,
+    variants: z.array(extremeVariantSchema),
+    criteria: z.array(criterionSchema).min(1),
+    script: z.string().min(1),
+    etl_version: z.string().min(1),
+    extracted_at: isoDate,
+  })
+  .refine((r) => {
+    const ok = new Map(r.criteria.map((c) => [c.id, c.satisfied]));
+    const core = [1, 2, 3, 4, 5, 6].every((i) => ok.get(`X${i}`) === true);
+    const expected = core ? "elevee" : ok.get("X3") ? "moyenne" : "non_etabli";
+    return r.confidence === expected;
+  }, "extrêmes : confiance incohérente avec les critères (règle D-AO)");
+export type Extremes = z.infer<typeof extremesSchema>;
+
 export const demonstrationSchema = z.strictObject({
   schema_version: z.literal("1.0"),
   generated_at: isoDate,
@@ -514,8 +627,12 @@ export const demonstrationSchema = z.strictObject({
           question: z.string().min(1),
           status: z.enum(["publie", "prevu"]),
           regression: regressionSchema.nullable(),
+          extremes: extremesSchema.nullable(),
         })
-        .refine((a) => (a.status === "publie") === (a.regression !== null), "« publie » si et seulement si un résultat est fourni"),
+        .refine((a) => {
+          const results = [a.regression, a.extremes].filter((x) => x !== null).length;
+          return results <= 1 && (a.status === "publie") === (results === 1);
+        }, "« publie » si et seulement si un seul résultat est fourni"),
     )
     .min(1),
 });

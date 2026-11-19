@@ -1,14 +1,15 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-18T10:42:15Z",
-  "closure_ok": true,
-  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "generated_at": "2026-11-19T07:00:12Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
     "oni-monde",
     "temperature-berkeley-monde",
     "temperature-gistemp-monde",
-    "temperature-hadcrut5-monde"
+    "temperature-hadcrut5-monde",
+    "tx-annuelle-bordeaux-merignac"
   ],
   "checks": [
     {
@@ -70,9 +71,9 @@
     {
       "name": "D-AH cohérence de la synthèse",
       "kind": "critère",
-      "status": "✅ conforme",
-      "satisfied": true,
-      "detail": "analyses publiées : p10.1 ; la synthèse (limite-attribution, limite-projections) en tient compte"
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "analyses publiées que la synthèse ne prend pas en compte : p10.2 ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS"
     },
     {
       "name": "O9 technique",
@@ -82,11 +83,67 @@
       "detail": "Tests, contrat et construction de l'onglet vérifiés par la CI (ci.yml), hors de ce module, comme pour les phases précédentes."
     },
     {
-      "name": "Confiance (règle D-AG)",
+      "name": "Confiance P10.1 (règle D-AG)",
       "kind": "info",
       "status": "ℹ️ information",
       "satisfied": true,
       "detail": "moyenne — Détection établie (O3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AG) : O8 (robustesse) : réchauffement attribué hors de [1,0 ; 1,5] °C pour HadCRUT5 « Forçage anthropique à 5 % » 0,22 °C, GISTEMP v4 « Forçage anthropique à 5 % » 0,09 °C, Berkeley Earth « Forçage anthropique à 5 % » 0,09 °C. Analyse de l'écart : docs/validation-p10.md."
+    },
+    {
+      "name": "P10.2 X1 données",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Bordeaux-Mérignac 1953-2025, 73 années, aucune manquante ; années brutes 2023, 2024, 2025 ; écart maximal |corrigé − brut| après la rupture de 2000 : 0,05 °C (seuil 0,1)"
+    },
+    {
+      "name": "P10.2 X2 ajustement",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "ξ = −0,31 (bornes −0,5 et +0,2) ; Kolmogorov-Smirnov p = 0,73 (seuil 0,05) ; 0 tirage(s) bootstrap sans convergence sur 1000"
+    },
+    {
+      "name": "P10.2 X3 détection",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "α = 3,94 [2,39 ; 5,14] °C par °C ; rapport de vraisemblance p < 0,001"
+    },
+    {
+      "name": "P10.2 X4 plausibilité",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "intervalle de α [2,39 ; 5,14] contre la référence [2,5 ; 4,2]"
+    },
+    {
+      "name": "P10.2 X5 robustesse",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Covariable HadCRUT5 : α = 3,86, rapport de probabilité du record infini ✓ ; Années homogénéisées seules (1953-2022) : α = 3,64, rapport de probabilité du record infini ✓ ; Sans l'année 2025 : α = 3,73, rapport de probabilité du record infini ✓ ; Indice TX3x (moyenne de TX sur 3 jours) : α = 3,89, rapport de probabilité du record infini ✓"
+    },
+    {
+      "name": "P10.2 X6 cohérence régionale",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "Cap-Ferret 1953-2025 : α = 3,80 [2,39 ; 5,31] ✓ ; Cazaux 1953-2025 : α = 3,92 [2,64 ; 5,27] ✓ ; Villenave-d'Ornon 1953-2025 : α = 3,63 [1,98 ; 4,60] ✓ ; Bordeaux-Paulin 1962-2025 : α = 3,79 [2,06 ; 5,15] ✓"
+    },
+    {
+      "name": "P10.2 X7 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests (etl/tests/test_p10b.py), contrat et construction de l'onglet vérifiés par la CI."
+    },
+    {
+      "name": "Confiance P10.2 (règle D-AO)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "elevee — Critères X1 à X6 conformes (règle D-AO). L'analyse relie les maxima au réchauffement mondial ; elle n'en attribue pas la cause."
     }
   ]
 }

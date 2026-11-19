@@ -8,15 +8,19 @@ import RegressionView from "@/components/RegressionView";
 import ValidationBox from "@/components/ValidationBox";
 import { getDemonstration, getValidation } from "@/lib/data";
 import { fmtDateTime, REPO_URL } from "@/lib/format";
-import type { Regression } from "@/lib/schema";
+import ExtremesView from "@/components/ExtremesView";
+import type { Extremes, Regression } from "@/lib/schema";
+
+type Result = Regression | Extremes;
 
 export const metadata: Metadata = { title: "Démonstration" };
 
-function Criteria({ reg }: { reg: Regression }) {
+function Criteria({ reg }: { reg: Result }) {
+  const ids = reg.criteria.map((c) => c.id);
   return (
     <details className="rounded-lg border border-[var(--rule)] px-4 py-3 text-sm">
       <summary className="cursor-pointer font-medium">
-        <span className="chevron">▸</span> Critères fixés avant le calcul (O1-O8) : {reg.criteria.filter((c) => c.satisfied).length}/
+        <span className="chevron">▸</span> Critères fixés avant le calcul ({ids[0]}-{ids[ids.length - 1]}) : {reg.criteria.filter((c) => c.satisfied).length}/
         {reg.criteria.length} conformes
       </summary>
       <ul className="mt-3 space-y-2">
@@ -34,7 +38,7 @@ function Criteria({ reg }: { reg: Regression }) {
   );
 }
 
-function MethodAndLimits({ reg }: { reg: Regression }) {
+function MethodAndLimits({ reg }: { reg: Result }) {
   return (
     <details className="rounded-lg border border-[var(--rule)] px-4 py-3 text-sm">
       <summary className="cursor-pointer font-medium">
@@ -66,10 +70,12 @@ function MethodAndLimits({ reg }: { reg: Regression }) {
               </li>
             ))}
           </ul>
-          <p className="mt-2 text-xs text-[var(--muted)]">
-            Corrélation entre l&apos;indice ENSO utilisé et l&apos;ONI de la NOAA : r ={" "}
-            {reg.enso_oni_correlation.toLocaleString("fr-FR", { maximumFractionDigits: 3 })}.
-          </p>
+          {"enso_oni_correlation" in reg && (
+            <p className="mt-2 text-xs text-[var(--muted)]">
+              Corrélation entre l&apos;indice ENSO utilisé et l&apos;ONI de la NOAA : r ={" "}
+              {reg.enso_oni_correlation.toLocaleString("fr-FR", { maximumFractionDigits: 3 })}.
+            </p>
+          )}
         </div>
         <p className="font-mono text-xs text-[var(--muted)]">
           {reg.script} · ETL {reg.etl_version} · {fmtDateTime(reg.extracted_at)} ·{" "}
@@ -153,6 +159,41 @@ export default function DemonstrationPage() {
               <div className="max-w-3xl space-y-3">
                 <Criteria reg={reg} />
                 <MethodAndLimits reg={reg} />
+              </div>
+            </section>
+          );
+        })}
+
+      {demo.analyses
+        .filter((a) => a.status === "publie" && a.extremes)
+        .map((a) => {
+          const x = a.extremes!;
+          return (
+            <section key={a.id} id={a.id} className="scroll-mt-20 space-y-6">
+              <div className="max-w-3xl space-y-3">
+                <p className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase">{a.phase.toUpperCase()} · valeurs extrêmes</p>
+                <h2 className="text-2xl font-semibold tracking-tight">{a.title}</h2>
+                <p className="text-[var(--muted)] italic">{a.question}</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <ConfidenceBadge level={x.confidence} />
+                </div>
+                <p className="leading-relaxed">{x.finding}</p>
+                <p className="text-sm text-[var(--muted)]">{x.confidence_reason}</p>
+                <p className="text-sm leading-relaxed">
+                  Principe : une moyenne qui monte ne dit pas comment évoluent les extrêmes, qui comptent pour la santé, les
+                  cultures et les réseaux. On prend la journée la plus chaude de chaque année et on décrit sa loi de probabilité
+                  par une loi des valeurs extrêmes dont la position suit la température mondiale. Si la chaleur extrême de
+                  Bordeaux ne dépendait pas du réchauffement mondial, le coefficient α serait nul : c&apos;est ce que teste le
+                  critère X3. La loi ajustée permet ensuite de comparer, pour un même événement, sa fréquence dans le climat de{" "}
+                  {x.past_year} et dans celui de {x.today_year}. L&apos;analyse établit un lien avec le réchauffement mondial ; elle
+                  ne dit pas, à elle seule, que ce réchauffement est d&apos;origine humaine : c&apos;est l&apos;objet de la régression
+                  ci-dessus.
+                </p>
+              </div>
+              <ExtremesView x={x} />
+              <div className="max-w-3xl space-y-3">
+                <Criteria reg={x} />
+                <MethodAndLimits reg={x} />
               </div>
             </section>
           );

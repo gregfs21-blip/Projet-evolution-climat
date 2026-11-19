@@ -589,9 +589,13 @@ satisfait mais qu'un autre critère échoue ; « signal non établi » si O3 éc
   à la publication de P10.1, elle devient fausse. Proposition : la reformuler en renvoyant à l'onglet, avec la
   relecture indépendante exigée par M6.
 
-### P10.2 — Valeurs extrêmes non stationnaires en Gironde : cadrage proposé le 19/11/2026, avant tout ajustement
+### P10.2 — Valeurs extrêmes non stationnaires en Gironde : cadrage proposé et validé le 19/11/2026, avant tout ajustement
 
 > **Demande de Grég du 19/11/2026** : réaliser P10.2, la suite de la démonstration.
+>
+> **Décisions de Grég du 19/11/2026, avant tout ajustement** : D-AM données, indice et méthode validés tels quels
+> (prolongation brute 2023-2025 comprise) ; D-AN les deux événements (record 2025 et « 20 ans en 1960 »), avec la
+> variante sans 2025 ; D-AO références, critères X1-X7 et règle de confiance validés tels quels (« élevée » possible).
 
 **Question** : une forte chaleur qui revenait tous les N ans dans le climat de 1960 à Bordeaux revient-elle plus
 souvent aujourd'hui, et de combien les maxima de chaleur ont-ils augmenté par degré de réchauffement mondial ?
@@ -661,8 +665,8 @@ distribution ; Mérignac est un aéroport en lisière d'agglomération (effet ur
 **Conséquence pour la synthèse** : publier P10.2 déclenche le garde-fou D-AH. L'affirmation `limite-attribution`
 devra être reformulée et relue (M6) avant la fusion.
 
-**Décisions demandées à Grég** : D-AM (données, indice et méthode) ; D-AN (événements étudiés) ; D-AO (références,
-critères X1-X7 et règle de confiance).
+**Décisions demandées à Grég** (tranchées le 19/11/2026, voir en tête) : D-AM (données, indice et méthode) ; D-AN
+(événements étudiés) ; D-AO (références, critères X1-X7 et règle de confiance).
 
 ### Journal P10
 

@@ -354,8 +354,6 @@ def _p(p: float) -> str:
 
 
 PLANNED = (
-    ("extremes-gironde", "p10.2", "Valeurs extrêmes en Gironde",
-     "Une canicule qui revenait tous les N ans en 1960 revient-elle plus souvent aujourd'hui ?"),
     ("amplification-regionale", "p10.3", "Amplification régionale",
      "De combien la Gironde et la France se réchauffent-elles pour 1 °C de réchauffement mondial ?"),
     ("coherence-physique", "p10.4", "Cohérence physique",
@@ -511,6 +509,14 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
     analyses = [DemonstrationAnalysis(id="regression-multiple", phase="p10.1",
                                       title="Ce qui reste du réchauffement une fois les facteurs naturels retirés",
                                       question=reg.question, status="publie", regression=reg)]
+
+    # P10.2 — valeurs extrêmes en Gironde (etl/demo_extremes.py)
+    from etl import demo_extremes as E
+    ext = E.build(E.load_station(E.MAIN, raw_dir), [E.load_station(s, raw_dir) for s in E.OTHERS],
+                  E.published(out_dir, E.GISTEMP), E.published(out_dir, E.HADCRUT), ctx.etl_version, ctx.extracted_at)
+    analyses.append(DemonstrationAnalysis(id="extremes-gironde", phase="p10.2",
+                                          title="Les canicules de Bordeaux, hier et aujourd'hui",
+                                          question=ext.question, status="publie", extremes=ext))
     analyses += [DemonstrationAnalysis(id=i, phase=ph, title=t, question=q, status="prevu") for i, ph, t, q in PLANNED]
     return Demonstration(generated_at=datetime.now(timezone.utc).replace(microsecond=0), analyses=analyses)
 
@@ -518,10 +524,14 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
 def main() -> int:
     demo = build()
     OUT.write_text(demo.model_dump_json(indent=1) + "\n", encoding="utf-8")
-    reg = demo.analyses[0].regression
-    print(f"→ {OUT.relative_to(ROOT)} : confiance {reg.confidence}")
-    for c in reg.criteria:
-        print(f"  {c.id} {'✓' if c.satisfied else '✗'} {c.label} : {c.detail}")
+    print(f"→ {OUT.relative_to(ROOT)}")
+    for a in demo.analyses:
+        res = a.regression or a.extremes
+        if res is None:
+            continue
+        print(f"  {a.phase} : confiance {res.confidence}")
+        for c in res.criteria:
+            print(f"    {c.id} {'✓' if c.satisfied else '✗'} {c.label} : {c.detail}")
     return 0
 
 
