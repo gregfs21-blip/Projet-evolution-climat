@@ -1,63 +1,63 @@
 # Sonde P11 — localités extrêmes à l'instant t (généré)
 
-Généré par `python -m etl.probe.p11` le 19/11/2026 13:45 UTC, depuis GitHub Actions. Aucun indicateur, aucun choix.
+Généré par `python -m etl.probe.p11` le 19/11/2026 18:23 UTC, depuis GitHub Actions. Aucun indicateur, aucun choix.
 
 ## 1. METAR mondiaux, fichier cache de l'AWC (NOAA)
 
 ```
-GET https://aviationweather.gov/data/cache/metars.cache.csv.gz → 200 en 0.0 s, 264275 o
-en-têtes : Content-Type=application/octet-stream ; Content-Length=264275 ; Last-Modified=Thu, 19 Nov 2026 13:44:07 GMT ; Cache-Control=max-age=30
-5250 lignes ; préambule : []
+GET https://aviationweather.gov/data/cache/metars.cache.csv.gz → 200 en 0.5 s, 282078 o
+en-têtes : Content-Type=application/octet-stream ; Content-Length=282078 ; Last-Modified=Thu, 19 Nov 2026 18:23:08 GMT ; Cache-Control=max-age=30
+5229 lignes ; préambule : []
 colonnes : raw_text,station_id,observation_time,latitude,longitude,temp_c,dewpoint_c,wind_dir_degrees,wind_speed_kt,wind_gust_kt,visibility_statute_mi,altim_in_hg,sea_level_pressure_mb,corrected,auto,auto_station,maintenance_indicator_on,no_signal,lightning_sensor_off,freezing_rain_sensor_off,present_weather_sensor_off,wx_string,sky_cover,cloud_base_ft_agl,sky_cover,cloud_base_ft_agl,sky_cover,cloud_base_ft_agl,sky_cover,cloud_base_ft_agl,flight_category,three_hr_pressure_tendency_mb,maxT_c,minT_c,maxT24hr_c,minT24hr_c,precip_in,pcp3hr_in,pcp6hr_in,pcp24hr_in,snow_in,vert_vis_ft,metar_type,elevation_m
-stations : 5249 ; avec température : 5209
-âge des observations (min) : médiane 42, 90 % 52, max 90
-stations au sud de 60° S : 25 ; au nord de 70° N : 31
+stations : 5228 ; avec température : 5185
+âge des observations (min) : médiane 24, 90 % 34, max 89
+stations au sud de 60° S : 26 ; au nord de 70° N : 32
 10 plus chaudes (brut, sans contrôle) :
-  +41.0 °C FAUP (-28.3990, 21.2600) âge 45 min : METAR FAUP 191300Z 28006KT 9999 SCT050 41/M00 Q1012 NOSIG
-  +39.0 °C FLLS (-15.3290, 28.4480) âge 45 min : METAR FLLS 191300Z 11058KT CAVOK FEW080 39/21 Q1010
-  +39.0 °C FTTA (9.1440, 18.3740) âge 45 min : METAR FTTA 191300Z 18006KT CAVOK 39/09 Q1010
-  +38.0 °C FKKR (9.3360, 13.3700) âge 45 min : METAR FKKR 191300Z VRB02KT CAVOK 38/00 Q1010 NOSIG
-  +38.0 °C KTOP (39.0725, -95.6260) âge 25 min : SPECI KTOP 191320Z COR 120/03KT 7SM CLR 38/37 A3028
-  +37.0 °C DGLE (9.5540, -0.8620) âge 45 min : METAR DGLE 191300Z 05003KT CAVOK 37/08 Q1010 NOSIG
-  +37.0 °C DRRN (13.4830, 2.1700) âge 45 min : METAR DRRN 191300Z 08010KT 050V140 CAVOK 37/M03 Q1012 NOSIG
-  +37.0 °C GOTT (13.7330, -13.6570) âge 45 min : METAR GOTT 191300Z 08006KT CAVOK 37/12 Q1012 NOSIG
-  +37.0 °C FAKM (-28.8030, 24.7650) âge 45 min : METAR FAKM 191300Z 34007KT 9999 FEW050 37/02 Q1016 NOSIG
-  +37.0 °C GQNO (18.3100, -15.9700) âge 15 min : METAR GQNO 191330Z 06010KT 030V090 8000 FEW020 37/05 Q1013 NOSIG
+  +39.0 °C SLAS (-15.9300, -63.1570) âge 24 min : METAR SLAS 191800Z 33015KT 8000 SCT017 BKN200 39/25 Q1008
+  +38.0 °C SLRB (-18.3300, -59.7630) âge 24 min : METAR SLRB 191800Z 36015KT 9999 SCT020 BKN200 38/23 Q1009
+  +38.0 °C SLJE (-17.8320, -60.7440) âge 24 min : METAR SLJE 191800Z 36008KT 9999 BKN017 FEW023CB 38/23 Q1007
+  +38.0 °C SBTE (-5.0600, -42.8240) âge 24 min : METAR SBTE 191800Z 35004KT 9999 BKN025 38/18 Q1006
+  +37.0 °C SLSB (-14.8570, -66.7380) âge 24 min : METAR SLSB 191800Z 34018KT 9999 SCT040 37/24 Q1005
+  +37.0 °C SPST (-6.5090, -76.3730) âge 24 min : METAR SPST 191800Z 02015KT 9999 FEW015 37/22 Q1008 RMK PP000
+  +37.0 °C GOOG (15.4000, -15.0840) âge 24 min : METAR GOOG 191800Z 08008KT CAVOK 37/08 Q1009
+  +37.0 °C GOOD (14.6500, -16.2300) âge 24 min : METAR GOOD 191800Z 00000KT CAVOK 37/13 Q1010
+  +37.0 °C SBTF (-3.3830, -64.7240) âge 24 min : METAR SBTF 191800Z 06005KT 9999 SCT020 37/25 Q1006
+  +36.0 °C SBUF (-9.4000, -38.2500) âge 84 min : METAR SBUF 191700Z 09007KT 9999 FEW043 36/19 Q1010
 10 plus froides (brut, sans contrôle) :
-  -36.0 °C UEEE (62.0930, 129.7740) âge 15 min : METAR UEEE 191330Z 01001MPS 5000 BR NSC M36/M39 Q1027 R23/450173 NOSIG RMK QNH770 QFE762
-  -32.0 °C UHMM (59.9110, 150.7250) âge 45 min : METAR UHMM 191300Z 08003MPS 9999 NSC M32/M35 Q1010 RMK QNH758 QFE743/0991 R28/08003MPS
-  -26.0 °C CYUT (66.5250, -86.2300) âge 21 min : SPECI CYUT 191324Z 35006KT 15SM FEW030 M26/M30 A2977 RMK SC2 SNW CVR/TRACE LOOSE SLP086
-  -26.0 °C CYRB (74.7130, -94.9820) âge 45 min : METAR CYRB 191300Z 33021KT 9SM IC DRSN SKC M26/M29 A2972 RMK IC2 SLP079
-  -25.9 °C CXRB (74.7160, -94.9830) âge 45 min : METAR CXRB 191300Z AUTO 32014KT M26/M29 RMK AO1 4PAST HR SOG 13 8010 PK WND 35020/1230 SLP
-  -25.0 °C CYCB (69.1060, -105.1160) âge 45 min : METAR CYCB 191300Z 30012KT 15SM FEW020 M25/M28 A3012 RMK SC2 CLD HGT EST CEILOMETER BKN SL
-  -25.0 °C CYBK (64.3060, -96.0780) âge 45 min : METAR CYBK 191300Z 27010KT 15SM SKC M25/M28 A3008 RMK SLP192
-  -24.0 °C CYRT (62.8110, -92.1000) âge 45 min : METAR CYRT 191300Z 33012KT 15SM FEW003 FEW140 M24/M27 A2999 RMK ST1AC1 AC TR SLP162
-  -24.0 °C CYHK (68.6330, -95.8510) âge 45 min : METAR CYHK 191300Z AUTO 32019G25KT 5SM BR FEW004 M24/M26 A2989 RMK SLP131
-  -23.9 °C CXWB (65.8790, -89.4460) âge 45 min : METAR CXWB 191300Z AUTO 32011KT M24/M29 RMK AO1 SOG 02 8003 SLP109 T12391286
+  -38.0 °C UEEE (62.0930, 129.7740) âge 24 min : METAR UEEE 191800Z 36001MPS 1700 R23/P2000N BR NSC M38/M41 Q1026 R23/450173 NOSIG RMK QNH7
+  -38.0 °C NZSP (-89.9800, 180.0000) âge 34 min : METAR NZSP 191750Z 03012KT 9999 FEW040 M38/ A2846 RMK ALL WNDS GRID SDG/HDG
+  -34.0 °C UHMM (59.9110, 150.7250) âge 24 min : METAR UHMM 191800Z 10002MPS 9999 NSC M34/M37 Q1007 RMK QNH755 QFE740/0987 R28/10002MPS
+  -27.0 °C CYZS (64.1880, -83.3510) âge 24 min : METAR CYZS 191800Z 34009KT 15SM FEW025 M27/M31 A2971 RMK SC1 SLP075
+  -26.0 °C CYRB (74.7130, -94.9820) âge 24 min : METAR CYRB 191800Z 33012KT 9SM IC DRSN SKC M26/M29 A2972 RMK SLP077
+  -26.0 °C CXRB (74.7160, -94.9830) âge 24 min : METAR CXRB 191800Z AUTO 35014KT M26/M29 RMK AO1 4PAST HR SOG 13 5003 PK WND 34019/1726 SLP
+  -25.0 °C CYCO (67.8170, -115.1350) âge 24 min : METAR CYCO 191800Z 22014KT 15SM IC VCFG FEW013 FEW080 M25/M28 A3037 RMK ST1AC1 ST TR AC TR
+  -25.0 °C CYYH (69.5430, -93.5680) âge 24 min : METAR CYYH 191800Z 33022KT 15SM DRSN FEW040 M25/M28 A2976 RMK SC1 OCNL VCBLSN SLP083
+  -25.0 °C CYHK (68.6330, -95.8510) âge 24 min : METAR CYHK 191800Z 30017KT 10SM DRSN FEW004 M25/M27 A2990 RMK ST1 ST TR SLP134
+  -24.9 °C CWIJ (65.7560, -111.2460) âge 24 min : METAR CWIJ 191800Z AUTO 29004KT M25/M28 RMK AO1 SOG 05 3003 SLP279 T12491276
 ```
 
 ## 2. API METAR de l'AWC (JSON)
 
 ```
-GET https://aviationweather.gov/api/data/metar?ids=LFBD,NZSP,OERK,KDRA&format=json → 200 en 0.1 s
-en-têtes : Content-Type=application/json; charset=utf-8 ; Content-Length=1868
-4 enregistrements ; clés : ['altim', 'clouds', 'cover', 'dewp', 'elev', 'fltCat', 'icaoId', 'lat', 'lon', 'metarType', 'name', 'obsTime', 'qcField', 'rawOb', 'receiptTime', 'reportTime', 'slp', 'temp', 'visib', 'wdir', 'wspd']
-  KDRA 10 °C 2026-11-19T13:00:00.000Z Mercury/Desert Rock, NV, US
-  LFBD 13 °C 2026-11-19T13:30:00.000Z Bordeaux/Mérignac Arpt, NA, FR
-  NZSP -39 °C 2026-11-19T12:00:00.000Z Amundsen-South Pole, NZ, AQ
-  OERK 27 °C 2026-11-19T13:00:00.000Z Riyadh/King Khaled Intl, RD, SA
+GET https://aviationweather.gov/api/data/metar?ids=LFBD,NZSP,OERK,KDRA&format=json → 200 en 0.4 s
+en-têtes : Content-Type=application/json; charset=utf-8 ; Content-Length=1967
+4 enregistrements ; clés : ['altim', 'clouds', 'cover', 'dewp', 'elev', 'fltCat', 'icaoId', 'lat', 'lon', 'maxT', 'metarType', 'minT', 'name', 'obsTime', 'pcp6hr', 'presTend', 'qcField', 'rawOb', 'receiptTime', 'reportTime', 'slp', 'temp', 'visib', 'wdir', 'wspd']
+  KDRA 10 °C 2026-11-19T18:00:00.000Z Mercury/Desert Rock, NV, US
+  LFBD 12 °C 2026-11-19T18:00:00.000Z Bordeaux/Mérignac Arpt, NA, FR
+  NZSP -38 °C 2026-11-19T18:00:00.000Z Amundsen-South Pole, NZ, AQ
+  OERK 19 °C 2026-11-19T18:00:00.000Z Riyadh/King Khaled Intl, RD, SA
 ```
 
 ## 2 bis. Noms des stations
 
 ```
-GET https://aviationweather.gov/data/cache/stations.cache.json.gz → 200 en 0.1 s, 359430 o
+GET https://aviationweather.gov/data/cache/stations.cache.json.gz → 200 en 0.3 s, 359430 o
 en-têtes : Content-Type=application/octet-stream ; Content-Length=359430 ; Last-Modified=Thu, 19 Nov 2026 00:15:24 GMT ; Cache-Control=max-age=30
 9960 stations ; exemple : {"id": "32012", "icaoId": null, "iataId": null, "faaId": null, "wmoId": null, "site": "Woods Hole Stratus Wave Station", "lat": 19.691, "lon": -85.567, "elev": 0, "state": "", "country": null, "priority": 4, "siteType": []}
-GET https://aviationweather.gov/api/data/stationinfo?ids=FYKT,UEEE,NZSP,LFBD&format=json → 200 en 0.1 s, 826 o
+GET https://aviationweather.gov/api/data/stationinfo?ids=FYKT,UEEE,NZSP,LFBD&format=json → 200 en 0.6 s, 826 o
 en-têtes : Content-Type=application/json; charset=utf-8 ; Content-Length=826
 4 stations ; exemple : {"id": "FYKT", "icaoId": "FYKT", "iataId": "KMP", "faaId": null, "wmoId": "68312", "site": "Keetmanshoop Arpt", "lat": -26.54, "lon": 18.111, "elev": 1064, "state": "KA", "country": "NA", "priority": 3, "siteType": ["METAR", "TAF"]}
-NZSP dans le cache METAR : non
+NZSP dans le cache METAR : oui
 NZCM dans le cache METAR : oui
 FYKT dans le cache METAR : oui
 KDRA dans le cache METAR : oui
@@ -70,20 +70,20 @@ BGSC dans le cache METAR : non
 ## 3. Open-Meteo, température actuelle du modèle
 
 ```
-GET https://api.open-meteo.com/v1/forecast?latitude=36.46,24.8,31.0,-78.46,-90.0,67.55,44.83,-15.329,9.144,-28.399,62.093,59.911,66.525&longitude=-116.87,46.7,58.3,… → 200 en 0.1 s
+GET https://api.open-meteo.com/v1/forecast?latitude=36.46,24.8,31.0,-78.46,-90.0,67.55,44.83,-17.832,-5.06,-15.93,-89.98,62.093,59.911&longitude=-116.87,46.7,58.3,1… → 200 en 0.0 s
 en-têtes : Content-Type=application/json; charset=utf-8 ; Access-Control-Allow-Origin=*
-  Vallée de la Mort (36.46, -116.87) : 16.8 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle -58.0 m)
-  Riyad (24.8, 46.7) : 25.8 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 651.0 m)
-  Désert de Lut (31.0, 58.3) : 26.4 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 303.0 m)
-  Vostok (-78.46, 106.84) : -35.2 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 3493.0 m)
-  Pôle Sud (-90.0, 0.0) : -32.4 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 2836.0 m)
-  Verkhoïansk (67.55, 133.38) : -30.3 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 135.0 m)
-  Bordeaux-Mérignac (44.83, -0.69) : 12.8 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 45.0 m)
-  METAR FLLS (+39.0 °C) (-15.329, 28.448) : 27.0 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 1148.0 m)
-  METAR FTTA (+39.0 °C) (9.144, 18.374) : 39.1 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 363.0 m)
-  METAR FAUP (+41.0 °C) (-28.399, 21.26) : 39.9 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 842.0 m)
-  METAR UEEE (-36.0 °C) (62.093, 129.774) : -33.9 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 97.0 m)
-  METAR UHMM (-32.0 °C) (59.911, 150.725) : -23.8 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 175.0 m)
-  METAR CYUT (-26.0 °C) (66.525, -86.23) : -28.9 °C à 2026-11-19T13:45 (intervalle 900 s ; altitude du modèle 19.0 m)
-requête de 1000 points → 414 en 0.1 s ; b'<html>\r\n<head><title>414 Request-URI Too Large</title></head>\r\n<body>\r\n<center><h1>414 Request-URI Too Large</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n'
+  Vallée de la Mort (36.46, -116.87) : 19.4 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle -58.0 m)
+  Riyad (24.8, 46.7) : 22.3 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 651.0 m)
+  Désert de Lut (31.0, 58.3) : 20.6 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 303.0 m)
+  Vostok (-78.46, 106.84) : -37.5 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 3493.0 m)
+  Pôle Sud (-90.0, 0.0) : -33.0 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 2836.0 m)
+  Verkhoïansk (67.55, 133.38) : -33.0 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 135.0 m)
+  Bordeaux-Mérignac (44.83, -0.69) : 12.1 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 45.0 m)
+  METAR SLJE (+38.0 °C) (-17.832, -60.744) : 33.4 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 285.0 m)
+  METAR SBTE (+38.0 °C) (-5.06, -42.824) : 37.8 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 59.0 m)
+  METAR SLAS (+39.0 °C) (-15.93, -63.157) : 34.0 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 244.0 m)
+  METAR NZSP (-38.0 °C) (-89.98, 180.0) : -33.0 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 2769.0 m)
+  METAR UEEE (-38.0 °C) (62.093, 129.774) : -34.1 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 97.0 m)
+  METAR UHMM (-34.0 °C) (59.911, 150.725) : -25.5 °C à 2026-11-19T18:15 (intervalle 900 s ; altitude du modèle 175.0 m)
+requête de 1000 points → 414 en 0.0 s ; b'<html>\r\n<head><title>414 Request-URI Too Large</title></head>\r\n<body>\r\n<center><h1>414 Request-URI Too Large</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n'
 ```
