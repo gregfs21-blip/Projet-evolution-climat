@@ -34,6 +34,8 @@ jobs:
           path: data/raw
           key: raw-${{ github.run_id }}
           restore-keys: raw-
+      - name: Sonde P10.2 (maxima annuels de TX en Gironde, aucun ajustement)
+        run: python -m etl.probe.p10b
       - name: Sonde P11 (localités extrêmes à l'instant t, sources temps réel, aucun indicateur)
         run: python -m etl.probe.p11
       - name: Sonde P10 (démonstration, régression multiple, forçages et ENSO, aucun calcul)
