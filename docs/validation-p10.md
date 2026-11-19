@@ -123,3 +123,63 @@ Tous les critères X1 à X6 sont conformes ; confiance « élevée » (règle D-
   conclusions, écarts d'une unité sur le dernier chiffre de quelques valeurs (borne haute de α 5,14 ; borne basse de la
   période de retour du record en 1960, 538 ans ; 779 tirages au-delà de la borne). Les chiffres publiés sont ceux du
   calcul officiel, sur les valeurs en pleine précision.
+
+## P10.3 — amplification régionale
+
+Données, méthode, références et critères A1-A7 validés par Grég le 19/11/2026, avant tout calcul (D-AP, D-AQ,
+`docs/phases.md`). Calcul officiel : ETL en GitHub Actions sur la branche `p10-3` (données LSH et CRUTEM5).
+Chiffres arrondis une seule fois à partir de `data/processed/demonstration.json`.
+
+### Résultats
+
+| Grandeur | France (1959-2024, 217 postes) | Gironde (1953-2024, 4 postes) |
+|---|---|---|
+| k contre le monde (GISTEMP lissé sur 4 ans) | 2,16 [1,77 ; 2,56] | 2,13 [1,75 ; 2,52] |
+| ρ ; Ljung-Box à 10 ans | 0,02 ; p = 0,09 | 0,07 ; p = 0,03 |
+| k contre les terres émergées (CRUTEM5 lissé), information | 1,56 [1,28 ; 1,85] | 1,55 [1,27 ; 1,84] |
+| k d'été (juin-août), information | 2,76 [2,21 ; 3,31] | 2,62 [2,12 ; 3,12] |
+| k d'hiver (décembre-février), information | 1,91 [0,84 ; 2,98] | 1,58 [0,68 ; 2,48] |
+| Pentes de Sen, région / monde (information) | 0,377 / 0,175 °C par décennie, rapport 2,15 | 0,339 / 0,163, rapport 2,08 |
+
+Terres émergées (CRUTEM5 annuel) contre le monde, 1953-2024 : 1,43 [1,33 ; 1,54] (GIEC AR6 : 1,59 / 1,09 ≈ 1,46 sur
+2011-2020 contre 1850-1900).
+
+Critères : A1, A3, A4, A5, A6 conformes ; **A2 non conforme** (Ljung-Box de la Gironde, p = 0,03). Confiance
+« moyenne » (règle D-AQ).
+
+### Écart A2 : autocorrélation restante à 10 ans en Gironde
+
+Le test de Ljung-Box à 10 ans échoue pour la Gironde (p = 0,027 ; seuil 0,05) ; il passe pour la France (p = 0,09).
+L'échec tient à une seule autocorrélation des résidus blanchis, au décalage de 10 ans : −0,44 (−0,39 pour la France) ;
+les autres décalages de 1 à 12 ans restent entre −0,19 et +0,19. Le même test passe à 5 ans (p = 0,62), 15 ans
+(p = 0,08) et 20 ans (p = 0,09). Ce motif est dans la série régionale elle-même : sans aucune covariable, les résidus
+d'une tendance quadratique ont la même autocorrélation à 10 ans (−0,45). Il vient de paires d'années à 10 ans
+d'intervalle et d'écarts opposés (2000 et 2010, 1956 et 1966, 1980 et 1990, 2010 et 2020) : variabilité propre de la
+région ou hasard d'échantillonnage sur 72 ans, que le modèle AR(1) ne représente pas.
+
+Effet sur la conclusion : un contrôle par moindres carrés ordinaires avec erreurs de Newey-West, qui ne suppose aucune
+forme d'autocorrélation, donne pour la Gironde k = 2,14 avec des intervalles [1,82 ; 2,45] (troncature 4 ans),
+[1,85 ; 2,43] (10 ans) et [1,87 ; 2,40] (15 ans) : la borne basse reste nettement au-dessus de 1, A3 tient. L'écart
+ne change pas le constat ; il signale que l'intervalle de Prais-Winsten repose sur une hypothèse (AR(1)) que les
+résidus ne respectent pas tout à fait. Critère non modifié ; décision d'accepter ou non l'écart laissée à Grég.
+
+### Constats sans effet sur les critères
+
+- France et Gironde ont des facteurs presque identiques (2,16 et 2,13) : sur 1959-2024, leurs anomalies annuelles sont
+  corrélées à 0,98. Pour trois variantes, les deux facteurs coïncident même à deux décimales (HadCRUT5 : 2,107 et
+  2,109 ; Berkeley : 2,062 et 2,058 ; G annuel : 1,973 et 1,970) : coïncidence d'arrondi, vérifiée en pleine
+  précision.
+- k France dépasse la borne haute de la fourchette de contrôle (2,0) ; seul son intervalle la recoupe (A4). La TRACC
+  (rapport ≈ 1,33) compare des réchauffements cumulés jusqu'en 2030-2100 (France depuis 1900-1930, monde depuis
+  1850-1900) ; k mesure le rythme observé depuis
+  1959, gonflé en Europe par la baisse des aérosols depuis les années 1980 : la variante 1979-2024 donne 2,40 pour la
+  France. Ce rythme récent n'est pas une projection.
+- Contre les seules terres émergées, les deux facteurs restent au-dessus de 1 (borne basse 1,28 et 1,27) : le contraste
+  terres-océans explique une partie de l'amplification (terres ≈ 1,43 fois le monde), pas toute.
+- Le facteur d'été est plus élevé que celui d'hiver, mais leurs intervalles se recoupent : l'hiver, très variable,
+  laisse un intervalle d'environ ± 1. Ribes et al. (2022) attendent pour l'avenir un réchauffement d'été environ 30 %
+  au-dessus de la moyenne annuelle et d'hiver 15 % en dessous : même sens, non testé ici.
+- Information « terres contre monde » : le premier calcul lissait les deux séries (autocorrélation des résidus 0,92,
+  intervalle trop étroit) ; corrigé après le calcul en prenant CRUTEM5 annuel, comme les séries régionales (incohérence
+  de mise en œuvre sur une information sans critère ; 1,38 → 1,43). Son test de Ljung-Box échoue aussi (p = 0,01).
+- La Gironde suit la France : les cinq postes donnent 2,10 à 2,19, littoraux compris (Cap-Ferret 2,14).

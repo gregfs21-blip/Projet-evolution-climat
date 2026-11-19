@@ -375,19 +375,28 @@ def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_se
     else:
         amp_sentence = (f"{'la France' if fa else 'la Gironde'} se réchauffe plus vite que le monde, "
                         f"{'la Gironde' if fa else 'la France'} pas de façon établie")
+    def season_sentence() -> str:
+        parts = []
+        for name, sc in (("la France", F_), ("la Gironde", Gi)):
+            e, h = sc["seas"]["ete"], sc["seas"]["hiver"]
+            if e.lo > h.hi:
+                rel = "nettement plus fort en été qu'en hiver"
+            elif h.lo > e.hi:
+                rel = "nettement plus fort en hiver qu'en été"
+            elif abs(e.k - h.k) < 0.005:
+                rel = "du même ordre en été et en hiver"
+            else:
+                rel = ("plus élevé en été qu'en hiver, sans que l'écart soit établi (intervalles qui se recoupent)"
+                       if e.k > h.k else "plus élevé en hiver qu'en été, sans que l'écart soit établi (intervalles qui "
+                       "se recoupent)")
+            parts.append(f"pour {name}, {_k(e)} en été et {_k(h)} en hiver : {rel}")
+        return "Saisons : " + " ; ".join(parts) + "."
+
     finding = (
         f"Pour 1 °C de réchauffement mondial (GISTEMP, moyenne sur 4 ans), la France se réchauffe de {_k(fm)} °C sur "
         f"{fm.years[0]}-{fm.years[-1]} et la Gironde de {_k(gm)} °C sur {gm.years[0]}-{gm.years[-1]} : "
-        f"{amp_sentence}. Sur {lg.years[0]}-{lg.years[-1]}, les terres émergées dans leur ensemble (CRUTEM5) se réchauffent de "
-        f"{_k(lg)} °C par °C mondial. {land_sentence} Le facteur est plus fort en été qu'en hiver : "
-        f"{_k(F_['seas']['ete'])} contre {_k(F_['seas']['hiver'])} pour la France, {_k(Gi['seas']['ete'])} contre "
-        f"{_k(Gi['seas']['hiver'])} pour la Gironde."
-        if F_["seas"]["ete"].k > F_["seas"]["hiver"].k and Gi["seas"]["ete"].k > Gi["seas"]["hiver"].k else
-        f"Pour 1 °C de réchauffement mondial (GISTEMP, moyenne sur 4 ans), la France se réchauffe de {_k(fm)} °C sur "
-        f"{fm.years[0]}-{fm.years[-1]} et la Gironde de {_k(gm)} °C sur {gm.years[0]}-{gm.years[-1]} : "
-        f"{amp_sentence}. Sur {lg.years[0]}-{lg.years[-1]}, les terres émergées dans leur ensemble (CRUTEM5) se réchauffent de "
-        f"{_k(lg)} °C par °C mondial. {land_sentence} Facteurs d'été et d'hiver : {_k(F_['seas']['ete'])} et "
-        f"{_k(F_['seas']['hiver'])} pour la France, {_k(Gi['seas']['ete'])} et {_k(Gi['seas']['hiver'])} pour la Gironde."
+        f"{amp_sentence}. Sur {lg.years[0]}-{lg.years[-1]}, les terres émergées dans leur ensemble (CRUTEM5) se "
+        f"réchauffent de {_k(lg)} °C par °C mondial. {land_sentence} {season_sentence()}"
     )
 
     def scale_model(sid: str) -> AmplificationScale:

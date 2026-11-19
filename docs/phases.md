@@ -785,6 +785,21 @@ informations retenues) ; D-AQ (références, critères A1-A7 et règle de confia
   page qui laissait enchaîner P10.1 et P10.2 en une attribution humaine de la chaleur bordelaise, et le constat qui
   présentait des percentiles bootstrap comme des minimums. `limite-attribution` reformulée et relue ;
   `limite-projections` relue, inchangée (P10.2 ne contient aucune projection). **P10.2 close.**
+- 19/11/2026, P10.3 : sonde (`docs/sonde-p10c.md`), cadrage, décisions D-AP et D-AQ et critères A1-A7 validés par
+  Grég avant tout calcul.
+- 19/11/2026, P10.3, essai du code sur les séries publiées (France 1959-2021 publiée tenant lieu du composite à 217
+  postes, terres et saisons simulées) : il a montré des facteurs proches de 2 et l'échec de A2 pour la Gironde avant le
+  calcul officiel. Aucun critère ni aucun seuil n'a été modifié après.
+- 19/11/2026, P10.3, calcul officiel (ETL sur la branche, `etl/demo_amplification.py`, `docs/validation-p10.md`) :
+  k = 2,16 [1,77 ; 2,56] pour la France (1959-2024), 2,13 [1,75 ; 2,52] pour la Gironde (1953-2024) ; contre les seules
+  terres, 1,56 et 1,55. A1, A3 à A6 conformes ; **A2 non conforme** (Ljung-Box de la Gironde, p = 0,03 : une
+  autocorrélation de −0,44 à 10 ans) ; confiance « moyenne » (D-AQ). Écart analysé : A3 tient avec des erreurs de
+  Newey-West ([1,85 ; 2,43]) ; décision de Grég attendue.
+- Corrections après le calcul, sans effet sur les critères : l'information « terres contre monde » lissait les deux
+  séries (résidus autocorrélés à 0,92) ; CRUTEM5 désormais annuel comme les séries régionales (1,38 → 1,43). Le constat
+  affirmait que le facteur est « plus fort en été qu'en hiver » alors que les intervalles se recoupent : reformulé.
+  L'affirmation `cmp-terres-oceans` de la synthèse disait que l'étude ne compare pas la région aux seules terres :
+  fausse depuis P10.3, reformulée ; un contrôle de validation vérifie désormais à chaque calcul ce qu'elle affirme.
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 
