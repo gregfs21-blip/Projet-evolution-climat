@@ -668,9 +668,14 @@ devra être reformulée et relue (M6) avant la fusion.
 **Décisions demandées à Grég** (tranchées le 19/11/2026, voir en tête) : D-AM (données, indice et méthode) ; D-AN
 (événements étudiés) ; D-AO (références, critères X1-X7 et règle de confiance).
 
-### P10.3 — Amplification régionale : cadrage proposé le 19/11/2026, avant tout calcul
+### P10.3 — Amplification régionale : cadrage proposé et validé le 19/11/2026, avant tout calcul
 
 > **Demande de Grég du 19/11/2026** : réaliser P10.3, la suite de la démonstration.
+>
+> **Décisions de Grég du 19/11/2026, avant tout calcul** : D-AP France sur **1959-2024** (réseau constant des 217
+> postes, 2022-2024 en partie bruts et signalés), la série homogénéisée 1959-2021 servant de variante (A5) ;
+> informations retenues : **contrôle « terres » (CRUTEM5), facteurs d'été et d'hiver, rapport des pentes** (pas de
+> facteurs TX et TN séparés) ; D-AQ références, critères A1-A7 et règle de confiance **validés tels quels**.
 
 **Question** : pour 1 °C de réchauffement mondial, de combien la France et la Gironde se réchauffent-elles, et ce
 facteur est-il significativement supérieur à 1 ?
@@ -696,8 +701,8 @@ facteur est-il significativement supérieur à 1 ?
 - **Contrôle « terres contre océans »** (information, sans critère) : k mesuré contre la température des seules terres
   émergées (CRUTEM5, nouvelle source). Les terres se réchauffent plus que la moyenne terre + océan (R-A2) : ce contrôle
   dit quelle part de l'amplification tient à cet effet.
-- **Informations sans critère** (selon D-AP) : facteurs pour TX et TN ; facteurs d'été (juin-août) et d'hiver
-  (décembre-février) ; rapport des pentes de Sen sur la période commune.
+- **Informations sans critère** (retenues par D-AP) : facteurs d'été (juin-août) et d'hiver (décembre-février), contre
+  le même G annuel lissé ; rapport des pentes de Sen sur la période commune (G annuel non lissé).
 - **Résultats publiés** : k France et Gironde avec intervalles ; nuage de points (T_rég contre G) avec la droite ;
   séries T_rég et c + k·G superposées ; tableau des variantes, des postes et des informations.
 
@@ -739,8 +744,8 @@ homogénéisées.
 n'est attribué pour la France ni pour la Gironde) devra mentionner P10.3 sans en faire une attribution, puis être
 relue (M6) avant la fusion.
 
-**Décisions demandées à Grég** : D-AP (données, période France et informations retenues) ; D-AQ (références,
-critères A1-A7 et règle de confiance).
+**Décisions demandées à Grég** (tranchées le 19/11/2026, voir en tête) : D-AP (données, période France et
+informations retenues) ; D-AQ (références, critères A1-A7 et règle de confiance).
 
 ### Journal P10
 
