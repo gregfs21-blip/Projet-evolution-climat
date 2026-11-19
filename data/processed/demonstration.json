@@ -108,7 +108,7 @@
         "value": 0.1357553458287798,
         "ci_low": 0.0739570536662161,
         "ci_high": 0.19755363799134348,
-        "p_value": 0.000026079593784068598
+        "p_value": 2.6079593784068598e-05
        },
        {
         "name": "soleil",
@@ -1971,7 +1971,7 @@
         "value": 0.13275342421349132,
         "ci_low": 0.0725709259153215,
         "ci_high": 0.19293592251166114,
-        "p_value": 0.00002492190437207981
+        "p_value": 2.492190437207981e-05
        },
        {
         "name": "soleil",
@@ -2018,7 +2018,7 @@
         "value": 0.11103811315097371,
         "ci_low": 0.06826473163680838,
         "ci_high": 0.15381149466513905,
-        "p_value": 9.324985139085785e-7
+        "p_value": 9.324985139085785e-07
        },
        {
         "name": "soleil",
@@ -3753,7 +3753,7 @@
         "value": 0.1377970514995119,
         "ci_low": 0.07217412916686688,
         "ci_high": 0.20341997383215693,
-        "p_value": 0.00005598091556242028
+        "p_value": 5.598091556242028e-05
        },
        {
         "name": "soleil",
@@ -3800,7 +3800,7 @@
         "value": 0.15543382206376977,
         "ci_low": 0.10726913321633418,
         "ci_high": 0.20359851091120534,
-        "p_value": 2.1452798503299998e-9
+        "p_value": 2.1452798503299998e-09
        },
        {
         "name": "soleil",
@@ -5703,7 +5703,7 @@
      "ci_low": -0.4653070455822718,
      "ci_high": -0.03934868482705604
     },
-    "lrt_p": 3.117875352346821e-9,
+    "lrt_p": 3.117875352346821e-09,
     "ks_p": 0.7335334347740174,
     "n_boot": 1000,
     "n_failed": 0,
@@ -6713,7 +6713,7 @@
     "confidence_reason": "Amplification établie (A3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AQ) : A2 (ajustement). Détail : docs/validation-p10.md.",
     "method_note": "Anomalies annuelles de température moyenne (TM) par rapport à 1961-1990. France : composite des séries homogénéisées de Météo-France (LSH), 217 postes du réseau de la phase P5 complets jusqu'en 2024, moyenne des départements ; années postérieures à 2021 en partie non homogénéisées. Gironde : composite publié de 4 postes. G : GISTEMP v4 en moyenne glissante sur 4 ans (années a − 3 à a), qui retire l'essentiel d'El Niño : une covariable bruitée sous-estimerait k. Estimation par moindres carrés généralisés avec erreurs autorégressives d'ordre 1 (Prais-Winsten itéré), intervalles à 95 % ; contrôle par moindres carrés ordinaires avec erreurs de Newey-West (décalage 10 ans), qui ne supposent aucune forme d'autocorrélation. Contrôle « terres » (information) : séries régionales contre CRUTEM5 lissé sur 4 ans de la même façon ; terres contre monde : CRUTEM5 annuel contre GISTEMP lissé. Saisons : anomalie de la saison contre le même G annuel lissé (l'hiver de l'année a compte décembre a − 1). Rapport des pentes : pentes de Sen de la série régionale et de GISTEMP annuel sur la même période.",
     "limitations": [
-     "k est un rapport observé, pas une réponse forcée : il contient le contraste terres-océans, la baisse des aérosols européens depuis les années 1980, les changements de circulation et la variabilité propre de la région ; il n'attribue aucune cause, et la régression mondiale ci-dessus ne se transpose ni à la France ni à la Gironde.",
+     "k est un rapport observé, pas une réponse forcée : il mêle tout ce qui a évolué avec la température mondiale, dont le contraste terres-océans et, probablement selon la littérature, la baisse des aérosols européens depuis les années 1980 et des changements de circulation, ainsi que la variabilité propre de la région ; il n'attribue aucune cause, et la régression mondiale ci-dessus ne se transpose ni à la France ni à la Gironde.",
      "k peut dépendre de la période : la variante 1979-fin le mesure.",
      "France : années 2022-2024 en partie non homogénéisées ; Gironde : 2023, 2024 non homogénéisées ; la variante « années homogénéisées seules » en donne une borne, mêlée à l'effet de la période raccourcie (et, pour la France, du réseau de la série publiée).",
      "La Gironde ne compte que quatre postes au composite, dont deux littoraux (Cap-Ferret, Cazaux) ; le contrôle par poste (A6) n'est guère indépendant, puisque quatre des cinq postes sont ceux du composite (seul Bordeaux-Paulin est extérieur).",

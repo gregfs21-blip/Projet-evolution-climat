@@ -93,10 +93,14 @@ function Factors({ a }: { a: Amplification }) {
   const rows: { label: string; cell: (s: AmplificationScale) => React.ReactNode }[] = [
     { label: "Contre le monde (k principal)", cell: (s) => <K e={s.fit.k} /> },
     {
-      label: `Même k, erreurs de Newey-West (contrôle, décalage ${s0.fit.newey_west_lag} ans)`,
+      label: `Contrôle : moindres carrés ordinaires, erreurs de Newey-West (décalage ${s0.fit.newey_west_lag} ans)`,
       cell: (s) => <K e={s.fit.k_newey_west} />,
     },
     { label: `Contre les terres émergées (${a.land_covariate})`, cell: (s) => <K e={s.land.k} /> },
+    {
+      label: `Contre les terres, contrôle de Newey-West (décalage ${s0.land.newey_west_lag} ans)`,
+      cell: (s) => <K e={s.land.k_newey_west} />,
+    },
     { label: `${s0.summer.label[0]!.toUpperCase()}${s0.summer.label.slice(1)}, contre le monde`, cell: (s) => withPeriod(s.summer, s.fit) },
     { label: `${s0.winter.label[0]!.toUpperCase()}${s0.winter.label.slice(1)}, contre le monde`, cell: (s) => withPeriod(s.winter, s.fit) },
     {

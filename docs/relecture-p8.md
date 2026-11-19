@@ -204,3 +204,32 @@ suivis) : tous corrigés. Singulier « 1,2 an » retenu partout. `limite-attribu
 relues dans leur rédaction actuelle.
 
 Affirmations relues (P10.2, 19/11/2026) : limite-attribution#c24c5413be, limite-projections#31ccce92d2
+
+## P10.3 — amplification régionale (19/11/2026, garde-fou D-AH)
+
+Publier P10.3 rendait `limite-attribution` incomplète et `cmp-terres-oceans` fausse (elle disait que l'étude ne compare
+pas la région aux seules terres). Relecture par un agent séparé, qui n'avait rien rédigé, des deux affirmations, du
+constat et des textes générés, de la page, de `docs/validation-p10.md`, du journal et du code. Le relecteur a réajusté
+k à partir des séries publiées : chiffres reproduits.
+
+| | Signalement | Traitement |
+|---|---|---|
+| 1 | JSON périmé : « le facteur est plus fort en été qu'en hiver » alors que les intervalles se recoupent | Code déjà corrigé ; JSON régénéré par l'ETL |
+| 2 | Limitation : « trois postes proches du littoral » (faux : deux) ; contrôle A6 peu indépendant | Corrigés ; indépendance discutée dans la limitation et la validation |
+| 3 | Constat lisible comme un réchauffement total de 2,16 °C | « par °C mondial (ajustement sur …) » ; unités des saisons |
+| 4 | `cmp-terres-oceans` sans période ni statut | Datée ; « résultat de l'étude, à titre d'information, sans critère » ; contrôle D-AH étendu aux périodes ; Newey-West publié contre les terres |
+| 5 | « La variante homogénéisée mesure l'effet des années brutes » : elle mêle trois effets | Reformulé ; libellé de la variante France précisé |
+| 6 | Autocorrélations calculées avec un autre estimateur que celui du test | Valeurs du test données (−0,37, −0,32, −0,38) |
+| 7 | Ljung-Box de la Gironde contre les terres non signalé ; note de méthode incomplète sur le lissage de CRUTEM5 | Corrigés |
+| 8 | Effet des aérosols affirmé sans test ; chiffres de Ribes et al. à vérifier | « probablement, selon la littérature » ; Ribes et al. vérifiés sur le résumé |
+| 9 | Journal P10.2 « 5,13 » ; « 1,2 an / ans » | 5,13 juste (calcul officiel) ; harmonisé |
+| 10 | Valeurs écrites en dur sur la page ; pentes à 2 décimales ; périodes des saisons | Champs ajoutés au JSON ; 3 décimales ; périodes affichées |
+| 11 | « Principe » : G moyen sur 4 ans non dit ; « ne se transpose pas à la France » | Corrigés (« ni à la France ni à la Gironde ») |
+| 12 | Double arrondi des pentes ; formatage du contrôle ; nombre de postes en dur | Pleine précision ; règle d'arrondi commune ; nombre lu dans la série |
+
+Contre-relecture : corrections confirmées ; un défaut nouveau (libellé « même k » pour le contrôle de Newey-West, qui
+est une autre estimation) corrigé, et des points mineurs traités (paires d'années citées, place d'une remarque,
+contrôle de Newey-West contre les terres affiché). `limite-attribution`, `cmp-terres-oceans` et `limite-projections`
+déclarées relues dans leur rédaction actuelle.
+
+Affirmations relues (P10.3, 19/11/2026) : limite-attribution#466794c70d, cmp-terres-oceans#9e20716866, limite-projections#31ccce92d2

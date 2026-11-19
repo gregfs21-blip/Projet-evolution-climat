@@ -449,8 +449,9 @@ def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_se
             "décembre a − 1). Rapport des pentes : pentes de Sen de la série régionale et de GISTEMP annuel sur la "
             "même période."),
         limitations=[
-            "k est un rapport observé, pas une réponse forcée : il contient le contraste terres-océans, la baisse des "
-            "aérosols européens depuis les années 1980, les changements de circulation et la variabilité propre de la "
+            "k est un rapport observé, pas une réponse forcée : il mêle tout ce qui a évolué avec la température "
+            "mondiale, dont le contraste terres-océans et, probablement selon la littérature, la baisse des aérosols "
+            "européens depuis les années 1980 et des changements de circulation, ainsi que la variabilité propre de la "
             "région ; il n'attribue aucune cause, et la régression mondiale ci-dessus ne se transpose ni à la France ni "
             "à la Gironde.",
             f"k peut dépendre de la période : la variante {SUB_START}-fin le mesure.",

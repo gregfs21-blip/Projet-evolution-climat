@@ -2,7 +2,7 @@
 
 Fichier généré par `python -m etl.validation.p10` à chaque exécution de l'ETL. Ne pas éditer à la main. Critères : `docs/phases.md` (P10).
 
-**Au moins un critère comptant pour la clôture n'est pas satisfait.**
+**Tous les critères comptant pour la clôture sont satisfaits.**
 
 | Critère | Résultat | Mesure |
 |---|---|---|
@@ -14,7 +14,7 @@ Fichier généré par `python -m etl.validation.p10` à chaque exécution de l'E
 | O6 plausibilité physique | ✅ conforme | HadCRUT5 ✓ réponse transitoire 1,83 °C ; βₑ = 0,117 (p < 0,001) ; βᵥ = 0,136 (p < 0,001) ; βₛ = 0,168 (p = 0,496, sans exigence) | GISTEMP v4 ✓ réponse transitoire 1,76 °C ; βₑ = 0,110 (p < 0,001) ; βᵥ = 0,133 (p < 0,001) ; βₛ = 0,186 (p = 0,433, sans exigence) | Berkeley Earth ✓ réponse transitoire 1,91 °C ; βₑ = 0,119 (p < 0,001) ; βᵥ = 0,138 (p < 0,001) ; βₛ = 0,116 (p = 0,658, sans exigence) |
 | O7 résidus | ✅ conforme | HadCRUT5 ✓ tendance des résidus : p = 0,317 (Hamed-Rao) ; ρ = 0,71 | GISTEMP v4 ✓ tendance des résidus : p = 0,326 (Hamed-Rao) ; ρ = 0,70 | Berkeley Earth ✓ tendance des résidus : p = 0,177 (Hamed-Rao) ; ρ = 0,70 |
 | O8 robustesse | ☑ écart accepté par Grég le 18/11/2026 (D-AI) : seule la variante « forçage anthropique à 5 % » sort de la fourchette, l'estimateur AR(1) y dégénère (docs/validation-p10.md) | HadCRUT5 ✗ réchauffement attribué 2016-2025 de 0,22 à 1,26 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | GISTEMP v4 ✗ réchauffement attribué 2016-2025 de 0,09 à 1,22 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % | Berkeley Earth ✗ réchauffement attribué 2016-2025 de 0,09 à 1,32 °C sur 12 variantes ; hors fourchette : Forçage anthropique à 5 % |
-| D-AH cohérence de la synthèse | ❌ non conforme | analyses publiées que la synthèse ne prend pas en compte : p10.3 ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS |
+| D-AH cohérence de la synthèse | ✅ conforme | analyses publiées : p10.1, p10.2, p10.3 ; la synthèse (limite-attribution, limite-projections) en tient compte |
 | O9 technique | ℹ️ information | Tests, contrat et construction de l'onglet vérifiés par la CI (ci.yml), hors de ce module, comme pour les phases précédentes. |
 | Confiance P10.1 (règle D-AG) | ℹ️ information | moyenne — Détection établie (O3), mais critère non conforme, d'où la confiance « moyenne » (règle D-AG) : O8 (robustesse) : réchauffement attribué hors de [1,0 ; 1,5] °C pour HadCRUT5 « Forçage anthropique à 5 % » 0,22 °C, GISTEMP v4 « Forçage anthropique à 5 % » 0,09 °C, Berkeley Earth « Forçage anthropique à 5 % » 0,09 °C. Analyse de l'écart : docs/validation-p10.md. |
 | P10.2 X1 données | ✅ conforme | Bordeaux-Mérignac 1953-2025, 73 années, aucune manquante ; années brutes 2023, 2024, 2025 ; écart maximal |corrigé − brut| après la rupture de 2000 : 0,05 °C (seuil 0,1) |
@@ -26,7 +26,7 @@ Fichier généré par `python -m etl.validation.p10` à chaque exécution de l'E
 | P10.2 X7 technique | ℹ️ information | Tests (etl/tests/test_p10b.py), contrat et construction de l'onglet vérifiés par la CI. |
 | Confiance P10.2 (règle D-AO) | ℹ️ information | elevee — Critères X1 à X6 conformes (règle D-AO). L'analyse relie les maxima au réchauffement mondial ; elle n'en attribue pas la cause. |
 | P10.3 A1 données | ✅ conforme | France métropolitaine 1959-2024, 66 années, aucune manquante ; 217 postes à réseau constant ; années non homogénéisées 2022, 2023, 2024 | Gironde 1953-2024, 72 années, aucune manquante ; 4 postes à réseau constant ; années non homogénéisées 2023, 2024 |
-| P10.3 A2 ajustement | ❌ non conforme | France métropolitaine : ρ = 0,02, Ljung-Box (10 ans) p = 0,09 | Gironde : ρ = 0,07, Ljung-Box (10 ans) p = 0,03 (seuils : |ρ| < 0,9, p ≥ 0,05) |
+| P10.3 A2 ajustement | ☑ écart accepté par Grég le 19/11/2026 (D-AR) : Ljung-Box de la Gironde à 10 ans (p = 0,03), dû à une seule autocorrélation à 10 ans déjà présente dans la série ; A3 tient avec les erreurs de Newey-West (docs/validation-p10.md) | France métropolitaine : ρ = 0,02, Ljung-Box (10 ans) p = 0,09 | Gironde : ρ = 0,07, Ljung-Box (10 ans) p = 0,03 (seuils : |ρ| < 0,9, p ≥ 0,05) |
 | P10.3 A3 amplification | ✅ conforme | France métropolitaine : k = 2,16 [1,77 ; 2,56] ✓ | Gironde : k = 2,13 [1,75 ; 2,52] ✓ (borne basse > 1) |
 | P10.3 A4 plausibilité | ✅ conforme | intervalle de k France [1,77 ; 2,56] contre la fourchette [1,3 ; 2,0] |
 | P10.3 A5 robustesse | ✅ conforme | France métropolitaine, Covariable HadCRUT5 : k = 2,11 ✓ | France métropolitaine, Covariable Berkeley Earth : k = 2,06 ✓ | France métropolitaine, Température mondiale annuelle, non lissée : k = 1,97 ✓ | France métropolitaine, Sous-période 1979-2024 : k = 2,40 ✓ | France métropolitaine, Années homogénéisées seules (série publiée 1959-2021, réseau de 220 postes) : k = 2,01 ✓ | Gironde, Covariable HadCRUT5 : k = 2,11 ✓ | Gironde, Covariable Berkeley Earth : k = 2,06 ✓ | Gironde, Température mondiale annuelle, non lissée : k = 1,97 ✓ | Gironde, Sous-période 1979-2024 : k = 2,11 ✓ | Gironde, Années homogénéisées seules (1953-2022) : k = 2,11 ✓ |

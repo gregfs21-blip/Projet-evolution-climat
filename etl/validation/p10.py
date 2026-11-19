@@ -24,12 +24,15 @@ OUT_JSON = PROCESSED_DIR / "validation-p10.json"
 ACCEPTED: dict[str, str] = {
     "O8 robustesse": "écart accepté par Grég le 18/11/2026 (D-AI) : seule la variante « forçage anthropique à 5 % » "
                      "sort de la fourchette, l'estimateur AR(1) y dégénère (docs/validation-p10.md)",
+    "P10.3 A2 ajustement": "écart accepté par Grég le 19/11/2026 (D-AR) : Ljung-Box de la Gironde à 10 ans (p = 0,03), "
+                           "dû à une seule autocorrélation à 10 ans déjà présente dans la série ; A3 tient avec les "
+                           "erreurs de Newey-West (docs/validation-p10.md)",
 }
 # Analyses de l'onglet dont la synthèse tient compte (affirmations `limite-attribution` et `limite-projections` de
-# etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.3 France, P10.4, P10.5 projections) rend ces
+# etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.4 cohérence physique, P10.5 projections) rend ces
 # affirmations à revoir : ce contrôle échoue jusqu'à leur reformulation, relue (M6), et la mise à jour de cette liste
-# (P10.2 ajoutée le 19/11/2026 après relecture, docs/relecture-p8.md).
-SYNTHESIS_COVERS = {"p10.1", "p10.2"}
+# (P10.2 et P10.3 ajoutées le 19/11/2026 après relecture, docs/relecture-p8.md).
+SYNTHESIS_COVERS = {"p10.1", "p10.2", "p10.3"}
 
 
 def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:

@@ -15,7 +15,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
-| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 valeurs extrêmes non stationnaires en Gironde ; P10.3 à P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI). P10.2 : D-AM à D-AO et critères X1-X7 validés le 19/11/2026, avant tout ajustement | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2 close le 19/11/2026, confiance « élevée » ; P10.3-P10.5 à cadrer) |
+| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 valeurs extrêmes non stationnaires en Gironde ; P10.3 amplification régionale ; P10.4 et P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI). P10.2 : D-AM à D-AO et critères X1-X7 validés le 19/11/2026, avant tout ajustement. P10.3 : D-AP, D-AQ et critères A1-A7 validés le 19/11/2026, avant tout calcul ; écart A2 accepté (D-AR) | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2 close le 19/11/2026, confiance « élevée » ; P10.3 close le 19/11/2026, confiance « moyenne », écart A2 accepté (D-AR) ; P10.4-P10.5 à cadrer) |
 | P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | décisions D-AJ à D-AL et critères Q1-Q5 validés le 18/11/2026, avant tout développement ; Q1-Q5 conformes (`docs/validation-p11.md`) | **close** (18/11/2026) |
 
 ## Journal P0
@@ -794,7 +794,14 @@ informations retenues) ; D-AQ (références, critères A1-A7 et règle de confia
   k = 2,16 [1,77 ; 2,56] pour la France (1959-2024), 2,13 [1,75 ; 2,52] pour la Gironde (1953-2024) ; contre les seules
   terres, 1,56 et 1,55. A1, A3 à A6 conformes ; **A2 non conforme** (Ljung-Box de la Gironde, p = 0,03 : une
   autocorrélation de −0,37 à 10 ans) ; confiance « moyenne » (D-AQ). Écart analysé : A3 tient avec des erreurs de
-  Newey-West ([1,85 ; 2,43]) ; décision de Grég attendue.
+  Newey-West ([1,85 ; 2,43]).
+- **19/11/2026, décision de Grég D-AR (après calcul)** : écart A2 (Ljung-Box de la Gironde) accepté. Confiance
+  « moyenne » inchangée (un écart accepté ne relève pas la confiance).
+- 19/11/2026, relecture indépendante (M6, D-AH) : 12 signalements puis contre-relecture, tous traités
+  (`docs/relecture-p8.md`), dont un constat qui se lisait comme un réchauffement total, une erreur de fait (postes
+  littoraux), une variante qui mêlait trois effets, et un libellé de page faux (contrôle de Newey-West). Contrôle de
+  Newey-West publié pour chaque facteur. `limite-attribution` et `cmp-terres-oceans` reformulées et relues,
+  `limite-projections` relue, inchangée. **P10.3 close.**
 - Corrections après le calcul, sans effet sur les critères : l'information « terres contre monde » lissait les deux
   séries (résidus autocorrélés à 0,92) ; CRUTEM5 désormais annuel comme les séries régionales (1,38 → 1,43). Le constat
   affirmait que le facteur est « plus fort en été qu'en hiver » alors que les intervalles se recoupent : reformulé.

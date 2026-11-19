@@ -100,7 +100,8 @@ sur la page.
 | Record du 11/08/2025, 41,6 °C, climat de 2025 | période de retour 11,5 [4,6 ; 75,8] ans |
 | Le même, climat de 1960 | au-delà de la borne supérieure de la loi ajustée (40,0 °C) dans l'estimation centrale et dans 780 tirages sur 1 000 ; bornes basses des intervalles : période de retour 542 ans, rapport de probabilité 26,9 |
 
-Tous les critères X1 à X6 sont conformes ; confiance « élevée » (règle D-AO).
+Tous les critères X1 à X6 sont conformes ; confiance « élevée » (règle D-AO). (Relecture P10.3 : « [2,39 ; 5,13] »
+suit le calcul officiel, 5,132, et non le calcul local, 5,135.)
 
 ### Constats sans effet sur les critères
 
@@ -154,8 +155,8 @@ L'échec tient à une seule autocorrélation des résidus blanchis (estimateur d
 (−0,32 pour la France) ; les autres décalages de 1 à 12 ans restent entre −0,18 et +0,17 (France : entre −0,22 et
 +0,13). Le même test passe à 5 ans (p = 0,62), 15 ans (p = 0,08) et 20 ans (p = 0,09). Ce motif est dans la série
 régionale elle-même : sans aucune covariable, les résidus d'une tendance quadratique ont la même autocorrélation à
-10 ans (−0,38). Il vient de paires d'années à 10 ans d'intervalle et d'écarts opposés (2000 et 2010, 1956 et 1966,
-1980 et 1990, 2010 et 2020) : variabilité propre de la région ou hasard d'échantillonnage sur 72 ans, que le modèle
+10 ans (−0,38). Il vient de paires d'années à 10 ans d'intervalle et d'écarts opposés (pour la Gironde, d'abord
+1956 et 1966, 2011 et 2021, 1997 et 2007, 1980 et 1990) : variabilité propre de la région ou hasard d'échantillonnage sur 72 ans, que le modèle
 AR(1) ne représente pas.
 
 Effet sur la conclusion : un contrôle par moindres carrés ordinaires avec erreurs de Newey-West, qui ne suppose aucune
@@ -163,7 +164,7 @@ forme d'autocorrélation, donne pour la Gironde k = 2,14 avec des intervalles [1
 [1,85 ; 2,43] (10 ans) et [1,87 ; 2,40] (15 ans) : la borne basse reste nettement au-dessus de 1, A3 tient. Le
 contrôle à 10 ans est désormais publié pour chaque facteur. L'écart ne change pas le constat ; il signale que
 l'intervalle de Prais-Winsten repose sur une hypothèse (AR(1)) que les résidus ne respectent pas tout à fait. Critère
-non modifié ; décision d'accepter ou non l'écart laissée à Grég.
+non modifié. **Écart accepté par Grég le 19/11/2026 (D-AR)** ; confiance « moyenne » inchangée.
 
 ### Constats sans effet sur les critères
 
@@ -193,5 +194,3 @@ non modifié ; décision d'accepter ou non l'écart laissée à Grég.
 - La variante « années homogénéisées seules » change trois choses à la fois : elle retire les années brutes, raccourcit
   la période (sans 2022-2024, très chaudes) et, pour la France, prend la série publiée à 220 postes ; l'écart
   2,16 → 2,01 mêle ces trois effets.
-- Relecture : l'entrée P10.2 du journal (« [2,39 ; 5,13] ») suit le calcul officiel (5,132), pas le calcul local
-  (5,135) ; « 1,2 an » est retenu partout.

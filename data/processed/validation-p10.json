@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-19T15:00:03Z",
-  "closure_ok": false,
-  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
+  "generated_at": "2026-11-19T16:12:34Z",
+  "closure_ok": true,
+  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
     "oni-monde",
     "temperature-berkeley-monde",
@@ -73,9 +73,9 @@
     {
       "name": "D-AH cohérence de la synthèse",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
-      "detail": "analyses publiées que la synthèse ne prend pas en compte : p10.3 ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS"
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "analyses publiées : p10.1, p10.2, p10.3 ; la synthèse (limite-attribution, limite-projections) en tient compte"
     },
     {
       "name": "O9 technique",
@@ -157,8 +157,8 @@
     {
       "name": "P10.3 A2 ajustement",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
+      "status": "☑ écart accepté par Grég le 19/11/2026 (D-AR) : Ljung-Box de la Gironde à 10 ans (p = 0,03), dû à une seule autocorrélation à 10 ans déjà présente dans la série ; A3 tient avec les erreurs de Newey-West (docs/validation-p10.md)",
+      "satisfied": true,
       "detail": "France métropolitaine : ρ = 0,02, Ljung-Box (10 ans) p = 0,09 | Gironde : ρ = 0,07, Ljung-Box (10 ans) p = 0,03 (seuils : |ρ| < 0,9, p ≥ 0,05)"
     },
     {
