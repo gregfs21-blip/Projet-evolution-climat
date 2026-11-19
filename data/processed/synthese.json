@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-19T14:03:47Z",
+ "generated_at": "2026-11-19T14:16:42Z",
  "sections": [
   {
    "id": "gironde",
@@ -1350,7 +1350,7 @@
        "id": "cmp-terres-oceans",
        "kind": "contexte",
        "params": [],
-       "text": "Une partie de l'écart est attendue : la Gironde et la France sont des terres, la moyenne mondiale est à 70 % océanique, et les terres se réchauffent plus vite que l'océan (GIEC : 1,59 °C contre 0,88 °C sur 2011-2020 par rapport à 1850-1900). L'étude ne compare pas la région à une moyenne des seules terres : elle ne peut pas dire si la Gironde ou la France se réchauffent plus vite que les terres en général.",
+       "text": "Une partie de l'écart est attendue : la Gironde et la France sont des terres, la moyenne mondiale est à 70 % océanique, et les terres se réchauffent plus vite que l'océan (GIEC : 1,59 °C contre 0,88 °C sur 2011-2020 par rapport à 1850-1900). Ce contraste n'explique pas tout : mesurées contre la seule température des terres émergées (onglet Démonstration, amplification régionale), la France et la Gironde se réchauffent encore plus vite que la moyenne des terres.",
        "indicators": [],
        "source": {
         "label": "GIEC AR6, groupe I, résumé pour décideurs (A.1.2)",
@@ -1734,7 +1734,7 @@
        "id": "limite-attribution",
        "kind": "lacune",
        "params": [],
-       "text": "La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. L'étude n'attribue qu'une grandeur : le réchauffement moyen de surface du globe (air et mer) par rapport à 1850-1900, dans l'onglet Démonstration (régression multiple). Rien n'est attribué ni pour la Gironde, ni pour la France, ni pour les autres variables, y compris la température de la mer et celle de la troposphère. Le même onglet relie la loi du maximum annuel de la température maximale quotidienne à Bordeaux-Mérignac au réchauffement mondial (loi des valeurs extrêmes, climat de 1960 contre celui de 2025). Ce lien ne dit pas quelle part de la hausse de ces maxima est d'origine humaine : il inclut tout ce qui a évolué en même temps, effets locaux (urbanisation) ou régionaux (aérosols, circulation atmosphérique).",
+       "text": "La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. L'étude n'attribue qu'une grandeur : le réchauffement moyen de surface du globe (air et mer) par rapport à 1850-1900, dans l'onglet Démonstration (régression multiple). Rien n'est attribué ni pour la Gironde, ni pour la France, ni pour les autres variables, y compris la température de la mer et celle de la troposphère. Le même onglet relie deux grandeurs régionales au réchauffement mondial : la loi du maximum annuel de la température maximale quotidienne à Bordeaux-Mérignac (loi des valeurs extrêmes, climat de 1960 contre celui de 2025), et la température moyenne annuelle de la France et de la Gironde (facteur d'amplification, degrés régionaux par degré mondial). Ces liens ne disent pas quelle part des hausses régionales est d'origine humaine : ils incluent tout ce qui a évolué en même temps, effets locaux (urbanisation) ou régionaux (aérosols, circulation atmosphérique).",
        "indicators": []
       },
       {

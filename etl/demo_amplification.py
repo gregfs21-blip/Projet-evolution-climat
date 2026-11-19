@@ -242,7 +242,9 @@ def analyse(fr: Regional, fr_seasons: dict[str, Regional], fr_published: tuple[d
     out = {"scales": {}, "variants": [], "land_global": None}
     lg_years = [y for y in range(min(min(s["vals"]) for s in scales.values()),
                                  max(max(s["vals"]) for s in scales.values()) + 1)]
-    out["land_global"] = fit_k({y: Ls[y] for y in lg_years}, Gs)
+    # Terres annuelles (non lissées) contre G lissé, comme les séries régionales : lisser les deux côtés rendrait les
+    # résidus très autocorrélés (fenêtres qui se chevauchent).
+    out["land_global"] = fit_k({y: land[y] for y in lg_years}, Gs)
     for sid, s in scales.items():
         years = sorted(s["vals"])
         main = fit_k(s["vals"], Gs)
@@ -345,26 +347,47 @@ def build(fr: Regional, fr_seasons: dict[str, Regional], fr_published, gi, gi_se
 
     lg = r["land_global"]
 
-    def land_txt(s) -> str:
+    def land_class(s) -> str:
         lf = s["land"]
-        if lf.lo <= 1 <= lf.hi:
-            return (f"{s['label'].split()[0]} : {_k(lf)}, compatible avec 1 : elle se réchauffe comme la moyenne des "
-                    "terres, et son écart avec le monde tient pour l'essentiel au contraste terres-océans")
-        if lf.lo > 1:
-            return (f"{s['label'].split()[0]} : {_k(lf)}, au-dessus de 1 : le contraste terres-océans n'explique "
-                    "qu'une partie de son écart avec le monde")
-        return f"{s['label'].split()[0]} : {_k(lf)}, sous 1 : elle se réchauffe moins que la moyenne des terres"
+        return "egal" if lf.lo <= 1 <= lf.hi else ("plus" if lf.lo > 1 else "moins")
 
-    amp_txt = {True: "se réchauffe plus vite que le monde", False: "ne se réchauffe pas de façon établie plus vite "
-                                                                   "que le monde"}
+    land_words = {
+        "egal": ("compatible avec 1 : {qui} se réchauffe{nt} comme la moyenne des terres, et {son} écart avec le monde "
+                 "tient pour l'essentiel au contraste terres-océans"),
+        "plus": ("au-dessus de 1 : {qui} se réchauffe{nt} aussi plus vite que la moyenne des terres, et le contraste "
+                 "terres-océans n'explique qu'une partie de {son} écart avec le monde"),
+        "moins": "sous 1 : {qui} se réchauffe{nt} moins que la moyenne des terres",
+    }
+    cF, cG = land_class(F_), land_class(Gi)
+    if cF == cG:
+        land_sentence = (f"Mesurés contre elles, les facteurs valent {_k(F_['land'])} pour la France et "
+                         f"{_k(Gi['land'])} pour la Gironde, "
+                         + land_words[cF].format(qui="toutes deux", nt="nt", son="leur") + ".")
+    else:
+        land_sentence = (f"Mesuré contre elles, le facteur vaut {_k(F_['land'])} pour la France, "
+                         + land_words[cF].format(qui="elle", nt="", son="son") + f" ; il vaut {_k(Gi['land'])} pour la "
+                         "Gironde, " + land_words[cG].format(qui="elle", nt="", son="son") + ".")
+    fa, ga = fm.lo > 1, gm.lo > 1
+    if fa and ga:
+        amp_sentence = "toutes deux se réchauffent plus vite que le monde"
+    elif not fa and not ga:
+        amp_sentence = "ni l'une ni l'autre ne se réchauffe de façon établie plus vite que le monde"
+    else:
+        amp_sentence = (f"{'la France' if fa else 'la Gironde'} se réchauffe plus vite que le monde, "
+                        f"{'la Gironde' if fa else 'la France'} pas de façon établie")
     finding = (
         f"Pour 1 °C de réchauffement mondial (GISTEMP, moyenne sur 4 ans), la France se réchauffe de {_k(fm)} °C sur "
-        f"{fm.years[0]}-{fm.years[-1]} et la Gironde de {_k(gm)} °C sur {gm.years[0]}-{gm.years[-1]} : la France "
-        f"{amp_txt[fm.lo > 1]}, la Gironde {amp_txt[gm.lo > 1]}. Sur la même période, les terres émergées dans leur "
-        f"ensemble (CRUTEM5) se réchauffent de {_k(lg)} °C par °C mondial. Mesurés contre elles, les facteurs valent, "
-        f"pour la {land_txt(F_)} ; pour la {land_txt(Gi)}. Le facteur de la France est de "
-        f"{_f(F_['seas']['ete'].k, 2)} en été et de {_f(F_['seas']['hiver'].k, 2)} en hiver ; celui de la Gironde de "
-        f"{_f(Gi['seas']['ete'].k, 2)} et de {_f(Gi['seas']['hiver'].k, 2)}."
+        f"{fm.years[0]}-{fm.years[-1]} et la Gironde de {_k(gm)} °C sur {gm.years[0]}-{gm.years[-1]} : "
+        f"{amp_sentence}. Sur {lg.years[0]}-{lg.years[-1]}, les terres émergées dans leur ensemble (CRUTEM5) se réchauffent de "
+        f"{_k(lg)} °C par °C mondial. {land_sentence} Le facteur est plus fort en été qu'en hiver : "
+        f"{_k(F_['seas']['ete'])} contre {_k(F_['seas']['hiver'])} pour la France, {_k(Gi['seas']['ete'])} contre "
+        f"{_k(Gi['seas']['hiver'])} pour la Gironde."
+        if F_["seas"]["ete"].k > F_["seas"]["hiver"].k and Gi["seas"]["ete"].k > Gi["seas"]["hiver"].k else
+        f"Pour 1 °C de réchauffement mondial (GISTEMP, moyenne sur 4 ans), la France se réchauffe de {_k(fm)} °C sur "
+        f"{fm.years[0]}-{fm.years[-1]} et la Gironde de {_k(gm)} °C sur {gm.years[0]}-{gm.years[-1]} : "
+        f"{amp_sentence}. Sur {lg.years[0]}-{lg.years[-1]}, les terres émergées dans leur ensemble (CRUTEM5) se réchauffent de "
+        f"{_k(lg)} °C par °C mondial. {land_sentence} Facteurs d'été et d'hiver : {_k(F_['seas']['ete'])} et "
+        f"{_k(F_['seas']['hiver'])} pour la France, {_k(Gi['seas']['ete'])} et {_k(Gi['seas']['hiver'])} pour la Gironde."
     )
 
     def scale_model(sid: str) -> AmplificationScale:

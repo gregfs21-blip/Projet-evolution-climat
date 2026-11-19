@@ -84,6 +84,16 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
         out.append(ValidationCheck(
             name="Confiance P10.3 (règle D-AQ)", kind="info", status="ℹ️ information", satisfied=True,
             detail=f"{amp.confidence} — {amp.confidence_reason}"))
+        # La synthèse (cmp-terres-oceans) affirme que la France et la Gironde se réchauffent plus vite que la moyenne
+        # des terres : à revérifier à chaque calcul, sans quoi l'affirmation deviendrait fausse en silence (D-AH).
+        lands = {s.label: s.land.k for s in amp.scales}
+        above = all(k.ci_low is not None and k.ci_low > 1 for k in lands.values())
+        out.append(ValidationCheck(
+            name="D-AH cohérence de cmp-terres-oceans", kind="critère",
+            status="✅ conforme" if above else "❌ non conforme", satisfied=above,
+            detail=("facteur contre les terres émergées, borne basse > 1 : " + " ; ".join(
+                f"{lab} [{k.ci_low:.2f} ; {k.ci_high:.2f}]".replace(".", ",") for lab, k in lands.items())
+                + ("" if above else " — reformuler cmp-terres-oceans (etl/config/synthese.yaml) et la faire relire"))))
         inds |= {"temperature-gistemp-monde", "temperature-hadcrut5-monde", "temperature-berkeley-monde",
                  "tm-france", "tm-annuelle-gironde"}
     return out, sorted(inds)
