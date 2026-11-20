@@ -119,11 +119,58 @@ def listings() -> list[str]:
     return out
 
 
+RAW_PAGES = [
+    ("RSS vapeur, répertoire mensuel (HTML brut)", "https://data.remss.com/vapor/monthly_1deg/"),
+    ("RSS vapeur, répertoire parent (HTML brut)", "https://data.remss.com/vapor/"),
+]
+ALL_LINKS = [
+    ("HadISDH, page d'accueil (tous les liens)", "https://www.metoffice.gov.uk/hadobs/hadisdh/"),
+    ("NOAA NCEI 3M_HEAT_CONTENT/DATA/basin (tous les liens)",
+     "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/"),
+    ("NOAA NCEI 3M_HEAT_CONTENT/DATA (tous les liens)",
+     "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/"),
+    ("NOAA NCEI 3M_HEAT_CONTENT (tous les liens)", "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/"),
+    ("IMBIE, page d'accueil", "https://imbie.org/"),
+    ("CEDA, ESA CCI Sea Level Budget Closure (autre hôte)",
+     "https://data.ceda.ac.uk/neodc/esacci/sea_level_budget_closure/data"),
+    ("CSR, mascons GRACE RL06 (page)", "https://www2.csr.utexas.edu/grace/RL06_mascons.html"),
+    ("SEANOE, budget WCRP 2018 (doi 10.17882/54854)", "https://www.seanoe.org/data/00444/55547/"),
+]
+API = [
+    ("Zenodo, Frederikse et al. 2020, budget du niveau marin 1900-2018 (fiche)", "https://zenodo.org/api/records/3862995"),
+]
+
+
+def extra() -> list[str]:
+    out = ["## 4. Compléments (deuxième passage)", ""]
+    for name, url in RAW_PAGES:
+        st, data = get(url)
+        out += [f"**{name}** — {url}", f"Statut : {st}", "```", data.decode("utf-8", "replace")[:1500], "```", ""]
+    for name, url in ALL_LINKS:
+        st, data = get(url)
+        out += [f"**{name}** — {url}", f"Statut : {st} ; {len(data)} o", ""]
+        if data:
+            ls = links(data, url) + sorted(set(re.findall(r"href='([^'#?]+)'", data.decode("utf-8", "replace"))))
+            out += ["```"] + [h[:180] for h in ls[:120]] + ["```", ""]
+    for name, url in API:
+        st, data = get(url)
+        out += [f"**{name}** — {url}", f"Statut : {st}", ""]
+        if data:
+            try:
+                rec = json.loads(data)
+                out += [f"Titre : {rec.get('metadata', {}).get('title')}", "```"] + \
+                       [f"{f.get('key')} {f.get('size')} {f.get('links', {}).get('self')}" for f in rec.get("files", [])] + \
+                       ["```", ""]
+            except ValueError:
+                out += ["(réponse non JSON)", ""]
+    return out
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P10.4 — cohérence physique : données disponibles (généré)", "",
           f"Produit le {now} par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.", ""]
-    for part in (published, files, listings):
+    for part in (published, files, listings, extra):
         try:
             md += part()
         except Exception as exc:  # noqa: BLE001
