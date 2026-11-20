@@ -261,11 +261,54 @@ def fourth() -> list[str]:
     return out
 
 
+def fifth() -> list[str]:
+    """Cinquième passage : jeton Earthdata non transmis après redirection (S3 refuse deux authentifications) ;
+    variables du fichier RSS de vapeur d'eau."""
+    import os
+    import tempfile
+    out = ["## 7. Cinquième passage", ""]
+    token = os.environ.get("EARTHDATA_TOKEN", "")
+    base = "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/"
+    for f in ("OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/ocean_mass_200204_202609.txt",
+              "GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/greenland_mass_200204_202609.txt",
+              "ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/antarctica_mass_200204_202609.txt"):
+        req = urllib.request.Request(base + f, headers=UA)
+        req.add_unredirected_header("Authorization", f"Bearer {token}")
+        try:
+            with urllib.request.urlopen(req, timeout=180) as r:
+                d = r.read(5_000_000)
+            out += [f"**{f}** : {len(d)} o", ""] + head_tail(d)
+            lines = d.decode("utf-8", "replace").splitlines()
+            hdr = [x for x in lines if x.lstrip().startswith(("#", "HDR", "Header")) or "unit" in x.lower()][:40]
+            out += ["En-tête (lignes de description) :", "```"] + [x[:200] for x in hdr] + ["```", ""]
+        except Exception as exc:  # noqa: BLE001
+            out += [f"**{f}** : échec {type(exc).__name__} {str(exc)[:200]}", ""]
+    url = "https://data.remss.com/vapor/monthly_1deg/merged_vapor_1988-2025.nc"
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=600) as r:
+            data = r.read()
+        out += [f"**{url}** : {len(data)} o"]
+        import netCDF4
+        with tempfile.NamedTemporaryFile(suffix=".nc") as tmp:
+            tmp.write(data)
+            tmp.flush()
+            with netCDF4.Dataset(tmp.name) as ds:
+                out += ["```"] + [f"{k} {v.dimensions} {v.shape} {getattr(v, 'units', '')} "
+                                  f"{getattr(v, 'long_name', '')}" for k, v in ds.variables.items()]
+                out += [f"attribut {a} = {str(getattr(ds, a))[:150]}" for a in ds.ncattrs()][:30] + ["```", ""]
+                if "time" in ds.variables:
+                    t = ds.variables["time"]
+                    out += [f"temps : {getattr(t, 'units', '')} ; premier {t[0]} ; dernier {t[-1]} ; n = {len(t)}", ""]
+    except Exception as exc:  # noqa: BLE001
+        out += [f"**{url}** : échec {type(exc).__name__} {str(exc)[:200]}", ""]
+    return out
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P10.4 — cohérence physique : données disponibles (généré)", "",
           f"Produit le {now} par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.", ""]
-    for part in (published, files, listings, extra, third, fourth):
+    for part in (published, files, listings, extra, third, fourth, fifth):
         try:
             md += part()
         except Exception as exc:  # noqa: BLE001
