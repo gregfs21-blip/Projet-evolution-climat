@@ -829,6 +829,48 @@ relue (M6) ; `limite-glaciers` reste exacte (seule la masse totale de l'océan e
   pour la masse) ; C1 pour la masse : au moins 80 % des 240 mois présents. Le seuil de C4 (± 0,5 mm/an) ne change
   pas. Les intervalles (erreurs de Newey-West, composantes supposées indépendantes) sont publiés pour information.
 
+### P10.4b — Recadrage de V et N : proposé le 20/11/2026, **après** le calcul officiel de P10.4
+
+> **Décision de Grég D-AV du 20/11/2026 (après calcul)** : ne pas accepter les écarts C2 et C4 tels quels ; recadrer
+> les contrôles V et N dans une sous-phase P10.4b. Le résultat de P10.4 (confiance « non établie ») reste publié et
+> documenté tel quel ; P10.4b est un **nouveau** contrôle, cadré en connaissant ce résultat, et doit être lu ainsi.
+
+**Ce qui change et pourquoi** (analyse des écarts, `docs/validation-p10.md`) :
+- V comparait la vapeur d'eau de 60° S-60° N à la température de la mer **du globe entier** : la loi de
+  Clausius-Clapeyron porte sur une même masse d'air. P10.4b prend la température de la mer **sur le même domaine**.
+- N mesurait le bilan sur 2005-2024, alors que sa non-fermeture après 2016 est documentée (Chen et al., 2020 ;
+  Barnoud et al., 2021). P10.4b sépare 2005-2015 (critère) et 2016-2024 (information).
+
+**Constat de la sonde** (20/11/2026, `docs/sonde-p10e.md`) : OISST v2 à 1° s'arrête en janvier 2023 (inutilisable) ;
+le fichier HadSST4 maillé testé n'existe plus (404) ; **ERSST v5** (NOAA, maille de 2°, mensuel, à jour à
+octobre 2026, 162 Mo, accès libre) couvre 1988-2025.
+
+**Méthode proposée**
+- **V′** : masque commun = mailles RSS du masque constant de P10.4 dont la maille ERSST la plus proche est valide tous
+  les mois 1988-2025 ; sur ce masque, moyenne pondérée par l'aire de la vapeur d'eau (RSS) et de la température de la
+  mer (ERSST lue à la maille la plus proche) ; ln W = c + β·T + u, u AR(1) (Prais-Winsten), 1988-2025.
+- **N′** : même bilan par tendances que P10.4 (D-AU), sur 2005-2015 ; 2016-2024 calculé et publié pour information.
+
+**Références** : R-B1 et R-B3 inchangées. Pour mémoire, des rapports plus élevés que 7 % par °C sont publiés quand la
+température est celle de la mer : environ 7,7 % par K sur l'océan dans ERA5 (température de surface) et 10,7 % dans
+JRA-55 (étude des tendances 1958-2021, arXiv 2211.01228) ; 9,9 % par K dans les tropiques pour un enregistrement
+satellite de vapeur et de température de mer (Fu et al., ESSD, préprint 2024) ; 6 à 12 % par K selon la latitude
+dans les modèles (O'Gorman et Muller, 2010). La troposphère tropicale se réchauffe plus que la mer : la vapeur suit la
+température de l'air, pas celle de la mer.
+
+**Critères proposés (B1-B5)**
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| B1 | Données | Masque commun couvrant au moins la moitié de la bande 60° S-60° N ; ERSST complet 1988-2025 ; GRACE ≥ 80 % des mois de 2005-2015 |
+| B2 | Vapeur d'eau, même domaine | Intervalle à 95 % de β recoupant la fourchette retenue (décision D-AW), borne basse > 0 |
+| B3 | Bilan marin 2005-2015 | Tendance du résidu entre −0,5 et +0,5 mm/an |
+| B4 | Robustesse | B2 avec moindres carrés et erreurs de Newey-West ; B3 avec les pentes de Sen |
+| B5 | Technique | Tests et CI verts, contrat à jour, analyse publiée dans l'onglet |
+
+**Règle de confiance proposée** : « élevée » si B1 à B4 conformes ; « moyenne » si l'un des deux contrôles (B2, B3) est
+conforme ; « non établie » sinon. P10.4b est affichée comme une analyse distincte de P10.4 dans l'onglet.
+
 ### Journal P10
 
 - 17/11/2026 : sonde (`docs/sonde-p10.md`), cadrage, décisions D-AD à D-AH, critères O1-O9 validés avant tout calcul.
@@ -901,6 +943,9 @@ relue (M6) ; `limite-glaciers` reste exacte (seule la masse totale de l'océan e
   (deux contrôles physiques sur quatre, D-AT). Écarts analysés : C2 tient probablement à la construction du contrôle
   (vapeur de 60° S-60° N contre température de mer du globe entier), C4 à la non-fermeture du bilan documentée depuis
   2016 (Chen et al., 2020 ; Barnoud et al., 2021).
+- **20/11/2026, décision de Grég D-AV (après calcul)** : écarts C2 et C4 non acceptés tels quels ; recadrage de V et N
+  dans une sous-phase P10.4b, cadrée en connaissant le résultat de P10.4, qui reste publié tel quel. Sonde
+  `docs/sonde-p10e.md`, cadrage P10.4b proposé.
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 
