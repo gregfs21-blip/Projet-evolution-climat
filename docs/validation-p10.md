@@ -308,3 +308,14 @@ pas ajuster un seuil à un résultat (D-AW).
   parue (HESS 28, 2123, 2024) et ses rapports sont contre la température de surface, pas de la mer (la question posée
   pour D-AW les présentait à tort comme des rapports contre la température de la mer ; la décision, garder [6 ; 8],
   n'en dépendait pas).
+
+### Clôture de P10.4 et P10.4b
+
+Écarts B2 et B4 acceptés par Grég le 20/11/2026 (D-AY), après relecture (M6). C2, C4 et C6 de P10.4 suivent leur
+correspondant de P10.4b (D-AV) : C4 suit B3, conforme ; C2 et C6 suivent B2 et B4, acceptés. Confiances inchangées :
+P10.4 « non établie », P10.4b « moyenne ». Ce que P10.4 et P10.4b établissent, au total : la basse stratosphère se
+refroidit pendant que la troposphère se réchauffe (deux jeux satellites) ; les tendances du déséquilibre énergétique
+et du flux de chaleur océanique ne se contredisent pas (contrôle peu exigeant) ; le bilan du niveau marin est dans la
+tolérance avant 2016 et non après, comme le décrit la littérature ; la vapeur d'eau croît fortement avec la
+température de la mer (10 à 11 % par °C), plus vite que la fourchette de 6 à 8 % fixée d'avance, pour une raison
+que l'étude n'a pas testée.

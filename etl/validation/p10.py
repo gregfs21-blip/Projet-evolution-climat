@@ -133,7 +133,7 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
         if cob is not None:
             for c in cob.criteria:
                 b_ok[c.id] = c.satisfied or f"P10.4b {c.id} {c.label.lower()}" in ACCEPTED
-            b_mark[c.id] = "✅" if c.satisfied else ("☑ accepté" if b_ok[c.id] else "❌")
+                b_mark[c.id] = "✅" if c.satisfied else ("☑ accepté" if b_ok[c.id] else "❌")
         for c in coh.criteria:
             name = f"P10.4 {c.id} {c.label.lower()}"
             # D-AV : un critère recadré n'est ni accepté ni corrigé ; il suit son correspondant de P10.4b.
