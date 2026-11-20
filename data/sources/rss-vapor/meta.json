@@ -1,0 +1,9 @@
+{
+ "file": "merged_vapor_1988-2025.nc",
+ "modified": "Fri, 16 Jan 2026 23:20:25 GMT",
+ "rows": 456,
+ "mask_cells": 27594,
+ "mask_area_fraction": 0.6505,
+ "lat_max": 60.0,
+ "collected": "2026-11-20T11:42:08.474901+00:00"
+}
