@@ -1,6 +1,6 @@
 # Sonde P10.4 — cohérence physique : données disponibles (généré)
 
-Produit le 20/11/2026 10:42 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
+Produit le 20/11/2026 10:49 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
 
 ## 1. Séries déjà publiées sur le site
 
@@ -172,10 +172,10 @@ timeseries_slb_elements/
 Statut : 404 ; 0 o
 
 **NASA, GRACE / GRACE-FO, masse de l'océan (PO.DAAC)** — https://podaac.jpl.nasa.gov/dataset/OCEAN_MASS_TIME_SERIES_GRACE-FO_JPL_RL06.3_V4
-Statut : erreur : URLError <urlopen error _ssl.c:994: The handshake operation timed out> ; 0 o
+Statut : erreur : URLError <urlopen error timed out> ; 0 o
 
 **NASA Vital Signs, masse des calottes (page)** — https://climate.nasa.gov/vital-signs/ice-sheets/
-Statut : 200 ; 275522 o
+Statut : 200 ; 275524 o
 
 227 liens ; retenus (9) :
 ```
@@ -500,4 +500,107 @@ global_basin_timeseries.xlsx 271196 https://zenodo.org/api/records/3862995/files
 tws.nc 25496893 https://zenodo.org/api/records/3862995/files/tws.nc/content
 total.nc 46911247 https://zenodo.org/api/records/3862995/files/total.nc/content
 ```
+
+## 5. Troisième passage
+
+**RSS vapeur, monthly_1deg** — https://data.remss.com/vapor/monthly_1deg/
+Statut : 200 ; 0 liens retenus
+```
+```
+
+**NOAA NCEI, niveau thermostérique annuel (yearly_sl)** — https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/yearly_sl/
+Statut : 200 ; 4 liens retenus
+```
+a-mm-w0-2000m.dat
+a-mm-w0-700m.dat
+tsl2000m_levitus_climdash_yearly.csv
+tsl_levitus_climdash_yearly.csv
+```
+
+Fichier https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/yearly_sl/a-mm-w0-2000m.dat : 200 ; 1254 o
+
+```
+    YEAR      WO    WOse      NH    NHse      SH    SHse
+2005.500  14.538   0.918  20.363   0.703  10.451   1.263
+2006.500  16.881   0.413  22.012   1.065  13.281   0.603
+2007.500  16.691   0.558  22.498   0.987  12.617   0.880
+2008.500  17.683   0.472  24.206   1.308  13.107   0.481
+2009.500  18.156   0.685  22.163   0.260  15.345   1.181
+2010.500  19.235   0.471  23.284   0.325  16.394   0.829
+2011.500  19.180   0.550  19.903   0.506  18.673   0.847
+…
+2022.500  35.408   0.183  39.321   0.740  32.662   0.538
+2023.500  37.306   0.519  39.425   1.004  35.819   0.747
+2024.500  38.401   0.327  45.128   0.765  33.680   0.908
+2025.500  40.622   0.490  50.584   0.962  33.631   0.244
+```
+
+**NOAA NCEI, niveau thermostérique pentadaire (pentad_sl)** — https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/pentad_sl/
+Statut : 200 ; 2 liens retenus
+```
+pent_a-mm-w0-2000m.dat
+pent_a-mm-w0-700m.dat
+```
+
+Fichier https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/pentad_sl/pent_a-mm-w0-2000m.dat : 200 ; 3876 o
+
+```
+    YEAR      WO    WOse      NH    NHse      SH    SHse
+  1957.5  -9.802   2.447  -8.721   2.720 -10.560   2.255
+  1958.5  -7.705   2.358  -5.227   2.447  -9.443   2.296
+  1959.5  -8.455   2.351  -5.982   2.333 -10.190   2.363
+  1960.5  -4.492   2.154  -3.178   2.099  -5.414   2.193
+  1961.5  -3.849   2.029  -4.315   2.000  -3.522   2.050
+  1962.5  -3.527   1.960  -4.849   1.790  -2.599   2.080
+  1963.5  -5.404   2.019  -5.941   1.853  -5.027   2.135
+…
+  2020.5  31.584   0.219  37.110   0.262  27.707   0.189
+  2021.5  34.130   0.226  40.067   0.270  29.963   0.194
+  2022.5  35.449   0.229  41.453   0.277  31.236   0.195
+  2023.5  37.351   0.232  44.090   0.282  32.621   0.197
+```
+
+**HadISDH, téléchargement marin** — https://www.metoffice.gov.uk/hadobs/hadisdh/downloadMARINE.html
+Statut : 200 ; 1 liens retenus
+```
+data/HadISDH.marineq.1.6.1.2024f_BClocalSHIP5by5both_anoms9120.nc
+```
+
+**HadISDH, téléchargement combiné** — https://www.metoffice.gov.uk/hadobs/hadisdh/downloadBLEND.html
+Statut : 200 ; 1 liens retenus
+```
+data/HadISDH.blendq.1.5.1.2024f_FLATgridHOMBClocalSHIPboth5by5_anoms9120.nc
+```
+
+**CEDA SLBC_cci, phase 2** — https://data.ceda.ac.uk/neodc/esacci/sea_level_budget_closure/data/timeseries_slb_element_phase_2
+Statut : 200 ; 0 liens retenus
+```
+```
+
+**NASA CMR, collections « GRACE ocean mass »** — https://cmr.earthdata.nasa.gov/search/collections.json?keyword=GRACE%20ocean%20mass&page_size=20
+Statut : 200
+```
+HOMAGE_GGFO_L4_GOMA_Monthly_v01 | 1.0 | GRACE/GRACE-FO Level-4 Monthly Global Ocean Mass Anomaly version 01 from NASA MEaSUREs HOMaGE project | 2002-04-17-
+OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4 | RL06.3Mv04 | Tellus Level-4 Ocean Mass Anomaly Time Series from JPL GRACE/GRACE-FO Mascon CRI Filtered Release 06.3 version | 2002-04-01-
+TELLUS_GRAC-GRFO_MASCON_CRI_GRID_RL06.3_V4 | RL06.3Mv04 | JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent Water Height Coastal Resolution Improvement | 2002-04-04-
+ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4 | RL06.3Mv04 | Tellus Level-4 Antarctica Mass Anomaly Time Series from JPL GRACE/GRACE-FO Mascon CRI Filtered Release 06.3 ve | 2002-04-01-
+TELLUS_GRAC-GRFO_MASCON_GRID_RL06.3_V4 | RL06.3Mv04 | JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent Water Height JPL Release 06.3 Version 04 | 2002-04-04-
+TELLUS_GRFO_L3_CSR_RL06.3_OCN_v04 | RL06.3v04 | CSR TELLUS GRACE-FO Level-3 Monthly Ocean Bottom Pressure Anomaly Release 6.3 version 04 | 2018-05-22-
+GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4 | RL06.3Mv04 | Tellus Level-4 Greenland Mass Anomaly Time Series from JPL GRACE/GRACE-FO Mascon CRI Filtered Release 06.3 ver | 2002-04-01-
+HOMAGE_GGFO_MSC_CRI_SALGRD_v01 | 1.0 | GRACE/GRACE-FO Level-4 Monthly Gravitational-Rotational-Deformation version 01 from NASA MEaSUREs HOMaGE | 2002-04-16-
+HOMAGE_STERIC_OHC_TIME_SERIES_v01 | 1.0 | HOMAGE Monthly Time series of global average steric height anomalies and ocean heat content estimates from gri | 1978-01-15-
+GRC-GFO_GRIDDED_AOD1B_JPL_1-DEG_RL06.3 | RL06.3 | JPL GRACE/GRACE-FO Gridded-AOD1B Water-Equivalent-Thickness Surface-Mass Anomaly RL06.3 dataset for Tellus Lev | 2002-04-04-
+GRC-GFO_GRIDDED_AOD1B_JPL_MASCON_RL06.3 | RL06.3 | JPL GRACE/GRACE-FO Gridded-AOD1B Water-Equivalent-Thickness Surface-Mass Anomaly RL06.3 dataset for Tellus Lev | 2002-04-04-
+TELLUS_GRFO_L3_GFZ_RL06.3_OCN_v04 | RL06.3v04 | GFZ TELLUS GRACE-FO Level-3 Monthly Ocean Bottom Pressure Anomaly Release 6.3 version 04 | 2018-05-22-
+TELLUS_GRFO_L3_JPL_RL06.3_OCN_v04 | RL06.3v04 | JPL TELLUS GRACE-FO Level-3 Monthly Ocean Bottom Pressure Anomaly Release 6.3 version 04 | 2018-05-22-
+GGP-SG-CORMIN | Not provided | GGP - Corrected Minute Data | 1997-07-01-
+AAS_4318_GIA_model_output | 1 | GIA model output for bedrock displacement at geodetic GPS sites in the Casey-Davis region of East Antarctica | 2015-07-01-2020-06-30
+JPL_RECON_GMSL | 1.0 | Reconstructed Global Mean Sea Level 1900-2018 | 1900-01-01-2018-12-31
+AAS_4355_Mulder_etal_2019 | 1 | Zircon, monazite and feldspar datasets from Indo- and Australo-Antarctica | 2016-01-01-2018-12-30
+GRACE-A.and.GRACE-B.Level1B.Level1Bcombined.Level2 | 5.0 | GRACE-A and GRACE-B Level 1B,  Level 1B combined and Level 2 Data Products | 2002-04-01-2017-10-27
+TELLUS_GRAC_L3_CSR_RL06_OCN_v04 | RL06v04 | CSR TELLUS GRACE Level-3 Monthly Ocean Bottom Pressure Anomaly Release 6.0 version 04 | 2002-04-04-2017-10-25
+TELLUS_GRAC_L3_GFZ_RL06_OCN_v04 | RL06v04 | GFZ TELLUS GRACE Level-3 Monthly Ocean Bottom Pressure Anomaly Release 6.0 version 04 | 2002-04-04-2017-10-25
+```
+
+Jeton Earthdata présent dans l'environnement : oui
 
