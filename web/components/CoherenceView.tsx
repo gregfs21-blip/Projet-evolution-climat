@@ -65,7 +65,7 @@ function Check({ c }: { c: CoherenceCheck }) {
             lines={ch.lines.map((l, i) => ({
               name: l.name,
               values: l.values,
-              color: COLORS[i % COLORS.length],
+              color: COLORS[i % COLORS.length] ?? "--ink",
               width: i === 0 ? 2 : 1.4,
               dashed: c.id === "niveau-marin" && i >= 2,
               opacity: c.id === "niveau-marin" && i >= 2 ? 0.7 : 1,
@@ -103,8 +103,9 @@ function Check({ c }: { c: CoherenceCheck }) {
 }
 
 export default function CoherenceView({ a }: { a: Coherence }) {
-  const [id, setId] = useState<string>(a.checks[0].id);
+  const [id, setId] = useState<string>(a.checks[0]?.id ?? "");
   const c = a.checks.find((x) => x.id === id) ?? a.checks[0];
+  if (!c) return null;
   return (
     <div className="space-y-6">
       <div className="grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
