@@ -30,9 +30,11 @@ ACCEPTED: dict[str, str] = {
 }
 # Critères de P10.4 recadrés en P10.4b par décision de Grég après calcul (D-AV, 20/11/2026) : ni acceptés ni corrigés,
 # leur résultat reste publié ; ils ne bloquent la clôture que si P10.4b n'est pas publiée.
+# Chaque critère recadré suit son correspondant de P10.4b : il n'est traité que si celui-ci est conforme ou accepté.
 REFRAMED: dict[str, str] = {
-    name: "recadré en P10.4b par décision de Grég (D-AV, 20/11/2026) ; résultat publié tel quel"
-    for name in ("P10.4 C2 vapeur d'eau", "P10.4 C4 niveau marin", "P10.4 C6 robustesse")
+    "P10.4 C2 vapeur d'eau": "B2",
+    "P10.4 C4 niveau marin": "B3",
+    "P10.4 C6 robustesse": "B4",
 }
 # Analyses de l'onglet dont la synthèse tient compte (affirmations `limite-attribution` et `limite-projections` de
 # etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.4 cohérence physique, P10.5 projections) rend ces
@@ -121,14 +123,19 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
     coh = next((a.coherence for a in demo.analyses if a.phase == "p10.4" and a.coherence), None)
     cob = next((a.coherence for a in demo.analyses if a.phase == "p10.4b" and a.coherence), None)
     if coh is not None:
+        b_ok = {}
+        if cob is not None:
+            for c in cob.criteria:
+                b_ok[c.id] = c.satisfied or f"P10.4b {c.id} {c.label.lower()}" in ACCEPTED
         for c in coh.criteria:
             name = f"P10.4 {c.id} {c.label.lower()}"
-            # D-AV : un critère recadré n'est ni accepté ni corrigé ; il compte comme traité seulement si la sous-phase
-            # P10.4b, qui le recadre, est publiée.
-            reframed = name in REFRAMED and cob is not None
-            ok = c.satisfied or name in ACCEPTED or reframed
+            # D-AV : un critère recadré n'est ni accepté ni corrigé ; il suit son correspondant de P10.4b.
+            follow = REFRAMED.get(name)
+            reframed = follow is not None and cob is not None
+            ok = c.satisfied or name in ACCEPTED or (reframed and b_ok.get(follow, False))
             status = ("✅ conforme" if c.satisfied else f"☑ {ACCEPTED[name]}" if name in ACCEPTED
-                      else f"↪ non conforme, {REFRAMED[name]}" if reframed else "❌ non conforme")
+                      else (f"↪ non conforme, recadré en P10.4b (D-AV), suit {follow} "
+                            f"({'✅ ou accepté' if b_ok.get(follow) else '❌'})") if reframed else "❌ non conforme")
             out.append(ValidationCheck(name=name, kind="critère", status=status, satisfied=ok, detail=c.detail))
         out.append(ValidationCheck(
             name="P10.4 C7 technique", kind="info", status="ℹ️ information", satisfied=True,

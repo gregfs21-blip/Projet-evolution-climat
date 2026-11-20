@@ -821,9 +821,9 @@ sections:
               température moyenne annuelle de la France et de la Gironde (facteur d'amplification, degrés régionaux
               par degré mondial). Ces liens ne disent pas quelle part des hausses régionales est d'origine humaine :
               ils incluent tout ce qui a évolué en même temps, effets locaux (urbanisation) ou régionaux (aérosols,
-              circulation atmosphérique). L'onglet confronte enfin des mesures indépendantes entre elles (vapeur
-              d'eau, stratosphère, niveau marin, énergie) : ces contrôles de cohérence vérifient que les mesures
-              s'accordent, ils n'attribuent rien.
+              circulation atmosphérique). L'onglet confronte enfin des mesures de natures différentes (vapeur d'eau,
+              stratosphère, niveau marin, énergie) : ces contrôles de cohérence testent si les mesures s'accordent
+              (elles ne s'accordent pas toutes), ils n'attribuent rien.
           - id: contexte-attribution
             kind: contexte
             text: >-

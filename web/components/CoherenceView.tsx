@@ -67,8 +67,8 @@ function Check({ c }: { c: CoherenceCheck }) {
               values: l.values,
               color: COLORS[i % COLORS.length] ?? "--ink",
               width: i === 0 ? 2 : 1.4,
-              dashed: c.id === "niveau-marin" && i >= 2,
-              opacity: c.id === "niveau-marin" && i >= 2 ? 0.7 : 1,
+              dashed: c.id.startsWith("niveau-marin") && i >= 2,
+              opacity: c.id.startsWith("niveau-marin") && i >= 2 ? 0.7 : 1,
             }))}
           />
           <p className="text-xs leading-relaxed text-[var(--muted)]">{ch.note}</p>

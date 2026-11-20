@@ -226,21 +226,25 @@ Clausius-Clapeyron porte sur la vapeur et la température **d'une même masse d'
 mesurée entre 60° S et 60° N à la température moyenne de la mer du globe entier. Les variations d'une année à l'autre
 de ces deux grandeurs sont dominées par El Niño, qui fait varier fortement la mer tropicale (où se trouve l'essentiel
 de la vapeur) et beaucoup moins la moyenne du globe : le dénominateur est trop faible, la pente trop forte. La
-littérature va dans ce sens : dans les modèles, la vapeur d'eau totale croît de 7,3 % par °C de la température moyenne,
-mais de 6 à 12 % par °C selon la latitude (O'Gorman et Muller, 2010) ; des mesures micro-ondes indépendantes donnent
-environ 11 % par °C contre la température de mer moyennée par bandes de latitude (radiomètre TMR de Topex, 1992-2005, étude publiée en 2009).
-La relation elle-même est très serrée (96 % de la variance expliquée) : la vapeur suit bien la température, avec un
-facteur que ce contrôle ne permet pas de comparer à 7 %. Cette explication n'est pas vérifiée ici : il faudrait la
-température de la mer sur le même domaine, que l'étude ne publie pas.
+littérature va dans ce sens : dans les modèles, la vapeur d'eau totale croît de 7,3 % par °C de la température moyenne
+de l'air en surface, mais de 6 à 12 % par °C selon la latitude (O'Gorman et Muller, 2010) ; des mesures micro-ondes indépendantes donnent
+environ 11 % par K en comparant approximativement des tendances de la vapeur et de la température de mer moyennées
+par bandes de latitude (radiomètre TMR de Topex, 1992-2005 ; Keihm et al., 2009, JGR 114, D18101).
+La relation est serrée (96 % de la variance expliquée, part gonflée par la tendance commune des deux séries) : la
+vapeur suit la température, avec un facteur que ce contrôle ne permet pas de comparer à 7 %. **Hypothèse testée en
+P10.4b et réfutée** : sur un même domaine, la pente est plus forte encore (voir plus bas).
 
 ### Écart C4 : le bilan du niveau marin laisse +0,62 mm/an non expliqués
 
-La non-fermeture du bilan après 2016 est documentée : le bilan était fermé sur 1993-2016, il ne l'est plus depuis avec
-Jason-3, Argo et GRACE-FO (Chen et al., 2020). Barnoud et al. (2021, GRL 48) l'attribuent pour environ 40 % à des
+La non-fermeture du bilan après 2016 est documentée : avec l'altimétrie, Argo et GRACE, le bilan était fermé de
+janvier 2005 à août 2016 et ne l'est plus ensuite (Chen et al., 2020, GRL, doi 10.1029/2020GL090656, qui
+privilégient un effet du fonctionnement de GRACE puis GRACE-FO avec un seul accéléromètre). Barnoud et al. (2021, GRL 48) l'attribuent pour environ 40 % à des
 dérives de salinité des flotteurs Argo — sans effet ici, puisque le cadrage n'utilise que la dilatation thermique —
 et ne trouvent pas d'erreur suffisante dans l'altimétrie ; la composante thermique et la masse GRACE restent les
-suspects pour le reste. S'y ajoutent l'océan sous 2000 m (environ 0,1 mm/an) et l'incertitude de la correction
-isostatique (0,3 mm/an retenu). Le résidu (+0,62, information [+0,34 ; +0,90]) est du même ordre que les écarts publiés ;
+suspects pour le reste. S'y ajoutent l'océan sous 2000 m (environ 0,1 mm/an) et l'incertitude des corrections
+isostatiques : celle ajoutée à l'altimétrie (0,3 mm/an) et celle déjà appliquée par JPL à GRACE (ICE6G-D), du même
+ordre que la tolérance. Les intervalles du résidu, tirés de peu de points et de la loi normale, sont probablement
+trop étroits. Le résidu (+0,62, information [+0,34 ; +0,90]) est du même ordre que les écarts publiés ;
 il ne remet pas en cause la conclusion qualitative (la hausse vient de la dilatation et de l'eau ajoutée, la masse en
 représentant environ la moitié et la dilatation un tiers), mais le bilan **n'est pas fermé à 0,5 mm/an près** sur
 2005-2024 avec ces trois produits.
@@ -269,7 +273,7 @@ Confiance « moyenne » (règle D-AX) : un contrôle recadré sur deux est confo
 
 | Contrôle | Résultat | Critère |
 |---|---|---|
-| V′, vapeur d'eau et mer du même domaine | β = 10,9 % par °C [9,6 ; 12,2], 1988-2025 (masque commun : 65,0 % de la bande, 27 582 mailles) | B2 non conforme |
+| V′, vapeur d'eau et mer du même domaine | β = 10,9 % par °C [9,6 ; 12,2], 1988-2025 (masque commun : 65,0 % de la bande, 27 582 mailles), ρ = 0,62 | B2 non conforme |
 | N′, bilan marin 2005-2015 | 3,47 mm/an observés contre 1,18 de dilatation + 2,22 de masse ; résidu +0,07 mm/an (information [−0,64 ; +0,78]) | B3 conforme |
 | Information, 2016-2024 | résidu +1,30 mm/an [+0,90 ; +1,70] : la masse ralentit (1,42 mm/an) quand l'altimétrie accélère (4,12) | — |
 
@@ -279,18 +283,28 @@ B1 conforme (GRACE : 116 mois sur 132). B4 non conforme : la variante en moindre
 ### Écart B2 : la vapeur d'eau croît d'environ 10 % par °C de la mer, même sur le même domaine
 
 Corriger le domaine n'a pas ramené la pente vers 7 % : elle passe de 9,4 à 10,9 % par °C. L'hypothèse avancée pour
-l'écart C2 (domaines différents) n'explique donc pas l'écart ; elle est réfutée par ce calcul. Ce que les deux calculs
-montrent ensemble, c'est que **la fourchette de 6 à 8 % par °C n'est pas la bonne référence quand la température est
-celle de la mer** : le taux de Clausius-Clapeyron porte sur la température de l'air, et la troposphère tropicale, où
-se trouve l'essentiel de la vapeur, varie plus que la mer. Les valeurs publiées contre la température de la mer sont
-du même ordre que celles trouvées ici : environ 9,9 % par K dans les tropiques pour un enregistrement satellite (Fu et
-al., préprint ESSD 2024) et environ 11 % par K pour le radiomètre TMR (1992-2005). Le cadrage
-(R-B1) aurait dû le prévoir ; la fourchette a été maintenue après coup pour ne pas ajuster un seuil à un résultat
-(D-AW). L'autocorrélation des résidus est forte (ρ = 0,62) : la pente est moins précise qu'elle n'en a l'air.
+l'écart C2 (domaines différents) n'explique donc pas l'écart ; elle est réfutée par ce calcul. L'explication qui reste
+la plus plausible **n'est pas testée ici** : la fourchette de 6 à 8 % par °C serait mal choisie pour la vapeur de
+toute la colonne rapportée à la température de la mer. Le taux de Clausius-Clapeyron porte sur l'air saturé ; même
+contre la température de l'air en surface, la vapeur de la colonne croît de 6 à 12 % par K selon la latitude dans les
+modèles (O'Gorman et Muller, 2010), et la troposphère tropicale varie plus que la mer. Des rapports de **tendances**
+publiés contre la température de la mer vont dans ce sens : 9,9 % par K sur 20° S-20° N (Fu et al., 2025, ESSD 17,
+4651, ciel sans pluie, environ 2003-2022 ; 8,6 dans le modèle CMIP6 comparé) et environ 11 % par K pour le radiomètre
+TMR (Keihm et al., 2009). Ce ne sont pas des pentes interannuelles comme β. L'estimateur compte aussi : sur les séries
+publiées, la pente vaut 9,9 en moindres carrés et 10,9 en Prais-Winsten, qui pèse surtout les variations d'une année
+à l'autre (El Niño) ; ces variations poussent la pente vers le haut. La fourchette a été maintenue après coup pour ne
+pas ajuster un seuil à un résultat (D-AW).
 
 ### Constats sans effet sur les critères
 
 - B3 est conforme, mais faiblement : onze ans seulement, et un intervalle d'information de ± 0,7 mm/an, plus large que
-  la tolérance ; le découpage en 2016 a été choisi après le premier calcul, en s'appuyant sur la littérature. Ce que
-  le recadrage établit nettement, c'est la **localisation** de l'écart de P10.4 : le bilan se ferme avant 2016
-  (+0,07) et pas après (+1,30), comme l'ont décrit Chen et al. (2020) et Barnoud et al. (2021).
+  la tolérance : le contrôle ne peut que ne pas rejeter la fermeture. Le découpage en 2016 a été choisi après le
+  premier calcul, en s'appuyant sur la littérature. Le recadrage **situe** l'écart de P10.4 : le résidu est dans la
+  tolérance avant 2016 (+0,07) et en sort nettement après (+1,30, intervalle [+0,90 ; +1,70], probablement trop
+  étroit), comme l'ont décrit Chen et al. (2020) et Barnoud et al. (2021).
+- Références corrigées après relecture (M6) : Fu et al. est paru (ESSD 17, 4651, 2025) et son 9,9 % est un rapport de
+  tendances tropicales ; la fermeture « à 0,3 mm/an près » du WCRP porte sur la période GRACE (depuis 2005), pas sur
+  1993-2018 ; l'intervalle de Loeb et al. est à 90 % ; l'étude citée pour ERA5 et JRA-55 (arXiv 2211.01228) est
+  parue (HESS 28, 2123, 2024) et ses rapports sont contre la température de surface, pas de la mer (la question posée
+  pour D-AW les présentait à tort comme des rapports contre la température de la mer ; la décision, garder [6 ; 8],
+  n'en dépendait pas).

@@ -958,9 +958,18 @@ conforme ; « non établie » sinon. P10.4b est affichée comme une analyse dist
   domaine commun (workflow « Copernicus »).
 - 20/11/2026, P10.4b, calcul officiel (aucun essai local avant) : B1 et B3 conformes ; **B2 non conforme** (vapeur
   d'eau 10,9 % par °C [9,6 ; 12,2] sur le même domaine) ; **B4 non conforme** ; confiance « moyenne » (D-AX). Le bilan
-  marin se ferme sur 2005-2015 (+0,07 mm/an) et pas sur 2016-2024 (+1,30, information). L'hypothèse avancée pour
-  l'écart C2 (domaines différents) est réfutée : c'est la fourchette de référence, prévue pour la température de
-  l'air, qui ne convient pas à la température de la mer.
+  marin est dans la tolérance sur 2005-2015 (+0,07 mm/an, intervalle plus large que la tolérance) et en sort sur
+  2016-2024 (+1,30, information). L'hypothèse avancée pour l'écart C2 (domaines différents) est réfutée ; l'explication
+  restante (fourchette mal choisie pour la vapeur de la colonne contre la température de la mer, effet de
+  l'estimateur) n'est pas testée.
+- 20/11/2026, relecture indépendante (M6, D-AH) de P10.4 et P10.4b : 12 signalements, tous traités
+  (`docs/relecture-p8.md`). Corrections après le calcul, sans effet sur les critères : textes publics de E, de N′ et
+  du constat de P10.4b rendus moins affirmatifs ; références corrigées (Fu et al. 2025, Keihm et al. 2009, période de
+  fermeture du WCRP et de Chen et al., intervalle à 90 % de Loeb et al., formulation de R-B1) ; limites ajoutées
+  (corrections isostatiques de GRACE, intervalles trop étroits, part de l'excédent hors de l'océan 0-2000 m) ;
+  estimations stockées en pleine précision ; les critères recadrés de P10.4 suivent désormais leur correspondant de
+  P10.4b dans la validation. Les références R-B1, R-B3 et R-B4 du cadrage ci-dessus sont laissées dans leur rédaction
+  d'origine ; leur version corrigée est celle du code et de l'onglet.
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 

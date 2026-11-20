@@ -61,13 +61,16 @@ GMSL, OHC, EEI = "niveau-mer-monde", "ohc-2000-monde", "desequilibre-energetique
 
 REFERENCES = {
     "V": ("R-B1 : la capacité de l'air à contenir de la vapeur d'eau croît d'environ 7 % par °C (Clausius-Clapeyron) ; "
-          "la vapeur d'eau intégrée observée suit ce taux (GIEC AR6 GT1, ch. 2) ; fourchette retenue 6 à 8 % par °C."),
+          "la vapeur d'eau intégrée a augmenté depuis 1979 à un rythme globalement cohérent avec ce taux (GIEC AR6 GT1, "
+          "ch. 2) ; fourchette retenue 6 à 8 % par °C."),
     "S": ("R-B2 : basse stratosphère refroidie depuis le milieu du XXe siècle, « pratiquement certain », stable depuis "
           "le milieu des années 1990 ; troposphère réchauffée (GIEC AR6 GT1, ch. 2)."),
-    "N": ("R-B3 : niveau marin 1993-2018 3,1 ± 0,3 mm/an, budget fermé à 0,3 mm/an près (1 σ) ; dilatation 42 %, "
-          "glaciers 21 %, Groenland 15 %, Antarctique 8 % (WCRP Global Sea Level Budget Group, ESSD 10, 1551, 2018)."),
-    "E": ("R-B4 : hausse du déséquilibre de 0,50 ± 0,47 W/m² par décennie sur 2005-2019, indiscernable entre satellites "
-          "et mesures in situ (Loeb et al., 2021, GRL 48) ; environ 91 % de l'excédent réchauffe l'océan (GIEC AR6)."),
+    "N": ("R-B3 : niveau marin 1993-2018 3,1 ± 0,3 mm/an ; dilatation 42 %, glaciers 21 %, Groenland 15 %, "
+          "Antarctique 8 % ; depuis 2005, avec la masse de l'océan mesurée par GRACE, bilan fermé à 0,3 mm/an près "
+          "(1 σ) (WCRP Global Sea Level Budget Group, ESSD 10, 1551, 2018)."),
+    "E": ("R-B4 : hausse du déséquilibre de 0,50 ± 0,47 W/m² par décennie (intervalle à 90 %) de mi-2005 à mi-2019, "
+          "indiscernable entre satellites et mesures in situ (Loeb et al., 2021, GRL 48) ; environ 91 % de l'excédent "
+          "réchauffe l'océan (GIEC AR6)."),
 }
 
 
@@ -97,8 +100,9 @@ def overlap(a: tuple[float, float], b: tuple[float, float]) -> bool:
     return a[0] <= b[1] and b[0] <= a[1]
 
 
-def est(v: float, lo: float | None = None, hi: float | None = None, nd: int = 4) -> Estimate:
-    r = lambda x: None if x is None else round(float(x), nd) + 0.0  # noqa: E731
+def est(v: float, lo: float | None = None, hi: float | None = None) -> Estimate:
+    """Pleine précision (règle de P10.1) : l'arrondi est fait une seule fois, à l'affichage."""
+    r = lambda x: None if x is None else float(x) + 0.0  # noqa: E731
     return Estimate(value=r(v), ci_low=r(lo), ci_high=r(hi))
 
 
@@ -328,7 +332,8 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
                              values=[round(7 * (sst[y] - mean_t), 3) for y in vy])],
         note=(f"Écarts à la moyenne {V_SPAN[0]}-{V_SPAN[1]} : vapeur d'eau en %, et ce que donnerait le taux théorique "
               "de 7 % par °C appliqué à la température moyenne de la mer du globe. La vapeur est mesurée entre 60° S et "
-              "60° N, la température sur tout l'océan : les deux courbes ne portent pas sur la même région."))
+              "60° N, la température sur tout l'océan : les deux courbes ne portent pas sur la même région. Cette "
+              "différence n'explique pas l'écart : sur un même domaine, la pente est encore plus forte (P10.4b)."))
     v_check = CoherenceCheck(
         id="vapeur", letter="V", title="Vapeur d'eau et température (Clausius-Clapeyron)",
         question="L'atmosphère au-dessus des océans contient-elle environ 7 % de vapeur d'eau en plus par degré ?",
@@ -342,7 +347,8 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
                      value("Part de la variance expliquée", "%", V_SPAN, est(cc.r2 * 100))],
         charts=[v_chart],
         limitation=("Océans sans glace seulement (pas de mesure micro-onde sur les continents) ; la température est la "
-                    "moyenne mondiale de la mer, la vapeur celle de 60° S-60° N."))
+                    "moyenne mondiale de la mer, la vapeur celle de 60° S-60° N (différence testée en P10.4b : elle "
+                    "n'explique pas l'écart)."))
 
     # ---------- S
     tr = {(k, n): annual_trend(sy, [d[n][y] for y in sy], f"{k} {NAMES[n]}") for k, d in (("TLT", tlt), ("TLS", tls))
@@ -407,9 +413,9 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
         id="niveau-marin", letter="N", title="Bilan du niveau marin",
         question="La hausse mesurée par satellite est-elle la somme de la dilatation de l'eau et de l'eau ajoutée ?",
         criterion="C4", satisfied=b.ok,
-        result=(f"Sur {N_SPAN[0]}-{N_SPAN[1]}, la mer monte de {_f(tot, 1)} mm par an (altimétrie corrigée de "
-                f"l'ajustement isostatique) ; la dilatation de l'eau (0-2000 m) en explique {_f(b.thermo.value, 1)} et "
-                f"l'eau ajoutée à l'océan, pesée par GRACE, {_f(b.mass.value, 1)}. Il reste {_f(b.resid, 2, True)} mm par "
+        result=(f"Sur {N_SPAN[0]}-{N_SPAN[1]}, la mer monte de {_f(tot, 2)} mm par an (altimétrie corrigée de "
+                f"l'ajustement isostatique) ; la dilatation de l'eau (0-2000 m) en explique {_f(b.thermo.value, 2)} et "
+                f"l'eau ajoutée à l'océan, pesée par GRACE, {_f(b.mass.value, 2)}. Il reste {_f(b.resid, 2, True)} mm par "
                 "an non expliqués, " + ("dans la tolérance de ± 0,5 mm par an." if b.ok else "hors de la tolérance de ± 0,5 mm par an.")),
         reference=REFERENCES["N"],
         values=[value("Résidu observé − (dilatation + masse)", "mm/an", N_SPAN, est(b.resid, b.resid_lo, b.resid_hi))],
@@ -430,7 +436,9 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
                   "GRACE / GRACE-FO (juillet 2017 à mai 2018) laisse 2017 et 2018 vides ou partielles. Le bilan "
                   "lui-même porte sur les tendances calculées sur tous les mois disponibles (D-AU)."))],
         limitation=("L'océan sous 2000 m n'est pas mesuré (environ 0,1 mm/an) ; le résultat dépend de la correction "
-                    "isostatique retenue (0,3 mm/an) ; les intervalles supposent les trois mesures indépendantes."))
+                    "isostatique, celle ajoutée à l'altimétrie (0,3 mm/an) et celle déjà appliquée par JPL à GRACE "
+                    "(ICE6G-D), d'incertitude comparable à la tolérance ; les intervalles supposent les trois mesures "
+                    "indépendantes et reposent sur peu de points : ils sont probablement trop étroits."))
 
     # ---------- E
     flux = ocean_flux(ohc, ey)
@@ -451,8 +459,11 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
         question="L'énergie en excès mesurée au sommet de l'atmosphère se retrouve-t-elle dans l'océan ?",
         criterion="C5", satisfied=e_ok,
         result=(f"Sur {E_SPAN[0]}-{E_SPAN[1]}, le déséquilibre mesuré par satellite augmente de {_f(te.value, 2, True)} W/m² "
-                f"par décennie et le flux de chaleur entrant dans l'océan de {_f(to.value, 2, True)} : "
-                + ("les deux hausses sont compatibles." if e_ok else "les deux évolutions ne concordent pas selon le critère.")),
+                f"par décennie {_ci(te.lo, te.hi, 2, True)} et le flux de chaleur entrant dans l'océan de "
+                f"{_f(to.value, 2, True)} {_ci(to.lo, to.hi, 2, True)}"
+                + (" : les deux tendances ne se contredisent pas, mais le contrôle est peu exigeant"
+                   + (" (la hausse du flux océanique n'est pas établie)." if to.lo <= 0 else ".")
+                   if e_ok else " : les deux évolutions ne concordent pas selon le critère.")),
         reference=REFERENCES["E"],
         values=[value("Déséquilibre CERES", "W/m² par décennie", E_SPAN, est(te.value, te.lo, te.hi)),
                 value("Flux de chaleur dans l'océan 0-2000 m", "W/m² par décennie", E_SPAN, est(to.value, to.lo, to.hi))],
@@ -471,8 +482,10 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
             note=("Les deux grandeurs sont rapportées à toute la surface de la Terre. Le niveau moyen de CERES est calé "
                   "sur la chaleur de l'océan mesurée par Argo : seules les variations sont une comparaison "
                   "indépendante. Le flux océanique est la différence centrée du contenu thermique annuel."))],
-        limitation=("Vingt ans seulement : le flux océanique, obtenu par différence, est bruité ; l'océan sous 2000 m, "
-                    "la fonte des glaces et le réchauffement des terres (environ 10 % de l'excédent) ne sont pas comptés."))
+        limitation=("Vingt ans seulement : le flux océanique, obtenu par différence, est bruité. L'océan sous 2000 m, "
+                    "non mesuré ici, le réchauffement des terres (environ 5 % de l'excédent selon le GIEC AR6), la fonte "
+                    "des glaces (3 %) et l'atmosphère (1 %) ne sont pas comptés : le rapport des moyennes ne peut pas "
+                    "atteindre 100 %."))
 
     # ---------- C6 et confiance
     c6 = alt_ok and b.sen_ok and e3_ok
@@ -565,6 +578,10 @@ def annual_common(monthly: dict[str, tuple[float, float]]) -> tuple[dict[int, fl
     return ({y: sum(a for a, _ in v) / 12 for y, v in full.items()}, {y: sum(b for _, b in v) / 12 for y, v in full.items()})
 
 
+def _thousands(n) -> str:
+    return "?" if n is None else f"{int(n):,}".replace(",", "\u202f")
+
+
 def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict, gmsl: dict[int, float],
             thermo: dict[int, float], grace_rows: list[dict], ctx_version: str, extracted_at,
             grace_meta: dict | None = None) -> Coherence:
@@ -581,7 +598,7 @@ def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict,
     crit.append(Criterion(id="B1", label="Données", satisfied=b1, detail=(
         f"V′ : {VB_SPAN[0]}-{VB_SPAN[1]}, {'aucune année manquante' if not v_miss else 'manquantes : ' + ', '.join(map(str, v_miss))}, "
         f"masque commun RSS et ERSST couvrant {_f(frac * 100, 1)} % de la bande 60° S-60° N (seuil {_f(COMMON_MIN * 100, 0)} %, "
-        f"{vapor_meta.get('common_cells', '?')} mailles de 1°) ; N′ : altimétrie et dilatation {NB_SPAN[0]}-{NB_INFO[1]} "
+        f"{_thousands(vapor_meta.get('common_cells'))} mailles de 1°) ; N′ : altimétrie et dilatation {NB_SPAN[0]}-{NB_INFO[1]} "
         f"{'complètes' if not n_miss else 'manquantes : ' + ', '.join(map(str, n_miss))}, masse GRACE {n_cov} mois sur "
         f"{n_months} en {NB_SPAN[0]}-{NB_SPAN[1]} ({_f(n_cov / n_months * 100, 0)} %, seuil {_f(MASS_MIN * 100, 0)} %)")))
 
@@ -610,9 +627,9 @@ def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict,
         result=(f"Sur le même domaine (60° S-60° N, mailles valides pour les deux jeux), la vapeur d'eau augmente de "
                 f"{beta_txt}, "
                 + ("compatible avec le taux de Clausius-Clapeyron." if b2 else f"hors de la fourchette {rng} retenue.")),
-        reference=(REFERENCES["V"] + " Fourchette conservée après le premier calcul (D-AW). Rapports publiés contre la "
-                   "température de la mer plus élevés : environ 9,9 % par K dans les tropiques pour un enregistrement "
-                   "satellite (Fu et al., préprint ESSD 2024), environ 11 % par K pour le radiomètre TMR (1992-2005)."),
+        reference=(REFERENCES["V"] + " Fourchette conservée après le premier calcul (D-AW). Rapports de tendances publiés "
+                   "contre la température de la mer plus élevés : 9,9 % par K sur 20° S-20° N (Fu et al., 2025, ESSD "
+                   "17, 4651), environ 11 % par K pour le radiomètre TMR de Topex, 1992-2005 (Keihm et al., 2009)."),
         values=[value("β, vapeur d'eau par °C de la mer (même domaine)", "% par °C", VB_SPAN,
                       est(cc.beta, cc.lo, cc.hi) if cc is not None else est(ob))],
         information=[value("β en moindres carrés, erreurs de Newey-West (B4)", "% par °C", VB_SPAN, est(ob, olo, ohi)),
@@ -676,11 +693,13 @@ def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict,
                    CoherenceLine(name="Dilatation + masse", values=[round(th_c[y] + ma_c[y], 2) if y in ma_c else None for y in yall]),
                    CoherenceLine(name="Dilatation 0-2000 m", values=[round(th_c[y], 2) for y in yall]),
                    CoherenceLine(name="Masse (GRACE)", values=[round(ma_c[y], 2) if y in ma_c else None for y in yall])],
-            note=("Séries centrées sur leur moyenne 2005-2024. Le critère porte sur les tendances de 2005-2015 ; "
-                  "2016-2024 est publié pour information. Masse : moyenne annuelle des mois désaisonnalisés, affichée "
-                  "si l'année en compte au moins 6."))],
-        limitation=("Onze ans seulement pour le critère ; l'océan sous 2000 m n'est pas mesuré ; la correction "
-                    "isostatique (0,3 mm/an) pèse sur le résultat ; le découpage en 2016 a été choisi après le premier calcul."))
+            note=("Séries centrées sur leur moyenne 2005-2024 ; la masse, sur la moyenne de ses seules années affichées "
+                  "(moyenne annuelle des mois désaisonnalisés, affichée si l'année en compte au moins 6). Le critère "
+                  "porte sur les tendances de 2005-2015 ; 2016-2024 est publié pour information."))],
+        limitation=("Onze ans seulement pour le critère, et un intervalle plus large que la tolérance : le contrôle ne "
+                    "peut que ne pas rejeter la fermeture ; l'océan sous 2000 m n'est pas mesuré ; les corrections "
+                    "isostatiques (altimétrie et GRACE) pèsent sur le résultat ; le découpage en 2016 a été choisi après le "
+                    "premier calcul."))
 
     # ---------- B4 et confiance (D-AX)
     b4 = ols_ok and b.sen_ok
@@ -693,18 +712,23 @@ def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict,
         conf, reason = "elevee", "B1 à B4 conformes (règle D-AX)."
     elif b2 or b3:
         bad = ", ".join(k for k, v in ok.items() if not v)
-        conf, reason = "moyenne", f"Un contrôle physique sur deux conforme ou critère annexe en échec ; non conforme : {bad} (règle D-AX)."
+        good = "B2" if b2 else "B3"
+        conf, reason = "moyenne", (f"{good} conforme ; non conformes : {bad}"
+                                   + (" : un contrôle recadré sur deux" if not (b2 and b3) else "")
+                                   + " (règle D-AX).")
     else:
         conf, reason = "non_etabli", "Aucun des deux contrôles recadrés n'est conforme (règle D-AX)."
-    if b2 and b3:
-        finding = ("Recadrés, les deux contrôles sont cohérents : sur un même domaine, la vapeur d'eau suit la "
-                   "température de la mer au taux de Clausius-Clapeyron, et le bilan du niveau marin se ferme avant 2016.")
-    else:
-        parts = [("la vapeur d'eau suit le taux de Clausius-Clapeyron sur un même domaine" if b2 else
-                  "la vapeur d'eau croît plus vite que 7 % par °C de la mer, même sur un même domaine"),
-                 ("le bilan du niveau marin se ferme sur 2005-2015" if b3 else
-                  "le bilan du niveau marin ne se ferme pas non plus sur 2005-2015")]
-        finding = "Recadrés après le premier calcul : " + " ; ".join(parts) + "."
+    half = max(abs(b.resid_hi - b.resid), abs(b.resid - b.resid_lo))
+    parts = [("la vapeur d'eau suit le taux de Clausius-Clapeyron sur un même domaine" if b2 else
+              "la vapeur d'eau croît plus vite que 7 % par °C de la mer, même sur un même domaine"),
+             (f"le résidu du bilan marin est dans la tolérance sur {NB_SPAN[0]}-{NB_SPAN[1]} ({_f(b.resid, 2, True)} mm/an"
+              + (f", mais son incertitude, ± {_f(half, 1)}, dépasse la tolérance)"
+                 if b.resid_lo < -RESID_MAX or b.resid_hi > RESID_MAX else ")") if b3 else
+              f"le résidu du bilan marin sort de la tolérance sur {NB_SPAN[0]}-{NB_SPAN[1]} ({_f(b.resid, 2, True)} mm/an)")
+             + (f", et {'en sort nettement' if b3 else 'aussi'} sur {NB_INFO[0]}-{NB_INFO[1]} ({_f(late.resid, 2, True)}, information)"
+                if abs(late.resid) > RESID_MAX else
+                f", et y reste sur {NB_INFO[0]}-{NB_INFO[1]} ({_f(late.resid, 2, True)}, information)")]
+    finding = "Recadrés après le premier calcul : " + " ; ".join(parts) + "."
     inputs = [
         InputSource(name=RV.SOURCE_NAME, url=RV.DIR_URL, license=RV.LICENSE,
                     note=f"fichier {vapor_meta.get('file', '?')}, masque commun avec ERSST"),

@@ -17,12 +17,12 @@ type Result = Regression | Extremes | Amplification | Coherence;
 
 export const metadata: Metadata = { title: "Démonstration" };
 
-function Criteria({ reg }: { reg: Result }) {
+function Criteria({ reg, after }: { reg: Result; after?: boolean }) {
   const ids = reg.criteria.map((c) => c.id);
   return (
     <details className="rounded-lg border border-[var(--rule)] px-4 py-3 text-sm">
       <summary className="cursor-pointer font-medium">
-        <span className="chevron">▸</span> Critères fixés avant le calcul ({ids[0]}-{ids[ids.length - 1]}) : {reg.criteria.filter((c) => c.satisfied).length}/
+        <span className="chevron">▸</span> Critères fixés avant {after ? "ce second calcul, après le premier" : "le calcul"} ({ids[0]}-{ids[ids.length - 1]}) : {reg.criteria.filter((c) => c.satisfied).length}/
         {reg.criteria.length} conformes
       </summary>
       <ul className="mt-3 space-y-2">
@@ -258,8 +258,8 @@ export default function DemonstrationPage() {
                   <p className="rounded-lg border border-[var(--warm)] px-3 py-2 text-sm leading-relaxed">
                     Contrôles recadrés <b>après</b> le premier calcul de P10.4, en connaissant son résultat : la vapeur
                     d&apos;eau est désormais comparée à la température de la mer des mêmes mailles, et le bilan du niveau
-                    marin est jugé avant 2016, année après laquelle sa non-fermeture est documentée. Les seuils n&apos;ont
-                    pas été élargis. Un succès obtenu ainsi pèse moins qu&apos;un succès prévu d&apos;avance ; le résultat
+                    marin est jugé sur la période antérieure aux difficultés instrumentales documentées dans la
+                    littérature, la suite n&apos;étant publiée que pour information. Les seuils n&apos;ont pas été élargis. Un succès obtenu ainsi pèse moins qu&apos;un succès prévu d&apos;avance ; le résultat
                     de P10.4 ci-dessus reste celui du cadrage initial.
                   </p>
                 ) : (
@@ -275,7 +275,7 @@ export default function DemonstrationPage() {
               </div>
               <CoherenceView a={x} />
               <div className="max-w-3xl space-y-3">
-                <Criteria reg={x} />
+                <Criteria reg={x} after={a.phase === "p10.4b"} />
                 <MethodAndLimits reg={x} />
               </div>
             </section>
