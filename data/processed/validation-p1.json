@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p1",
-  "generated_at": "2026-11-20T13:52:46Z",
+  "generated_at": "2026-11-20T14:21:31Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits (écarts acceptés compris).",
   "indicators": [

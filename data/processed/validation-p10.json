@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-20T13:56:14Z",
+  "generated_at": "2026-11-20T14:24:10Z",
   "closure_ok": true,
   "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
   "indicators": [
@@ -227,7 +227,7 @@
     {
       "name": "P10.4 C2 vapeur d'eau",
       "kind": "critère",
-      "status": "↪ non conforme, recadré en P10.4b (D-AV), suit B2 (❌)",
+      "status": "↪ non conforme, recadré en P10.4b (D-AV), suit B2 (☑ accepté)",
       "satisfied": true,
       "detail": "β = 9,4 % par °C [8,6 ; 10,2] (1988-2025, HadSST4, Prais-Winsten, ρ = 0,27) ; attendu : intervalle recoupant [6 ; 8], borne basse > 0"
     },
@@ -241,7 +241,7 @@
     {
       "name": "P10.4 C4 niveau marin",
       "kind": "critère",
-      "status": "↪ non conforme, recadré en P10.4b (D-AV), suit B3 (❌)",
+      "status": "↪ non conforme, recadré en P10.4b (D-AV), suit B3 (✅)",
       "satisfied": true,
       "detail": "2005-2024, moindres carrés : observé 3,64 + 0,3 = 3,94 mm/an ; dilatation 0-2000 m 1,27 ; masse 2,05 ; résidu +0,62 mm/an (information : [+0,34 ; +0,90]) ; attendu |résidu| ≤ 0,5"
     },

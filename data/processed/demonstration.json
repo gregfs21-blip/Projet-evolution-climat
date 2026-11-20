@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-20T13:52:28Z",
+ "generated_at": "2026-11-20T14:21:18Z",
  "analyses": [
   {
    "id": "regression-multiple",
@@ -5620,8 +5620,8 @@
      }
     ],
     "script": "etl/demonstration.py",
-    "etl_version": "0.1.0+b38db56",
-    "extracted_at": "2026-11-20T13:45:12Z"
+    "etl_version": "0.1.0+ef47e02",
+    "extracted_at": "2026-11-20T14:15:55Z"
    },
    "extremes": null,
    "amplification": null,
@@ -6693,8 +6693,8 @@
      }
     ],
     "script": "etl/demo_extremes.py",
-    "etl_version": "0.1.0+b38db56",
-    "extracted_at": "2026-11-20T13:45:12Z"
+    "etl_version": "0.1.0+ef47e02",
+    "extracted_at": "2026-11-20T14:15:55Z"
    },
    "amplification": null,
    "coherence": null
@@ -7843,8 +7843,8 @@
      }
     ],
     "script": "etl/demo_amplification.py",
-    "etl_version": "0.1.0+b38db56",
-    "extracted_at": "2026-11-20T13:45:12Z"
+    "etl_version": "0.1.0+ef47e02",
+    "extracted_at": "2026-11-20T14:15:55Z"
    },
    "coherence": null
   },
@@ -8982,8 +8982,8 @@
      }
     ],
     "script": "etl/demo_coherence.py",
-    "etl_version": "0.1.0+b38db56",
-    "extracted_at": "2026-11-20T13:45:12Z"
+    "etl_version": "0.1.0+ef47e02",
+    "extracted_at": "2026-11-20T14:15:55Z"
    }
   },
   {
@@ -9521,8 +9521,8 @@
      }
     ],
     "script": "etl/demo_coherence.py",
-    "etl_version": "0.1.0+b38db56",
-    "extracted_at": "2026-11-20T13:45:12Z"
+    "etl_version": "0.1.0+ef47e02",
+    "extracted_at": "2026-11-20T14:15:55Z"
    }
   },
   {
