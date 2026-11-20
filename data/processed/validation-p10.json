@@ -1,14 +1,21 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-19T18:37:58Z",
-  "closure_ok": true,
-  "verdict": "Tous les critères comptant pour la clôture sont satisfaits.",
+  "generated_at": "2026-11-20T12:02:36Z",
+  "closure_ok": false,
+  "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
+    "desequilibre-energetique-monde",
+    "niveau-mer-monde",
+    "ohc-2000-monde",
     "oni-monde",
+    "sst-hadsst-monde",
+    "sst-noaa-monde",
     "temperature-berkeley-monde",
     "temperature-gistemp-monde",
     "temperature-hadcrut5-monde",
+    "tlt-rss-monde",
+    "tlt-uah-monde",
     "tm-annuelle-gironde",
     "tm-france",
     "tx-annuelle-bordeaux-merignac"
@@ -73,9 +80,9 @@
     {
       "name": "D-AH cohérence de la synthèse",
       "kind": "critère",
-      "status": "✅ conforme",
-      "satisfied": true,
-      "detail": "analyses publiées : p10.1, p10.2, p10.3 ; la synthèse (limite-attribution, limite-projections) en tient compte"
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "analyses publiées que la synthèse ne prend pas en compte : p10.4 ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS"
     },
     {
       "name": "O9 technique",
@@ -209,6 +216,62 @@
       "status": "✅ conforme",
       "satisfied": true,
       "detail": "facteur contre les terres émergées, borne basse > 1 : France métropolitaine [1,28 ; 1,85] ; Gironde [1,27 ; 1,84] ; périodes citées dans l'affirmation (1959-2024, 1953-2024) présentes"
+    },
+    {
+      "name": "P10.4 C1 données",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "V : 1988-2025, aucune année manquante, masque constant couvrant 65,1 % de la bande 60° S-60° N (seuil 50 %) ; S : 1979-2025, séries complètes ; N : altimétrie et dilatation 2005-2024 complètes, masse GRACE 206 mois sur 240 (86 %, seuil 80 %, D-AU) ; E : déséquilibre 2006-2024 et contenu thermique 2005-2025 complets"
+    },
+    {
+      "name": "P10.4 C2 vapeur d'eau",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "β = 9,4 % par °C [8,6 ; 10,2] (1988-2025, HadSST4, Prais-Winsten, ρ = 0,27) ; attendu : intervalle recoupant [6 ; 8], borne basse > 0"
+    },
+    {
+      "name": "P10.4 C3 stratosphère",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "RSS 4.0 : TLT +0,229 °C/déc. [+0,198 ; +0,267], TLS −0,140 °C/déc. [−0,193 ; −0,097] ; UAH 6.1 : TLT +0,148 °C/déc. [+0,115 ; +0,184], TLS −0,196 °C/déc. [−0,254 ; −0,152] (Sen, 1979-2025) ; attendu : TLT borne basse > 0 et TLS borne haute < 0"
+    },
+    {
+      "name": "P10.4 C4 niveau marin",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "2005-2024, moindres carrés : observé 3,64 + 0,3 = 3,94 mm/an ; dilatation 0-2000 m 1,27 ; masse 2,05 ; résidu +0,62 mm/an (information : [+0,34 ; +0,90]) ; attendu |résidu| ≤ 0,5"
+    },
+    {
+      "name": "P10.4 C5 énergie",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "2006-2024, Prais-Winsten : déséquilibre CERES +0,50 W/m² par décennie [+0,25 ; +0,74] ; flux de chaleur dans l'océan 0-2000 m +0,15 [−0,19 ; +0,49] ; attendu : deux valeurs positives, intervalles qui se recoupent"
+    },
+    {
+      "name": "P10.4 C6 robustesse",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "C2 avec la température de mer NOAA : Prais-Winsten : ρ ne converge pas ; pour information, moindres carrés et erreurs de Newey-West : β = 9,9 % par °C [9,0 ; 10,9] (non conforme) ; C4 avec les pentes de Sen : résidu +0,63 mm/an (non conforme) ; C5 avec le flux lissé sur 3 ans (2007-2023) : CERES +0,60 [+0,28 ; +0,92], océan +0,17 [−0,19 ; +0,54] (conforme)"
+    },
+    {
+      "name": "P10.4 C7 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests (etl/tests/test_p10d.py), contrat et construction de l'onglet vérifiés par la CI."
+    },
+    {
+      "name": "Confiance P10.4 (règle D-AT)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "non_etabli — 2 contrôles physiques sur 4 conformes seulement (règle D-AT)."
     }
   ]
 }

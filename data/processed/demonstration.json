@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-19T18:35:24Z",
+ "generated_at": "2026-11-20T11:59:14Z",
  "analyses": [
   {
    "id": "regression-multiple",
@@ -5620,11 +5620,12 @@
      }
     ],
     "script": "etl/demonstration.py",
-    "etl_version": "0.1.0+369fa34",
-    "extracted_at": "2026-11-19T18:27:34Z"
+    "etl_version": "0.1.0+7ded5bf",
+    "extracted_at": "2026-11-20T11:53:12Z"
    },
    "extremes": null,
-   "amplification": null
+   "amplification": null,
+   "coherence": null
   },
   {
    "id": "extremes-gironde",
@@ -6692,10 +6693,11 @@
      }
     ],
     "script": "etl/demo_extremes.py",
-    "etl_version": "0.1.0+369fa34",
-    "extracted_at": "2026-11-19T18:27:34Z"
+    "etl_version": "0.1.0+7ded5bf",
+    "extracted_at": "2026-11-20T11:53:12Z"
    },
-   "amplification": null
+   "amplification": null,
+   "coherence": null
   },
   {
    "id": "amplification-regionale",
@@ -7841,19 +7843,1147 @@
      }
     ],
     "script": "etl/demo_amplification.py",
-    "etl_version": "0.1.0+369fa34",
-    "extracted_at": "2026-11-19T18:27:34Z"
-   }
+    "etl_version": "0.1.0+7ded5bf",
+    "extracted_at": "2026-11-20T11:53:12Z"
+   },
+   "coherence": null
   },
   {
    "id": "coherence-physique",
    "phase": "p10.4",
-   "title": "Cohérence physique",
-   "question": "Les variables évoluent-elles comme la physique le prévoit (humidité, niveau marin, stratosphère) ?",
-   "status": "prevu",
+   "title": "Les mesures indépendantes racontent-elles la même physique ?",
+   "question": "Les grandeurs mesurées indépendamment évoluent-elles comme la physique l'impose ?",
+   "status": "publie",
    "regression": null,
    "extremes": null,
-   "amplification": null
+   "amplification": null,
+   "coherence": {
+    "question": "Les grandeurs mesurées indépendamment évoluent-elles comme la physique l'impose ?",
+    "model": "Quatre contrôles : vapeur d'eau contre température de mer (Clausius-Clapeyron) ; basse troposphère contre basse stratosphère ; niveau marin contre dilatation plus masse ajoutée ; déséquilibre énergétique contre chaleur entrant dans l'océan.",
+    "finding": "Deux des quatre contrôles physiques sont cohérents (troposphère contre stratosphère, déséquilibre énergétique contre chaleur de l'océan) ; écart pour : vapeur d'eau et température, bilan du niveau marin.",
+    "confidence": "non_etabli",
+    "confidence_reason": "2 contrôles physiques sur 4 conformes seulement (règle D-AT).",
+    "method_note": "Critères, seuils et périodes fixés avant tout calcul (décisions D-AS à D-AU du 20/11/2026). Les séries déjà publiées sur le site sont relues telles quelles ; les nouvelles sont relevées chez leur producteur. Tendances de Sen (stratosphère), moindres carrés (bilan marin, D-AU), régression à erreurs AR(1) de Prais-Winsten (vapeur d'eau, énergie) ; intervalles à 95 %.",
+    "limitations": [
+     "Cohérence n'est pas attribution : ces contrôles vérifient que les mesures s'accordent entre elles, pas ce qui cause le réchauffement (voir P10.1).",
+     "Océans sans glace seulement (pas de mesure micro-onde sur les continents) ; la température est la moyenne mondiale de la mer, la vapeur celle de 60° S-60° N.",
+     "Un signe attendu d'avance : ce contrôle vérifie surtout les données. Le refroidissement de la stratosphère vient pour beaucoup de la perte d'ozone, et en partie du CO₂ ; il ne les sépare pas.",
+     "L'océan sous 2000 m n'est pas mesuré (environ 0,1 mm/an) ; le résultat dépend de la correction isostatique retenue (0,3 mm/an) ; les intervalles supposent les trois mesures indépendantes.",
+     "Vingt ans seulement : le flux océanique, obtenu par différence, est bruité ; l'océan sous 2000 m, la fonte des glaces et le réchauffement des terres (environ 10 % de l'excédent) ne sont pas comptés."
+    ],
+    "inputs": [
+     {
+      "name": "Remote Sensing Systems — RSS V7, vapeur d'eau intégrée sur les océans (SSM/I, SSMIS, AMSR, WindSat)",
+      "url": "https://data.remss.com/vapor/monthly_1deg/",
+      "license": "CC BY 4.0 (RSS)",
+      "note": "fichier merged_vapor_1988-2025.nc, masque constant 60° S-60° N"
+     },
+     {
+      "name": "Remote Sensing Systems — RSS 4.0, température de la basse stratosphère (satellites)",
+      "url": "https://data.remss.com/msu/graphics/TLS_v40/time_series/RSS_TS_channel_TLS_Global_Land_And_Sea_v04_0.txt",
+      "license": "CC BY 4.0 (RSS)",
+      "note": null
+     },
+     {
+      "name": "University of Alabama in Huntsville — UAH 6.1, température de la basse stratosphère (satellites)",
+      "url": "https://www.nsstc.uah.edu/data/msu/v6.1/tls/uahncdc_ls_6.1.txt",
+      "license": "Libre (UAH)",
+      "note": null
+     },
+     {
+      "name": "NOAA NCEI — niveau marin thermostérique de l'océan mondial, 0-2000 m",
+      "url": "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/yearly_sl/a-mm-w0-2000m.dat",
+      "license": "Domaine public (NOAA)",
+      "note": null
+     },
+     {
+      "name": "NASA JPL — GRACE et GRACE-FO, mascons RL06.3Mv4, masse de l'océan mondial (Wiese et al., 2022)",
+      "url": "https://podaac.jpl.nasa.gov/dataset/OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4",
+      "license": "Domaine public (NASA), citation demandée",
+      "note": "ocean_mass_200204_202609"
+     },
+     {
+      "name": "Température de surface de la mer HadSST4, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde/sst-hadsst-monde",
+      "license": "voir la page de l'indicateur",
+      "note": null
+     },
+     {
+      "name": "Température de surface de la mer NOAA, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde/sst-noaa-monde",
+      "license": "voir la page de l'indicateur",
+      "note": null
+     },
+     {
+      "name": "Basse troposphère RSS, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde/tlt-rss-monde",
+      "license": "voir la page de l'indicateur",
+      "note": null
+     },
+     {
+      "name": "Basse troposphère UAH, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde/tlt-uah-monde",
+      "license": "voir la page de l'indicateur",
+      "note": null
+     },
+     {
+      "name": "Niveau moyen de la mer NOAA STAR, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde/niveau-mer-monde",
+      "license": "voir la page de l'indicateur",
+      "note": null
+     },
+     {
+      "name": "Contenu thermique de l'océan 0-2000 m NOAA NCEI, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde/ohc-2000-monde",
+      "license": "voir la page de l'indicateur",
+      "note": null
+     },
+     {
+      "name": "Déséquilibre énergétique CERES EBAF, telle que publiée sur le site",
+      "url": "https://projet-evolution-climat.vercel.app/monde/desequilibre-energetique-monde",
+      "license": "voir la page de l'indicateur",
+      "note": null
+     }
+    ],
+    "checks": [
+     {
+      "id": "vapeur",
+      "letter": "V",
+      "title": "Vapeur d'eau et température (Clausius-Clapeyron)",
+      "question": "L'atmosphère au-dessus des océans contient-elle environ 7 % de vapeur d'eau en plus par degré ?",
+      "criterion": "C2",
+      "satisfied": false,
+      "result": "La vapeur d'eau au-dessus des océans augmente de 9,4 % par °C de température de mer (intervalle à 95 % : 8,6 à 10,2), hors du taux de Clausius-Clapeyron.",
+      "reference": "R-B1 : la capacité de l'air à contenir de la vapeur d'eau croît d'environ 7 % par °C (Clausius-Clapeyron) ; la vapeur d'eau intégrée observée suit ce taux (GIEC AR6 GT1, ch. 2) ; fourchette retenue 6 à 8 % par °C.",
+      "values": [
+       {
+        "label": "β, vapeur d'eau par °C (HadSST4)",
+        "unit": "% par °C",
+        "period": {
+         "start": 1988,
+         "end": 2025
+        },
+        "estimate": {
+         "value": 9.4023,
+         "ci_low": 8.5792,
+         "ci_high": 10.2253
+        }
+       }
+      ],
+      "information": [
+       {
+        "label": "β avec la température de mer NOAA, moindres carrés (C6 : Prais-Winsten ne converge pas)",
+        "unit": "% par °C",
+        "period": {
+         "start": 1988,
+         "end": 2025
+        },
+        "estimate": {
+         "value": 9.9103,
+         "ci_low": 8.9533,
+         "ci_high": 10.8672
+        }
+       },
+       {
+        "label": "Part de la variance expliquée",
+        "unit": "%",
+        "period": {
+         "start": 1988,
+         "end": 2025
+        },
+        "estimate": {
+         "value": 95.6887,
+         "ci_low": null,
+         "ci_high": null
+        }
+       }
+      ],
+      "charts": [
+       {
+        "title": "Vapeur d'eau observée et taux de Clausius-Clapeyron (1988-2025)",
+        "unit": "%",
+        "years": [
+         1988,
+         1989,
+         1990,
+         1991,
+         1992,
+         1993,
+         1994,
+         1995,
+         1996,
+         1997,
+         1998,
+         1999,
+         2000,
+         2001,
+         2002,
+         2003,
+         2004,
+         2005,
+         2006,
+         2007,
+         2008,
+         2009,
+         2010,
+         2011,
+         2012,
+         2013,
+         2014,
+         2015,
+         2016,
+         2017,
+         2018,
+         2019,
+         2020,
+         2021,
+         2022,
+         2023,
+         2024,
+         2025
+        ],
+        "lines": [
+         {
+          "name": "Vapeur d'eau RSS (écart à la moyenne)",
+          "values": [
+           -2.407,
+           -3.621,
+           -1.824,
+           -1.897,
+           -2.478,
+           -2.439,
+           -1.939,
+           -1.676,
+           -2.205,
+           -0.329,
+           0.614,
+           -1.804,
+           -1.621,
+           -0.258,
+           0.325,
+           -0.223,
+           -0.207,
+           0.003,
+           -0.277,
+           -0.635,
+           -1.446,
+           0.291,
+           0.569,
+           -0.926,
+           -0.297,
+           0.123,
+           0.765,
+           2.747,
+           2.736,
+           1.711,
+           1.037,
+           2.189,
+           2.23,
+           0.912,
+           0.375,
+           3.863,
+           5.064,
+           2.955
+          ]
+         },
+         {
+          "name": "7 % par °C de la température de mer HadSST4",
+          "values": [
+           -1.838,
+           -2.129,
+           -1.24,
+           -1.372,
+           -2.051,
+           -1.841,
+           -1.564,
+           -1.172,
+           -1.601,
+           -0.331,
+           0.285,
+           -1.362,
+           -1.329,
+           -0.554,
+           -0.261,
+           -0.079,
+           -0.224,
+           -0.144,
+           -0.304,
+           -0.761,
+           -0.945,
+           0.104,
+           0.133,
+           -0.613,
+           -0.118,
+           0.059,
+           0.772,
+           1.654,
+           1.784,
+           1.25,
+           0.992,
+           1.634,
+           1.599,
+           1.069,
+           1.435,
+           3.171,
+           3.333,
+           2.557
+          ]
+         }
+        ],
+        "note": "Écarts à la moyenne 1988-2025 : vapeur d'eau en %, température de mer convertie au taux théorique de 7 % par °C. Si la physique est respectée, les deux courbes se superposent, y compris pendant les épisodes El Niño (1998, 2016, 2024)."
+       }
+      ],
+      "limitation": "Océans sans glace seulement (pas de mesure micro-onde sur les continents) ; la température est la moyenne mondiale de la mer, la vapeur celle de 60° S-60° N."
+     },
+     {
+      "id": "stratosphere",
+      "letter": "S",
+      "title": "Troposphère contre stratosphère",
+      "question": "La basse troposphère se réchauffe-t-elle pendant que la basse stratosphère se refroidit ?",
+      "criterion": "C3",
+      "satisfied": true,
+      "result": "Sur 1979-2025, la basse troposphère se réchauffe (+0,23 °C par décennie selon RSS, +0,15 selon UAH) et la basse stratosphère se refroidit (−0,14 et −0,20), comme prévu.",
+      "reference": "R-B2 : basse stratosphère refroidie depuis le milieu du XXe siècle, « pratiquement certain », stable depuis le milieu des années 1990 ; troposphère réchauffée (GIEC AR6 GT1, ch. 2).",
+      "values": [
+       {
+        "label": "TLT RSS 4.0",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1979,
+         "end": 2025
+        },
+        "estimate": {
+         "value": 0.2286,
+         "ci_low": 0.198,
+         "ci_high": 0.2667
+        }
+       },
+       {
+        "label": "TLS RSS 4.0",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1979,
+         "end": 2025
+        },
+        "estimate": {
+         "value": -0.14,
+         "ci_low": -0.1933,
+         "ci_high": -0.0965
+        }
+       },
+       {
+        "label": "TLT UAH 6.1",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1979,
+         "end": 2025
+        },
+        "estimate": {
+         "value": 0.148,
+         "ci_low": 0.1152,
+         "ci_high": 0.1843
+        }
+       },
+       {
+        "label": "TLS UAH 6.1",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1979,
+         "end": 2025
+        },
+        "estimate": {
+         "value": -0.1955,
+         "ci_low": -0.2539,
+         "ci_high": -0.1517
+        }
+       }
+      ],
+      "information": [
+       {
+        "label": "TLS RSS 4.0, 1979-1997",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1979,
+         "end": 1997
+        },
+        "estimate": {
+         "value": -0.4144,
+         "ci_low": -0.7,
+         "ci_high": -0.24
+        }
+       },
+       {
+        "label": "TLS RSS 4.0, 1998-2025",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1998,
+         "end": 2025
+        },
+        "estimate": {
+         "value": -0.055,
+         "ci_low": -0.0963,
+         "ci_high": -0.0133
+        }
+       },
+       {
+        "label": "TLS UAH 6.1, 1979-1997",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1979,
+         "end": 1997
+        },
+        "estimate": {
+         "value": -0.4889,
+         "ci_low": -0.819,
+         "ci_high": -0.2757
+        }
+       },
+       {
+        "label": "TLS UAH 6.1, 1998-2025",
+        "unit": "°C par décennie",
+        "period": {
+         "start": 1998,
+         "end": 2025
+        },
+        "estimate": {
+         "value": -0.0956,
+         "ci_low": -0.1408,
+         "ci_high": -0.0567
+        }
+       }
+      ],
+      "charts": [
+       {
+        "title": "Basse troposphère et basse stratosphère (1979-2025)",
+        "unit": "°C",
+        "years": [
+         1979,
+         1980,
+         1981,
+         1982,
+         1983,
+         1984,
+         1985,
+         1986,
+         1987,
+         1988,
+         1989,
+         1990,
+         1991,
+         1992,
+         1993,
+         1994,
+         1995,
+         1996,
+         1997,
+         1998,
+         1999,
+         2000,
+         2001,
+         2002,
+         2003,
+         2004,
+         2005,
+         2006,
+         2007,
+         2008,
+         2009,
+         2010,
+         2011,
+         2012,
+         2013,
+         2014,
+         2015,
+         2016,
+         2017,
+         2018,
+         2019,
+         2020,
+         2021,
+         2022,
+         2023,
+         2024,
+         2025
+        ],
+        "lines": [
+         {
+          "name": "TLT RSS 4.0",
+          "values": [
+           -0.14,
+           0.013,
+           -0.002,
+           -0.203,
+           0.028,
+           -0.235,
+           -0.29,
+           -0.173,
+           0.123,
+           0.091,
+           -0.112,
+           0.064,
+           0.111,
+           -0.162,
+           -0.099,
+           0.037,
+           0.179,
+           0.078,
+           0.113,
+           0.58,
+           0.114,
+           0.108,
+           0.276,
+           0.389,
+           0.403,
+           0.332,
+           0.465,
+           0.374,
+           0.409,
+           0.201,
+           0.363,
+           0.608,
+           0.281,
+           0.347,
+           0.424,
+           0.481,
+           0.614,
+           0.814,
+           0.686,
+           0.547,
+           0.755,
+           0.817,
+           0.624,
+           0.611,
+           0.908,
+           1.218,
+           0.928
+          ]
+         },
+         {
+          "name": "TLT UAH 6.1",
+          "values": [
+           -0.343,
+           -0.179,
+           -0.248,
+           -0.432,
+           -0.177,
+           -0.375,
+           -0.498,
+           -0.354,
+           -0.088,
+           -0.097,
+           -0.344,
+           -0.123,
+           -0.117,
+           -0.417,
+           -0.339,
+           -0.202,
+           -0.065,
+           -0.145,
+           -0.143,
+           0.347,
+           -0.152,
+           -0.158,
+           -0.023,
+           0.081,
+           0.051,
+           -0.054,
+           0.063,
+           -0.023,
+           0.024,
+           -0.238,
+           -0.042,
+           0.194,
+           -0.119,
+           -0.083,
+           0.001,
+           0.045,
+           0.136,
+           0.389,
+           0.265,
+           0.088,
+           0.293,
+           0.346,
+           0.133,
+           0.145,
+           0.425,
+           0.768,
+           0.469
+          ]
+         },
+         {
+          "name": "TLS RSS 4.0",
+          "values": [
+           0.306,
+           0.252,
+           0.211,
+           0.739,
+           0.651,
+           -0.059,
+           -0.23,
+           -0.174,
+           -0.209,
+           -0.158,
+           -0.036,
+           -0.054,
+           0.438,
+           0.778,
+           -0.126,
+           -0.376,
+           -0.478,
+           -0.582,
+           -0.461,
+           -0.431,
+           -0.438,
+           -0.511,
+           -0.34,
+           -0.28,
+           -0.353,
+           -0.394,
+           -0.507,
+           -0.508,
+           -0.499,
+           -0.569,
+           -0.472,
+           -0.337,
+           -0.53,
+           -0.576,
+           -0.373,
+           -0.381,
+           -0.377,
+           -0.657,
+           -0.485,
+           -0.547,
+           -0.534,
+           -0.457,
+           -0.521,
+           -0.59,
+           -0.531,
+           -0.457,
+           -0.618
+          ]
+         },
+         {
+          "name": "TLS UAH 6.1",
+          "values": [
+           0.937,
+           0.833,
+           0.735,
+           1.248,
+           1.162,
+           0.452,
+           0.288,
+           0.336,
+           0.293,
+           0.33,
+           0.43,
+           0.415,
+           0.892,
+           1.233,
+           0.343,
+           0.1,
+           -0.038,
+           -0.147,
+           -0.037,
+           -0.014,
+           -0.035,
+           -0.108,
+           0.061,
+           0.118,
+           0.045,
+           -0.01,
+           -0.128,
+           -0.133,
+           -0.144,
+           -0.212,
+           -0.131,
+           -0.006,
+           -0.17,
+           -0.236,
+           -0.038,
+           -0.042,
+           -0.023,
+           -0.308,
+           -0.193,
+           -0.25,
+           -0.244,
+           -0.142,
+           -0.208,
+           -0.283,
+           -0.23,
+           -0.18,
+           -0.314
+          ]
+         }
+        ],
+        "note": "Anomalies annuelles publiées par chaque producteur (périodes de référence propres). Les pics de la stratosphère en 1982-1983 et 1991-1992 sont les éruptions d'El Chichón et du Pinatubo, dont les aérosols absorbent le rayonnement."
+       }
+      ],
+      "limitation": "Un signe attendu d'avance : ce contrôle vérifie surtout les données. Le refroidissement de la stratosphère vient pour beaucoup de la perte d'ozone, et en partie du CO₂ ; il ne les sépare pas."
+     },
+     {
+      "id": "niveau-marin",
+      "letter": "N",
+      "title": "Bilan du niveau marin",
+      "question": "La hausse mesurée par satellite est-elle la somme de la dilatation de l'eau et de l'eau ajoutée ?",
+      "criterion": "C4",
+      "satisfied": false,
+      "result": "Sur 2005-2024, la mer monte de 3,9 mm par an (altimétrie corrigée de l'ajustement isostatique) ; la dilatation de l'eau (0-2000 m) en explique 1,3 et l'eau ajoutée à l'océan, pesée par GRACE, 2,0. Il reste +0,62 mm par an non expliqués, hors de la tolérance de ± 0,5 mm par an.",
+      "reference": "R-B3 : niveau marin 1993-2018 3,1 ± 0,3 mm/an, budget fermé à 0,3 mm/an près (1 σ) ; dilatation 42 %, glaciers 21 %, Groenland 15 %, Antarctique 8 % (WCRP Global Sea Level Budget Group, ESSD 10, 1551, 2018).",
+      "values": [
+       {
+        "label": "Résidu observé − (dilatation + masse)",
+        "unit": "mm/an",
+        "period": {
+         "start": 2005,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 0.6196,
+         "ci_low": 0.3376,
+         "ci_high": 0.9017
+        }
+       }
+      ],
+      "information": [
+       {
+        "label": "Niveau observé + 0,3 (ajustement isostatique)",
+        "unit": "mm/an",
+        "period": {
+         "start": 2005,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 3.944,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Dilatation thermique 0-2000 m (NCEI)",
+        "unit": "mm/an",
+        "period": {
+         "start": 2005,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 1.2744,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Masse de l'océan (GRACE, JPL)",
+        "unit": "mm/an",
+        "period": {
+         "start": 2005,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 2.05,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Part de la dilatation",
+        "unit": "%",
+        "period": {
+         "start": 2005,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 32.3125,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Part de la masse",
+        "unit": "%",
+        "period": {
+         "start": 2005,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 51.9772,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Résidu avec les pentes de Sen (C6)",
+        "unit": "mm/an",
+        "period": {
+         "start": 2005,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 0.634,
+         "ci_low": null,
+         "ci_high": null
+        }
+       }
+      ],
+      "charts": [
+       {
+        "title": "Niveau marin observé et ses deux composantes (2005-2024)",
+        "unit": "mm",
+        "years": [
+         2005,
+         2006,
+         2007,
+         2008,
+         2009,
+         2010,
+         2011,
+         2012,
+         2013,
+         2014,
+         2015,
+         2016,
+         2017,
+         2018,
+         2019,
+         2020,
+         2021,
+         2022,
+         2023,
+         2024
+        ],
+        "lines": [
+         {
+          "name": "Observé + ajustement isostatique",
+          "values": [
+           -32.75,
+           -29.96,
+           -29.74,
+           -25.41,
+           -21.55,
+           -19.84,
+           -21.22,
+           -10.56,
+           -7.91,
+           -4.72,
+           4.25,
+           7.74,
+           8.97,
+           12.03,
+           18.72,
+           21.7,
+           26.4,
+           29.32,
+           35.42,
+           39.12
+          ]
+         },
+         {
+          "name": "Dilatation + masse",
+          "values": [
+           -29.39,
+           -25.8,
+           -24.95,
+           -21.82,
+           -19.23,
+           -15.13,
+           -15.89,
+           -8.79,
+           -3.65,
+           -1.37,
+           7.22,
+           8.34,
+           null,
+           null,
+           18.3,
+           18.22,
+           21.98,
+           24.21,
+           28.57,
+           31.15
+          ]
+         },
+         {
+          "name": "Dilatation 0-2000 m",
+          "values": [
+           -11.26,
+           -8.91,
+           -9.1,
+           -8.11,
+           -7.64,
+           -6.56,
+           -6.61,
+           -4.8,
+           -2.17,
+           -0.31,
+           2.1,
+           0.43,
+           3.85,
+           4.18,
+           6.65,
+           6.35,
+           8.18,
+           9.61,
+           11.51,
+           12.61
+          ]
+         },
+         {
+          "name": "Masse (GRACE)",
+          "values": [
+           -18.14,
+           -16.88,
+           -15.85,
+           -13.7,
+           -11.59,
+           -8.57,
+           -9.28,
+           -3.99,
+           -1.49,
+           -1.06,
+           5.12,
+           7.91,
+           null,
+           null,
+           11.66,
+           11.87,
+           13.8,
+           14.59,
+           17.05,
+           18.54
+          ]
+         }
+        ],
+        "note": "Chaque série est centrée sur sa propre moyenne (seules les variations comptent). Masse : moyenne annuelle des mois désaisonnalisés par JPL, affichée si l'année en compte au moins 6 ; le trou GRACE / GRACE-FO (juillet 2017 à mai 2018) laisse 2017 et 2018 vides ou partielles. Le bilan lui-même porte sur les tendances calculées sur tous les mois disponibles (D-AU)."
+       }
+      ],
+      "limitation": "L'océan sous 2000 m n'est pas mesuré (environ 0,1 mm/an) ; le résultat dépend de la correction isostatique retenue (0,3 mm/an) ; les intervalles supposent les trois mesures indépendantes."
+     },
+     {
+      "id": "energie",
+      "letter": "E",
+      "title": "Déséquilibre énergétique contre chaleur de l'océan",
+      "question": "L'énergie en excès mesurée au sommet de l'atmosphère se retrouve-t-elle dans l'océan ?",
+      "criterion": "C5",
+      "satisfied": true,
+      "result": "Sur 2006-2024, le déséquilibre mesuré par satellite augmente de +0,50 W/m² par décennie et le flux de chaleur entrant dans l'océan de +0,15 : les deux hausses sont compatibles.",
+      "reference": "R-B4 : hausse du déséquilibre de 0,50 ± 0,47 W/m² par décennie sur 2005-2019, indiscernable entre satellites et mesures in situ (Loeb et al., 2021, GRL 48) ; environ 91 % de l'excédent réchauffe l'océan (GIEC AR6).",
+      "values": [
+       {
+        "label": "Déséquilibre CERES",
+        "unit": "W/m² par décennie",
+        "period": {
+         "start": 2006,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 0.4954,
+         "ci_low": 0.2497,
+         "ci_high": 0.7412
+        }
+       },
+       {
+        "label": "Flux de chaleur dans l'océan 0-2000 m",
+        "unit": "W/m² par décennie",
+        "period": {
+         "start": 2006,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 0.1511,
+         "ci_low": -0.1921,
+         "ci_high": 0.4943
+        }
+       }
+      ],
+      "information": [
+       {
+        "label": "Déséquilibre CERES, moyenne",
+        "unit": "W/m²",
+        "period": {
+         "start": 2006,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 0.9888,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Flux océanique 0-2000 m, moyenne",
+        "unit": "W/m²",
+        "period": {
+         "start": 2006,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 0.6546,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Rapport des moyennes (non indépendant)",
+        "unit": "%",
+        "period": {
+         "start": 2006,
+         "end": 2024
+        },
+        "estimate": {
+         "value": 66.1991,
+         "ci_low": null,
+         "ci_high": null
+        }
+       },
+       {
+        "label": "Flux océanique lissé sur 3 ans (C6), 2007-2023",
+        "unit": "W/m² par décennie",
+        "period": {
+         "start": 2007,
+         "end": 2023
+        },
+        "estimate": {
+         "value": 0.1727,
+         "ci_low": -0.1913,
+         "ci_high": 0.5367
+        }
+       },
+       {
+        "label": "Déséquilibre CERES (C6), 2007-2023",
+        "unit": "W/m² par décennie",
+        "period": {
+         "start": 2007,
+         "end": 2023
+        },
+        "estimate": {
+         "value": 0.6016,
+         "ci_low": 0.279,
+         "ci_high": 0.9241
+        }
+       }
+      ],
+      "charts": [
+       {
+        "title": "Énergie reçue en excès et chaleur entrant dans l'océan (2006-2024)",
+        "unit": "W/m²",
+        "years": [
+         2006,
+         2007,
+         2008,
+         2009,
+         2010,
+         2011,
+         2012,
+         2013,
+         2014,
+         2015,
+         2016,
+         2017,
+         2018,
+         2019,
+         2020,
+         2021,
+         2022,
+         2023,
+         2024
+        ],
+        "lines": [
+         {
+          "name": "Déséquilibre au sommet de l'atmosphère (CERES)",
+          "values": [
+           0.813,
+           0.196,
+           1.198,
+           0.903,
+           0.021,
+           0.726,
+           1.383,
+           0.587,
+           0.856,
+           1.092,
+           0.947,
+           0.947,
+           1.366,
+           1.351,
+           0.734,
+           1.511,
+           1.501,
+           1.84,
+           0.818
+          ]
+         },
+         {
+          "name": "Flux de chaleur dans l'océan 0-2000 m",
+          "values": [
+           0.691,
+           0.192,
+           0.322,
+           0.398,
+           0.61,
+           0.513,
+           1.011,
+           1.219,
+           1.165,
+           0.214,
+           0.369,
+           1.013,
+           0.574,
+           0.455,
+           0.573,
+           0.828,
+           0.603,
+           0.66,
+           1.029
+          ]
+         }
+        ],
+        "note": "Les deux grandeurs sont rapportées à toute la surface de la Terre. Le niveau moyen de CERES est calé sur la chaleur de l'océan mesurée par Argo : seules les variations sont une comparaison indépendante. Le flux océanique est la différence centrée du contenu thermique annuel."
+       }
+      ],
+      "limitation": "Vingt ans seulement : le flux océanique, obtenu par différence, est bruité ; l'océan sous 2000 m, la fonte des glaces et le réchauffement des terres (environ 10 % de l'excédent) ne sont pas comptés."
+     }
+    ],
+    "criteria": [
+     {
+      "id": "C1",
+      "label": "Données",
+      "satisfied": true,
+      "detail": "V : 1988-2025, aucune année manquante, masque constant couvrant 65,1 % de la bande 60° S-60° N (seuil 50 %) ; S : 1979-2025, séries complètes ; N : altimétrie et dilatation 2005-2024 complètes, masse GRACE 206 mois sur 240 (86 %, seuil 80 %, D-AU) ; E : déséquilibre 2006-2024 et contenu thermique 2005-2025 complets"
+     },
+     {
+      "id": "C2",
+      "label": "Vapeur d'eau",
+      "satisfied": false,
+      "detail": "β = 9,4 % par °C [8,6 ; 10,2] (1988-2025, HadSST4, Prais-Winsten, ρ = 0,27) ; attendu : intervalle recoupant [6 ; 8], borne basse > 0"
+     },
+     {
+      "id": "C3",
+      "label": "Stratosphère",
+      "satisfied": true,
+      "detail": "RSS 4.0 : TLT +0,229 °C/déc. [+0,198 ; +0,267], TLS −0,140 °C/déc. [−0,193 ; −0,097] ; UAH 6.1 : TLT +0,148 °C/déc. [+0,115 ; +0,184], TLS −0,196 °C/déc. [−0,254 ; −0,152] (Sen, 1979-2025) ; attendu : TLT borne basse > 0 et TLS borne haute < 0"
+     },
+     {
+      "id": "C4",
+      "label": "Niveau marin",
+      "satisfied": false,
+      "detail": "2005-2024, moindres carrés : observé 3,64 + 0,3 = 3,94 mm/an ; dilatation 0-2000 m 1,27 ; masse 2,05 ; résidu +0,62 mm/an (information : [+0,34 ; +0,90]) ; attendu |résidu| ≤ 0,5"
+     },
+     {
+      "id": "C5",
+      "label": "Énergie",
+      "satisfied": true,
+      "detail": "2006-2024, Prais-Winsten : déséquilibre CERES +0,50 W/m² par décennie [+0,25 ; +0,74] ; flux de chaleur dans l'océan 0-2000 m +0,15 [−0,19 ; +0,49] ; attendu : deux valeurs positives, intervalles qui se recoupent"
+     },
+     {
+      "id": "C6",
+      "label": "Robustesse",
+      "satisfied": false,
+      "detail": "C2 avec la température de mer NOAA : Prais-Winsten : ρ ne converge pas ; pour information, moindres carrés et erreurs de Newey-West : β = 9,9 % par °C [9,0 ; 10,9] (non conforme) ; C4 avec les pentes de Sen : résidu +0,63 mm/an (non conforme) ; C5 avec le flux lissé sur 3 ans (2007-2023) : CERES +0,60 [+0,28 ; +0,92], océan +0,17 [−0,19 ; +0,54] (conforme)"
+     }
+    ],
+    "script": "etl/demo_coherence.py",
+    "etl_version": "0.1.0+7ded5bf",
+    "extracted_at": "2026-11-20T11:53:12Z"
+   }
   },
   {
    "id": "modele-energetique",
@@ -7863,7 +8993,8 @@
    "status": "prevu",
    "regression": null,
    "extremes": null,
-   "amplification": null
+   "amplification": null,
+   "coherence": null
   }
  ]
 }
