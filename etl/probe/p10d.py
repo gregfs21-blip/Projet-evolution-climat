@@ -209,11 +209,63 @@ def third() -> list[str]:
     return out
 
 
+def fourth() -> list[str]:
+    import os
+    import tempfile
+    out = ["## 6. Quatrième passage", ""]
+    st, data = get("https://data.remss.com/vapor/monthly_1deg/")
+    hs = hrefs(data)
+    out += ["**RSS vapeur, tous les liens de monthly_1deg**", "```"] + hs + ["```", ""]
+    for h in hs:
+        if not h.endswith("/") and "error" not in h:
+            f = urllib.request.urljoin("https://data.remss.com/", h)
+            st2, d2 = get(f)
+            out += [f"Fichier {f} : {st2} ; {len(d2)} o", ""] + (head_tail(d2) if d2 and not f.endswith(".nc") else [])
+    token = os.environ.get("EARTHDATA_TOKEN", "")
+    for short in ("OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4", "GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4",
+                  "ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4"):
+        url = (f"https://cmr.earthdata.nasa.gov/search/granules.json?short_name={short}&page_size=3"
+               "&sort_key=-start_date")
+        st, data = get(url)
+        out += [f"**CMR, {short}**", f"Statut : {st}"]
+        if not data:
+            continue
+        entries = json.loads(data)["feed"]["entry"]
+        links_ = [lk["href"] for e in entries[:1] for lk in e.get("links", []) if lk.get("href", "").startswith("https")
+                  and "data#" in lk.get("rel", "")]
+        out += ["```"] + [f"{e.get('title')} {e.get('time_start')} {e.get('time_end')}" for e in entries] + links_ + ["```"]
+        for href in links_[:1]:
+            try:
+                req = urllib.request.Request(href, headers={**UA, "Authorization": f"Bearer {token}"})
+                with urllib.request.urlopen(req, timeout=180) as r:
+                    d = r.read(5_000_000)
+                out += [f"Téléchargement avec jeton : {len(d)} o", ""] + head_tail(d)
+            except Exception as exc:  # noqa: BLE001
+                out += [f"Téléchargement avec jeton : échec {type(exc).__name__} {str(exc)[:200]}", ""]
+    for name, url in (("HadISDH marin, q", "https://www.metoffice.gov.uk/hadobs/hadisdh/data/"
+                       "HadISDH.marineq.1.6.1.2024f_BClocalSHIP5by5both_anoms9120.nc"),):
+        st, data = get(url)
+        out += [f"**{name}** — {url}", f"Statut : {st} ; {len(data)} o"]
+        if data:
+            try:
+                import netCDF4
+                with tempfile.NamedTemporaryFile(suffix=".nc") as tmp:
+                    tmp.write(data)
+                    tmp.flush()
+                    with netCDF4.Dataset(tmp.name) as ds:
+                        out += ["```"] + [f"{k} {v.dimensions} {getattr(v, 'units', '')} {getattr(v, 'long_name', '')}"
+                                          for k, v in ds.variables.items()] + ["```"]
+            except Exception as exc:  # noqa: BLE001
+                out += [f"lecture : {type(exc).__name__} {exc}"]
+        out.append("")
+    return out
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P10.4 — cohérence physique : données disponibles (généré)", "",
           f"Produit le {now} par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.", ""]
-    for part in (published, files, listings, extra, third):
+    for part in (published, files, listings, extra, third, fourth):
         try:
             md += part()
         except Exception as exc:  # noqa: BLE001
