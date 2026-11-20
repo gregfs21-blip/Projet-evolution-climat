@@ -304,11 +304,58 @@ def fifth() -> list[str]:
     return out
 
 
+def sixth() -> list[str]:
+    """Sixième passage : jeton transmis aux seuls hôtes *.earthdata.nasa.gov au fil des redirections, chaîne des
+    redirections affichée (sans le jeton) ; taille des fichiers de mascons CSR (accès libre)."""
+    import os
+    import urllib.parse
+    out = ["## 8. Sixième passage", ""]
+    token = os.environ.get("EARTHDATA_TOKEN", "")
+    chain: list[str] = []
+
+    class Keep(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            new = super().redirect_request(req, fp, code, msg, headers, newurl)
+            host = urllib.parse.urlparse(newurl).hostname or ""
+            chain.append(f"{code} → {host}")
+            if new is not None:
+                new.headers.pop("Authorization", None)
+                new.unredirected_hdrs.pop("Authorization", None)
+                if host.endswith("earthdata.nasa.gov"):
+                    new.add_unredirected_header("Authorization", f"Bearer {token}")
+            return new
+
+    opener = urllib.request.build_opener(Keep)
+    url = ("https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/"
+           "OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/ocean_mass_200204_202609.txt")
+    req = urllib.request.Request(url, headers=UA)
+    req.add_unredirected_header("Authorization", f"Bearer {token}")
+    try:
+        with opener.open(req, timeout=180) as r:
+            d = r.read(5_000_000)
+        out += [f"**Masse de l'océan (JPL)** : {len(d)} o ; redirections : {' ; '.join(chain)}", ""] + head_tail(d)
+        lines = d.decode("utf-8", "replace").splitlines()
+        out += ["Début du fichier (60 lignes) :", "```"] + [x[:200] for x in lines[:60]] + ["```", ""]
+    except Exception as exc:  # noqa: BLE001
+        out += [f"**Masse de l'océan (JPL)** : échec {type(exc).__name__} {str(exc)[:200]} ; redirections : "
+                f"{' ; '.join(chain)}", ""]
+    for f in ("CSR_GRACE_GRACE-FO_RL0603_Mascons_all-corrections.nc", "CSR_GRACE_GRACE-FO_RL06_Mascons_v02_OceanMask.nc",
+              "CSR_GRACE_GRACE-FO_RL0603_Mascons_GAD-component.nc", "CSR_GRACE_GRACE-FO_RL0603_Mascons_GIA-component.nc"):
+        u = "https://download.csr.utexas.edu/outgoing/grace/RL0603_mascons/" + f
+        try:
+            req = urllib.request.Request(u, headers=UA, method="HEAD")
+            with urllib.request.urlopen(req, timeout=60) as r:
+                out.append(f"- {f} : {r.status}, {r.headers.get('Content-Length')} o, modifié {r.headers.get('Last-Modified')}")
+        except Exception as exc:  # noqa: BLE001
+            out.append(f"- {f} : échec {type(exc).__name__} {str(exc)[:120]}")
+    return out + [""]
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P10.4 — cohérence physique : données disponibles (généré)", "",
           f"Produit le {now} par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.", ""]
-    for part in (published, files, listings, extra, third, fourth, fifth):
+    for part in (published, files, listings, extra, third, fourth, fifth, sixth):
         try:
             md += part()
         except Exception as exc:  # noqa: BLE001
