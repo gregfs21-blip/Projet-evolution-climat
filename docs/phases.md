@@ -871,6 +871,13 @@ température de l'air, pas celle de la mer.
 **Règle de confiance proposée** : « élevée » si B1 à B4 conformes ; « moyenne » si l'un des deux contrôles (B2, B3) est
 conforme ; « non établie » sinon. P10.4b est affichée comme une analyse distincte de P10.4 dans l'onglet.
 
+**Décisions de Grég du 20/11/2026, avant le calcul de P10.4b** :
+- **D-AW** : fourchette de B2 inchangée, [6 ; 8] % par °C (R-B1) : seule la construction du contrôle est corrigée,
+  aucun seuil n'est élargi après avoir vu le résultat de P10.4.
+- **D-AX** : critères B1-B5 et règle de confiance validés tels quels ; P10.4b affichée comme une analyse distincte,
+  P10.4 inchangée. Dans la validation, C2, C4 et C6 de P10.4 restent « non conformes » et sont marqués « recadrés en
+  P10.4b (D-AV) » : ils ne sont ni acceptés ni corrigés.
+
 ### Journal P10
 
 - 17/11/2026 : sonde (`docs/sonde-p10.md`), cadrage, décisions D-AD à D-AH, critères O1-O9 validés avant tout calcul.

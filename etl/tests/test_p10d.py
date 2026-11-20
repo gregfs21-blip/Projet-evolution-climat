@@ -136,3 +136,55 @@ class TestSources(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+try:
+    import netCDF4  # noqa: F401
+    HAS_NC = True
+except ImportError:      # bac à sable sans netCDF4 ; la CI l'installe (etl/requirements.txt)
+    HAS_NC = False
+
+
+@unittest.skipUnless(HAS_NC, "netCDF4 absent")
+class TestCommonDomain(unittest.TestCase):
+    def test_extract_common_matches_known_fields(self):
+        import datetime as dt
+        import tempfile
+        from pathlib import Path
+
+        import netCDF4
+        with tempfile.TemporaryDirectory() as tmp:
+            rp, ep = Path(tmp) / "r.nc", Path(tmp) / "e.nc"
+            n = 24
+            with netCDF4.Dataset(rp, "w") as ds:
+                ds.createDimension("latitude", 180)
+                ds.createDimension("longitude", 360)
+                ds.createDimension("time", n)
+                ds.createVariable("latitude", "f4", ("latitude",))[:] = np.arange(-89.5, 90, 1.0)
+                ds.createVariable("longitude", "f4", ("longitude",))[:] = np.arange(-179.5, 180, 1.0)
+                ds.createVariable("time", "f8", ("time",))[:] = [1988 + (k + 0.5) / 12 for k in range(n)]
+                v = ds.createVariable("merged_vapor", "f4", ("latitude", "longitude", "time"), fill_value=-999.0)
+                data = np.full((180, 360, n), 30.0) + np.arange(n)[None, None, :] * 0.1
+                data[:, :10, :] = -999.0                      # « continent » toujours absent
+                v[:] = data
+            with netCDF4.Dataset(ep, "w") as ds:
+                ds.createDimension("lat", 89)
+                ds.createDimension("lon", 180)
+                ds.createDimension("time", 600)
+                ds.createVariable("lat", "f4", ("lat",))[:] = np.arange(88, -89, -2.0)
+                ds.createVariable("lon", "f4", ("lon",))[:] = np.arange(0, 360, 2.0)
+                t = ds.createVariable("time", "f8", ("time",))
+                t.units = "days since 1800-1-1 00:00:00"
+                t[:] = netCDF4.date2num([dt.datetime(1960 + k // 12, k % 12 + 1, 1) for k in range(600)], t.units)
+                s = ds.createVariable("sst", "f4", ("time", "lat", "lon"), fill_value=-9.96921e36)
+                sst = np.full((600, 89, 180), 20.0) + np.arange(600)[:, None, None] * 0.01
+                sst[:, :, 0] = -9.96921e36                     # longitude 0° absente : mailles RSS voisines exclues
+                s[:] = sst
+            rows, meta = RV.extract_common(rp, ep)
+        self.assertEqual(rows[0]["month"], "1988-01")
+        self.assertEqual(len(rows), n)
+        self.assertAlmostEqual(rows[0]["tpw_kgm2"], 30.0, places=3)
+        self.assertAlmostEqual(rows[1]["tpw_kgm2"] - rows[0]["tpw_kgm2"], 0.1, places=3)
+        self.assertAlmostEqual(rows[0]["sst_c"], 20.0 + 0.01 * (1988 - 1960) * 12, places=3)
+        self.assertGreater(meta["rss_cells_dropped"], 0)
+        self.assertLess(meta["common_area_fraction"], 1.0)

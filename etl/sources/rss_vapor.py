@@ -31,6 +31,11 @@ PAGE = "https://www.remss.com/measurements/atmospheric-water-vapor/"
 SOURCE_NAME = "Remote Sensing Systems — RSS V7, vapeur d'eau intégrée sur les océans (SSM/I, SSMIS, AMSR, WindSat)"
 LICENSE = "CC BY 4.0 (RSS)"
 VAR = "merged_vapor"
+# P10.4b (D-AV, D-AX) : température de la mer sur le même domaine, ERSST v5 (sonde docs/sonde-p10e.md)
+ERSST_URL = "https://downloads.psl.noaa.gov/Datasets/noaa.ersst.v5/sst.mnmean.nc"
+ERSST_PAGE = "https://psl.noaa.gov/data/gridded/data.noaa.ersst.v5.html"
+ERSST_NAME = "NOAA NCEI — ERSST v5, température de surface de la mer, grille de 2° (via NOAA PSL)"
+ERSST_LICENSE = "Domaine public (NOAA)"
 LAT_MAX = 60.0
 UA = "projet-evolution-climat"
 
@@ -78,32 +83,107 @@ def extract(path: Path) -> tuple[list[dict], dict]:
     return rows, meta
 
 
+def nearest_ersst(lat: float, lon: float) -> tuple[int, int]:
+    """Indice de la maille ERSST v5 (2°, latitudes 88 → −88, longitudes 0 → 358) la plus proche d'un centre RSS (x,5°)."""
+    i = int(round((88.0 - lat) / 2.0))
+    j = int(round((lon % 360.0) / 2.0)) % 180
+    return min(max(i, 0), 88), j
+
+
+def extract_common(rss_path: Path, ersst_path: Path) -> tuple[list[dict], dict]:
+    """P10.4b : masque commun (masque constant RSS ∩ maille ERSST la plus proche valide tous les mois), moyennes
+    mensuelles pondérées par l'aire de la vapeur d'eau et de la température de la mer sur ce masque."""
+    import netCDF4
+    import numpy as np
+    with netCDF4.Dataset(rss_path) as ds:
+        lat = np.asarray(ds.variables["latitude"][:], float)
+        lon = np.asarray(ds.variables["longitude"][:], float)
+        t = np.asarray(ds.variables["time"][:], float)
+        band = np.abs(lat) <= LAT_MAX
+        w = np.ma.filled(ds.variables[VAR][band, :, :].astype(float), np.nan)
+    w[(w < 0) | (w > 100)] = np.nan
+    lat_b = lat[band]
+    rss_mask = np.all(np.isfinite(w), axis=2)
+    months = [month_of(x) for x in t]
+    with netCDF4.Dataset(ersst_path) as ds:
+        tv = ds.variables["time"]
+        dates = netCDF4.num2date(tv[:], tv.units, only_use_cftime_datetimes=False, only_use_python_datetimes=True)
+        index = {f"{d.year}-{d.month:02d}": k for k, d in enumerate(dates)}
+        missing = [m for m in months if m not in index]
+        if missing:
+            raise ValueError(f"ERSST : mois absents {missing[:3]}")
+        if np.asarray(ds.variables["lat"][:2], float).tolist() != [88.0, 86.0] or float(ds.variables["lon"][1]) != 2.0:
+            raise ValueError("ERSST : grille inattendue (88 → −88, 0 → 358 attendue)")
+        ks = [index[m] for m in months]
+        sst = np.ma.filled(ds.variables["sst"][ks[0]:ks[-1] + 1, :, :].astype(float), np.nan)   # (temps, lat, lon)
+    if sst.shape[0] != len(months):
+        raise ValueError("ERSST : mois non consécutifs")
+    sst[np.abs(sst) > 100] = np.nan
+    ii, jj = np.nonzero(rss_mask)
+    pairs = [nearest_ersst(lat_b[i], lon[j]) for i, j in zip(ii, jj)]
+    pi = np.array([p[0] for p in pairs])
+    pj = np.array([p[1] for p in pairs])
+    sst_cells = sst[:, pi, pj]                                         # (temps, mailles)
+    ok = np.all(np.isfinite(sst_cells), axis=0)
+    area_all = np.cos(np.deg2rad(lat_b))[:, None] * np.ones(rss_mask.shape)
+    wts = np.cos(np.deg2rad(lat_b[ii[ok]]))
+    tpw_cells = w[ii[ok], jj[ok], :]                                   # (mailles, temps)
+    rows = [{"month": m,
+             "tpw_kgm2": round(float(np.sum(tpw_cells[:, k] * wts) / wts.sum()), 4),
+             "sst_c": round(float(np.sum(sst_cells[k, ok] * wts) / wts.sum()), 4)} for k, m in enumerate(months)]
+    meta = {"common_cells": int(ok.sum()), "common_area_fraction": round(float(wts.sum() / area_all.sum()), 4),
+            "rss_cells_dropped": int((~ok).sum())}
+    return rows, meta
+
+
+def _modified(url: str) -> str:
+    with urllib.request.urlopen(urllib.request.Request(url, method="HEAD", headers={"User-Agent": UA}), timeout=60) as r:
+        return r.headers.get("Last-Modified", "")
+
+
+def _download(url: str, path: Path) -> None:
+    with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=600) as r, \
+            path.open("wb") as f:
+        while chunk := r.read(1 << 22):
+            f.write(chunk)
+
+
 def collect(out_dir: Path = OUT_DIR) -> str:
     out_dir.mkdir(parents=True, exist_ok=True)
     meta_path = out_dir / "meta.json"
     meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
     name = latest()
-    # Le fichier garde son nom pendant l'année : on compare aussi sa date de modification.
-    with urllib.request.urlopen(urllib.request.Request(DIR_URL + name, method="HEAD", headers={"User-Agent": UA}),
-                                timeout=60) as r:
-        modified = r.headers.get("Last-Modified", "")
-    if meta.get("file") == name and meta.get("modified") == modified and (out_dir / "tpw.csv").exists():
+    # Les fichiers gardent leur nom pendant l'année : on compare aussi leur date de modification.
+    modified, ersst_modified = _modified(DIR_URL + name), _modified(ERSST_URL)
+    fresh = meta.get("file") == name and meta.get("modified") == modified and (out_dir / "tpw.csv").exists()
+    fresh_common = (fresh and meta.get("ersst_modified") == ersst_modified and (out_dir / "tpw-sst-common.csv").exists())
+    if fresh and fresh_common:
         return f"RSS vapeur : à jour ({name})"
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / name
-        with urllib.request.urlopen(urllib.request.Request(DIR_URL + name, headers={"User-Agent": UA}), timeout=300) as r, \
-                path.open("wb") as f:
-            while chunk := r.read(1 << 22):
-                f.write(chunk)
+        _download(DIR_URL + name, path)
         rows, info = extract(path)
+        epath = Path(tmp) / "ersst.nc"
+        _download(ERSST_URL, epath)
+        common, cinfo = extract_common(path, epath)
     with (out_dir / "tpw.csv").open("w", encoding="utf-8", newline="") as f:
         wr = csv.DictWriter(f, fieldnames=["month", "tpw_kgm2"])
         wr.writeheader()
         wr.writerows(rows)
-    meta = {"file": name, "modified": modified, "rows": len(rows), **info,
+    with (out_dir / "tpw-sst-common.csv").open("w", encoding="utf-8", newline="") as f:
+        wr = csv.DictWriter(f, fieldnames=["month", "tpw_kgm2", "sst_c"])
+        wr.writeheader()
+        wr.writerows(common)
+    meta = {"file": name, "modified": modified, "rows": len(rows), **info, "ersst_modified": ersst_modified, **cinfo,
             "collected": datetime.now(timezone.utc).isoformat()}
     meta_path.write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
-    return f"RSS vapeur : relevé {name}, {len(rows)} mois, masque {info['mask_area_fraction']:.1%} de la bande"
+    return (f"RSS vapeur : relevé {name}, {len(rows)} mois, masque {info['mask_area_fraction']:.1%} de la bande ; "
+            f"domaine commun avec ERSST {cinfo['common_area_fraction']:.1%}")
+
+
+def load_common(out_dir: Path = OUT_DIR) -> dict[str, tuple[float, float]]:
+    with (out_dir / "tpw-sst-common.csv").open(encoding="utf-8") as f:
+        return {r["month"]: (float(r["tpw_kgm2"]), float(r["sst_c"])) for r in csv.DictReader(f)}
 
 
 def load(out_dir: Path = OUT_DIR) -> tuple[dict[str, float], dict]:
