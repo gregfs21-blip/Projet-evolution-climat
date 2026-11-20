@@ -1,6 +1,6 @@
 # Sonde P10.4 — cohérence physique : données disponibles (généré)
 
-Produit le 20/11/2026 10:55 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
+Produit le 20/11/2026 11:06 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
 
 ## 1. Séries déjà publiées sur le site
 
@@ -172,7 +172,7 @@ timeseries_slb_elements/
 Statut : 404 ; 0 o
 
 **NASA, GRACE / GRACE-FO, masse de l'océan (PO.DAAC)** — https://podaac.jpl.nasa.gov/dataset/OCEAN_MASS_TIME_SERIES_GRACE-FO_JPL_RL06.3_V4
-Statut : erreur : URLError <urlopen error _ssl.c:994: The handshake operation timed out> ; 0 o
+Statut : erreur : URLError <urlopen error timed out> ; 0 o
 
 **NASA Vital Signs, masse des calottes (page)** — https://climate.nasa.gov/vital-signs/ice-sheets/
 Statut : 200 ; 275524 o
@@ -658,5 +658,47 @@ Téléchargement avec jeton : échec HTTPError HTTP Error 400: Bad Request
 
 **HadISDH marin, q** — https://www.metoffice.gov.uk/hadobs/hadisdh/data/HadISDH.marineq.1.6.1.2024f_BClocalSHIP5by5both_anoms9120.nc
 Statut : 200 ; 30000000 o
-lecture : OSError [Errno -101] NetCDF: HDF error: '/tmp/tmp4ltvghh_.nc'
+lecture : OSError [Errno -101] NetCDF: HDF error: '/tmp/tmpu_h8prpo.nc'
+
+## 7. Cinquième passage
+
+**OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/ocean_mass_200204_202609.txt** : échec HTTPError HTTP Error 403: Forbidden
+
+**GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/greenland_mass_200204_202609.txt** : échec HTTPError HTTP Error 403: Forbidden
+
+**ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/antarctica_mass_200204_202609.txt** : échec HTTPError HTTP Error 403: Forbidden
+
+**https://data.remss.com/vapor/monthly_1deg/merged_vapor_1988-2025.nc** : 118243415 o
+```
+merged_vapor ('latitude', 'longitude', 'time') (180, 360, 456) kg/m^2 
+satellites_used ('time', 'sats') (456, 12)  
+latitude ('latitude',) (180,) degrees_north latitude
+longitude ('longitude',) (360,) degrees_east longitude
+time ('time',) (456,) fractional year time
+clim_time ('clim_time',) (12,) month climatology month
+sats ('sats',) (12,)  satellite number
+attribut AMSR2_vapor_offset = -0.041
+attribut AMSRE_vapor_offset = -0.147
+attribut F08_vapor_offset = 0.0
+attribut F10_vapor_offset = 0.0
+attribut F11_vapor_offset = 0.057
+attribut F13_vapor_offset = 0.076
+attribut F14_vapor_offset = 0.011
+attribut F15_vapor_offset = 0.039
+attribut F16_vapor_offset = 0.016
+attribut F17_vapor_offset = 0.002
+attribut F18_vapor_offset = 0.0
+attribut WindSat_vapor_offset = -0.008
+attribut end_year = 2025
+attribut num_lats = 180
+attribut num_lons = 360
+attribut num_months = 456
+attribut start_year = 1988
+attribut units = kg/m^2
+attribut variable_names = merged_vapor
+attribut description = Monthly Maps
+attribut history = Created 16/01/26 15:20:24
+```
+
+temps : fractional year ; premier 1988.0416666666667 ; dernier 2025.958333333299 ; n = 456
 
