@@ -1,6 +1,6 @@
 # Sonde P10.3 — amplification régionale : données disponibles (généré)
 
-Produit le 20/11/2026 12:32 UTC par `etl/probe/p10c.py`. Inventaire seulement : aucun facteur, aucune régression.
+Produit le 20/11/2026 14:04 UTC par `etl/probe/p10c.py`. Inventaire seulement : aucun facteur, aucune régression.
 
 ## 1. Séries publiées sur le site
 

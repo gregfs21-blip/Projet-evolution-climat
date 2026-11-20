@@ -1,6 +1,6 @@
 # Sonde P10.4 — cohérence physique : données disponibles (généré)
 
-Produit le 20/11/2026 12:29 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
+Produit le 20/11/2026 14:00 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
 
 ## 1. Séries déjà publiées sur le site
 
@@ -172,10 +172,10 @@ timeseries_slb_elements/
 Statut : 404 ; 0 o
 
 **NASA, GRACE / GRACE-FO, masse de l'océan (PO.DAAC)** — https://podaac.jpl.nasa.gov/dataset/OCEAN_MASS_TIME_SERIES_GRACE-FO_JPL_RL06.3_V4
-Statut : erreur : URLError <urlopen error timed out> ; 0 o
+Statut : erreur : URLError <urlopen error _ssl.c:994: The handshake operation timed out> ; 0 o
 
 **NASA Vital Signs, masse des calottes (page)** — https://climate.nasa.gov/vital-signs/ice-sheets/
-Statut : 200 ; 275524 o
+Statut : 200 ; 275523 o
 
 227 liens ; retenus (9) :
 ```
@@ -628,7 +628,23 @@ https://cmr.earthdata.nasa.gov/virtual-directory/collections/C3206302778-POCLOUD
 https://search.earthdata.nasa.gov/search/granules?p=C3206302778-POCLOUD
 https://github.com/podaac/data-subscriber
 ```
-Téléchargement avec jeton : échec HTTPError HTTP Error 400: Bad Request
+Téléchargement avec jeton : 10987 o
+
+```
+HDR Global Ocean Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The global ocean mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+…
+2026.45   46.68    0.50   41.03
+2026.54   52.46    0.59   41.83
+2026.62   56.98    0.68   42.18
+2026.71   62.20    0.79   45.20
+```
 
 **CMR, GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4**
 Statut : 200
@@ -641,7 +657,23 @@ https://cmr.earthdata.nasa.gov/virtual-directory/collections/C3206299308-POCLOUD
 https://search.earthdata.nasa.gov/search/granules?p=C3206299308-POCLOUD
 https://github.com/podaac/data-subscriber
 ```
-Téléchargement avec jeton : échec HTTPError HTTP Error 400: Bad Request
+Téléchargement avec jeton : 10111 o
+
+```
+HDR Greenland Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The Greenland mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+…
+2026.45   -5684.30      45.77
+2026.54   -5791.32      57.17
+2026.62   -5998.40      69.38
+2026.71   -6085.84      83.08
+```
 
 **CMR, ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4**
 Statut : 200
@@ -654,19 +686,192 @@ https://cmr.earthdata.nasa.gov/virtual-directory/collections/C3206284786-POCLOUD
 https://search.earthdata.nasa.gov/search/granules?p=C3206284786-POCLOUD
 https://github.com/podaac/data-subscriber
 ```
-Téléchargement avec jeton : échec HTTPError HTTP Error 400: Bad Request
+Téléchargement avec jeton : 10056 o
+
+```
+HDR Antarctica Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The Greenland mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+…
+2026.45   -2627.85      57.96
+2026.54   -2640.04      70.56
+2026.62   -2384.55      84.26
+2026.71   -2492.29     100.46
+```
 
 **HadISDH marin, q** — https://www.metoffice.gov.uk/hadobs/hadisdh/data/HadISDH.marineq.1.6.1.2024f_BClocalSHIP5by5both_anoms9120.nc
 Statut : 200 ; 30000000 o
-lecture : OSError [Errno -101] NetCDF: HDF error: '/tmp/tmplnenei_s.nc'
+lecture : OSError [Errno -101] NetCDF: HDF error: '/tmp/tmp22bawl_6.nc'
 
 ## 7. Cinquième passage
 
-**OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/ocean_mass_200204_202609.txt** : échec HTTPError HTTP Error 403: Forbidden
+**OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/ocean_mass_200204_202609.txt** : 10987 o
 
-**GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/greenland_mass_200204_202609.txt** : échec HTTPError HTTP Error 403: Forbidden
+```
+HDR Global Ocean Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The global ocean mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+…
+2026.45   46.68    0.50   41.03
+2026.54   52.46    0.59   41.83
+2026.62   56.98    0.68   42.18
+2026.71   62.20    0.79   45.20
+```
 
-**ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/antarctica_mass_200204_202609.txt** : échec HTTPError HTTP Error 403: Forbidden
+En-tête (lignes de description) :
+```
+HDR Global Ocean Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The global ocean mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+HDR Ocean Mass Trend (04/2002 - 09/2026): +1.96 +/- 0.30 mm/yr of sea level height
+HDR
+HDR If you use these data please cite:
+HDR Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2022) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
+HDR Water Height RL06.3M CRI Filtered Version 4.0, Ver. 4.0, PO.DAAC, CA, USA. Dataset accessed [YYYY-MM-DD] at http://dx.doi.org/10.5067/TEMSC-3JC634.
+HDR
+HDR For information on how the data were generated please refer to:
+HDR Watkins, M. M., D. N. Wiese, D. -N. Yuan, C. Boening, and F. W. Landerer (2015), Improved methods for observing Earth's time variable
+HDR mass distribution with GRACE using spherical cap mascons, J. Geophys. Res. Solid Earth, 120, 2648_2671, doi: 10.1002/2014JB011547.
+HDR
+HDR column description
+HDR 1 TIME (year.decimal)
+HDR 2 Ocean mass (mm of sea level height)
+HDR 3 Ocean mass 1-sigma uncertainty (mm of sea level height)
+HDR 4 Ocean mass deseasoned (mm of sea level height)
+HDR
+HDR NOTES (1): Ocean mass is computed by summing up mass anomalies over the ocean in the JPL RL06.3Mv4 solution
+HDR            and removing the mass of the atmosphere.
+HDR NOTES (2): The deseasoned ocean mass timeseries is obtained by fitting an annual, semiannual, and bias to the full timeseries and removing it.
+HDR NOTES (3): Correction for Glacial Isostatic Adjustment (GIA) is from ICE6G-D, Peltier. et al. (2018), doi:10.1093/gji/ggs030
+HDR NOTES (4): Trend value is derived by performing a weighted least squares fit of an annual, semiannual, bias, and trend to the timeseries
+HDR NOTES (5): Monthly uncertainties are computed using measurement errors provided in the JPL RL06.3Mv4 Solution and considering
+HDR            leakage errors in accordance with Wiese et al. (2016), doi:10.1002/2016WR019344
+HDR NOTES (6): The trend uncertainty provides a 1-sigma confidence interval. The calculation considers only the propagation of the monthly uncertainties
+HDR            into the trend, assumes uncorrelated observations, and includes GIA uncertainty according to Chambers et al. (2016), doi:10.1007/s10712-016-9381-3
+HDR
+HDR Header_End---------------------------------------
+```
+
+**GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/greenland_mass_200204_202609.txt** : 10111 o
+
+```
+HDR Greenland Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The Greenland mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+…
+2026.45   -5684.30      45.77
+2026.54   -5791.32      57.17
+2026.62   -5998.40      69.38
+2026.71   -6085.84      83.08
+```
+
+En-tête (lignes de description) :
+```
+HDR Greenland Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The Greenland mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+HDR Greenland Mass Trend (04/2002 - 09/2026): -258.99 +/-21.00 Gt/yr 
+HDR
+HDR If you use these data please cite:
+HDR Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2022) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
+HDR Water Height RL06.3M CRI Filtered Version 4.0, Ver. 4.0, PO.DAAC, CA, USA. Dataset accessed [YYYY-MM-DD] at http://dx.doi.org/10.5067/TEMSC-3JC634.
+HDR
+HDR For information on how the data were generated please refer to:
+HDR Watkins, M. M., D. N. Wiese, D. -N. Yuan, C. Boening, and F. W. Landerer (2015), Improved methods for observing Earth's time variable
+HDR mass distribution with GRACE using spherical cap mascons, J. Geophys. Res. Solid Earth, 120, 2648_2671, doi: 10.1002/2014JB011547.
+HDR
+HDR column description
+HDR 1 TIME (year.decimal)
+HDR 2 Greenland mass (Gigatonnes)
+HDR 3 Greenland mass 1-sigma uncertainty (Gigatonnes)
+HDR
+HDR NOTES (1): Correction for Glacial Isostatic Adjustment (GIA) is from ICE6G-D, Peltier. et al. (2018), doi:10.1093/gji/ggs030
+HDR NOTES (2): Trend value is derived by performing a weighted least squares fit of an annual, semiannual, bias, and trend to the timeseries
+HDR NOTES (3): Monthly uncertainties are computed using measurement errors provided in the JPL RL06.3Mv4 Solution and considering
+HDR            leakage errors in accordance with Wiese et al. (2016), doi:10.1002/2016WR019344 and Schlegel et al. (2016), doi:10.5194/tc-10-1965-2016
+HDR NOTES (4): The trend uncertainty provides a 1-sigma confidence interval. The calculation considers only the propagation of the monthly uncertainties
+HDR            into the trend, assumes uncorrelated observations, and includes GIA uncertainty according to Velicogna et al. (2013), doi:10.1002/grl.50527
+HDR
+HDR Header_End---------------------------------------
+```
+
+**ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/antarctica_mass_200204_202609.txt** : 10056 o
+
+```
+HDR Antarctica Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The Greenland mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+…
+2026.45   -2627.85      57.96
+2026.54   -2640.04      70.56
+2026.62   -2384.55      84.26
+2026.71   -2492.29     100.46
+```
+
+En-tête (lignes de description) :
+```
+HDR Antarctica Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The Greenland mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+HDR Antarctic Mass Trend (04/2002 - 09/2026): -128.01 +/-39.00 Gt/yr 
+HDR
+HDR If you use these data please cite:
+HDR Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2022) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
+HDR Water Height RL06.3M CRI Filtered Version 4.0, Ver. 4.0, PO.DAAC, CA, USA. Dataset accessed [YYYY-MM-DD] at http://dx.doi.org/10.5067/TEMSC-3JC634.
+HDR
+HDR For information on how the data were generated please refer to:
+HDR Watkins, M. M., D. N. Wiese, D. -N. Yuan, C. Boening, and F. W. Landerer (2015), Improved methods for observing Earth's time variable
+HDR mass distribution with GRACE using spherical cap mascons, J. Geophys. Res. Solid Earth, 120, 2648_2671, doi: 10.1002/2014JB011547.
+HDR
+HDR column description
+HDR 1 TIME (year.decimal)
+HDR 2 Antarctic mass (Gigatonnes)
+HDR 3 Antarctic mass 1-sigma uncertainty (Gigatonnes)
+HDR
+HDR NOTES (1): Correction for Glacial Isostatic Adjustment (GIA) is from ICE6G-D, Peltier. et al. (2018), doi:10.1093/gji/ggs030
+HDR NOTES (2): Trend value is derived by performing a weighted least squares fit of an annual, semiannual, bias, and trend to the timeseries
+HDR NOTES (3): Monthly uncertainties are computed using measurement errors provided in the JPL RL06.3Mv4 Solution and considering
+HDR            leakage errors in accordance with Wiese et al. (2016), doi:10.1002/2016WR019344
+HDR NOTES (4): The trend uncertainty provides a 1-sigma confidence interval. The calculation considers only the propagation of the monthly uncertainties
+HDR            into the trend, assumes uncorrelated observations, and includes GIA uncertainty according to Velicogna et al. (2013), doi:10.1002/grl.50527
+HDR
+HDR Header_End---------------------------------------
+```
 
 **https://data.remss.com/vapor/monthly_1deg/merged_vapor_1988-2025.nc** : 118243415 o
 ```
@@ -704,7 +909,87 @@ temps : fractional year ; premier 1988.0416666666667 ; dernier 2025.958333333299
 
 ## 8. Sixième passage
 
-**Masse de l'océan (JPL)** : échec HTTPError HTTP Error 403: Forbidden ; redirections : 303 → podaac-ops-cumulus-protected.s3.us-west-2.amazonaws.com
+**Masse de l'océan (JPL)** : 10987 o ; redirections : 303 → deotb6e7tfubr.cloudfront.net
+
+```
+HDR Global Ocean Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The global ocean mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+…
+2026.45   46.68    0.50   41.03
+2026.54   52.46    0.59   41.83
+2026.62   56.98    0.68   42.18
+2026.71   62.20    0.79   45.20
+```
+
+Début du fichier (60 lignes) :
+```
+HDR Global Ocean Mass
+HDR
+HDR Data from the GRACE and GRACE-FO JPL RL06.3Mv4 Mascon Solution
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The global ocean mass anomalies are generated using GRACE and GRACE-FO data from the JPL RL06.3Mv4
+HDR Mascon Solution (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL06.3_V4).
+HDR
+HDR Ocean Mass Trend (04/2002 - 09/2026): +1.96 +/- 0.30 mm/yr of sea level height
+HDR
+HDR If you use these data please cite:
+HDR Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2022) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
+HDR Water Height RL06.3M CRI Filtered Version 4.0, Ver. 4.0, PO.DAAC, CA, USA. Dataset accessed [YYYY-MM-DD] at http://dx.doi.org/10.5067/TEMSC-3JC634.
+HDR
+HDR For information on how the data were generated please refer to:
+HDR Watkins, M. M., D. N. Wiese, D. -N. Yuan, C. Boening, and F. W. Landerer (2015), Improved methods for observing Earth's time variable
+HDR mass distribution with GRACE using spherical cap mascons, J. Geophys. Res. Solid Earth, 120, 2648_2671, doi: 10.1002/2014JB011547.
+HDR
+HDR column description
+HDR 1 TIME (year.decimal)
+HDR 2 Ocean mass (mm of sea level height)
+HDR 3 Ocean mass 1-sigma uncertainty (mm of sea level height)
+HDR 4 Ocean mass deseasoned (mm of sea level height)
+HDR
+HDR NOTES (1): Ocean mass is computed by summing up mass anomalies over the ocean in the JPL RL06.3Mv4 solution
+HDR            and removing the mass of the atmosphere.
+HDR NOTES (2): The deseasoned ocean mass timeseries is obtained by fitting an annual, semiannual, and bias to the full timeseries and removing it.
+HDR NOTES (3): Correction for Glacial Isostatic Adjustment (GIA) is from ICE6G-D, Peltier. et al. (2018), doi:10.1093/gji/ggs030
+HDR NOTES (4): Trend value is derived by performing a weighted least squares fit of an annual, semiannual, bias, and trend to the timeseries
+HDR NOTES (5): Monthly uncertainties are computed using measurement errors provided in the JPL RL06.3Mv4 Solution and considering
+HDR            leakage errors in accordance with Wiese et al. (2016), doi:10.1002/2016WR019344
+HDR NOTES (6): The trend uncertainty provides a 1-sigma confidence interval. The calculation considers only the propagation of the monthly uncertainties
+HDR            into the trend, assumes uncorrelated observations, and includes GIA uncertainty according to Chambers et al. (2016), doi:10.1007/s10712-016-9381-3
+HDR
+HDR Header_End---------------------------------------
+2002.29    0.00    1.20    0.00
+2002.35   -1.57    0.68   -2.58
+2002.62   12.47    0.56   -2.33
+2002.71   15.89    0.68   -1.11
+2002.79   17.58    0.47    0.33
+2002.87   16.05    0.46    0.14
+2002.96   14.83    0.48    1.61
+2003.04   11.09    0.57    1.78
+2003.12    8.03    0.45    2.97
+2003.20    4.90    0.41    3.40
+2003.29    3.47    0.40    3.47
+2003.36    4.50    0.43    3.42
+2003.54   11.27    0.35    0.67
+2003.62   15.55    0.36    0.78
+2003.71   16.82    0.36   -0.16
+2003.79   18.89    0.36    1.62
+2003.87   17.86    0.36    1.93
+2003.96   14.16    0.36    0.92
+2004.02   11.49    0.40    0.92
+2004.13    5.97    0.37    1.16
+2004.21    4.28    0.35    2.85
+2004.29    1.01    0.35    1.02
+2004.37    2.24    0.37    0.63
+2004.46    6.82    0.36    1.10
+2004.54   10.66    0.34   -0.05
+```
 
 - CSR_GRACE_GRACE-FO_RL0603_Mascons_all-corrections.nc : 200, 113954516 o, modifié Mon, 09 Nov 2026 17:45:36 GMT
 - CSR_GRACE_GRACE-FO_RL06_Mascons_v02_OceanMask.nc : 200, 4174193 o, modifié Wed, 18 Sep 2024 02:49:43 GMT

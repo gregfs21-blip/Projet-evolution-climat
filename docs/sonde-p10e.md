@@ -1,6 +1,6 @@
 # Sonde P10.4b — température de la mer sur le domaine de la vapeur d'eau (généré)
 
-Produit le 20/11/2026 12:28 UTC par `etl/probe/p10e.py`. Inventaire seulement : aucune pente, aucun rapport.
+Produit le 20/11/2026 13:59 UTC par `etl/probe/p10e.py`. Inventaire seulement : aucune pente, aucun rapport.
 
 ## OISST v2, 1°, mensuel (NOAA PSL)
 
