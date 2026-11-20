@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-11-20T13:00:41Z",
+ "generated_at": "2026-11-20T13:32:56Z",
  "sections": [
   {
    "id": "gironde",
@@ -1715,7 +1715,7 @@
        "id": "limite-glaciers",
        "kind": "lacune",
        "params": [],
-       "text": "La fonte des glaces n'est traitée que par la banquise ; les glaciers de montagne et les calottes du Groenland et de l'Antarctique ne le sont pas.",
+       "text": "La fonte des glaces n'est traitée que par la banquise ; les glaciers de montagne et les calottes du Groenland et de l'Antarctique ne le sont pas. L'onglet Démonstration utilise la masse d'eau ajoutée à l'océan mesurée par GRACE, sans en séparer l'origine (glaciers, calottes, eaux continentales).",
        "indicators": []
       },
       {
@@ -1734,7 +1734,7 @@
        "id": "limite-attribution",
        "kind": "lacune",
        "params": [],
-       "text": "La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. L'étude n'attribue qu'une grandeur : le réchauffement moyen de surface du globe (air et mer) par rapport à 1850-1900, dans l'onglet Démonstration (régression multiple). Rien n'est attribué ni pour la Gironde, ni pour la France, ni pour les autres variables, y compris la température de la mer et celle de la troposphère. Le même onglet relie deux grandeurs régionales au réchauffement mondial : la loi du maximum annuel de la température maximale quotidienne à Bordeaux-Mérignac (loi des valeurs extrêmes, climat de 1960 contre celui de 2025), et la température moyenne annuelle de la France et de la Gironde (facteur d'amplification, degrés régionaux par degré mondial). Ces liens ne disent pas quelle part des hausses régionales est d'origine humaine : ils incluent tout ce qui a évolué en même temps, effets locaux (urbanisation) ou régionaux (aérosols, circulation atmosphérique).",
+       "text": "La synthèse ne calcule pas la part humaine des évolutions qu'elle décrit. L'étude n'attribue qu'une grandeur : le réchauffement moyen de surface du globe (air et mer) par rapport à 1850-1900, dans l'onglet Démonstration (régression multiple). Rien n'est attribué ni pour la Gironde, ni pour la France, ni pour les autres variables, y compris la température de la mer et celle de la troposphère. Le même onglet relie deux grandeurs régionales au réchauffement mondial : la loi du maximum annuel de la température maximale quotidienne à Bordeaux-Mérignac (loi des valeurs extrêmes, climat de 1960 contre celui de 2025), et la température moyenne annuelle de la France et de la Gironde (facteur d'amplification, degrés régionaux par degré mondial). Ces liens ne disent pas quelle part des hausses régionales est d'origine humaine : ils incluent tout ce qui a évolué en même temps, effets locaux (urbanisation) ou régionaux (aérosols, circulation atmosphérique). L'onglet confronte enfin des mesures de natures différentes (vapeur d'eau, stratosphère, niveau marin, énergie) : ces contrôles de cohérence testent si les mesures s'accordent (elles ne s'accordent pas toutes), ils n'attribuent rien.",
        "indicators": []
       },
       {
