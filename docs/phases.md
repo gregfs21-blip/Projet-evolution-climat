@@ -892,6 +892,15 @@ relue (M6) ; `limite-glaciers` reste exacte (seule la masse totale de l'océan e
 - 20/11/2026, P10.4 : sonde en six passages (`docs/sonde-p10d.md`), cadrage, décisions D-AS et D-AT validées par
   Grég avant tout calcul ; D-AU (bilan du niveau marin par tendances, à cause du trou GRACE / GRACE-FO) validée avant
   tout calcul.
+- 20/11/2026, P10.4, essai du contrôle V sur les données relevées avant le calcul officiel : β = 9,4 % par °C et
+  non-convergence de la variante NOAA. Seule modification ensuite : la non-convergence est traitée comme un échec de
+  la variante au lieu d'arrêter l'ETL. Aucun critère, seuil ni choix modifié.
+- 20/11/2026, P10.4, calcul officiel (ETL sur la branche, `etl/demo_coherence.py`, `docs/validation-p10.md`) :
+  C1, C3 et C5 conformes ; **C2 non conforme** (vapeur d'eau : 9,4 % par °C [8,6 ; 10,2] contre [6 ; 8]) ; **C4 non
+  conforme** (résidu du bilan marin +0,62 mm/an contre ± 0,5) ; **C6 non conforme**. Confiance « non établie »
+  (deux contrôles physiques sur quatre, D-AT). Écarts analysés : C2 tient probablement à la construction du contrôle
+  (vapeur de 60° S-60° N contre température de mer du globe entier), C4 à la non-fermeture du bilan documentée depuis
+  2016 (Chen et al., 2020 ; Barnoud et al., 2021).
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 

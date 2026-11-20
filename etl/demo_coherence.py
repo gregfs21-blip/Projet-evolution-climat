@@ -307,9 +307,9 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
                              values=[round((tpw[y] / mean_w - 1) * 100, 3) for y in vy]),
                CoherenceLine(name="7 % par °C de la température de mer HadSST4",
                              values=[round(7 * (sst[y] - mean_t), 3) for y in vy])],
-        note=(f"Écarts à la moyenne {V_SPAN[0]}-{V_SPAN[1]} : vapeur d'eau en %, température de mer convertie au taux "
-              "théorique de 7 % par °C. Si la physique est respectée, les deux courbes se superposent, y compris "
-              "pendant les épisodes El Niño (1998, 2016, 2024)."))
+        note=(f"Écarts à la moyenne {V_SPAN[0]}-{V_SPAN[1]} : vapeur d'eau en %, et ce que donnerait le taux théorique "
+              "de 7 % par °C appliqué à la température moyenne de la mer du globe. La vapeur est mesurée entre 60° S et "
+              "60° N, la température sur tout l'océan : les deux courbes ne portent pas sur la même région."))
     v_check = CoherenceCheck(
         id="vapeur", letter="V", title="Vapeur d'eau et température (Clausius-Clapeyron)",
         question="L'atmosphère au-dessus des océans contient-elle environ 7 % de vapeur d'eau en plus par degré ?",

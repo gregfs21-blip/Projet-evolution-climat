@@ -194,3 +194,65 @@ non modifié. **Écart accepté par Grég le 19/11/2026 (D-AR)** ; confiance « 
 - La variante « années homogénéisées seules » change trois choses à la fois : elle retire les années brutes, raccourcit
   la période (sans 2022-2024, très chaudes) et, pour la France, prend la série publiée à 220 postes ; l'écart
   2,16 → 2,01 mêle ces trois effets.
+
+## P10.4 — cohérence physique
+
+Cadrage, décisions D-AS à D-AU et critères C1-C7 : `docs/phases.md`, section P10.4. Résultats automatiques :
+`docs/validation-p10-resultats.md`. Calcul officiel : ETL du 20/11/2026 sur la branche `p10-4`.
+
+### Résultats
+
+Confiance « non établie » (règle D-AT) : deux contrôles physiques sur quatre sont conformes.
+
+| Contrôle | Résultat | Critère |
+|---|---|---|
+| V, vapeur d'eau | β = 9,4 % par °C [8,6 ; 10,2], 1988-2025, contre [6 ; 8] attendu | C2 non conforme |
+| S, stratosphère | TLT +0,229 (RSS) et +0,148 (UAH) °C/décennie, TLS −0,140 et −0,196, tous nets, 1979-2025 | C3 conforme |
+| N, niveau marin | 3,94 mm/an observés (0,3 d'ajustement isostatique compris) contre 1,27 de dilatation + 2,05 de masse ; résidu +0,62 mm/an, 2005-2024 | C4 non conforme |
+| E, énergie | déséquilibre +0,50 W/m²/décennie [+0,25 ; +0,74], flux océanique +0,15 [−0,19 ; +0,49], 2006-2024 | C5 conforme |
+
+C1 conforme (masque de vapeur d'eau : 65,1 % de la bande ; GRACE : 206 mois sur 240). C6 non conforme : la variante
+NOAA de C2 ne converge pas (Prais-Winsten) et donnerait de toute façon 9,9 % par °C en moindres carrés ; le résidu de
+C4 avec les pentes de Sen est +0,63 ; seule la variante de C5 (flux lissé) est conforme.
+
+Essai avant le calcul officiel : le contrôle V a été essayé sur les données relevées (β = 9,4, et la non-convergence
+de la variante NOAA) avant l'exécution officielle. Aucun critère, seuil ni choix n'a été modifié après ; la seule
+modification du code après l'essai traite la non-convergence comme un échec de la variante au lieu d'arrêter l'ETL.
+
+### Écart C2 : la vapeur d'eau croît plus vite que 7 % par °C de la température moyenne de la mer
+
+Le résultat n'indique pas une physique violée ; il indique, probablement, un contrôle mal construit. Le taux de
+Clausius-Clapeyron porte sur la vapeur et la température **d'une même masse d'air**. Le cadrage a rapporté la vapeur
+mesurée entre 60° S et 60° N à la température moyenne de la mer du globe entier. Les variations d'une année à l'autre
+de ces deux grandeurs sont dominées par El Niño, qui fait varier fortement la mer tropicale (où se trouve l'essentiel
+de la vapeur) et beaucoup moins la moyenne du globe : le dénominateur est trop faible, la pente trop forte. La
+littérature va dans ce sens : dans les modèles, la vapeur d'eau totale croît de 7,3 % par °C de la température moyenne,
+mais de 6 à 12 % par °C selon la latitude (O'Gorman et Muller, 2010) ; des mesures micro-ondes indépendantes donnent
+environ 11 % par °C contre la température de mer moyennée par bandes de latitude (radiomètre TMR de Topex, 1992-2005, étude publiée en 2009).
+La relation elle-même est très serrée (96 % de la variance expliquée) : la vapeur suit bien la température, avec un
+facteur que ce contrôle ne permet pas de comparer à 7 %. Cette explication n'est pas vérifiée ici : il faudrait la
+température de la mer sur le même domaine, que l'étude ne publie pas.
+
+### Écart C4 : le bilan du niveau marin laisse +0,62 mm/an non expliqués
+
+La non-fermeture du bilan après 2016 est documentée : le bilan était fermé sur 1993-2016, il ne l'est plus depuis avec
+Jason-3, Argo et GRACE-FO (Chen et al., 2020). Barnoud et al. (2021, GRL 48) l'attribuent pour environ 40 % à des
+dérives de salinité des flotteurs Argo — sans effet ici, puisque le cadrage n'utilise que la dilatation thermique —
+et ne trouvent pas d'erreur suffisante dans l'altimétrie ; la composante thermique et la masse GRACE restent les
+suspects pour le reste. S'y ajoutent l'océan sous 2000 m (environ 0,1 mm/an) et l'incertitude de la correction
+isostatique (0,3 mm/an retenu). Le résidu (+0,62, information [+0,34 ; +0,90]) est du même ordre que les écarts publiés ;
+il ne remet pas en cause la conclusion qualitative (la hausse vient de la dilatation et de l'eau ajoutée, la masse en
+représentant environ la moitié et la dilatation un tiers), mais le bilan **n'est pas fermé à 0,5 mm/an près** sur
+2005-2024 avec ces trois produits.
+
+### Constats sans effet sur les critères
+
+- C5 est conforme, mais faiblement : le flux de chaleur entrant dans l'océan 0-2000 m, obtenu par différence du contenu
+  thermique annuel, a une tendance positive (+0,15 W/m² par décennie) mais non significative ; c'est surtout la largeur
+  de son intervalle qui le fait recouper celui de CERES. Le critère (deux tendances positives, intervalles qui se
+  recoupent) était peu exigeant ; il est tenu, sans plus.
+- C3 est conforme et attendu d'avance. Information : la stratosphère se refroidit encore sur 1998-2025 (−0,055 °C par
+  décennie pour RSS, −0,096 pour UAH, intervalles sous zéro), plus lentement que sur 1979-1997 (−0,41 et −0,49) ; le
+  « stable depuis le milieu des années 1990 » du GIEC (R-B2) n'est donc pas retrouvé tel quel avec ces versions.
+- La légende du graphique de vapeur d'eau affirmait que les deux courbes se superposent si la physique est respectée ;
+  corrigée après le calcul (les deux courbes ne portent pas sur la même région).
