@@ -166,11 +166,54 @@ def extra() -> list[str]:
     return out
 
 
+CMR_COLL = ("https://cmr.earthdata.nasa.gov/search/collections.json?keyword=GRACE%20ocean%20mass&page_size=20")
+
+
+def hrefs(data: bytes) -> list[str]:
+    return sorted(set(re.findall(r"""href=["']([^"'#?]+)["']""", data.decode("utf-8", "replace"), re.I)))
+
+
+def third() -> list[str]:
+    import os
+    out = ["## 5. Troisième passage", ""]
+    for name, url, pat in (
+        ("RSS vapeur, monthly_1deg", "https://data.remss.com/vapor/monthly_1deg/", r"\.txt$|time_series"),
+        ("NOAA NCEI, niveau thermostérique annuel (yearly_sl)",
+         "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/yearly_sl/", r"w0|\.csv"),
+        ("NOAA NCEI, niveau thermostérique pentadaire (pentad_sl)",
+         "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/pentad_sl/", r"w0"),
+        ("HadISDH, téléchargement marin", "https://www.metoffice.gov.uk/hadobs/hadisdh/downloadMARINE.html", r"q|ts"),
+        ("HadISDH, téléchargement combiné", "https://www.metoffice.gov.uk/hadobs/hadisdh/downloadBLEND.html", r"q|ts"),
+        ("CEDA SLBC_cci, phase 2", "https://data.ceda.ac.uk/neodc/esacci/sea_level_budget_closure/data/"
+         "timeseries_slb_element_phase_2", r"\.(nc|csv|txt|dat)$"),
+    ):
+        st, data = get(url)
+        hs = [h for h in hrefs(data) if re.search(pat, h, re.I)]
+        out += [f"**{name}** — {url}", f"Statut : {st} ; {len(hs)} liens retenus", "```"] + [h[:200] for h in hs[:60]] + \
+               ["```", ""]
+        # premier fichier texte de série : début et fin
+        txt = [h for h in hs if re.search(r"\.(txt|dat|csv)$", h, re.I) and ("w0-2000" in h or "time_series" in h
+                                                                         or "global" in h.lower())]
+        if txt:
+            f = txt[0] if txt[0].startswith("http") else urllib.request.urljoin(url, txt[0])
+            st2, d2 = get(f)
+            out += [f"Fichier {f} : {st2} ; {len(d2)} o", ""] + (head_tail(d2) if d2 else [])
+    st, data = get(CMR_COLL)
+    out += [f"**NASA CMR, collections « GRACE ocean mass »** — {CMR_COLL}", f"Statut : {st}", "```"]
+    if data:
+        for e in json.loads(data)["feed"]["entry"]:
+            out.append(f"{e.get('short_name')} | {e.get('version_id')} | {e.get('title', '')[:110]} | "
+                       f"{e.get('time_start', '')[:10]}-{(e.get('time_end') or '')[:10]}")
+    out += ["```", "", f"Jeton Earthdata présent dans l'environnement : {'oui' if os.environ.get('EARTHDATA_TOKEN') else 'non'}",
+            ""]
+    return out
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
     md = ["# Sonde P10.4 — cohérence physique : données disponibles (généré)", "",
           f"Produit le {now} par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.", ""]
-    for part in (published, files, listings, extra):
+    for part in (published, files, listings, extra, third):
         try:
             md += part()
         except Exception as exc:  # noqa: BLE001

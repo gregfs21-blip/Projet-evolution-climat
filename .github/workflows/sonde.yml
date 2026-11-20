@@ -35,6 +35,8 @@ jobs:
           key: raw-${{ github.run_id }}
           restore-keys: raw-
       - name: Sonde P10.4 (cohérence physique, données disponibles, aucun calcul)
+        env:
+          EARTHDATA_TOKEN: ${{ secrets.EARTHDATA_TOKEN }}   # présence seulement, jamais affiché
         run: python -m etl.probe.p10d
       - name: Sonde P10.3 (amplification régionale, données disponibles, aucun calcul)
         run: python -m etl.probe.p10c
