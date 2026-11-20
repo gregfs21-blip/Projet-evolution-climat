@@ -27,6 +27,11 @@ ACCEPTED: dict[str, str] = {
     "P10.3 A2 ajustement": "écart accepté par Grég le 19/11/2026 (D-AR) : Ljung-Box de la Gironde à 10 ans (p = 0,03), "
                            "dû à une seule autocorrélation à 10 ans déjà présente dans la série ; A3 tient avec les "
                            "erreurs de Newey-West (docs/validation-p10.md)",
+    "P10.4b B2 vapeur d'eau, même domaine": "écart accepté par Grég le 20/11/2026 (D-AY) : 10,9 % par °C sur le même "
+                                            "domaine ; hypothèse du domaine réfutée, explication restante non testée "
+                                            "(docs/validation-p10.md)",
+    "P10.4b B4 robustesse": "écart accepté par Grég le 20/11/2026 (D-AY) : suit B2 (9,9 % par °C en moindres carrés) ; "
+                            "la variante de Sen de B3 est conforme",
 }
 # Critères de P10.4 recadrés en P10.4b par décision de Grég après calcul (D-AV, 20/11/2026) : ni acceptés ni corrigés,
 # leur résultat reste publié.
