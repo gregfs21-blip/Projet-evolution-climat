@@ -34,6 +34,8 @@ jobs:
           path: data/raw
           key: raw-${{ github.run_id }}
           restore-keys: raw-
+      - name: Sonde P10.4b (température de la mer sur le domaine de la vapeur d'eau, aucun calcul)
+        run: python -m etl.probe.p10e
       - name: Sonde P10.4 (cohérence physique, données disponibles, aucun calcul)
         env:
           EARTHDATA_TOKEN: ${{ secrets.EARTHDATA_TOKEN }}   # présence seulement, jamais affiché
