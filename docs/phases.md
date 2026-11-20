@@ -747,6 +747,79 @@ relue (M6) avant la fusion.
 **Décisions demandées à Grég** (tranchées le 19/11/2026, voir en tête) : D-AP (données, période France et
 informations retenues) ; D-AQ (références, critères A1-A7 et règle de confiance).
 
+### P10.4 — Cohérence physique : cadrage proposé le 20/11/2026, avant tout calcul
+
+> **Demande de Grég du 20/11/2026** : « Fais p10.4 ».
+
+**Question** : les grandeurs mesurées indépendamment évoluent-elles comme la physique l'impose ? Chaque contrôle
+confronte deux jeux de mesures de natures différentes ; un désaccord signalerait une erreur de mesure ou de
+compréhension. Aucun contrôle n'attribue une cause.
+
+**Constat de la sonde** (20/11/2026, `docs/sonde-p10d.md`, six passages) :
+- Vapeur d'eau : RSS V7, vapeur d'eau intégrée sur les océans, cartes mensuelles à 1°, 1988-2025 (fichier
+  `merged_vapor_1988-2025.nc`, 118 Mo, accès libre). Pas de série moyenne toute faite. HadISDH (humidité de surface)
+  existe en grilles, non retenu.
+- Stratosphère : RSS 4.0 TLS et UAH 6.1 LS, mensuels, 1979-2026, fichiers texte libres (même forme que les TLT déjà
+  publiés).
+- Niveau marin : niveau thermostérique 0-2000 m de la NOAA NCEI, annuel 2005-2025 en mm (`yearly_sl/a-mm-w0-2000m.dat`,
+  avec erreur type) et pentadaire depuis 1957 ; masse de l'océan GRACE / GRACE-FO (JPL RL06.3Mv4, mensuelle depuis
+  04/2002, en mm de niveau marin, corrigée de l'ajustement isostatique glaciaire et de la masse de l'atmosphère),
+  téléchargeable avec le jeton Earthdata déjà utilisé pour CERES. Le niveau marin publié (NOAA STAR) n'est pas corrigé
+  de l'ajustement isostatique glaciaire (environ −0,3 mm/an, à ajouter pour comparer à GRACE).
+- Énergie : déséquilibre CERES (2001-2025) et contenu thermique 0-2000 m (2005-2025), déjà publiés.
+
+**Méthode proposée : quatre contrôles**
+- **V — vapeur d'eau et température (Clausius-Clapeyron)** : moyenne pondérée par l'aire de la vapeur d'eau RSS sur les
+  mailles océaniques entre 60° S et 60° N valides tous les mois (masque constant), moyenne annuelle 1988-2025 ;
+  ln W = c + β·T + u, u AR(1) (Prais-Winsten), T = température de surface de la mer HadSST4 (publiée). β, en % par °C,
+  est comparé au taux de Clausius-Clapeyron.
+- **S — troposphère contre stratosphère** : tendances de Sen 1979-2025 de la basse troposphère (TLT, publiées) et de la
+  basse stratosphère (TLS, nouvelles), RSS et UAH. Information : tendances 1979-1997 et 1998-2025 de la stratosphère,
+  pics volcaniques.
+- **N — bilan du niveau marin, 2005-2024** : niveau observé (NOAA STAR, + 0,3 mm/an d'ajustement isostatique) contre
+  somme dilatation thermique 0-2000 m (NCEI) + masse de l'océan (GRACE) ; tendance du résidu
+  observé − (dilatation + masse) (Prais-Winsten). Information : parts de la dilatation et de la masse.
+- **E — énergie : déséquilibre au sommet de l'atmosphère contre chaleur stockée par l'océan, 2005-2025** : flux de
+  chaleur dans l'océan 0-2000 m par différence centrée du contenu thermique annuel (W/m² rapportés à toute la surface de
+  la Terre) contre CERES ; tendances par décennie des deux séries (Prais-Winsten). Le niveau moyen de CERES étant calé
+  sur la chaleur de l'océan (Argo), seule la comparaison des **variations** est indépendante ; le rapport des moyennes
+  n'est qu'une information.
+
+**Références proposées**
+
+| # | Énoncé publié | Source | Usage |
+|---|---|---|---|
+| R-B1 | La capacité de l'air à contenir de la vapeur d'eau croît d'environ 7 % par °C (Clausius-Clapeyron) ; la vapeur d'eau intégrée a augmenté depuis 1979 à un rythme globalement cohérent avec ce taux | Équation de Clausius-Clapeyron ; GIEC AR5 et AR6 GT1 ch. 2 | V : fourchette [6 ; 8] % par °C |
+| R-B2 | La basse stratosphère s'est refroidie depuis le milieu du XXe siècle (« pratiquement certain ») ; elle est stable depuis le milieu des années 1990 | GIEC AR6 GT1 ch. 2 | S : signes attendus ; information sur les sous-périodes |
+| R-B3 | Niveau marin 1993-2018 : 3,1 ± 0,3 mm/an ; budget fermé à 0,3 mm/an près (1 σ) ; dilatation 42 %, glaciers 21 %, Groenland 15 %, Antarctique 8 % | WCRP Global Sea Level Budget Group, ESSD 10, 1551 (2018) | N : tolérance |
+| R-B4 | Hausse du déséquilibre 2005-2019 de 0,50 ± 0,47 W/m² par décennie, indiscernable entre satellites et mesures in situ ; environ 90 % de l'excédent réchauffe l'océan (91 % selon le GIEC) | Loeb et al. (2021), GRL 48 ; GIEC AR6 FAQ 7.1 | E |
+
+**Critères proposés (C1-C7)**
+
+| # | Critère | Seuil proposé |
+|---|---|---|
+| C1 | Données | Années complètes et consécutives sur chaque période ; masque de vapeur d'eau constant couvrant au moins la moitié de la surface 60° S-60° N |
+| C2 | Vapeur d'eau | Intervalle à 95 % de β recoupant [6 ; 8] % par °C, borne basse > 0 |
+| C3 | Stratosphère | Pour RSS et pour UAH : tendance TLT > 0 (borne basse > 0) et tendance TLS < 0 (borne haute < 0), 1979-2025 |
+| C4 | Niveau marin | Tendance du résidu observé − (dilatation + masse) comprise entre −0,5 et +0,5 mm/an (environ 2 σ de R-B3 ; l'océan profond sous 2000 m, non mesuré, compte pour environ 0,1 mm/an) |
+| C5 | Énergie | Tendances du déséquilibre (CERES) et du flux de chaleur dans l'océan positives, intervalles qui se recoupent |
+| C6 | Robustesse | C2 avec la température de mer NOAA ; C4 avec les tendances de Sen ; C5 avec un flux océanique lissé sur 3 ans |
+| C7 | Technique | Tests et CI verts, contrat à jour, analyse publiée dans l'onglet |
+
+**Règle de confiance proposée** : « élevée » si C1 à C6 sont conformes ; « moyenne » si au moins trois des quatre
+contrôles physiques (C2 à C5) le sont ; « non établie » sinon. Chaque contrôle affiche aussi son propre verdict.
+
+**Limites assumées d'avance** : cohérence n'est pas attribution (le refroidissement de la basse stratosphère vient
+surtout de la perte d'ozone, en partie du CO₂ ; le test ne les sépare pas) ; la vapeur d'eau RSS ne couvre que les
+océans sans glace ; le bilan du niveau marin ignore l'océan sous 2000 m et dépend de la correction isostatique ; le
+niveau moyen de CERES n'est pas indépendant d'Argo.
+
+**Conséquence pour la synthèse** : `limite-attribution` devra mentionner P10.4 (cohérence, pas attribution), puis être
+relue (M6) ; `limite-glaciers` reste exacte (seule la masse totale de l'océan est utilisée, pas les calottes).
+
+**Décisions demandées à Grég** : D-AS (contrôles, données et nouvelles sources) ; D-AT (références, critères C1-C7 et
+règle de confiance).
+
 ### Journal P10
 
 - 17/11/2026 : sonde (`docs/sonde-p10.md`), cadrage, décisions D-AD à D-AH, critères O1-O9 validés avant tout calcul.
