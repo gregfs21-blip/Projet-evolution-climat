@@ -836,6 +836,75 @@ class Amplification(_Strict):
         return self
 
 
+class CoherenceValue(_Strict):
+    label: str = Field(min_length=1)
+    unit: str = Field(min_length=1)
+    period: Period
+    estimate: Estimate
+
+
+class CoherenceLine(_Strict):
+    name: str = Field(min_length=1)
+    values: list[float | None]
+
+
+class CoherenceChart(_Strict):
+    title: str = Field(min_length=1)
+    unit: str = Field(min_length=1)
+    years: list[int] = Field(min_length=10)
+    lines: list[CoherenceLine] = Field(min_length=1)
+    note: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _lengths(self) -> "CoherenceChart":
+        if any(len(l.values) != len(self.years) for l in self.lines):
+            raise ValueError(f"cohérence : courbe de longueur différente des années ({self.title})")
+        return self
+
+
+class CoherenceCheck(_Strict):
+    id: Literal["vapeur", "stratosphere", "niveau-marin", "energie"]
+    letter: Literal["V", "S", "N", "E"]
+    title: str = Field(min_length=1)
+    question: str = Field(min_length=1)
+    criterion: str = Field(pattern=r"^C[2-5]$")
+    satisfied: bool
+    result: str = Field(min_length=1)
+    reference: str = Field(min_length=1)
+    values: list[CoherenceValue] = Field(min_length=1)
+    information: list[CoherenceValue]
+    charts: list[CoherenceChart] = Field(min_length=1)
+    limitation: str = Field(min_length=1)
+
+
+class Coherence(_Strict):
+    question: str = Field(min_length=1)
+    model: str = Field(min_length=1)
+    finding: str = Field(min_length=1)
+    confidence: Confidence
+    confidence_reason: str = Field(min_length=1)
+    method_note: str = Field(min_length=1)
+    limitations: list[str] = Field(min_length=1)
+    inputs: list[InputSource] = Field(min_length=1)
+    checks: list[CoherenceCheck] = Field(min_length=4, max_length=4)
+    criteria: list[Criterion] = Field(min_length=1)
+    script: str = Field(min_length=1)
+    etl_version: str = Field(min_length=1)
+    extracted_at: datetime
+
+    @model_validator(mode="after")
+    def _confidence(self) -> "Coherence":
+        ok = {c.id: c.satisfied for c in self.criteria}
+        if {c.criterion: c.satisfied for c in self.checks} != {k: ok.get(k) for k in ("C2", "C3", "C4", "C5")}:
+            raise ValueError("cohérence : verdict d'un contrôle différent de son critère")
+        physical = sum(bool(ok.get(k)) for k in ("C2", "C3", "C4", "C5"))
+        core = all(ok.get(f"C{i}", False) for i in range(1, 7))
+        expected = "elevee" if core else ("moyenne" if physical >= 3 else "non_etabli")
+        if self.confidence != expected:
+            raise ValueError(f"cohérence : confiance {self.confidence} incohérente avec les critères (attendu {expected}, D-AT)")
+        return self
+
+
 class DemonstrationAnalysis(_Strict):
     id: str = Field(pattern=SLUG)
     phase: str = Field(pattern=r"^p10\.[0-9]+$")
@@ -845,10 +914,11 @@ class DemonstrationAnalysis(_Strict):
     regression: Regression | None = None
     extremes: Extremes | None = None
     amplification: Amplification | None = None
+    coherence: Coherence | None = None
 
     @model_validator(mode="after")
     def _coherent(self) -> "DemonstrationAnalysis":
-        results = sum(x is not None for x in (self.regression, self.extremes, self.amplification))
+        results = sum(x is not None for x in (self.regression, self.extremes, self.amplification, self.coherence))
         if results > 1 or (self.status == "publie") != (results == 1):
             raise ValueError(f"{self.id} : « publie » si et seulement si un seul résultat est fourni")
         return self

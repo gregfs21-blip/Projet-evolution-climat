@@ -354,8 +354,6 @@ def _p(p: float) -> str:
 
 
 PLANNED = (
-    ("coherence-physique", "p10.4", "Cohérence physique",
-     "Les variables évoluent-elles comme la physique le prévoit (humidité, niveau marin, stratosphère) ?"),
     ("modele-energetique", "p10.5", "Modèle énergétique et projections",
      "Un modèle simple, validé sur le passé, que prévoit-il selon les scénarios d'émissions ?"),
 )
@@ -522,6 +520,13 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
     analyses.append(DemonstrationAnalysis(id="amplification-regionale", phase="p10.3",
                                           title="La France et la Gironde se réchauffent-elles plus vite que le monde ?",
                                           question=amp.question, status="publie", amplification=amp))
+
+    # P10.4 — cohérence physique (etl/demo_coherence.py)
+    from etl import demo_coherence as C
+    coh = C.load_and_build(out_dir, raw_dir, ctx.etl_version, ctx.extracted_at)
+    analyses.append(DemonstrationAnalysis(id="coherence-physique", phase="p10.4",
+                                          title="Les mesures indépendantes racontent-elles la même physique ?",
+                                          question=coh.question, status="publie", coherence=coh))
     analyses += [DemonstrationAnalysis(id=i, phase=ph, title=t, question=q, status="prevu") for i, ph, t, q in PLANNED]
     return Demonstration(generated_at=datetime.now(timezone.utc).replace(microsecond=0), analyses=analyses)
 
@@ -531,7 +536,7 @@ def main() -> int:
     OUT.write_text(demo.model_dump_json(indent=1) + "\n", encoding="utf-8")
     print(f"→ {OUT.relative_to(ROOT)}")
     for a in demo.analyses:
-        res = a.regression or a.extremes or a.amplification
+        res = a.regression or a.extremes or a.amplification or a.coherence
         if res is None:
             continue
         print(f"  {a.phase} : confiance {res.confidence}")

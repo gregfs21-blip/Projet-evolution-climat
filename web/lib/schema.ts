@@ -711,6 +711,66 @@ const amplificationSchema = z
   }, "amplification : confiance incohérente avec les critères (règle D-AQ)");
 export type Amplification = z.infer<typeof amplificationSchema>;
 
+const coherenceValueSchema = z.strictObject({
+  label: z.string().min(1),
+  unit: z.string().min(1),
+  period: periodSchema,
+  estimate: estimateSchema,
+});
+export type CoherenceValue = z.infer<typeof coherenceValueSchema>;
+
+const coherenceChartSchema = z
+  .strictObject({
+    title: z.string().min(1),
+    unit: z.string().min(1),
+    years: z.array(z.number().int()).min(10),
+    lines: z.array(z.strictObject({ name: z.string().min(1), values: z.array(z.number().nullable()) })).min(1),
+    note: z.string().min(1),
+  })
+  .refine((c) => c.lines.every((l) => l.values.length === c.years.length), "cohérence : courbe de longueur différente des années");
+export type CoherenceChart = z.infer<typeof coherenceChartSchema>;
+
+const coherenceCheckSchema = z.strictObject({
+  id: z.enum(["vapeur", "stratosphere", "niveau-marin", "energie"]),
+  letter: z.enum(["V", "S", "N", "E"]),
+  title: z.string().min(1),
+  question: z.string().min(1),
+  criterion: z.string().regex(/^C[2-5]$/),
+  satisfied: z.boolean(),
+  result: z.string().min(1),
+  reference: z.string().min(1),
+  values: z.array(coherenceValueSchema).min(1),
+  information: z.array(coherenceValueSchema),
+  charts: z.array(coherenceChartSchema).min(1),
+  limitation: z.string().min(1),
+});
+export type CoherenceCheck = z.infer<typeof coherenceCheckSchema>;
+
+const coherenceSchema = z
+  .strictObject({
+    question: z.string().min(1),
+    model: z.string().min(1),
+    finding: z.string().min(1),
+    confidence: confidenceSchema,
+    confidence_reason: z.string().min(1),
+    method_note: z.string().min(1),
+    limitations: z.array(z.string()).min(1),
+    inputs: z.array(inputSourceSchema).min(1),
+    checks: z.array(coherenceCheckSchema).length(4),
+    criteria: z.array(criterionSchema).min(1),
+    script: z.string().min(1),
+    etl_version: z.string().min(1),
+    extracted_at: isoDate,
+  })
+  .refine((r) => {
+    const ok = new Map(r.criteria.map((c) => [c.id, c.satisfied]));
+    const physical = ["C2", "C3", "C4", "C5"].filter((k) => ok.get(k) === true).length;
+    const core = [1, 2, 3, 4, 5, 6].every((i) => ok.get(`C${i}`) === true);
+    const expected = core ? "elevee" : physical >= 3 ? "moyenne" : "non_etabli";
+    return r.confidence === expected && r.checks.every((c) => ok.get(c.criterion) === c.satisfied);
+  }, "cohérence : confiance ou verdict incohérent avec les critères (règle D-AT)");
+export type Coherence = z.infer<typeof coherenceSchema>;
+
 export const demonstrationSchema = z.strictObject({
   schema_version: z.literal("1.0"),
   generated_at: isoDate,
@@ -726,9 +786,10 @@ export const demonstrationSchema = z.strictObject({
           regression: regressionSchema.nullable(),
           extremes: extremesSchema.nullable(),
           amplification: amplificationSchema.nullable(),
+          coherence: coherenceSchema.nullable().default(null),
         })
         .refine((a) => {
-          const results = [a.regression, a.extremes, a.amplification].filter((x) => x !== null).length;
+          const results = [a.regression, a.extremes, a.amplification, a.coherence].filter((x) => x !== null).length;
           return results <= 1 && (a.status === "publie") === (results === 1);
         }, "« publie » si et seulement si un seul résultat est fourni"),
     )

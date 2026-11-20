@@ -9,10 +9,11 @@ import ValidationBox from "@/components/ValidationBox";
 import { getDemonstration, getValidation } from "@/lib/data";
 import { fmtDateTime, REPO_URL } from "@/lib/format";
 import AmplificationView from "@/components/AmplificationView";
+import CoherenceView from "@/components/CoherenceView";
 import ExtremesView from "@/components/ExtremesView";
-import type { Amplification, Extremes, Regression } from "@/lib/schema";
+import type { Amplification, Coherence, Extremes, Regression } from "@/lib/schema";
 
-type Result = Regression | Extremes | Amplification;
+type Result = Regression | Extremes | Amplification | Coherence;
 
 export const metadata: Metadata = { title: "Démonstration" };
 
@@ -228,6 +229,39 @@ export default function DemonstrationPage() {
                 </p>
               </div>
               <AmplificationView a={x} />
+              <div className="max-w-3xl space-y-3">
+                <Criteria reg={x} />
+                <MethodAndLimits reg={x} />
+              </div>
+            </section>
+          );
+        })}
+
+      {demo.analyses
+        .filter((a) => a.status === "publie" && a.coherence)
+        .map((a) => {
+          const x = a.coherence!;
+          return (
+            <section key={a.id} id={a.id} className="scroll-mt-20 space-y-6">
+              <div className="max-w-3xl space-y-3">
+                <p className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase">{a.phase.toUpperCase()} · cohérence physique</p>
+                <h2 className="text-2xl font-semibold tracking-tight">{a.title}</h2>
+                <p className="text-[var(--muted)] italic">{a.question}</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <ConfidenceBadge level={x.confidence} />
+                </div>
+                <p className="leading-relaxed">{x.finding}</p>
+                <p className="text-sm text-[var(--muted)]">{x.confidence_reason}</p>
+                <p className="text-sm leading-relaxed">
+                  Principe : une erreur de mesure ou de compréhension se trahit quand deux instruments indépendants,
+                  qui doivent obéir à la même loi physique, ne s&apos;accordent plus. Chaque contrôle confronte deux
+                  jeux de mesures de natures différentes : satellites micro-ondes et thermomètres de surface ;
+                  troposphère et stratosphère ; altimétrie, flotteurs Argo et gravimétrie ; bilan radiatif mesuré depuis
+                  l&apos;espace et chaleur stockée dans l&apos;océan. Ces contrôles disent si les mesures se tiennent
+                  entre elles, pas ce qui cause le réchauffement.
+                </p>
+              </div>
+              <CoherenceView a={x} />
               <div className="max-w-3xl space-y-3">
                 <Criteria reg={x} />
                 <MethodAndLimits reg={x} />

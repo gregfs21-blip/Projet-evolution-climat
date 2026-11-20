@@ -15,7 +15,7 @@ Une phase n'est close que lorsque les écarts avec les références sont expliqu
 | P7 | Exploratoire : jet stream, Z500, blocages (CDS), proxy foudre — blocages et CAPE plafonnés à « signal non établi », Z500 en « moyenne » (D-V) | critères L1-L5 validés le 31/10/2026 ; relevé complet le 06/11/2026 | close (`docs/validation-p7.md`) |
 | P8 | Synthèse par échelle, avec niveau de confiance par affirmation | critères M1-M7 validés le 02/11/2026 ; M1-M7 conformes le 07/11/2026 | close (`docs/validation-p8.md`) |
 | P9 | Monde, exploratoire : Gulf Stream et circulation de retournement atlantique (AMOC) — débit, profondeur du maximum, température et salinité 0-700 m | décisions D-W à D-AC du 17/11/2026 | **ouverte** (critères N1-N7 validés le 17/11/2026 ; relevé EN4 en cours, câble indisponible, RAPID en attente des fichiers) |
-| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 valeurs extrêmes non stationnaires en Gironde ; P10.3 amplification régionale ; P10.4 et P10.5 cadrées plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI). P10.2 : D-AM à D-AO et critères X1-X7 validés le 19/11/2026, avant tout ajustement. P10.3 : D-AP, D-AQ et critères A1-A7 validés le 19/11/2026, avant tout calcul ; écart A2 accepté (D-AR) | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2 close le 19/11/2026, confiance « élevée » ; P10.3 close le 19/11/2026, confiance « moyenne », écart A2 accepté (D-AR) ; P10.4-P10.5 à cadrer) |
+| P10 | Démonstration de l'évolution du climat (onglet du site) : P10.1 régression multiple (ENSO, volcans, soleil, forçage anthropique) ; P10.2 valeurs extrêmes non stationnaires en Gironde ; P10.3 amplification régionale ; P10.4 cohérence physique ; P10.5 cadrée plus tard | P10.1 : décisions D-AD à D-AH et critères O1-O9 validés le 17/11/2026, avant tout calcul ; écart O8 accepté (D-AI). P10.2 : D-AM à D-AO et critères X1-X7 validés le 19/11/2026, avant tout ajustement. P10.3 : D-AP, D-AQ et critères A1-A7 validés le 19/11/2026, avant tout calcul ; écart A2 accepté (D-AR). P10.4 : D-AS à D-AU et critères C1-C7 validés le 20/11/2026, avant tout calcul | **ouverte** (P10.1 close le 18/11/2026, confiance « moyenne » ; P10.2 close le 19/11/2026, confiance « élevée » ; P10.3 close le 19/11/2026, confiance « moyenne », écart A2 accepté (D-AR) ; P10.4-P10.5 à cadrer) |
 | P11 | Localités la plus chaude et la plus froide à l'instant t (affichage temps réel, hors tendances) | décisions D-AJ à D-AL et critères Q1-Q5 validés le 18/11/2026, avant tout développement ; Q1-Q5 conformes (`docs/validation-p11.md`) | **close** (18/11/2026) |
 
 ## Journal P0
@@ -817,8 +817,17 @@ niveau moyen de CERES n'est pas indépendant d'Argo.
 **Conséquence pour la synthèse** : `limite-attribution` devra mentionner P10.4 (cohérence, pas attribution), puis être
 relue (M6) ; `limite-glaciers` reste exacte (seule la masse totale de l'océan est utilisée, pas les calottes).
 
-**Décisions demandées à Grég** : D-AS (contrôles, données et nouvelles sources) ; D-AT (références, critères C1-C7 et
-règle de confiance).
+**Décisions de Grég du 20/11/2026, avant tout calcul** :
+- **D-AS** : les quatre contrôles V, S, N et E, avec les nouvelles sources (vapeur d'eau RSS, TLS RSS et UAH,
+  dilatation NCEI 0-2000 m, masse de l'océan GRACE JPL relevée par le workflow « Copernicus » comme CERES).
+- **D-AT** : références R-B1 à R-B4, critères C1-C7 et règle de confiance validés tels quels.
+- **D-AU** (défaut du cadrage vu pendant l'écriture du code, avant tout calcul) : GRACE n'a pas de mesures de
+  juillet 2017 à mai 2018 ni certains mois isolés ; les années 2017 et 2018 de la masse de l'océan sont incomplètes, ce
+  que C1 et Prais-Winsten sur le résidu annuel ne permettaient pas. Le contrôle N devient un **bilan par tendances** :
+  résidu = tendance(niveau observé + 0,3 mm/an) − tendance(dilatation) − tendance(masse), chacune estimée par moindres
+  carrés ordinaires sur 2005-2024 (séries annuelles pour l'altimétrie et la dilatation, mois désaisonnalisés par JPL
+  pour la masse) ; C1 pour la masse : au moins 80 % des 240 mois présents. Le seuil de C4 (± 0,5 mm/an) ne change
+  pas. Les intervalles (erreurs de Newey-West, composantes supposées indépendantes) sont publiés pour information.
 
 ### Journal P10
 
@@ -880,6 +889,9 @@ règle de confiance).
   affirmait que le facteur est « plus fort en été qu'en hiver » alors que les intervalles se recoupent : reformulé.
   L'affirmation `cmp-terres-oceans` de la synthèse disait que l'étude ne compare pas la région aux seules terres :
   fausse depuis P10.3, reformulée ; un contrôle de validation vérifie désormais à chaque calcul ce qu'elle affirme.
+- 20/11/2026, P10.4 : sonde en six passages (`docs/sonde-p10d.md`), cadrage, décisions D-AS et D-AT validées par
+  Grég avant tout calcul ; D-AU (bilan du niveau marin par tendances, à cause du trou GRACE / GRACE-FO) validée avant
+  tout calcul.
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 

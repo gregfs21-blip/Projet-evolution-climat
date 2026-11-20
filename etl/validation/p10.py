@@ -111,6 +111,22 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
                 + ("" if above else " — reformuler cmp-terres-oceans (etl/config/synthese.yaml) et la faire relire"))))
         inds |= {"temperature-gistemp-monde", "temperature-hadcrut5-monde", "temperature-berkeley-monde",
                  "tm-france", "tm-annuelle-gironde"}
+    # P10.4 — cohérence physique (critères C1-C7, D-AT)
+    coh = next((a.coherence for a in demo.analyses if a.phase == "p10.4" and a.coherence), None)
+    if coh is not None:
+        for c in coh.criteria:
+            name = f"P10.4 {c.id} {c.label.lower()}"
+            ok = c.satisfied or name in ACCEPTED
+            status = "✅ conforme" if c.satisfied else (f"☑ {ACCEPTED[name]}" if name in ACCEPTED else "❌ non conforme")
+            out.append(ValidationCheck(name=name, kind="critère", status=status, satisfied=ok, detail=c.detail))
+        out.append(ValidationCheck(
+            name="P10.4 C7 technique", kind="info", status="ℹ️ information", satisfied=True,
+            detail="Tests (etl/tests/test_p10d.py), contrat et construction de l'onglet vérifiés par la CI."))
+        out.append(ValidationCheck(
+            name="Confiance P10.4 (règle D-AT)", kind="info", status="ℹ️ information", satisfied=True,
+            detail=f"{coh.confidence} — {coh.confidence_reason}"))
+        inds |= {"sst-hadsst-monde", "sst-noaa-monde", "tlt-rss-monde", "tlt-uah-monde", "niveau-mer-monde",
+                 "ohc-2000-monde", "desequilibre-energetique-monde"}
     return out, sorted(inds)
 
 

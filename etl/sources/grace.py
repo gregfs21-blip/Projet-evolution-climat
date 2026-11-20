@@ -18,6 +18,7 @@ import csv
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -34,6 +35,7 @@ SOURCE_NAME = "NASA JPL — GRACE et GRACE-FO, mascons RL06.3Mv4, masse de l'oc�
 LICENSE = "Domaine public (NASA), citation demandée"
 UA = "projet-evolution-climat"
 FIELDS = ["time", "mass_mm", "sigma_mm", "deseasoned_mm"]
+TRIES, WAIT = 4, 30      # essais et pause croissante (s)
 
 
 class _EarthdataOnly(urllib.request.HTTPRedirectHandler):
@@ -94,17 +96,26 @@ def collect(out_dir: Path = OUT_DIR) -> str:
     title, href = latest()
     if meta.get("granule") == title and (out_dir / "ocean-mass.csv").exists():
         return f"GRACE : à jour ({title})"
-    handler = _EarthdataOnly(token)
-    opener = urllib.request.build_opener(handler)
-    req = urllib.request.Request(href, headers={"User-Agent": UA})
-    req.add_unredirected_header("Authorization", f"Bearer {token}")
-    try:
-        with opener.open(req, timeout=120) as r:
-            text = r.read().decode("utf-8", errors="replace")
-    except urllib.error.HTTPError as exc:
-        raise RuntimeError(f"{exc.code} sur {urllib.parse.urlparse(exc.url or href).hostname} ; fichier "
-                           f"{urllib.parse.urlparse(href).path.rsplit('/', 1)[-1]} ; redirections : "
-                           f"{' ; '.join(handler.chain) or 'aucune'}") from exc
+    errors = []
+    for attempt in range(TRIES):          # PO.DAAC répond parfois 403 ou 504 de façon passagère
+        handler = _EarthdataOnly(token)
+        opener = urllib.request.build_opener(handler)
+        req = urllib.request.Request(href, headers={"User-Agent": UA})
+        req.add_unredirected_header("Authorization", f"Bearer {token}")
+        try:
+            with opener.open(req, timeout=120) as r:
+                text = r.read().decode("utf-8", errors="replace")
+            break
+        except urllib.error.HTTPError as exc:
+            errors.append(f"{exc.code} sur {urllib.parse.urlparse(exc.url or href).hostname} (redirections : "
+                          f"{' ; '.join(handler.chain) or 'aucune'})")
+            if attempt + 1 < TRIES:
+                time.sleep(WAIT * (attempt + 1))
+    else:
+        raise RuntimeError(f"fichier {urllib.parse.urlparse(href).path.rsplit('/', 1)[-1]}, {TRIES} essais : "
+                           + " ; ".join(errors))
+    if errors:
+        print(f"GRACE : réussi après {len(errors)} échec(s) : {' ; '.join(errors)}", flush=True)
     rows = parse(text)
     with (out_dir / "ocean-mass.csv").open("w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
