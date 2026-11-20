@@ -1,6 +1,6 @@
 # Sonde P10.4 — cohérence physique : données disponibles (généré)
 
-Produit le 20/11/2026 10:49 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
+Produit le 20/11/2026 10:55 UTC par `etl/probe/p10d.py`. Inventaire seulement : aucune tendance, aucun rapport.
 
 ## 1. Séries déjà publiées sur le site
 
@@ -172,7 +172,7 @@ timeseries_slb_elements/
 Statut : 404 ; 0 o
 
 **NASA, GRACE / GRACE-FO, masse de l'océan (PO.DAAC)** — https://podaac.jpl.nasa.gov/dataset/OCEAN_MASS_TIME_SERIES_GRACE-FO_JPL_RL06.3_V4
-Statut : erreur : URLError <urlopen error timed out> ; 0 o
+Statut : erreur : URLError <urlopen error _ssl.c:994: The handshake operation timed out> ; 0 o
 
 **NASA Vital Signs, masse des calottes (page)** — https://climate.nasa.gov/vital-signs/ice-sheets/
 Statut : 200 ; 275524 o
@@ -603,4 +603,60 @@ TELLUS_GRAC_L3_GFZ_RL06_OCN_v04 | RL06v04 | GFZ TELLUS GRACE Level-3 Monthly Oce
 ```
 
 Jeton Earthdata présent dans l'environnement : oui
+
+## 6. Quatrième passage
+
+**RSS vapeur, tous les liens de monthly_1deg**
+```
+/vapor/
+/vapor/monthly_1deg/error_realizations/
+/vapor/monthly_1deg/merged_vapor_1988-2025.nc
+/vapor/monthly_1deg/old_files/
+/vapor/monthly_1deg/read_routines/
+```
+
+Fichier https://data.remss.com/vapor/monthly_1deg/merged_vapor_1988-2025.nc : 200 ; 30000000 o
+
+**CMR, OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4**
+Statut : 200
+```
+ocean_mass_200204_202609 2002-04-01T00:00:00.000Z 2026-09-30T23:59:59.000Z
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/ocean_mass_200204_202609.txt
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-public/OCEAN_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/ocean_mass_200204_202609.txt.md5
+https://archive.podaac.earthdata.nasa.gov/s3credentials
+https://cmr.earthdata.nasa.gov/virtual-directory/collections/C3206302778-POCLOUD
+https://search.earthdata.nasa.gov/search/granules?p=C3206302778-POCLOUD
+https://github.com/podaac/data-subscriber
+```
+Téléchargement avec jeton : échec HTTPError HTTP Error 400: Bad Request
+
+**CMR, GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4**
+Statut : 200
+```
+greenland_mass_200204_202609 2002-04-01T00:00:00.000Z 2026-09-30T23:59:59.000Z
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/greenland_mass_200204_202609.txt
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-public/GREENLAND_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/greenland_mass_200204_202609.txt.md5
+https://archive.podaac.earthdata.nasa.gov/s3credentials
+https://cmr.earthdata.nasa.gov/virtual-directory/collections/C3206299308-POCLOUD
+https://search.earthdata.nasa.gov/search/granules?p=C3206299308-POCLOUD
+https://github.com/podaac/data-subscriber
+```
+Téléchargement avec jeton : échec HTTPError HTTP Error 400: Bad Request
+
+**CMR, ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4**
+Statut : 200
+```
+antarctica_mass_200204_202609 2002-04-01T00:00:00.000Z 2026-09-30T23:59:59.000Z
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/antarctica_mass_200204_202609.txt
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-public/ANTARCTICA_MASS_TELLUS_MASCON_CRI_TIME_SERIES_RL06.3_V4/antarctica_mass_200204_202609.txt.md5
+https://archive.podaac.earthdata.nasa.gov/s3credentials
+https://cmr.earthdata.nasa.gov/virtual-directory/collections/C3206284786-POCLOUD
+https://search.earthdata.nasa.gov/search/granules?p=C3206284786-POCLOUD
+https://github.com/podaac/data-subscriber
+```
+Téléchargement avec jeton : échec HTTPError HTTP Error 400: Bad Request
+
+**HadISDH marin, q** — https://www.metoffice.gov.uk/hadobs/hadisdh/data/HadISDH.marineq.1.6.1.2024f_BClocalSHIP5by5both_anoms9120.nc
+Statut : 200 ; 30000000 o
+lecture : OSError [Errno -101] NetCDF: HDF error: '/tmp/tmp4ltvghh_.nc'
 
