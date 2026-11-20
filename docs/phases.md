@@ -765,7 +765,7 @@ compréhension. Aucun contrôle n'attribue une cause.
   avec erreur type) et pentadaire depuis 1957 ; masse de l'océan GRACE / GRACE-FO (JPL RL06.3Mv4, mensuelle depuis
   04/2002, en mm de niveau marin, corrigée de l'ajustement isostatique glaciaire et de la masse de l'atmosphère),
   téléchargeable avec le jeton Earthdata déjà utilisé pour CERES. Le niveau marin publié (NOAA STAR) n'est pas corrigé
-  de l'ajustement isostatique glaciaire (environ −0,3 mm/an, à ajouter pour comparer à GRACE).
+  de l'ajustement isostatique glaciaire : il faut lui ajouter environ +0,3 mm/an pour le comparer à GRACE.
 - Énergie : déséquilibre CERES (2001-2025) et contenu thermique 0-2000 m (2005-2025), déjà publiés.
 
 **Méthode proposée : quatre contrôles**
