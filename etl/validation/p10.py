@@ -28,6 +28,12 @@ ACCEPTED: dict[str, str] = {
                            "dû à une seule autocorrélation à 10 ans déjà présente dans la série ; A3 tient avec les "
                            "erreurs de Newey-West (docs/validation-p10.md)",
 }
+# Critères de P10.4 recadrés en P10.4b par décision de Grég après calcul (D-AV, 20/11/2026) : ni acceptés ni corrigés,
+# leur résultat reste publié ; ils ne bloquent la clôture que si P10.4b n'est pas publiée.
+REFRAMED: dict[str, str] = {
+    name: "recadré en P10.4b par décision de Grég (D-AV, 20/11/2026) ; résultat publié tel quel"
+    for name in ("P10.4 C2 vapeur d'eau", "P10.4 C4 niveau marin", "P10.4 C6 robustesse")
+}
 # Analyses de l'onglet dont la synthèse tient compte (affirmations `limite-attribution` et `limite-projections` de
 # etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.4 cohérence physique, P10.5 projections) rend ces
 # affirmations à revoir : ce contrôle échoue jusqu'à leur reformulation, relue (M6), et la mise à jour de cette liste
@@ -113,11 +119,16 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
                  "tm-france", "tm-annuelle-gironde"}
     # P10.4 — cohérence physique (critères C1-C7, D-AT)
     coh = next((a.coherence for a in demo.analyses if a.phase == "p10.4" and a.coherence), None)
+    cob = next((a.coherence for a in demo.analyses if a.phase == "p10.4b" and a.coherence), None)
     if coh is not None:
         for c in coh.criteria:
             name = f"P10.4 {c.id} {c.label.lower()}"
-            ok = c.satisfied or name in ACCEPTED
-            status = "✅ conforme" if c.satisfied else (f"☑ {ACCEPTED[name]}" if name in ACCEPTED else "❌ non conforme")
+            # D-AV : un critère recadré n'est ni accepté ni corrigé ; il compte comme traité seulement si la sous-phase
+            # P10.4b, qui le recadre, est publiée.
+            reframed = name in REFRAMED and cob is not None
+            ok = c.satisfied or name in ACCEPTED or reframed
+            status = ("✅ conforme" if c.satisfied else f"☑ {ACCEPTED[name]}" if name in ACCEPTED
+                      else f"↪ non conforme, {REFRAMED[name]}" if reframed else "❌ non conforme")
             out.append(ValidationCheck(name=name, kind="critère", status=status, satisfied=ok, detail=c.detail))
         out.append(ValidationCheck(
             name="P10.4 C7 technique", kind="info", status="ℹ️ information", satisfied=True,
@@ -127,6 +138,19 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
             detail=f"{coh.confidence} — {coh.confidence_reason}"))
         inds |= {"sst-hadsst-monde", "sst-noaa-monde", "tlt-rss-monde", "tlt-uah-monde", "niveau-mer-monde",
                  "ohc-2000-monde", "desequilibre-energetique-monde"}
+    # P10.4b — recadrage de V et N (critères B1-B5, D-AX)
+    if cob is not None:
+        for c in cob.criteria:
+            name = f"P10.4b {c.id} {c.label.lower()}"
+            ok = c.satisfied or name in ACCEPTED
+            status = "✅ conforme" if c.satisfied else (f"☑ {ACCEPTED[name]}" if name in ACCEPTED else "❌ non conforme")
+            out.append(ValidationCheck(name=name, kind="critère", status=status, satisfied=ok, detail=c.detail))
+        out.append(ValidationCheck(
+            name="P10.4b B5 technique", kind="info", status="ℹ️ information", satisfied=True,
+            detail="Tests (etl/tests/test_p10d.py), contrat et construction de l'onglet vérifiés par la CI."))
+        out.append(ValidationCheck(
+            name="Confiance P10.4b (règle D-AX)", kind="info", status="ℹ️ information", satisfied=True,
+            detail=f"{cob.confidence} — {cob.confidence_reason}"))
     return out, sorted(inds)
 
 

@@ -244,7 +244,9 @@ export default function DemonstrationPage() {
           return (
             <section key={a.id} id={a.id} className="scroll-mt-20 space-y-6">
               <div className="max-w-3xl space-y-3">
-                <p className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase">{a.phase.toUpperCase()} · cohérence physique</p>
+                <p className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase">
+                  {a.phase.toUpperCase()} · {a.phase === "p10.4b" ? "cohérence physique, contrôles recadrés" : "cohérence physique"}
+                </p>
                 <h2 className="text-2xl font-semibold tracking-tight">{a.title}</h2>
                 <p className="text-[var(--muted)] italic">{a.question}</p>
                 <div className="flex flex-wrap items-center gap-2">
@@ -252,6 +254,15 @@ export default function DemonstrationPage() {
                 </div>
                 <p className="leading-relaxed">{x.finding}</p>
                 <p className="text-sm text-[var(--muted)]">{x.confidence_reason}</p>
+                {a.phase === "p10.4b" ? (
+                  <p className="rounded-lg border border-[var(--warm)] px-3 py-2 text-sm leading-relaxed">
+                    Contrôles recadrés <b>après</b> le premier calcul de P10.4, en connaissant son résultat : la vapeur
+                    d&apos;eau est désormais comparée à la température de la mer des mêmes mailles, et le bilan du niveau
+                    marin est jugé avant 2016, année après laquelle sa non-fermeture est documentée. Les seuils n&apos;ont
+                    pas été élargis. Un succès obtenu ainsi pèse moins qu&apos;un succès prévu d&apos;avance ; le résultat
+                    de P10.4 ci-dessus reste celui du cadrage initial.
+                  </p>
+                ) : (
                 <p className="text-sm leading-relaxed">
                   Principe : une erreur de mesure ou de compréhension se trahit quand deux instruments indépendants,
                   qui doivent obéir à la même loi physique, ne s&apos;accordent plus. Chaque contrôle confronte deux
@@ -260,6 +271,7 @@ export default function DemonstrationPage() {
                   l&apos;espace et chaleur stockée dans l&apos;océan. Ces contrôles disent si les mesures se tiennent
                   entre elles, pas ce qui cause le réchauffement.
                 </p>
+                )}
               </div>
               <CoherenceView a={x} />
               <div className="max-w-3xl space-y-3">

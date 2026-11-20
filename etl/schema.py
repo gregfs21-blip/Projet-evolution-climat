@@ -863,11 +863,11 @@ class CoherenceChart(_Strict):
 
 
 class CoherenceCheck(_Strict):
-    id: Literal["vapeur", "stratosphere", "niveau-marin", "energie"]
-    letter: Literal["V", "S", "N", "E"]
+    id: Literal["vapeur", "stratosphere", "niveau-marin", "energie", "vapeur-domaine", "niveau-marin-2005-2015"]
+    letter: Literal["V", "S", "N", "E", "V′", "N′"]
     title: str = Field(min_length=1)
     question: str = Field(min_length=1)
-    criterion: str = Field(pattern=r"^C[2-5]$")
+    criterion: str = Field(pattern=r"^(C[2-5]|B[23])$")
     satisfied: bool
     result: str = Field(min_length=1)
     reference: str = Field(min_length=1)
@@ -878,6 +878,7 @@ class CoherenceCheck(_Strict):
 
 
 class Coherence(_Strict):
+    rule: Literal["D-AT", "D-AX"] = Field(default="D-AT", description="Règle de confiance : D-AT (P10.4, C1-C6), D-AX (P10.4b, B1-B4)")
     question: str = Field(min_length=1)
     model: str = Field(min_length=1)
     finding: str = Field(min_length=1)
@@ -886,7 +887,7 @@ class Coherence(_Strict):
     method_note: str = Field(min_length=1)
     limitations: list[str] = Field(min_length=1)
     inputs: list[InputSource] = Field(min_length=1)
-    checks: list[CoherenceCheck] = Field(min_length=4, max_length=4)
+    checks: list[CoherenceCheck] = Field(min_length=2, max_length=4)
     criteria: list[Criterion] = Field(min_length=1)
     script: str = Field(min_length=1)
     etl_version: str = Field(min_length=1)
@@ -895,19 +896,26 @@ class Coherence(_Strict):
     @model_validator(mode="after")
     def _confidence(self) -> "Coherence":
         ok = {c.id: c.satisfied for c in self.criteria}
-        if {c.criterion: c.satisfied for c in self.checks} != {k: ok.get(k) for k in ("C2", "C3", "C4", "C5")}:
+        if self.rule == "D-AT":
+            physical_ids, core_ids = ("C2", "C3", "C4", "C5"), [f"C{i}" for i in range(1, 7)]
+        else:
+            physical_ids, core_ids = ("B2", "B3"), [f"B{i}" for i in range(1, 5)]
+        if {c.criterion: c.satisfied for c in self.checks} != {k: ok.get(k) for k in physical_ids}:
             raise ValueError("cohérence : verdict d'un contrôle différent de son critère")
-        physical = sum(bool(ok.get(k)) for k in ("C2", "C3", "C4", "C5"))
-        core = all(ok.get(f"C{i}", False) for i in range(1, 7))
-        expected = "elevee" if core else ("moyenne" if physical >= 3 else "non_etabli")
+        physical = sum(bool(ok.get(k)) for k in physical_ids)
+        core = all(ok.get(k, False) for k in core_ids)
+        if self.rule == "D-AT":
+            expected = "elevee" if core else ("moyenne" if physical >= 3 else "non_etabli")
+        else:
+            expected = "elevee" if core else ("moyenne" if physical >= 1 else "non_etabli")
         if self.confidence != expected:
-            raise ValueError(f"cohérence : confiance {self.confidence} incohérente avec les critères (attendu {expected}, D-AT)")
+            raise ValueError(f"cohérence : confiance {self.confidence} incohérente avec les critères (attendu {expected}, {self.rule})")
         return self
 
 
 class DemonstrationAnalysis(_Strict):
     id: str = Field(pattern=SLUG)
-    phase: str = Field(pattern=r"^p10\.[0-9]+$")
+    phase: str = Field(pattern=r"^p10\.[0-9]+[a-z]?$")
     title: str = Field(min_length=1)
     question: str = Field(min_length=1)
     status: Literal["publie", "prevu"]

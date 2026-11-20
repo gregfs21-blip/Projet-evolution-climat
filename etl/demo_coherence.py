@@ -158,8 +158,26 @@ class Slope:
 
 
 def ols_slope(t: list[float], v: list[float]) -> Slope:
-    f = R.ols_newey_west(np.array(v, float), np.array(t, float), ["t"])
-    return Slope(float(f.coef[1]), float(f.se[1]), len(t))
+    """Pente des moindres carrés et son erreur type de Newey-West (Bartlett, décalage ⌊4·(n/100)^(2/9)⌋, au moins 1).
+
+    Calcul direct plutôt que R.ols_newey_west, qui refuse les séries de moins de 12 points : les sous-périodes de
+    P10.4b (2005-2015, 2016-2024) en ont 11 et 9. L'erreur type n'est qu'une information (D-AU)."""
+    x, y = np.asarray(t, float), np.asarray(v, float)
+    if len(x) < 5 or not (np.all(np.isfinite(x)) and np.all(np.isfinite(y))):
+        raise ValueError("tendance : moins de 5 points ou valeur non finie")
+    X = np.column_stack([np.ones(len(x)), x])
+    beta = np.linalg.lstsq(X, y, rcond=None)[0]
+    e = y - X @ beta
+    n, k = X.shape
+    lag = max(1, R.newey_west_lag(n))
+    xe = X * e[:, None]
+    S = xe.T @ xe
+    for j in range(1, lag + 1):
+        G_ = xe[j:].T @ xe[:-j]
+        S += (1 - j / (lag + 1)) * (G_ + G_.T)
+    bread = np.linalg.inv(X.T @ X)
+    cov = bread @ S @ bread * n / (n - k)
+    return Slope(float(beta[1]), float(np.sqrt(cov[1, 1])), n)
 
 
 def sen_slope(t: list[float], v: list[float]) -> float:
@@ -199,8 +217,9 @@ class Budget:
         return abs(self.sen_resid) <= RESID_MAX
 
 
-def budget(gmsl: dict[int, float], thermo: dict[int, float], mass: list[tuple[float, float]]) -> Budget:
-    ys = span(N_SPAN)
+def budget(gmsl: dict[int, float], thermo: dict[int, float], mass: list[tuple[float, float]],
+           p: tuple[int, int] = N_SPAN) -> Budget:
+    ys = span(p)
     o = ols_slope(ys, [gmsl[y] for y in ys])
     th = ols_slope(ys, [thermo[y] for y in ys])
     mt, mv = [t for t, _ in mass], [v for _, v in mass]
@@ -500,6 +519,7 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
                            (EEI, "Déséquilibre énergétique CERES EBAF"))],
     ]
     return Coherence(
+        rule="D-AT",
         question="Les grandeurs mesurées indépendamment évoluent-elles comme la physique l'impose ?",
         model=("Quatre contrôles : vapeur d'eau contre température de mer (Clausius-Clapeyron) ; basse troposphère "
                "contre basse stratosphère ; niveau marin contre dilatation plus masse ajoutée ; déséquilibre énergétique "
@@ -525,3 +545,195 @@ def load_and_build(out_dir: Path, raw_dir: Path, ctx_version: str, extracted_at)
                  gmsl=published(out_dir, GMSL), thermo=G.load("thermosteric-2000", raw_dir), grace_rows=GR.load(),
                  ohc=published(out_dir, OHC), eei=published(out_dir, EEI), ctx_version=ctx_version,
                  extracted_at=extracted_at, grace_meta=gmeta)
+
+
+# ================================================================ P10.4b : recadrage de V et N (D-AV, D-AW, D-AX)
+# Cadré le 20/11/2026 APRÈS le calcul officiel de P10.4 (écarts C2 et C4), en connaissant ses résultats ; les seuils
+# ne sont pas élargis (D-AW). Critères B1-B5, règle de confiance D-AX.
+
+VB_SPAN = (1988, 2025)
+NB_SPAN = (2005, 2015)
+NB_INFO = (2016, 2024)
+COMMON_MIN = 0.5                     # B1 : part de la bande 60° S-60° N couverte par le masque commun
+
+
+def annual_common(monthly: dict[str, tuple[float, float]]) -> tuple[dict[int, float], dict[int, float]]:
+    per: dict[int, list[tuple[float, float]]] = {}
+    for m, v in monthly.items():
+        per.setdefault(int(m[:4]), []).append(v)
+    full = {y: v for y, v in per.items() if len(v) == 12}
+    return ({y: sum(a for a, _ in v) / 12 for y, v in full.items()}, {y: sum(b for _, b in v) / 12 for y, v in full.items()})
+
+
+def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict, gmsl: dict[int, float],
+            thermo: dict[int, float], grace_rows: list[dict], ctx_version: str, extracted_at,
+            grace_meta: dict | None = None) -> Coherence:
+    crit: list[Criterion] = []
+    vy = span(VB_SPAN)
+    tpw, sst = annual_common(common_monthly)
+    frac = float(vapor_meta["common_area_fraction"])
+    v_miss = missing(tpw, vy)
+    ny = span(NB_SPAN)
+    n_miss = sorted(set(missing(gmsl, span((NB_SPAN[0], NB_INFO[1])))) | set(missing(thermo, span((NB_SPAN[0], NB_INFO[1])))))
+    mass = mass_months(grace_rows, NB_SPAN)
+    n_cov, n_months = month_count(mass), 12 * len(ny)
+    b1 = not v_miss and frac >= COMMON_MIN and not n_miss and n_cov >= MASS_MIN * n_months
+    crit.append(Criterion(id="B1", label="Données", satisfied=b1, detail=(
+        f"V′ : {VB_SPAN[0]}-{VB_SPAN[1]}, {'aucune année manquante' if not v_miss else 'manquantes : ' + ', '.join(map(str, v_miss))}, "
+        f"masque commun RSS et ERSST couvrant {_f(frac * 100, 1)} % de la bande 60° S-60° N (seuil {_f(COMMON_MIN * 100, 0)} %, "
+        f"{vapor_meta.get('common_cells', '?')} mailles de 1°) ; N′ : altimétrie et dilatation {NB_SPAN[0]}-{NB_INFO[1]} "
+        f"{'complètes' if not n_miss else 'manquantes : ' + ', '.join(map(str, n_miss))}, masse GRACE {n_cov} mois sur "
+        f"{n_months} en {NB_SPAN[0]}-{NB_SPAN[1]} ({_f(n_cov / n_months * 100, 0)} %, seuil {_f(MASS_MIN * 100, 0)} %)")))
+
+    # ---------- V′
+    try:
+        cc, cc_err = fit_cc(tpw, sst, vy), ""
+    except ValueError as exc:
+        cc, cc_err = None, str(exc)
+    ob, olo, ohi = fit_cc_ols(tpw, sst, vy)
+    ols_ok = olo > 0 and overlap((olo, ohi), CC_RANGE)
+    b2 = cc is not None and cc.ok
+    rng = f"[{_f(CC_RANGE[0], 0)} ; {_f(CC_RANGE[1], 0)}]"
+    crit.append(Criterion(id="B2", label="Vapeur d'eau, même domaine", satisfied=b2, detail=(
+        (f"β = {_f(cc.beta, 1)} % par °C {_ci(cc.lo, cc.hi, 1)} ({VB_SPAN[0]}-{VB_SPAN[1]}, ERSST v5 sur le masque commun, "
+         f"Prais-Winsten, ρ = {_f(cc.rho, 2)})" if cc is not None else f"{cc_err}")
+        + f" ; attendu : intervalle recoupant {rng} (D-AW), borne basse > 0")))
+    mean_t = sum(sst[y] for y in vy) / len(vy)
+    mean_w = sum(tpw[y] for y in vy) / len(vy)
+    beta_txt = (f"{_f(cc.beta, 1)} % par °C de température de la mer (intervalle à 95 % : {_f(cc.lo, 1)} à "
+                f"{_f(cc.hi, 1)})" if cc is not None
+                else "selon une pente que l'estimateur AR(1) ne parvient pas à estimer")
+    v_check = CoherenceCheck(
+        id="vapeur-domaine", letter="V′", title="Vapeur d'eau et température de la mer du même domaine",
+        question="Sur un même domaine océanique, la vapeur d'eau croît-elle d'environ 7 % par degré de la mer ?",
+        criterion="B2", satisfied=b2,
+        result=(f"Sur le même domaine (60° S-60° N, mailles valides pour les deux jeux), la vapeur d'eau augmente de "
+                f"{beta_txt}, "
+                + ("compatible avec le taux de Clausius-Clapeyron." if b2 else f"hors de la fourchette {rng} retenue.")),
+        reference=(REFERENCES["V"] + " Fourchette conservée après le premier calcul (D-AW). Rapports publiés contre la "
+                   "température de la mer souvent plus élevés : 7,7 % par K sur l'océan dans ERA5, 10,7 dans JRA-55, "
+                   "9,9 dans les tropiques pour un enregistrement satellite (Fu et al., préprint ESSD 2024)."),
+        values=[value("β, vapeur d'eau par °C de la mer (même domaine)", "% par °C", VB_SPAN,
+                      est(cc.beta, cc.lo, cc.hi) if cc is not None else est(ob))],
+        information=[value("β en moindres carrés, erreurs de Newey-West (B4)", "% par °C", VB_SPAN, est(ob, olo, ohi)),
+                     *([value("Part de la variance expliquée", "%", VB_SPAN, est(cc.r2 * 100))] if cc is not None else [])],
+        charts=[CoherenceChart(
+            title=f"Vapeur d'eau et température de la mer sur le même domaine ({VB_SPAN[0]}-{VB_SPAN[1]})", unit="%",
+            years=vy,
+            lines=[CoherenceLine(name="Vapeur d'eau RSS (écart à la moyenne)",
+                                 values=[round((tpw[y] / mean_w - 1) * 100, 3) for y in vy]),
+                   CoherenceLine(name="7 % par °C de la température de mer ERSST (même domaine)",
+                                 values=[round(7 * (sst[y] - mean_t), 3) for y in vy])],
+            note=(f"Écarts à la moyenne {VB_SPAN[0]}-{VB_SPAN[1]}, sur les mêmes mailles : vapeur d'eau en %, et ce que "
+                  "donnerait le taux de 7 % par °C appliqué à la température de la mer de ces mailles."))],
+        limitation=("Température de la mer et non de l'air : la troposphère tropicale se réchauffe plus que la mer, ce "
+                    "qui pousse le rapport au-dessus de 7 % ; ERSST (2°) est lue à la maille la plus proche de chaque "
+                    "maille RSS (1°)."))
+
+    # ---------- N′
+    b = budget(gmsl, thermo, mass, NB_SPAN)
+    late = budget(gmsl, thermo, mass_months(grace_rows, NB_INFO), NB_INFO)
+    tot, tot_late = b.obs.value + GIA, late.obs.value + GIA
+    b3 = b.ok
+    crit.append(Criterion(id="B3", label="Bilan marin 2005-2015", satisfied=b3, detail=(
+        f"{NB_SPAN[0]}-{NB_SPAN[1]}, moindres carrés : observé {_f(b.obs.value, 2)} + {_f(GIA, 1)} = {_f(tot, 2)} mm/an ; "
+        f"dilatation 0-2000 m {_f(b.thermo.value, 2)} ; masse {_f(b.mass.value, 2)} ; résidu {_f(b.resid, 2, True)} mm/an "
+        f"(information : {_ci(b.resid_lo, b.resid_hi, 2, True)}) ; attendu |résidu| ≤ {_f(RESID_MAX, 1)}")))
+    per: dict[int, list[float]] = {}
+    for t, v in mass_months(grace_rows, (NB_SPAN[0], NB_INFO[1])):
+        per.setdefault(int(t), []).append(v)
+    ma = {y: sum(v) / len(v) for y, v in per.items() if len(v) >= 6}
+    yall = span((NB_SPAN[0], NB_INFO[1]))
+
+    def centred(d: dict[int, float]) -> dict[int, float]:
+        m = sum(d.values()) / len(d)
+        return {y: v - m for y, v in d.items()}
+
+    obs_c = centred({y: gmsl[y] + GIA * (y - NB_SPAN[0]) for y in yall})
+    th_c, ma_c = centred({y: thermo[y] for y in yall}), centred(ma)
+    n_check = CoherenceCheck(
+        id="niveau-marin-2005-2015", letter="N′", title="Bilan du niveau marin avant 2016",
+        question="Avant les difficultés instrumentales connues de 2016, la hausse mesurée est-elle la somme de la "
+                 "dilatation et de l'eau ajoutée ?",
+        criterion="B3", satisfied=b3,
+        result=(f"Sur {NB_SPAN[0]}-{NB_SPAN[1]}, la mer monte de {_f(tot, 1)} mm par an ; dilatation {_f(b.thermo.value, 1)}, "
+                f"masse {_f(b.mass.value, 1)} ; résidu {_f(b.resid, 2, True)} mm par an, "
+                + ("dans la tolérance de ± 0,5." if b3 else "hors de la tolérance de ± 0,5.")
+                + f" Sur {NB_INFO[0]}-{NB_INFO[1]}, pour information, le résidu est de {_f(late.resid, 2, True)} mm par an."),
+        reference=REFERENCES["N"] + " Non-fermeture après 2016 : Chen et al. (2020) ; Barnoud et al. (2021, GRL 48).",
+        values=[value("Résidu observé − (dilatation + masse)", "mm/an", NB_SPAN, est(b.resid, b.resid_lo, b.resid_hi))],
+        information=[value("Niveau observé + 0,3 (ajustement isostatique)", "mm/an", NB_SPAN, est(tot)),
+                     value("Dilatation thermique 0-2000 m (NCEI)", "mm/an", NB_SPAN, est(b.thermo.value)),
+                     value("Masse de l'océan (GRACE, JPL)", "mm/an", NB_SPAN, est(b.mass.value)),
+                     value("Résidu avec les pentes de Sen (B4)", "mm/an", NB_SPAN, est(b.sen_resid)),
+                     value("Résidu après 2016 (information)", "mm/an", NB_INFO, est(late.resid, late.resid_lo, late.resid_hi)),
+                     value("Niveau observé + 0,3, après 2016", "mm/an", NB_INFO, est(tot_late)),
+                     value("Dilatation 0-2000 m, après 2016", "mm/an", NB_INFO, est(late.thermo.value)),
+                     value("Masse de l'océan, après 2016", "mm/an", NB_INFO, est(late.mass.value))],
+        charts=[CoherenceChart(
+            title=f"Niveau marin observé et ses deux composantes ({NB_SPAN[0]}-{NB_INFO[1]})", unit="mm", years=yall,
+            lines=[CoherenceLine(name="Observé + ajustement isostatique", values=[round(obs_c[y], 2) for y in yall]),
+                   CoherenceLine(name="Dilatation + masse", values=[round(th_c[y] + ma_c[y], 2) if y in ma_c else None for y in yall]),
+                   CoherenceLine(name="Dilatation 0-2000 m", values=[round(th_c[y], 2) for y in yall]),
+                   CoherenceLine(name="Masse (GRACE)", values=[round(ma_c[y], 2) if y in ma_c else None for y in yall])],
+            note=("Séries centrées sur leur moyenne 2005-2024. Le critère porte sur les tendances de 2005-2015 ; "
+                  "2016-2024 est publié pour information. Masse : moyenne annuelle des mois désaisonnalisés, affichée "
+                  "si l'année en compte au moins 6."))],
+        limitation=("Onze ans seulement pour le critère ; l'océan sous 2000 m n'est pas mesuré ; la correction "
+                    "isostatique (0,3 mm/an) pèse sur le résultat ; le découpage en 2016 a été choisi après le premier calcul."))
+
+    # ---------- B4 et confiance (D-AX)
+    b4 = ols_ok and b.sen_ok
+    crit.append(Criterion(id="B4", label="Robustesse", satisfied=b4, detail=(
+        f"B2 en moindres carrés, erreurs de Newey-West : β = {_f(ob, 1)} % par °C {_ci(olo, ohi, 1)} "
+        f"({'conforme' if ols_ok else 'non conforme'}) ; B3 avec les pentes de Sen : résidu {_f(b.sen_resid, 2, True)} mm/an "
+        f"({'conforme' if b.sen_ok else 'non conforme'})")))
+    ok = {c.id: c.satisfied for c in crit}
+    if all(ok.values()):
+        conf, reason = "elevee", "B1 à B4 conformes (règle D-AX)."
+    elif b2 or b3:
+        bad = ", ".join(k for k, v in ok.items() if not v)
+        conf, reason = "moyenne", f"Un contrôle physique sur deux conforme ou critère annexe en échec ; non conforme : {bad} (règle D-AX)."
+    else:
+        conf, reason = "non_etabli", "Aucun des deux contrôles recadrés n'est conforme (règle D-AX)."
+    if b2 and b3:
+        finding = ("Recadrés, les deux contrôles sont cohérents : sur un même domaine, la vapeur d'eau suit la "
+                   "température de la mer au taux de Clausius-Clapeyron, et le bilan du niveau marin se ferme avant 2016.")
+    else:
+        parts = [("la vapeur d'eau suit le taux de Clausius-Clapeyron sur un même domaine" if b2 else
+                  "la vapeur d'eau croît plus vite que 7 % par °C de la mer, même sur un même domaine"),
+                 ("le bilan du niveau marin se ferme sur 2005-2015" if b3 else
+                  "le bilan du niveau marin ne se ferme pas non plus sur 2005-2015")]
+        finding = "Recadrés après le premier calcul : " + " ; ".join(parts) + "."
+    inputs = [
+        InputSource(name=RV.SOURCE_NAME, url=RV.DIR_URL, license=RV.LICENSE,
+                    note=f"fichier {vapor_meta.get('file', '?')}, masque commun avec ERSST"),
+        InputSource(name=RV.ERSST_NAME, url=RV.ERSST_PAGE, license=RV.ERSST_LICENSE),
+        InputSource(name=G.SOURCES["thermosteric-2000"].name, url=G.SOURCES["thermosteric-2000"].url,
+                    license=G.SOURCES["thermosteric-2000"].license),
+        InputSource(name=GR.SOURCE_NAME, url=GR.PAGE, license=GR.LICENSE, note=(grace_meta or {}).get("granule")),
+        InputSource(name="Niveau moyen de la mer NOAA STAR, tel que publié sur le site", url=SITE.format(GMSL),
+                    license="voir la page de l'indicateur"),
+    ]
+    return Coherence(
+        rule="D-AX",
+        question="Recadrés après le premier calcul, les contrôles de la vapeur d'eau et du niveau marin tiennent-ils ?",
+        model=("V′ : ln W = c + β·T + u, u AR(1), W vapeur d'eau RSS et T température de la mer ERSST v5 sur les mêmes "
+               "mailles ; N′ : tendance(observé + 0,3) − tendance(dilatation 0-2000 m) − tendance(masse GRACE), 2005-2015."),
+        finding=finding, confidence=conf, confidence_reason=reason,
+        method_note=("Sous-phase cadrée après le calcul officiel de P10.4, en connaissant ses résultats (décision D-AV du "
+                     "20/11/2026) ; critères B1-B5 et seuils fixés avant ce nouveau calcul (D-AW, D-AX), sans élargir la "
+                     "fourchette de 6 à 8 % par °C. Le résultat de P10.4 reste publié tel quel."),
+        limitations=[
+            "Contrôles recadrés après avoir vu un premier résultat : un succès ici a moins de poids qu'un succès prévu "
+            "d'avance.", v_check.limitation, n_check.limitation],
+        inputs=inputs, checks=[v_check, n_check], criteria=crit, script=SCRIPT, etl_version=ctx_version,
+        extracted_at=extracted_at)
+
+
+def load_and_build_b(out_dir: Path, raw_dir: Path, ctx_version: str, extracted_at) -> Coherence:
+    _, meta = RV.load()
+    gmeta = json.loads((GR.OUT_DIR / "meta.json").read_text(encoding="utf-8"))
+    return build_b(common_monthly=RV.load_common(), vapor_meta=meta, gmsl=published(out_dir, GMSL),
+                   thermo=G.load("thermosteric-2000", raw_dir), grace_rows=GR.load(), ctx_version=ctx_version,
+                   extracted_at=extracted_at, grace_meta=gmeta)

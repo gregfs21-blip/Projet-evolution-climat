@@ -527,6 +527,11 @@ def build(out_dir: Path = PROCESSED_DIR, raw_dir: Path = RAW_DIR) -> Demonstrati
     analyses.append(DemonstrationAnalysis(id="coherence-physique", phase="p10.4",
                                           title="Les mesures indépendantes racontent-elles la même physique ?",
                                           question=coh.question, status="publie", coherence=coh))
+    # P10.4b — recadrage de V et N après le calcul de P10.4 (D-AV, D-AW, D-AX)
+    cob = C.load_and_build_b(out_dir, raw_dir, ctx.etl_version, ctx.extracted_at)
+    analyses.append(DemonstrationAnalysis(id="coherence-physique-recadree", phase="p10.4b",
+                                          title="Vapeur d'eau et niveau marin : les contrôles recadrés",
+                                          question=cob.question, status="publie", coherence=cob))
     analyses += [DemonstrationAnalysis(id=i, phase=ph, title=t, question=q, status="prevu") for i, ph, t, q in PLANNED]
     return Demonstration(generated_at=datetime.now(timezone.utc).replace(microsecond=0), analyses=analyses)
 

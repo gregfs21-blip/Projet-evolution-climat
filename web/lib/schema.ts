@@ -731,11 +731,11 @@ const coherenceChartSchema = z
 export type CoherenceChart = z.infer<typeof coherenceChartSchema>;
 
 const coherenceCheckSchema = z.strictObject({
-  id: z.enum(["vapeur", "stratosphere", "niveau-marin", "energie"]),
-  letter: z.enum(["V", "S", "N", "E"]),
+  id: z.enum(["vapeur", "stratosphere", "niveau-marin", "energie", "vapeur-domaine", "niveau-marin-2005-2015"]),
+  letter: z.enum(["V", "S", "N", "E", "V′", "N′"]),
   title: z.string().min(1),
   question: z.string().min(1),
-  criterion: z.string().regex(/^C[2-5]$/),
+  criterion: z.string().regex(/^(C[2-5]|B[23])$/),
   satisfied: z.boolean(),
   result: z.string().min(1),
   reference: z.string().min(1),
@@ -748,6 +748,7 @@ export type CoherenceCheck = z.infer<typeof coherenceCheckSchema>;
 
 const coherenceSchema = z
   .strictObject({
+    rule: z.enum(["D-AT", "D-AX"]).default("D-AT"),
     question: z.string().min(1),
     model: z.string().min(1),
     finding: z.string().min(1),
@@ -756,7 +757,7 @@ const coherenceSchema = z
     method_note: z.string().min(1),
     limitations: z.array(z.string()).min(1),
     inputs: z.array(inputSourceSchema).min(1),
-    checks: z.array(coherenceCheckSchema).length(4),
+    checks: z.array(coherenceCheckSchema).min(2).max(4),
     criteria: z.array(criterionSchema).min(1),
     script: z.string().min(1),
     etl_version: z.string().min(1),
@@ -764,11 +765,14 @@ const coherenceSchema = z
   })
   .refine((r) => {
     const ok = new Map(r.criteria.map((c) => [c.id, c.satisfied]));
-    const physical = ["C2", "C3", "C4", "C5"].filter((k) => ok.get(k) === true).length;
-    const core = [1, 2, 3, 4, 5, 6].every((i) => ok.get(`C${i}`) === true);
-    const expected = core ? "elevee" : physical >= 3 ? "moyenne" : "non_etabli";
+    const at = r.rule === "D-AT";
+    const physicalIds = at ? ["C2", "C3", "C4", "C5"] : ["B2", "B3"];
+    const coreIds = at ? ["C1", "C2", "C3", "C4", "C5", "C6"] : ["B1", "B2", "B3", "B4"];
+    const physical = physicalIds.filter((k) => ok.get(k) === true).length;
+    const core = coreIds.every((k) => ok.get(k) === true);
+    const expected = core ? "elevee" : physical >= (at ? 3 : 1) ? "moyenne" : "non_etabli";
     return r.confidence === expected && r.checks.every((c) => ok.get(c.criterion) === c.satisfied);
-  }, "cohérence : confiance ou verdict incohérent avec les critères (règle D-AT)");
+  }, "cohérence : confiance ou verdict incohérent avec les critères (règles D-AT, D-AX)");
 export type Coherence = z.infer<typeof coherenceSchema>;
 
 export const demonstrationSchema = z.strictObject({
@@ -779,7 +783,7 @@ export const demonstrationSchema = z.strictObject({
       z
         .strictObject({
           id: z.string().regex(SLUG),
-          phase: z.string().regex(/^p10\.[0-9]+$/),
+          phase: z.string().regex(/^p10\.[0-9]+[a-z]?$/),
           title: z.string().min(1),
           question: z.string().min(1),
           status: z.enum(["publie", "prevu"]),

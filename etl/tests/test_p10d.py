@@ -188,3 +188,49 @@ class TestCommonDomain(unittest.TestCase):
         self.assertAlmostEqual(rows[0]["sst_c"], 20.0 + 0.01 * (1988 - 1960) * 12, places=3)
         self.assertGreater(meta["rss_cells_dropped"], 0)
         self.assertLess(meta["common_area_fraction"], 1.0)
+
+
+def world_b(seed: int = 3, cc: float = 0.07, resid_early: float = 0.0, resid_late: float = 1.0):
+    rng = np.random.default_rng(seed)
+    common = {}
+    for y in range(1988, 2026):
+        t_y = 0.015 * (y - 1988) + 0.15 * math.sin(y / 1.3)
+        for m in range(1, 13):
+            sst = 20.0 + t_y + 0.4 * math.sin(m) + rng.normal(0, 0.02)
+            common[f"{y}-{m:02d}"] = (28.0 * math.exp(cc * (sst - 20.0) + rng.normal(0, 0.003)), sst)
+    thermo = {y: 1.3 * (y - 2005) + rng.normal(0, 1.0) for y in range(2005, 2026)}
+    gmsl = {y: (3.3 + (resid_early if y <= 2015 else resid_late) - C.GIA) * (y - 2005) + rng.normal(0, 1.5)
+            for y in range(1993, 2025)}
+    rows = []
+    t = 2002.29
+    while t < 2026.7:
+        if not (2017.5 <= t < 2018.45):
+            rows.append({"time": round(t, 2), "mass_mm": 0.0, "sigma_mm": 0.5,
+                         "deseasoned_mm": 2.0 * (t - 2005) + rng.normal(0, 0.8)})
+        t += 1 / 12
+    return dict(common_monthly=common, vapor_meta={"common_area_fraction": 0.6, "common_cells": 25000, "file": "s"},
+                gmsl=gmsl, thermo=thermo, grace_rows=rows)
+
+
+def build_b(**kw):
+    return C.build_b(**world_b(**kw), ctx_version="t", extracted_at=datetime(2026, 11, 20, tzinfo=timezone.utc))
+
+
+class TestReframed(unittest.TestCase):
+    def test_consistent_world(self):
+        r = build_b()
+        self.assertEqual(r.rule, "D-AX")
+        self.assertEqual([c.letter for c in r.checks], ["V′", "N′"])
+        self.assertTrue(all(c.satisfied for c in r.criteria), [c.detail for c in r.criteria if not c.satisfied])
+        self.assertEqual(r.confidence, "elevee")
+        self.assertAlmostEqual(r.checks[0].values[0].estimate.value, 7.0, delta=0.7)
+
+    def test_one_of_two_is_medium_and_none_is_not_established(self):
+        self.assertEqual(build_b(cc=0.10).confidence, "moyenne")
+        self.assertEqual(build_b(cc=0.10, resid_early=1.5).confidence, "non_etabli")
+
+    def test_late_period_is_information_only(self):
+        r = build_b(resid_late=3.0)
+        self.assertTrue({c.id: c.satisfied for c in r.criteria}["B3"])
+        late = next(v for v in r.checks[1].information if v.label.startswith("Résidu après 2016"))
+        self.assertGreater(late.estimate.value, 1.0)
