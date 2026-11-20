@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": "p10",
-  "generated_at": "2026-11-20T12:02:36Z",
+  "generated_at": "2026-11-20T13:16:23Z",
   "closure_ok": false,
   "verdict": "Au moins un critère comptant pour la clôture n'est pas satisfait.",
   "indicators": [
@@ -82,7 +82,7 @@
       "kind": "critère",
       "status": "❌ non conforme",
       "satisfied": false,
-      "detail": "analyses publiées que la synthèse ne prend pas en compte : p10.4 ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS"
+      "detail": "analyses publiées que la synthèse ne prend pas en compte : p10.4, p10.4b ; reformuler limite-attribution et limite-projections (etl/config/synthese.yaml), les faire relire (M6), puis compléter SYNTHESIS_COVERS"
     },
     {
       "name": "O9 technique",
@@ -227,8 +227,8 @@
     {
       "name": "P10.4 C2 vapeur d'eau",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
+      "status": "↪ non conforme, recadré en P10.4b par décision de Grég (D-AV, 20/11/2026) ; résultat publié tel quel",
+      "satisfied": true,
       "detail": "β = 9,4 % par °C [8,6 ; 10,2] (1988-2025, HadSST4, Prais-Winsten, ρ = 0,27) ; attendu : intervalle recoupant [6 ; 8], borne basse > 0"
     },
     {
@@ -241,8 +241,8 @@
     {
       "name": "P10.4 C4 niveau marin",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
+      "status": "↪ non conforme, recadré en P10.4b par décision de Grég (D-AV, 20/11/2026) ; résultat publié tel quel",
+      "satisfied": true,
       "detail": "2005-2024, moindres carrés : observé 3,64 + 0,3 = 3,94 mm/an ; dilatation 0-2000 m 1,27 ; masse 2,05 ; résidu +0,62 mm/an (information : [+0,34 ; +0,90]) ; attendu |résidu| ≤ 0,5"
     },
     {
@@ -255,8 +255,8 @@
     {
       "name": "P10.4 C6 robustesse",
       "kind": "critère",
-      "status": "❌ non conforme",
-      "satisfied": false,
+      "status": "↪ non conforme, recadré en P10.4b par décision de Grég (D-AV, 20/11/2026) ; résultat publié tel quel",
+      "satisfied": true,
       "detail": "C2 avec la température de mer NOAA : Prais-Winsten : ρ ne converge pas ; pour information, moindres carrés et erreurs de Newey-West : β = 9,9 % par °C [9,0 ; 10,9] (non conforme) ; C4 avec les pentes de Sen : résidu +0,63 mm/an (non conforme) ; C5 avec le flux lissé sur 3 ans (2007-2023) : CERES +0,60 [+0,28 ; +0,92], océan +0,17 [−0,19 ; +0,54] (conforme)"
     },
     {
@@ -272,6 +272,48 @@
       "status": "ℹ️ information",
       "satisfied": true,
       "detail": "non_etabli — 2 contrôles physiques sur 4 conformes seulement (règle D-AT)."
+    },
+    {
+      "name": "P10.4b B1 données",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "V′ : 1988-2025, aucune année manquante, masque commun RSS et ERSST couvrant 65,0 % de la bande 60° S-60° N (seuil 50 %, 27582 mailles de 1°) ; N′ : altimétrie et dilatation 2005-2024 complètes, masse GRACE 116 mois sur 132 en 2005-2015 (88 %, seuil 80 %)"
+    },
+    {
+      "name": "P10.4b B2 vapeur d'eau, même domaine",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "β = 10,9 % par °C [9,6 ; 12,2] (1988-2025, ERSST v5 sur le masque commun, Prais-Winsten, ρ = 0,62) ; attendu : intervalle recoupant [6 ; 8] (D-AW), borne basse > 0"
+    },
+    {
+      "name": "P10.4b B3 bilan marin 2005-2015",
+      "kind": "critère",
+      "status": "✅ conforme",
+      "satisfied": true,
+      "detail": "2005-2015, moindres carrés : observé 3,17 + 0,3 = 3,47 mm/an ; dilatation 0-2000 m 1,18 ; masse 2,22 ; résidu +0,07 mm/an (information : [−0,64 ; +0,78]) ; attendu |résidu| ≤ 0,5"
+    },
+    {
+      "name": "P10.4b B4 robustesse",
+      "kind": "critère",
+      "status": "❌ non conforme",
+      "satisfied": false,
+      "detail": "B2 en moindres carrés, erreurs de Newey-West : β = 9,9 % par °C [8,9 ; 10,9] (non conforme) ; B3 avec les pentes de Sen : résidu +0,13 mm/an (conforme)"
+    },
+    {
+      "name": "P10.4b B5 technique",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "Tests (etl/tests/test_p10d.py), contrat et construction de l'onglet vérifiés par la CI."
+    },
+    {
+      "name": "Confiance P10.4b (règle D-AX)",
+      "kind": "info",
+      "status": "ℹ️ information",
+      "satisfied": true,
+      "detail": "moyenne — Un contrôle physique sur deux conforme ou critère annexe en échec ; non conforme : B2, B4 (règle D-AX)."
     }
   ]
 }

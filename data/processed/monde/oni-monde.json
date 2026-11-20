@@ -311,9 +311,9 @@
   "source_name": "NOAA CPC — indice océanique El Niño (ONI)",
   "source_url": "https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php",
   "license": "Domaine public (NOAA)",
-  "extracted_at": "2026-11-20T11:52:59Z",
+  "extracted_at": "2026-11-20T13:00:21Z",
   "script": "etl.indicators.serie",
-  "etl_version": "0.1.0+7ded5bf",
+  "etl_version": "0.1.0+fec67e3",
   "homogenized": true
  },
  "is_demo": false
