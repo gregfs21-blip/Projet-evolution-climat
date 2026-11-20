@@ -256,3 +256,41 @@ représentant environ la moitié et la dilatation un tiers), mais le bilan **n'e
   « stable depuis le milieu des années 1990 » du GIEC (R-B2) n'est donc pas retrouvé tel quel avec ces versions.
 - La légende du graphique de vapeur d'eau affirmait que les deux courbes se superposent si la physique est respectée ;
   corrigée après le calcul (les deux courbes ne portent pas sur la même région).
+
+## P10.4b — recadrage de V et N (après le calcul de P10.4)
+
+Cadrage, décisions D-AV à D-AX et critères B1-B5 : `docs/phases.md`, section P10.4b. Sous-phase cadrée **en
+connaissant** le résultat de P10.4 ; seuils non élargis (D-AW). Calcul officiel : ETL du 20/11/2026 sur la branche
+`p10-4`. Aucun essai local avant ce calcul. Les chiffres de P10.4 sont inchangés par ce second calcul.
+
+### Résultats
+
+Confiance « moyenne » (règle D-AX) : un contrôle recadré sur deux est conforme.
+
+| Contrôle | Résultat | Critère |
+|---|---|---|
+| V′, vapeur d'eau et mer du même domaine | β = 10,9 % par °C [9,6 ; 12,2], 1988-2025 (masque commun : 65,0 % de la bande, 27 582 mailles) | B2 non conforme |
+| N′, bilan marin 2005-2015 | 3,47 mm/an observés contre 1,18 de dilatation + 2,22 de masse ; résidu +0,07 mm/an (information [−0,64 ; +0,78]) | B3 conforme |
+| Information, 2016-2024 | résidu +1,30 mm/an [+0,90 ; +1,70] : la masse ralentit (1,42 mm/an) quand l'altimétrie accélère (4,12) | — |
+
+B1 conforme (GRACE : 116 mois sur 132). B4 non conforme : la variante en moindres carrés de B2 donne 9,9 % par °C
+[8,9 ; 10,9], également hors de [6 ; 8] ; la variante de Sen de B3 donne +0,13, conforme.
+
+### Écart B2 : la vapeur d'eau croît d'environ 10 % par °C de la mer, même sur le même domaine
+
+Corriger le domaine n'a pas ramené la pente vers 7 % : elle passe de 9,4 à 10,9 % par °C. L'hypothèse avancée pour
+l'écart C2 (domaines différents) n'explique donc pas l'écart ; elle est réfutée par ce calcul. Ce que les deux calculs
+montrent ensemble, c'est que **la fourchette de 6 à 8 % par °C n'est pas la bonne référence quand la température est
+celle de la mer** : le taux de Clausius-Clapeyron porte sur la température de l'air, et la troposphère tropicale, où
+se trouve l'essentiel de la vapeur, varie plus que la mer. Les valeurs publiées contre la température de la mer sont
+du même ordre que celles trouvées ici : environ 9,9 % par K dans les tropiques pour un enregistrement satellite (Fu et
+al., préprint ESSD 2024), environ 11 % par K pour le radiomètre TMR (1992-2005), 10,7 % par K dans JRA-55. Le cadrage
+(R-B1) aurait dû le prévoir ; la fourchette a été maintenue après coup pour ne pas ajuster un seuil à un résultat
+(D-AW). L'autocorrélation des résidus est forte (ρ = 0,62) : la pente est moins précise qu'elle n'en a l'air.
+
+### Constats sans effet sur les critères
+
+- B3 est conforme, mais faiblement : onze ans seulement, et un intervalle d'information de ± 0,7 mm/an, plus large que
+  la tolérance ; le découpage en 2016 a été choisi après le premier calcul, en s'appuyant sur la littérature. Ce que
+  le recadrage établit nettement, c'est la **localisation** de l'écart de P10.4 : le bilan se ferme avant 2016
+  (+0,07) et pas après (+1,30), comme l'ont décrit Chen et al. (2020) et Barnoud et al. (2021).

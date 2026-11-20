@@ -953,6 +953,14 @@ conforme ; « non établie » sinon. P10.4b est affichée comme une analyse dist
 - **20/11/2026, décision de Grég D-AV (après calcul)** : écarts C2 et C4 non acceptés tels quels ; recadrage de V et N
   dans une sous-phase P10.4b, cadrée en connaissant le résultat de P10.4, qui reste publié tel quel. Sonde
   `docs/sonde-p10e.md`, cadrage P10.4b proposé.
+- 20/11/2026, P10.4b : décisions D-AW (fourchette [6 ; 8] conservée) et D-AX (critères B1-B5, règle de confiance)
+  validées avant le calcul de P10.4b. Relevé de la vapeur d'eau et de la température de la mer ERSST v5 sur un
+  domaine commun (workflow « Copernicus »).
+- 20/11/2026, P10.4b, calcul officiel (aucun essai local avant) : B1 et B3 conformes ; **B2 non conforme** (vapeur
+  d'eau 10,9 % par °C [9,6 ; 12,2] sur le même domaine) ; **B4 non conforme** ; confiance « moyenne » (D-AX). Le bilan
+  marin se ferme sur 2005-2015 (+0,07 mm/an) et pas sur 2016-2024 (+1,30, information). L'hypothèse avancée pour
+  l'écart C2 (domaines différents) est réfutée : c'est la fourchette de référence, prévue pour la température de
+  l'air, qui ne convient pas à la température de la mer.
 
 ## P9 — Gulf Stream et AMOC : cadrage décidé le 17/11/2026, avant toute donnée et tout calcul
 
