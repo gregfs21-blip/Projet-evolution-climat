@@ -242,8 +242,8 @@ privilégient un effet du fonctionnement de GRACE puis GRACE-FO avec un seul acc
 dérives de salinité des flotteurs Argo — sans effet ici, puisque le cadrage n'utilise que la dilatation thermique —
 et ne trouvent pas d'erreur suffisante dans l'altimétrie ; la composante thermique et la masse GRACE restent les
 suspects pour le reste. S'y ajoutent l'océan sous 2000 m (environ 0,1 mm/an) et l'incertitude des corrections
-isostatiques : celle ajoutée à l'altimétrie (0,3 mm/an) et celle déjà appliquée par JPL à GRACE (ICE6G-D), du même
-ordre que la tolérance. Les intervalles du résidu, tirés de peu de points et de la loi normale, sont probablement
+isostatiques : celle ajoutée à l'altimétrie (0,3 mm/an) et celle déjà appliquée par JPL à GRACE (ICE6G-D), dont
+l'incertitude n'est pas évaluée ici. Les intervalles du résidu, tirés de peu de points et de la loi normale, sont probablement
 trop étroits. Le résidu (+0,62, information [+0,34 ; +0,90]) est du même ordre que les écarts publiés ;
 il ne remet pas en cause la conclusion qualitative (la hausse vient de la dilatation et de l'eau ajoutée, la masse en
 représentant environ la moitié et la dilatation un tiers), mais le bilan **n'est pas fermé à 0,5 mm/an près** sur
@@ -290,7 +290,7 @@ contre la température de l'air en surface, la vapeur de la colonne croît de 6 
 modèles (O'Gorman et Muller, 2010), et la troposphère tropicale varie plus que la mer. Des rapports de **tendances**
 publiés contre la température de la mer vont dans ce sens : 9,9 % par K sur 20° S-20° N (Fu et al., 2025, ESSD 17,
 4651, ciel sans pluie, environ 2003-2022 ; 8,6 dans le modèle CMIP6 comparé) et environ 11 % par K pour le radiomètre
-TMR (Keihm et al., 2009). Ce ne sont pas des pentes interannuelles comme β. L'estimateur compte aussi : sur les séries
+TMR (Keihm et al., 2009). Ce sont des rapports de tendances, alors que β mêle tendance et variations interannuelles. L'estimateur compte aussi : sur les séries
 publiées, la pente vaut 9,9 en moindres carrés et 10,9 en Prais-Winsten, qui pèse surtout les variations d'une année
 à l'autre (El Niño) ; ces variations poussent la pente vers le haut. La fourchette a été maintenue après coup pour ne
 pas ajuster un seuil à un résultat (D-AW).

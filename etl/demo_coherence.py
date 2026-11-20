@@ -437,7 +437,7 @@ def build(*, tpw_monthly: dict[str, float], tpw_meta: dict, sst: dict[int, float
                   "lui-même porte sur les tendances calculées sur tous les mois disponibles (D-AU)."))],
         limitation=("L'océan sous 2000 m n'est pas mesuré (environ 0,1 mm/an) ; le résultat dépend de la correction "
                     "isostatique, celle ajoutée à l'altimétrie (0,3 mm/an) et celle déjà appliquée par JPL à GRACE "
-                    "(ICE6G-D), d'incertitude comparable à la tolérance ; les intervalles supposent les trois mesures "
+                    "(ICE6G-D), dont l'incertitude n'est pas évaluée ici ; les intervalles supposent les trois mesures "
                     "indépendantes et reposent sur peu de points : ils sont probablement trop étroits."))
 
     # ---------- E
@@ -712,9 +712,9 @@ def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict,
         conf, reason = "elevee", "B1 à B4 conformes (règle D-AX)."
     elif b2 or b3:
         bad = ", ".join(k for k, v in ok.items() if not v)
-        good = "B2" if b2 else "B3"
-        conf, reason = "moyenne", (f"{good} conforme ; non conformes : {bad}"
-                                   + (" : un contrôle recadré sur deux" if not (b2 and b3) else "")
+        good = " et ".join(k for k, v in (("B2", b2), ("B3", b3)) if v)
+        conf, reason = "moyenne", (f"{good} conforme{'s' if b2 and b3 else ''} ; non conforme{'s' if bad.count(',') else ''} : "
+                                   f"{bad}" + (" ; un contrôle recadré sur deux" if not (b2 and b3) else "")
                                    + " (règle D-AX).")
     else:
         conf, reason = "non_etabli", "Aucun des deux contrôles recadrés n'est conforme (règle D-AX)."
@@ -725,9 +725,11 @@ def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict,
               + (f", mais son incertitude, ± {_f(half, 1)}, dépasse la tolérance)"
                  if b.resid_lo < -RESID_MAX or b.resid_hi > RESID_MAX else ")") if b3 else
               f"le résidu du bilan marin sort de la tolérance sur {NB_SPAN[0]}-{NB_SPAN[1]} ({_f(b.resid, 2, True)} mm/an)")
-             + (f", et {'en sort nettement' if b3 else 'aussi'} sur {NB_INFO[0]}-{NB_INFO[1]} ({_f(late.resid, 2, True)}, information)"
+             + ((f", et {'en sort' if b3 else 'aussi'}"
+                 + (" nettement" if late.resid_lo > RESID_MAX or late.resid_hi < -RESID_MAX else "")
+                 + f" sur {NB_INFO[0]}-{NB_INFO[1]} ({_f(late.resid, 2, True)}, information)")
                 if abs(late.resid) > RESID_MAX else
-                f", et y reste sur {NB_INFO[0]}-{NB_INFO[1]} ({_f(late.resid, 2, True)}, information)")]
+                f", et {'y reste' if b3 else 'y revient'} sur {NB_INFO[0]}-{NB_INFO[1]} ({_f(late.resid, 2, True)}, information)")]
     finding = "Recadrés après le premier calcul : " + " ; ".join(parts) + "."
     inputs = [
         InputSource(name=RV.SOURCE_NAME, url=RV.DIR_URL, license=RV.LICENSE,

@@ -29,7 +29,7 @@ ACCEPTED: dict[str, str] = {
                            "erreurs de Newey-West (docs/validation-p10.md)",
 }
 # Critères de P10.4 recadrés en P10.4b par décision de Grég après calcul (D-AV, 20/11/2026) : ni acceptés ni corrigés,
-# leur résultat reste publié ; ils ne bloquent la clôture que si P10.4b n'est pas publiée.
+# leur résultat reste publié.
 # Chaque critère recadré suit son correspondant de P10.4b : il n'est traité que si celui-ci est conforme ou accepté.
 REFRAMED: dict[str, str] = {
     "P10.4 C2 vapeur d'eau": "B2",
@@ -39,8 +39,8 @@ REFRAMED: dict[str, str] = {
 # Analyses de l'onglet dont la synthèse tient compte (affirmations `limite-attribution` et `limite-projections` de
 # etl/config/synthese.yaml, D-AH). Publier une autre analyse (P10.4 cohérence physique, P10.5 projections) rend ces
 # affirmations à revoir : ce contrôle échoue jusqu'à leur reformulation, relue (M6), et la mise à jour de cette liste
-# (P10.2 et P10.3 ajoutées le 19/11/2026 après relecture, docs/relecture-p8.md).
-SYNTHESIS_COVERS = {"p10.1", "p10.2", "p10.3"}
+# (P10.2 et P10.3 ajoutées le 19/11/2026, P10.4 et P10.4b le 20/11/2026, après relecture, docs/relecture-p8.md).
+SYNTHESIS_COVERS = {"p10.1", "p10.2", "p10.3", "p10.4", "p10.4b"}
 
 
 def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
@@ -123,10 +123,12 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
     coh = next((a.coherence for a in demo.analyses if a.phase == "p10.4" and a.coherence), None)
     cob = next((a.coherence for a in demo.analyses if a.phase == "p10.4b" and a.coherence), None)
     if coh is not None:
-        b_ok = {}
+        b_ok: dict[str, bool] = {}
+        b_mark: dict[str, str] = {}
         if cob is not None:
             for c in cob.criteria:
                 b_ok[c.id] = c.satisfied or f"P10.4b {c.id} {c.label.lower()}" in ACCEPTED
+            b_mark[c.id] = "✅" if c.satisfied else ("☑ accepté" if b_ok[c.id] else "❌")
         for c in coh.criteria:
             name = f"P10.4 {c.id} {c.label.lower()}"
             # D-AV : un critère recadré n'est ni accepté ni corrigé ; il suit son correspondant de P10.4b.
@@ -135,7 +137,7 @@ def checks(demo: Demonstration) -> tuple[list[ValidationCheck], list[str]]:
             ok = c.satisfied or name in ACCEPTED or (reframed and b_ok.get(follow, False))
             status = ("✅ conforme" if c.satisfied else f"☑ {ACCEPTED[name]}" if name in ACCEPTED
                       else (f"↪ non conforme, recadré en P10.4b (D-AV), suit {follow} "
-                            f"({'✅ ou accepté' if b_ok.get(follow) else '❌'})") if reframed else "❌ non conforme")
+                            f"({b_mark.get(follow, '❌')})") if reframed else "❌ non conforme")
             out.append(ValidationCheck(name=name, kind="critère", status=status, satisfied=ok, detail=c.detail))
         out.append(ValidationCheck(
             name="P10.4 C7 technique", kind="info", status="ℹ️ information", satisfied=True,

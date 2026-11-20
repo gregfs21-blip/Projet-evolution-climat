@@ -233,3 +233,35 @@ contrôle de Newey-West contre les terres affiché). `limite-attribution`, `cmp-
 déclarées relues dans leur rédaction actuelle.
 
 Affirmations relues (P10.3, 19/11/2026) : limite-attribution#466794c70d, cmp-terres-oceans#9e20716866, limite-projections#31ccce92d2
+
+## P10.4 et P10.4b — cohérence physique (20/11/2026, garde-fou D-AH)
+
+Publier P10.4 et P10.4b rendait `limite-attribution` incomplète (rien sur les contrôles de cohérence) ; `limite-glaciers`
+complétée (la masse GRACE est utilisée sans en séparer l'origine). Relecture par un agent séparé, qui n'avait rien
+rédigé, des affirmations, des textes générés (constats, résultats, références, limites, notes des graphiques), de la
+page, du code de calcul et de relevé, de la validation et du journal. Le relecteur a vérifié les chiffres des textes
+contre le JSON et les références en ligne.
+
+| | Signalement | Traitement |
+|---|---|---|
+| 1 | `limite-attribution` : « vérifient que les mesures s'accordent » se lit comme une confirmation ; « indépendantes » trop fort | « mesures de natures différentes », « testent si … (elles ne s'accordent pas toutes) » |
+| 2 | Écart B2 : l'explication de remplacement (fourchette inadaptée à la mer) affirmée sans test ; effet de l'estimateur omis | Dite « non testée » ; O'Gorman et Muller rapportés à l'air ; rapports de tendances qualifiés ; MCO 9,9 contre Prais-Winsten 10,9 |
+| 3 | Constat de P10.4b : « se ferme sur 2005-2015 » alors que l'incertitude dépasse la tolérance ; 2016-2024 tu | « dans la tolérance … mais son incertitude dépasse la tolérance » ; 2016-2024 cité |
+| 4 | Résultat E : « les deux hausses sont compatibles » alors que la hausse du flux océanique n'est pas établie | Intervalles affichés ; « ne se contredisent pas, mais le contrôle est peu exigeant » |
+| 5 | Critères recadrés de P10.4 comptés comme traités dès la publication de P10.4b | Chacun suit son correspondant (C2 → B2, C4 → B3, C6 → B4) |
+| 6 | Références : Fu et al. paru en 2025 et rapport de tendances ; TMR sans auteur ; période de fermeture du WCRP et de Chen et al. ; intervalle à 90 % de Loeb et al. ; R-B1 plus fort que le cadrage | Corrigées dans le code, l'onglet et la validation ; cadrage laissé d'origine, dit au journal |
+| 7 | P10.4 sans renvoi à la réfutation de l'hypothèse du domaine | Renvoi dans la note du graphique V, la limitation et la validation |
+| 8 | Limitation E : part de l'excédent hors de l'océan 0-2000 m sous-estimée (10 %) | Terres 5 %, glaces 3 %, atmosphère 1 % (GIEC AR6, vérifié) plus l'océan profond |
+| 9 | Bilan marin : correction isostatique de GRACE omise ; intervalles probablement trop étroits | Limites ajoutées ; validation nuancée |
+| 10 | `confidence_reason` de P10.4b confuse | Réécrite |
+| 11 | Page : année en dur ; « critères fixés avant le calcul » trompeur pour P10.4b ; pointillés absents de N′ | Corrigés |
+| 12 | Arrondi à 4 décimales ; « 2,0 » contre « 2,05 » ; centrage de la masse ; espace des milliers ; R² gonflé par la tendance | Pleine précision ; deux décimales ; note précisée ; corrigés |
+
+Contre-relecture : corrections confirmées. Défauts nouveaux corrigés : deux branches du constat de P10.4b qui
+auraient produit un texte faux (« nettement » réservé au cas où l'intervalle sort de la tolérance ; « y revient »
+au lieu de « y reste ») ; ponctuation et cas « B2 et B3 conformes » de la raison de confiance ; commentaire et libellé
+de la validation ; « β n'est pas une pente interannuelle » précisé ; incertitude de la correction isostatique de GRACE
+dite non évaluée faute de source. `limite-attribution`, `limite-glaciers` et `limite-projections` déclarées relues
+dans leur rédaction actuelle.
+
+Affirmations relues (P10.4, 20/11/2026) : limite-attribution#518167d701, limite-glaciers#7c38ea8242, limite-projections#31ccce92d2
