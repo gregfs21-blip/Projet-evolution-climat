@@ -2,7 +2,7 @@
 
 Fichier généré par `python -m etl.validation.p10` à chaque exécution de l'ETL. Ne pas éditer à la main. Critères : `docs/phases.md` (P10).
 
-**Au moins un critère comptant pour la clôture n'est pas satisfait.**
+**Tous les critères comptant pour la clôture sont satisfaits.**
 
 | Critère | Résultat | Mesure |
 |---|---|---|
@@ -39,12 +39,12 @@ Fichier généré par `python -m etl.validation.p10` à chaque exécution de l'E
 | P10.4 C3 stratosphère | ✅ conforme | RSS 4.0 : TLT +0,229 °C/déc. [+0,198 ; +0,267], TLS −0,140 °C/déc. [−0,193 ; −0,097] ; UAH 6.1 : TLT +0,148 °C/déc. [+0,115 ; +0,184], TLS −0,196 °C/déc. [−0,254 ; −0,152] (Sen, 1979-2025) ; attendu : TLT borne basse > 0 et TLS borne haute < 0 |
 | P10.4 C4 niveau marin | ↪ non conforme, recadré en P10.4b (D-AV), suit B3 (❌) | 2005-2024, moindres carrés : observé 3,64 + 0,3 = 3,94 mm/an ; dilatation 0-2000 m 1,27 ; masse 2,05 ; résidu +0,62 mm/an (information : [+0,34 ; +0,90]) ; attendu |résidu| ≤ 0,5 |
 | P10.4 C5 énergie | ✅ conforme | 2006-2024, Prais-Winsten : déséquilibre CERES +0,50 W/m² par décennie [+0,25 ; +0,74] ; flux de chaleur dans l'océan 0-2000 m +0,15 [−0,19 ; +0,49] ; attendu : deux valeurs positives, intervalles qui se recoupent |
-| P10.4 C6 robustesse | ↪ non conforme, recadré en P10.4b (D-AV), suit B4 (❌) | C2 avec la température de mer NOAA : Prais-Winsten : ρ ne converge pas ; pour information, moindres carrés et erreurs de Newey-West : β = 9,9 % par °C [9,0 ; 10,9] (non conforme) ; C4 avec les pentes de Sen : résidu +0,63 mm/an (non conforme) ; C5 avec le flux lissé sur 3 ans (2007-2023) : CERES +0,60 [+0,28 ; +0,92], océan +0,17 [−0,19 ; +0,54] (conforme) |
+| P10.4 C6 robustesse | ↪ non conforme, recadré en P10.4b (D-AV), suit B4 (☑ accepté) | C2 avec la température de mer NOAA : Prais-Winsten : ρ ne converge pas ; pour information, moindres carrés et erreurs de Newey-West : β = 9,9 % par °C [9,0 ; 10,9] (non conforme) ; C4 avec les pentes de Sen : résidu +0,63 mm/an (non conforme) ; C5 avec le flux lissé sur 3 ans (2007-2023) : CERES +0,60 [+0,28 ; +0,92], océan +0,17 [−0,19 ; +0,54] (conforme) |
 | P10.4 C7 technique | ℹ️ information | Tests (etl/tests/test_p10d.py), contrat et construction de l'onglet vérifiés par la CI. |
 | Confiance P10.4 (règle D-AT) | ℹ️ information | non_etabli — 2 contrôles physiques sur 4 conformes seulement (règle D-AT). |
 | P10.4b B1 données | ✅ conforme | V′ : 1988-2025, aucune année manquante, masque commun RSS et ERSST couvrant 65,0 % de la bande 60° S-60° N (seuil 50 %, 27 582 mailles de 1°) ; N′ : altimétrie et dilatation 2005-2024 complètes, masse GRACE 116 mois sur 132 en 2005-2015 (88 %, seuil 80 %) |
-| P10.4b B2 vapeur d'eau, même domaine | ❌ non conforme | β = 10,9 % par °C [9,6 ; 12,2] (1988-2025, ERSST v5 sur le masque commun, Prais-Winsten, ρ = 0,62) ; attendu : intervalle recoupant [6 ; 8] (D-AW), borne basse > 0 |
+| P10.4b B2 vapeur d'eau, même domaine | ☑ écart accepté par Grég le 20/11/2026 (D-AY) : 10,9 % par °C sur le même domaine ; hypothèse du domaine réfutée, explication restante non testée (docs/validation-p10.md) | β = 10,9 % par °C [9,6 ; 12,2] (1988-2025, ERSST v5 sur le masque commun, Prais-Winsten, ρ = 0,62) ; attendu : intervalle recoupant [6 ; 8] (D-AW), borne basse > 0 |
 | P10.4b B3 bilan marin 2005-2015 | ✅ conforme | 2005-2015, moindres carrés : observé 3,17 + 0,3 = 3,47 mm/an ; dilatation 0-2000 m 1,18 ; masse 2,22 ; résidu +0,07 mm/an (information : [−0,64 ; +0,78]) ; attendu |résidu| ≤ 0,5 |
-| P10.4b B4 robustesse | ❌ non conforme | B2 en moindres carrés, erreurs de Newey-West : β = 9,9 % par °C [8,9 ; 10,9] (non conforme) ; B3 avec les pentes de Sen : résidu +0,13 mm/an (conforme) |
+| P10.4b B4 robustesse | ☑ écart accepté par Grég le 20/11/2026 (D-AY) : suit B2 (9,9 % par °C en moindres carrés) ; la variante de Sen de B3 est conforme | B2 en moindres carrés, erreurs de Newey-West : β = 9,9 % par °C [8,9 ; 10,9] (non conforme) ; B3 avec les pentes de Sen : résidu +0,13 mm/an (conforme) |
 | P10.4b B5 technique | ℹ️ information | Tests (etl/tests/test_p10d.py), contrat et construction de l'onglet vérifiés par la CI. |
 | Confiance P10.4b (règle D-AX) | ℹ️ information | moyenne — B3 conforme ; non conformes : B2, B4 ; un contrôle recadré sur deux (règle D-AX). |
