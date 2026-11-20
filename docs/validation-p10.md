@@ -284,7 +284,7 @@ montrent ensemble, c'est que **la fourchette de 6 à 8 % par °C n'est pas la bo
 celle de la mer** : le taux de Clausius-Clapeyron porte sur la température de l'air, et la troposphère tropicale, où
 se trouve l'essentiel de la vapeur, varie plus que la mer. Les valeurs publiées contre la température de la mer sont
 du même ordre que celles trouvées ici : environ 9,9 % par K dans les tropiques pour un enregistrement satellite (Fu et
-al., préprint ESSD 2024), environ 11 % par K pour le radiomètre TMR (1992-2005), 10,7 % par K dans JRA-55. Le cadrage
+al., préprint ESSD 2024) et environ 11 % par K pour le radiomètre TMR (1992-2005). Le cadrage
 (R-B1) aurait dû le prévoir ; la fourchette a été maintenue après coup pour ne pas ajuster un seuil à un résultat
 (D-AW). L'autocorrélation des résidus est forte (ρ = 0,62) : la pente est moins précise qu'elle n'en a l'air.
 

@@ -611,8 +611,8 @@ def build_b(*, common_monthly: dict[str, tuple[float, float]], vapor_meta: dict,
                 f"{beta_txt}, "
                 + ("compatible avec le taux de Clausius-Clapeyron." if b2 else f"hors de la fourchette {rng} retenue.")),
         reference=(REFERENCES["V"] + " Fourchette conservée après le premier calcul (D-AW). Rapports publiés contre la "
-                   "température de la mer souvent plus élevés : 7,7 % par K sur l'océan dans ERA5, 10,7 dans JRA-55, "
-                   "9,9 dans les tropiques pour un enregistrement satellite (Fu et al., préprint ESSD 2024)."),
+                   "température de la mer plus élevés : environ 9,9 % par K dans les tropiques pour un enregistrement "
+                   "satellite (Fu et al., préprint ESSD 2024), environ 11 % par K pour le radiomètre TMR (1992-2005)."),
         values=[value("β, vapeur d'eau par °C de la mer (même domaine)", "% par °C", VB_SPAN,
                       est(cc.beta, cc.lo, cc.hi) if cc is not None else est(ob))],
         information=[value("β en moindres carrés, erreurs de Newey-West (B4)", "% par °C", VB_SPAN, est(ob, olo, ohi)),
