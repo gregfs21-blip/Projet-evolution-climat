@@ -478,6 +478,14 @@ SOURCES: dict[str, Source] = {s.id: s for s in [
            "https://data.remss.com/msu/graphics/TLT_v40/time_series/RSS_TS_channel_TLT_Global_Land_And_Sea_v04_0.txt",
            "https://www.remss.com/measurements/upper-air-temperature/", "CC BY 4.0 (RSS)", "°C", parse_rss,
            drop_current_year=True),
+    # P10.4, D-AS (20/11/2026) : basse stratosphère (sonde docs/sonde-p10d.md), mêmes formats que les TLT
+    Source("tls-uah", "University of Alabama in Huntsville — UAH 6.1, température de la basse stratosphère (satellites)",
+           "https://www.nsstc.uah.edu/data/msu/v6.1/tls/uahncdc_ls_6.1.txt", "https://www.nsstc.uah.edu/climate/",
+           "Libre (UAH)", "°C", parse_uah, drop_current_year=True),
+    Source("tls-rss", "Remote Sensing Systems — RSS 4.0, température de la basse stratosphère (satellites)",
+           "https://data.remss.com/msu/graphics/TLS_v40/time_series/RSS_TS_channel_TLS_Global_Land_And_Sea_v04_0.txt",
+           "https://www.remss.com/measurements/upper-air-temperature/", "CC BY 4.0 (RSS)", "°C", parse_rss,
+           drop_current_year=True),
     Source("sst-noaa", "NOAA NCEI — NOAAGlobalTemp, température de surface de l'océan mondial (Climate at a Glance)",
            f"https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/ocean/12/12/1850-{_LAST}/data.csv",
            "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series", "Domaine public (NOAA)", "°C", parse_cag),
@@ -525,6 +533,10 @@ SOURCES: dict[str, Source] = {s.id: s for s in [
     Source("ohc-2000", "NOAA NCEI — contenu thermique de l'océan mondial, 0-2000 m",
            "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/yearly/h22-w0-2000m.dat",
            "https://www.ncei.noaa.gov/access/global-ocean-heat-content/", "Domaine public (NOAA)", "10²² J", parse_ohc),
+    # P10.4, D-AS : niveau thermostérique 0-2000 m (dilatation thermique), mm, année au milieu (2005.5)
+    Source("thermosteric-2000", "NOAA NCEI — niveau marin thermostérique de l'océan mondial, 0-2000 m",
+           "https://www.ncei.noaa.gov/data/oceans/woa/DATA_ANALYSIS/3M_HEAT_CONTENT/DATA/basin/yearly_sl/a-mm-w0-2000m.dat",
+           "https://www.ncei.noaa.gov/access/global-ocean-heat-content/", "Domaine public (NOAA)", "mm", parse_ohc),
     *[Source(f"psmsl-{sid}", f"PSMSL — marégraphe de {name}, moyennes annuelles RLR", PSMSL.format(id=sid),
              PSMSL_PAGE.format(id=sid), "Libre, citation demandée (PSMSL)", "mm", parse_psmsl)
       for sid, name in (("1", "Brest"), ("459", "Le Verdon"), ("1918", "Arcachon-Eyrac"))],

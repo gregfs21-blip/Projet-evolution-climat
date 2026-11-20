@@ -13,6 +13,8 @@ on:
       - "etl/sources/ewds_fire.py"
       - "etl/sources/ads_aod.py"
       - "etl/sources/ceres.py"
+      - "etl/sources/grace.py"
+      - "etl/sources/rss_vapor.py"
       - ".github/workflows/copernicus.yml"
 
 permissions:
@@ -51,11 +53,17 @@ jobs:
         env:
           EARTHDATA_TOKEN: ${{ secrets.EARTHDATA_TOKEN }}   # jeton NASA Earthdata, jamais affiché
         run: python -m etl.sources.ceres
+      - name: Relevé GRACE, masse de l'océan (NASA Earthdata, P10.4)
+        env:
+          EARTHDATA_TOKEN: ${{ secrets.EARTHDATA_TOKEN }}   # jeton NASA Earthdata, jamais affiché
+        run: python -m etl.sources.grace
+      - name: Relevé RSS, vapeur d'eau sur les océans (accès libre, P10.4)
+        run: python -m etl.sources.rss_vapor
       - name: Publication des séries extraites
         run: |
           git config user.name "etl-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/sources/era5-pl data/sources/ceres
+          for d in data/sources/era5-pl data/sources/ceres data/sources/grace data/sources/rss-vapor; do if [ -d "$d" ]; then git add "$d"; fi; done
           if git diff --cached --quiet; then
             echo "Aucun changement."
           else
